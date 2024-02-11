@@ -1,24 +1,29 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { CellAction } from "./cell-action";
 
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
+import { ArrowUpDown } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 
-export type PropertyColumn = {
+export type AdminColumn = {
   id: string;
+  name: string;
+  email: string;
+  status: string;
+  type: string;
+  position: string;
+  phoneNumber: string;
+  birthDay: string;
   address: string;
-  lotNumber: string;
-  lotSize: string;
-  userId: string;
-  purchaseDate: string;
+  role: string;
+  bio: string;
+  image: string;
 };
 
-export const columns: ColumnDef<PropertyColumn>[] = [
+export const columns: ColumnDef<AdminColumn>[] = [
   {
-    accessorKey: "address",
+    accessorKey: "position",
     header: ({ column }) => {
       return (
         <Button
@@ -26,15 +31,15 @@ export const columns: ColumnDef<PropertyColumn>[] = [
           className="hover:bg-[#ffe492]"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Address
+          Position
           <ArrowUpDown className="w-4 h-4 ml-2" />
         </Button>
       );
     },
-    cell: ({ row }) => row.getValue("address"),
+    cell: ({ row }) => row.getValue("position"),
   },
   {
-    accessorKey: "lotNumber",
+    accessorKey: "name",
     header: ({ column }) => {
       return (
         <Button
@@ -42,15 +47,15 @@ export const columns: ColumnDef<PropertyColumn>[] = [
           className="hover:bg-[#ffe492]"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Lot Number
+          Name
           <ArrowUpDown className="w-4 h-4 ml-2" />
         </Button>
       );
     },
-    cell: ({ row }) => row.getValue("lotNumber"),
+    cell: ({ row }) => <div className="capitalize">{row.getValue("name")}</div>,
   },
   {
-    accessorKey: "lotSize",
+    accessorKey: "phoneNumber",
     header: ({ column }) => {
       return (
         <Button
@@ -58,15 +63,15 @@ export const columns: ColumnDef<PropertyColumn>[] = [
           className="hover:bg-[#ffe492]"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Lot Size (in sq. m.)
+          Contact Number
           <ArrowUpDown className="w-4 h-4 ml-2" />
         </Button>
       );
     },
-    cell: ({ row }) => row.getValue("lotSize"),
+    cell: ({ row }) => row.getValue("phoneNumber"),
   },
   {
-    accessorKey: "occupantName",
+    accessorKey: "email",
     header: ({ column }) => {
       return (
         <Button
@@ -74,31 +79,11 @@ export const columns: ColumnDef<PropertyColumn>[] = [
           className="hover:bg-[#ffe492]"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Occupant
+          Email
           <ArrowUpDown className="w-4 h-4 ml-2" />
         </Button>
       );
     },
-    cell: ({ row }) => row.getValue("occupantName"),
-  },
-  {
-    accessorKey: "purchaseDate",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          className="hover:bg-[#ffe492]"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Date of Purchase
-          <ArrowUpDown className="w-4 h-4 ml-2" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => row.getValue("purchaseDate"),
-  },
-  {
-    id: "actions",
-    cell: ({ row }) => <CellAction data={row.original} />,
+    cell: ({ row }) => row.getValue("email"),
   },
 ];

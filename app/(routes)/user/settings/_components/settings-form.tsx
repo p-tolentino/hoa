@@ -67,6 +67,7 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({
 
   const onSubmit = async (values: SettingsFormValues) => {
     startTransition(() => {
+      update();
       updateInfo(values)
         .then((data) => {
           if (data.error) {
@@ -78,17 +79,29 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({
 
             const occupant = values.firstName + " " + values.lastName;
 
-            updatePropertyOwner(values.address, initialData?.id, occupant)
+            updatePropertyOwner(initialData?.info?.address, "", "")
               .then((data) => {
                 if (data.error) {
                   console.log(data.error);
                 }
 
                 if (data.success) {
-                  update();
-                  form.reset();
-                  router.replace("/user");
-                  console.log(data.success);
+                  updatePropertyOwner(values.address, initialData?.id, occupant)
+                    .then((data) => {
+                      if (data.error) {
+                        console.log(data.error);
+                      }
+
+                      if (data.success) {
+                        form.reset();
+                        router.refresh();
+                        update();
+                        console.log(data.success);
+                      }
+                    })
+                    .catch(() => {
+                      console.log("Something went wrong.");
+                    });
                 }
               })
               .catch(() => {
@@ -113,7 +126,7 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({
           onSubmit={form.handleSubmit(onSubmit)}
           className="w-full space-y-8"
         >
-          <div className="grid w-[70vw] grid-cols-3 gap-8">
+          <div className="grid grid-cols-3 gap-8">
             <FormField
               control={form.control}
               name="firstName"
@@ -214,7 +227,7 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({
               name="type"
               render={({ field }) => (
                 <FormItem className="space-y-3 ">
-                  <FormLabel>Member Type</FormLabel>
+                  <FormLabel>Resident Type</FormLabel>
                   <FormControl>
                     <RadioGroup
                       onValueChange={field.onChange}
@@ -264,7 +277,10 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({
                           !property.userId
                         ) {
                           return (
-                            <SelectItem key={property.id} value={property.id}>
+                            <SelectItem
+                              key={property.id}
+                              value={property.address || ""}
+                            >
                               {property.address}
                             </SelectItem>
                           );

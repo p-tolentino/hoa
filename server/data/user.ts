@@ -29,3 +29,17 @@ export const getUserById = async (id: string) => {
     return null;
   }
 };
+
+export const getAllUsers = async () => {
+  try {
+    const users = await db.user.findMany({
+      include: {
+        info: true,
+      },
+    });
+
+    return users;
+  } catch {
+    return null;
+  }
+};

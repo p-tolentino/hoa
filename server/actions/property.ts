@@ -47,7 +47,7 @@ export const updateProperty = async (
 };
 
 export const updatePropertyOwner = async (
-  propertyId: string,
+  address: string,
   userId: string,
   occupantName: string
 ) => {
@@ -66,7 +66,7 @@ export const updatePropertyOwner = async (
   }
 
   await db.property.updateMany({
-    where: { id: propertyId },
+    where: { address },
     data: { userId, occupantName },
   });
 

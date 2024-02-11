@@ -33,7 +33,7 @@ const Properties = async () => {
   }));
 
   return (
-    <div className="flex">
+    <div className="flex p-10">
       <div className="flex-1 space-y-4">
         <PropertyClient data={formattedProperties} />
       </div>

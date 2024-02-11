@@ -1,7 +1,7 @@
 "use server";
 
 import * as z from "zod";
-import { PersonalInfoSchema } from "@/server/schemas";
+import { PersonalInfoSchema, VehicleSchema } from "@/server/schemas";
 
 import { db } from "@/lib/db";
 import { currentUser } from "@/lib/auth";
@@ -35,4 +35,24 @@ export const updateInfo = async (
   });
 
   return { success: "Updated information successfully" };
+};
+
+export const addVehicle = async (values: z.infer<typeof VehicleSchema>) => {
+  const user = await currentUser();
+
+  // No Current User
+  if (!user) {
+    return { error: "Unauthorized" };
+  }
+
+  // Validation if user is in database (not leftover session)
+  const dbUser = await getUserById(user.id);
+
+  if (!dbUser) {
+    return { error: "Unauthorized" };
+  }
+
+  await db.vehicle.create({ data: { ...values, userId: dbUser.id } });
+
+  return { success: "Vehicle added successfully" };
 };

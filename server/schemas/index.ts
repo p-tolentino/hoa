@@ -56,7 +56,16 @@ export const PersonalInfoSchema = z.object({
   }),
 });
 
-export const VehicleSchema = z.object({ plateNum: z.string() });
+export const VehicleSchema = z.object({
+  plateNum: z
+    .string()
+    .min(7, {
+      message: "Valid plate number required: ex. ABC-123",
+    })
+    .max(7, {
+      message: "Valid plate number required: ex. ABC-123",
+    }),
+});
 
 export const PropertySchema = z.object({
   address: z.string().min(1, {

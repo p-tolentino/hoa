@@ -6,19 +6,29 @@ import { CellAction } from "./cell-action";
 import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
+import { Status } from "@prisma/client";
+import { ViewInfo } from "./view-info";
 
-export type PropertyColumn = {
+export type HomeownerColumn = {
   id: string;
+  name: string;
+  email: string;
+  status: string;
+  type: string;
+  position: string;
+  phoneNumber: string;
+  birthDay: string;
   address: string;
-  lotNumber: string;
-  lotSize: string;
-  userId: string;
-  purchaseDate: string;
+  role: string;
+  bio: string;
+  image: string;
 };
 
-export const columns: ColumnDef<PropertyColumn>[] = [
+export const columns: ColumnDef<HomeownerColumn>[] = [
   {
-    accessorKey: "address",
+    accessorKey: "status",
     header: ({ column }) => {
       return (
         <Button
@@ -26,15 +36,30 @@ export const columns: ColumnDef<PropertyColumn>[] = [
           className="hover:bg-[#ffe492]"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Address
+          Status
           <ArrowUpDown className="w-4 h-4 ml-2" />
         </Button>
       );
     },
-    cell: ({ row }) => row.getValue("address"),
+    cell: ({ row }) => (
+      <Badge
+        className={cn(
+          row.getValue("status") === Status.ACTIVE
+            ? "bg-green-700"
+            : row.getValue("status") === Status.INACTIVE
+            ? "bg-red-700"
+            : row.getValue("status") === Status.PENDING
+            ? "bg-yellow-600"
+            : "display-none"
+        )}
+      >
+        {" "}
+        {row.getValue("status")}
+      </Badge>
+    ),
   },
   {
-    accessorKey: "lotNumber",
+    accessorKey: "position",
     header: ({ column }) => {
       return (
         <Button
@@ -42,15 +67,15 @@ export const columns: ColumnDef<PropertyColumn>[] = [
           className="hover:bg-[#ffe492]"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Lot Number
+          Position
           <ArrowUpDown className="w-4 h-4 ml-2" />
         </Button>
       );
     },
-    cell: ({ row }) => row.getValue("lotNumber"),
+    cell: ({ row }) => row.getValue("position"),
   },
   {
-    accessorKey: "lotSize",
+    accessorKey: "name",
     header: ({ column }) => {
       return (
         <Button
@@ -58,15 +83,15 @@ export const columns: ColumnDef<PropertyColumn>[] = [
           className="hover:bg-[#ffe492]"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Lot Size (in sq. m.)
+          Name
           <ArrowUpDown className="w-4 h-4 ml-2" />
         </Button>
       );
     },
-    cell: ({ row }) => row.getValue("lotSize"),
+    cell: ({ row }) => <div className="capitalize">{row.getValue("name")}</div>,
   },
   {
-    accessorKey: "occupantName",
+    accessorKey: "email",
     header: ({ column }) => {
       return (
         <Button
@@ -74,31 +99,16 @@ export const columns: ColumnDef<PropertyColumn>[] = [
           className="hover:bg-[#ffe492]"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Occupant
+          Email
           <ArrowUpDown className="w-4 h-4 ml-2" />
         </Button>
       );
     },
-    cell: ({ row }) => row.getValue("occupantName"),
+    cell: ({ row }) => row.getValue("email"),
   },
+
   {
-    accessorKey: "purchaseDate",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          className="hover:bg-[#ffe492]"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Date of Purchase
-          <ArrowUpDown className="w-4 h-4 ml-2" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => row.getValue("purchaseDate"),
-  },
-  {
-    id: "actions",
-    cell: ({ row }) => <CellAction data={row.original} />,
+    id: "Member Information",
+    cell: ({ row }) => <ViewInfo data={row.original} />,
   },
 ];

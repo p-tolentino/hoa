@@ -1,15 +1,17 @@
 import { Flex } from "@chakra-ui/react";
+import ModuleMenuCard from "@/components/system/ModuleMenuCard";
+import { currentUser } from "@/lib/auth";
 
-import { Card } from "@/components/ui/card";
+const Membership = async () => {
+  const user = await currentUser();
 
-const Membership = () => {
-  const userManagementMenuCard = [
+  const userManagement = [
     {
       category: "User Management",
       category_buttons: ["Homeowners Directory", "Admin Officers Directory"],
       category_hrefs: [
-        "/admin/membership/user-management/homeowners-directory",
-        "/admin/membership/user-management/admin-officers-directory",
+        `/admin/membership/homeowner-directory`,
+        `/${user?.role.toLowerCase()}/membership/admin-directory`,
       ],
       category_descriptions: [
         "1Lorem ipsum dolor, sit amet consectetur adipisicing elit. Modi, quo veritatis repudiandae amet deserunt pariatur?",
@@ -18,16 +20,13 @@ const Membership = () => {
     },
   ];
 
-  const propertyManagementMenuCard = [
+  const propertyManagement = [
     {
       category: "Property Management",
-      category_buttons: [
-        "Browse House Lots (Maps)",
-        "Property Information Form",
-      ],
+      category_buttons: ["Browse House Lots (Maps)", "Property Information"],
       category_hrefs: [
-        "/admin/membership/property-management/browse-house-lots",
-        "/admin/membership/property-management/property-information-form",
+        `/admin/membership/properties/map`,
+        `/admin/membership/properties`,
       ],
       category_descriptions: [
         "1Lorem ipsum dolor, sit amet consectetur adipisicing elit. Modi, quo veritatis repudiandae amet deserunt pariatur?",
@@ -36,32 +35,32 @@ const Membership = () => {
     },
   ];
 
-  const userRegistrationMenuCard = [
+  const userRegistration = [
     {
       category: "User Registration",
       category_buttons: ["Membership Form"],
-      category_hrefs: ["/admin/membership/user-registration/membership-form"],
+      category_hrefs: [`/${user?.role.toLowerCase()}/settings`],
       category_descriptions: [
         "1Lorem ipsum dolor, sit amet consectetur adipisicing elit. Modi, quo veritatis repudiandae amet deserunt pariatur?",
       ],
     },
   ];
-  {
-    /* <Flex gap="2.5rem">
-        {userManagementMenuCard.map((categoryData, index) => (
-          <ModuleMenuCard key={index} data={categoryData}></ModuleMenuCard>
-        ))}
 
-        {propertyManagementMenuCard.map((categoryData, index) => (
-          <ModuleMenuCard key={index} data={categoryData}></ModuleMenuCard>
-        ))}
+  return (
+    <Flex className="gap-10 p-10">
+      {userManagement.map((categoryData, index) => (
+        <ModuleMenuCard key={index} data={categoryData}></ModuleMenuCard>
+      ))}
 
-        {userRegistrationMenuCard.map((categoryData, index) => (
-          <ModuleMenuCard key={index} data={categoryData}></ModuleMenuCard>
-        ))}
-      </Flex> */
-  }
-  return <>Todo: Membership Dashboard Module Cards</>;
+      {propertyManagement.map((categoryData, index) => (
+        <ModuleMenuCard key={index} data={categoryData}></ModuleMenuCard>
+      ))}
+
+      {/* {userRegistrationMenuCard.map((categoryData, index) => (
+        <ModuleMenuCard key={index} data={categoryData}></ModuleMenuCard>
+      ))} */}
+    </Flex>
+  );
 };
 
 export default Membership;
