@@ -45,7 +45,15 @@ export const Footer = () => {
         px={{ base: "10" }}
         py={{ base: "8px" }}
       >
-        <Link href="/">ABOUT US</Link>
+        <Text
+          py="5px"
+          fontFamily="font.body"
+          fontSize={{ base: "12px", md: "12px" }}
+          fontWeight="bold"
+        >
+          HOME
+        </Text>
+        <Link href="/">ABOUT</Link>
         <Link href="/#registerHOA">REGISTER HOA</Link>
         <Link href="/#policies">TERMS AND CONDITIONS</Link>
         <Link href="/#contactUs">CONTACT US</Link>
