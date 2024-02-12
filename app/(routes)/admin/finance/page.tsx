@@ -2,7 +2,7 @@
 
 import { Box, Flex } from '@chakra-ui/react'
 import ModuleMenuCard from '@/components/system/ModuleMenuCard'
-import Header from '@/components/system/Header'
+import { Heading } from '@/components/ui/heading'
 
 export default function FinanceManagementMenu () {
   const homeownerReportsMenuCard = [
@@ -22,7 +22,7 @@ export default function FinanceManagementMenu () {
       category: 'Fund Management',
       category_users: 'the Association Treasurer',
       category_buttons: ['Income & Expense Management', 'Budget Planning'],
-      category_hrefs: ['/admin/finance/', '/admin/finance/'],
+      category_hrefs: ['/admin/finance/income-and-expense', '/admin/finance/'],
       category_descriptions: [
         "Enter the organization's revenues and expenditures, and access its reports.",
         'Enter estimated values for organizational funds and expenses to generate a visual representation of the organizational budget for a specified duration.'
@@ -35,7 +35,10 @@ export default function FinanceManagementMenu () {
       category: 'Your Finances',
       category_users: 'Homeowners',
       category_buttons: ['Statement of Account', 'Payment History'],
-      category_hrefs: ['/admin/finance/', '/admin/finance/'],
+      category_hrefs: [
+        '/admin/finance/statement-of-account',
+        '/admin/finance/'
+      ],
       category_descriptions: [
         "View your outstanding balance to the Homeowners' Association.",
         "View all payments made to the Homeowners' Association."
@@ -45,11 +48,11 @@ export default function FinanceManagementMenu () {
 
   return (
     <>
-      <Header
+      <Heading
         title='Finance Management'
-        instructions='Navigate through the Finance Management module.'
+        description='Navigate through the Finance Management module'
       />
-      <Flex className='gap-10 p-10'>
+      <Flex className='gap-10 pt-8'>
         {/* Homeowner Reports Buttons */}
         {homeownerReportsMenuCard.map((categoryData, index) => (
           <ModuleMenuCard key={index} data={categoryData}></ModuleMenuCard>

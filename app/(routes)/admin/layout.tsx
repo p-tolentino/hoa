@@ -40,9 +40,9 @@ const AdminLayout = async ({ children }: { children: React.ReactNode }) => {
   return (
     <Flex>
       <Sidebar />
-      <Flex flexDir={'column'} w='100%'>
+      <Box className='p-10' w='100%'>
         {children}
-      </Flex>
+      </Box>
     </Flex>
   )
 }
