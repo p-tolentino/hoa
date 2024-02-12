@@ -1,7 +1,8 @@
 import { Box, Flex } from '@chakra-ui/react'
 import ModuleMenuCard from '@/components/system/ModuleMenuCard'
 import { currentUser } from '@/lib/auth'
-import Header from '@/components/system/Header'
+import { Heading } from '@/components/ui/heading'
+import { Separator } from '@/components/ui/separator'
 
 const Membership = async () => {
   const user = await currentUser()
@@ -40,11 +41,12 @@ const Membership = async () => {
 
   return (
     <>
-      <Header
+      <Heading
         title='Membership'
-        instructions='Navigate through the Membership module.'
+        description='Navigate through the Membership module'
       />
-      <Flex className='gap-10 p-10'>
+      <Separator className='mt-4 mb-6' />
+      <Flex className='gap-10'>
         {userManagement.map((categoryData, index) => (
           <ModuleMenuCard key={index} data={categoryData}></ModuleMenuCard>
         ))}
