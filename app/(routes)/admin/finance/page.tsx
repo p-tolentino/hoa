@@ -1,55 +1,55 @@
-'use client'
+"use client";
 
-import { Box, Flex } from '@chakra-ui/react'
-import ModuleMenuCard from '@/components/system/ModuleMenuCard'
-import Header from '@/components/system/Header'
+import { Box, Flex } from "@chakra-ui/react";
+import ModuleMenuCard from "@/components/system/ModuleMenuCard";
+import Header from "@/components/system/Header";
 
-export default function FinanceManagementMenu () {
+export default function FinanceManagementMenu() {
   const homeownerReportsMenuCard = [
     {
-      category: 'Homeowner Reports',
-      category_users: 'Admins, Association Officers, and Board of Directors',
-      category_buttons: ['Homeowners Payment Record'],
-      category_hrefs: ['/admin/finance/'],
+      category: "Homeowner Reports",
+      category_users: "Admins, Association Officers, and Board of Directors",
+      category_buttons: ["Homeowners Payment Record"],
+      category_hrefs: ["/admin/finance/homeowner-payment-record"],
       category_descriptions: [
-        'View the payment record of each homeowner to determine whether they currently have any outstanding balances.'
-      ]
-    }
-  ]
+        "View the payment record of each homeowner to determine whether they currently have any outstanding balances.",
+      ],
+    },
+  ];
 
   const fundManagementMenuCard = [
     {
-      category: 'Fund Management',
-      category_users: 'the Association Treasurer',
-      category_buttons: ['Income & Expense Management', 'Budget Planning'],
-      category_hrefs: ['/admin/finance/', '/admin/finance/'],
+      category: "Fund Management",
+      category_users: "the Association Treasurer",
+      category_buttons: ["Income & Expense Management", "Budget Planning"],
+      category_hrefs: ["/admin/finance/", "/admin/finance/"],
       category_descriptions: [
         "Enter the organization's revenues and expenditures, and access its reports.",
-        'Enter estimated values for organizational funds and expenses to generate a visual representation of the organizational budget for a specified duration.'
-      ]
-    }
-  ]
+        "Enter estimated values for organizational funds and expenses to generate a visual representation of the organizational budget for a specified duration.",
+      ],
+    },
+  ];
 
   const yourFinancesMenuCard = [
     {
-      category: 'Your Finances',
-      category_users: 'Homeowners',
-      category_buttons: ['Statement of Account', 'Payment History'],
-      category_hrefs: ['/admin/finance/', '/admin/finance/'],
+      category: "Your Finances",
+      category_users: "Homeowners",
+      category_buttons: ["Statement of Account", "Payment History"],
+      category_hrefs: ["/admin/finance/", "/admin/finance/"],
       category_descriptions: [
         "View your outstanding balance to the Homeowners' Association.",
-        "View all payments made to the Homeowners' Association."
-      ]
-    }
-  ]
+        "View all payments made to the Homeowners' Association.",
+      ],
+    },
+  ];
 
   return (
     <>
       <Header
-        title='Finance Management'
-        instructions='Navigate through the Finance Management module.'
+        title="Finance Management"
+        instructions="Navigate through the Finance Management module."
       />
-      <Flex className='gap-10 p-10'>
+      <Flex className="gap-10 p-10">
         {/* Homeowner Reports Buttons */}
         {homeownerReportsMenuCard.map((categoryData, index) => (
           <ModuleMenuCard key={index} data={categoryData}></ModuleMenuCard>
@@ -64,5 +64,5 @@ export default function FinanceManagementMenu () {
         ))}
       </Flex>
     </>
-  )
+  );
 }
