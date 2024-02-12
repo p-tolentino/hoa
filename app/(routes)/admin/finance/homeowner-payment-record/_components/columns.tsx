@@ -1,7 +1,7 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-// import { CellAction } from "./cell-action";
+import { CellAction } from "./cell-action";
 
 import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
 
@@ -19,6 +19,7 @@ export type PaymentRecordColumn = {
   dateIssued: string;
   datePaid: string;
   purpose: string;
+  description: string;
 };
 
 export const columns: ColumnDef<PaymentRecordColumn>[] = [
@@ -132,5 +133,25 @@ export const columns: ColumnDef<PaymentRecordColumn>[] = [
       );
     },
     cell: ({ row }) => row.getValue("purpose"),
+  },
+  {
+    accessorKey: "description",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          className="hover:bg-[#ffe492]"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Description
+          <ArrowUpDown className="w-4 h-4 ml-2" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => row.getValue("description"),
+  },
+  {
+    id: "actions",
+    cell: ({ row }) => <CellAction data={row.original} />,
   },
 ];

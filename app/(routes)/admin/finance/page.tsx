@@ -37,7 +37,7 @@ export default function FinanceManagementMenu() {
   const yourFinancesMenuCard = [
     {
       category: "Your Finances",
-      category_users: "Homeowners",
+      category_users: "ALL Homeowners",
       category_buttons: ["Statement of Account", "Payment History"],
       category_hrefs: [
         "/admin/finance/statement-of-account",
