@@ -10,7 +10,7 @@ export type TransactionColumn = {
   dateSubmitted: string
   dateIssued: string
   type: string
-  title: string
+  purpose: string
   amount: string
   description: string
 }
@@ -46,7 +46,7 @@ export const columns: ColumnDef<TransactionColumn>[] = [
         </Button>
       )
     },
-    cell: ({ row }) => row.getValue('lotNumber')
+    cell: ({ row }) => row.getValue('dateIssued')
   },
   {
     accessorKey: 'type',
@@ -62,10 +62,10 @@ export const columns: ColumnDef<TransactionColumn>[] = [
         </Button>
       )
     },
-    cell: ({ row }) => row.getValue('lotSize')
+    cell: ({ row }) => row.getValue('type')
   },
   {
-    accessorKey: 'title',
+    accessorKey: 'purpose',
     header: ({ column }) => {
       return (
         <Button
@@ -73,12 +73,12 @@ export const columns: ColumnDef<TransactionColumn>[] = [
           className='hover:bg-[#ffe492]'
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >
-          Title
+          Purpose
           <ArrowUpDown className='w-4 h-4 ml-2' />
         </Button>
       )
     },
-    cell: ({ row }) => row.getValue('occupantName')
+    cell: ({ row }) => row.getValue('purpose')
   },
   {
     accessorKey: 'amount',
@@ -94,7 +94,7 @@ export const columns: ColumnDef<TransactionColumn>[] = [
         </Button>
       )
     },
-    cell: ({ row }) => row.getValue('purchaseDate')
+    cell: ({ row }) => row.getValue('amount')
   },
   {
     accessorKey: 'description',
@@ -110,7 +110,7 @@ export const columns: ColumnDef<TransactionColumn>[] = [
         </Button>
       )
     },
-    cell: ({ row }) => row.getValue('purchaseDate')
+    cell: ({ row }) => row.getValue('description')
   },
   {
     id: 'actions',

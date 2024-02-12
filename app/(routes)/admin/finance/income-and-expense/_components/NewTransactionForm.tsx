@@ -1,6 +1,7 @@
 'use client'
 
 import {
+  Box,
   Button,
   FormControl,
   FormHelperText,
@@ -8,6 +9,7 @@ import {
   Input,
   Radio,
   RadioGroup,
+  Select,
   Stack,
   Textarea
 } from '@chakra-ui/react'
@@ -32,16 +34,23 @@ export default function NewTransactionForm () {
         </RadioGroup>
       </FormControl>
 
-      {/* Transaction Title */}
+      {/* Purpose */}
       <FormControl isRequired fontFamily={'font.body'} mt='25px'>
-        <FormLabel>Transaction Title:</FormLabel>
-        <Input type='text' />
+        <FormLabel>Purpose:</FormLabel>
+        <Select defaultValue='Select purpose'>
+          <option value='' disabled>
+            Select purpose
+          </option>
+          <option value='option1'>Option 1</option>
+          <option value='option2'>Option 2</option>
+          <option value='option3'>Option 3</option>
+        </Select>
       </FormControl>
 
       {/* Amount */}
       <FormControl isRequired fontFamily={'font.body'} mt='25px'>
         <FormLabel>Amount:</FormLabel>
-        <Input type='number' />
+        <Input type='number' placeholder='XXXXX' />
       </FormControl>
 
       {/* Description */}
@@ -57,9 +66,11 @@ export default function NewTransactionForm () {
       </FormControl>
 
       {/* Submit Transaction Button */}
-      <Button colorScheme='yellow' mt='2rem' fontFamily={'font.heading'}>
-        Submit Transaction
-      </Button>
+      <Box textAlign={'center'} mt='2rem'>
+        <Button colorScheme='yellow' fontFamily={'font.heading'}>
+          Submit Transaction
+        </Button>
+      </Box>
     </form>
   )
 }
