@@ -1,18 +1,17 @@
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { FormError } from "@/components/form-error";
-import { Flex } from "@chakra-ui/react";
-import { Sidebar } from "@/components/system/Sidebar";
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { FormError } from '@/components/form-error'
+import { Box, Flex } from '@chakra-ui/react'
+import { Sidebar } from '@/components/system/Sidebar'
 
-import { UserRole } from "@prisma/client";
-import { currentRole } from "@/lib/auth";
-import Link from "next/link";
+import { UserRole } from '@prisma/client'
+import { currentRole } from '@/lib/auth'
+import Link from 'next/link'
 
-import { FaUserShield as Admin } from "react-icons/fa";
-import Header from "@/components/system/Header";
+import { FaUserShield as Admin } from 'react-icons/fa'
 
 const AdminLayout = async ({ children }: { children: React.ReactNode }) => {
-  const role = await currentRole();
+  const role = await currentRole()
 
   // TODO: REVERT AFTER ALL DONE
   // return role === UserRole.USER ? (
@@ -41,12 +40,11 @@ const AdminLayout = async ({ children }: { children: React.ReactNode }) => {
   return (
     <Flex>
       <Sidebar />
-      <Flex flexDir={"column"} w="100%">
-        <Header />
+      <Flex flexDir={'column'} w='100%'>
         {children}
       </Flex>
     </Flex>
-  );
-};
+  )
+}
 
-export default AdminLayout;
+export default AdminLayout

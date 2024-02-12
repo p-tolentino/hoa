@@ -13,10 +13,17 @@ import {
 import Link from 'next/link'
 
 const ModuleMenuCard = ({
-  data: { category, category_buttons, category_hrefs, category_descriptions }
+  data: {
+    category,
+    category_users,
+    category_buttons,
+    category_hrefs,
+    category_descriptions
+  }
 }: {
   data: {
     category: string
+    category_users: string[]
     category_buttons: string[]
     category_hrefs: string[]
     category_descriptions: string[]
@@ -24,11 +31,16 @@ const ModuleMenuCard = ({
 }) => {
   return (
     <>
-      <Box mb='3rem'>
+      <Box w='25vw' mb='3rem'>
         <Heading size='md' mb='1rem' fontFamily='font.heading'>
           {category}
         </Heading>
-        <Card maxW='30vw' h='max-content' pb='1.5rem' shadow='md'>
+        {category_users !== null && (
+          <Text lineHeight='1.2px' mb='1.5rem'>
+            For {category_users}
+          </Text>
+        )}
+        <Card h='max-content' shadow='md'>
           <CardBody>
             <ButtonGroup
               flexDir={'column'}
@@ -54,7 +66,7 @@ const ModuleMenuCard = ({
                     >
                       {button}
                     </Button>
-                    <Text size={'sm'} mb='2rem' ml='1rem'>
+                    <Text mb='2rem' ml='1rem'>
                       {category_descriptions[index]}
                     </Text>
                   </>

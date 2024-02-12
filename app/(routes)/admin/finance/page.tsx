@@ -1,55 +1,68 @@
-"use client";
+'use client'
 
-import { Flex } from "@chakra-ui/react";
-import ModuleMenuCard from "@/components/system/ModuleMenuCard";
+import { Box, Flex } from '@chakra-ui/react'
+import ModuleMenuCard from '@/components/system/ModuleMenuCard'
+import Header from '@/components/system/Header'
 
-export default function FinanceManagementMenu() {
-  const homeownerMenuCard = [
+export default function FinanceManagementMenu () {
+  const homeownerReportsMenuCard = [
     {
-      category: "Homeowners",
-      category_buttons: ["HOA Dues Payment Record"],
-      category_hrefs: [`/user/finance/payment-history`],
+      category: 'Homeowner Reports',
+      category_users: 'Admins, Association Officers, and Board of Directors',
+      category_buttons: ['Homeowners Payment Record'],
+      category_hrefs: ['/admin/finance/'],
       category_descriptions: [
-        "1Lorem ipsum dolor, sit amet consectetur adipisicing elit. Modi, quo veritatis repudiandae amet deserunt pariatur?",
-      ],
-    },
-  ];
+        'View the payment record of each homeowner to determine whether they currently have any outstanding balances.'
+      ]
+    }
+  ]
 
-  const hoaOfficerAdminMenuCard = [
+  const fundManagementMenuCard = [
     {
-      category: "Admins & Officers",
-      category_buttons: [
-        "HOA Income Statements",
-        "HOA Cash Flow Statement",
-        "HOA Balance Sheets",
-        "HOA Budget Reports",
-      ],
-      category_hrefs: [
-        `/admin/finance/income-statements`,
-        `/admin/finance/cash-flow-statement`,
-        `/admin/finance/balance-sheets`,
-        `/admin/finance/budget-reports`,
-      ],
+      category: 'Fund Management',
+      category_users: 'the Association Treasurer',
+      category_buttons: ['Income & Expense Management', 'Budget Planning'],
+      category_hrefs: ['/admin/finance/', '/admin/finance/'],
       category_descriptions: [
-        "1Lorem ipsum dolor, sit amet consectetur adipisicing elit. Modi, quo veritatis repudiandae amet deserunt pariatur?",
-        "2Lorem ipsum dolor, sit amet consectetur adipisicing elit. Modi, quo veritatis repudiandae amet deserunt pariatur?",
-        "3Lorem ipsum dolor, sit amet consectetur adipisicing elit. Modi, quo veritatis repudiandae amet deserunt pariatur?",
-        "4Lorem ipsum dolor, sit amet consectetur adipisicing elit. Modi, quo veritatis repudiandae amet deserunt pariatur?",
-      ],
-    },
-  ];
+        "Enter the organization's revenues and expenditures, and access its reports.",
+        'Enter estimated values for organizational funds and expenses to generate a visual representation of the organizational budget for a specified duration.'
+      ]
+    }
+  ]
+
+  const yourFinancesMenuCard = [
+    {
+      category: 'Your Finances',
+      category_users: 'Homeowners',
+      category_buttons: ['Statement of Account', 'Payment History'],
+      category_hrefs: ['/admin/finance/', '/admin/finance/'],
+      category_descriptions: [
+        "View your outstanding balance to the Homeowners' Association.",
+        "View all payments made to the Homeowners' Association."
+      ]
+    }
+  ]
 
   return (
-    <Flex className="gap-10 p-10">
-      {/* Homeowner Finance Buttons */}
-      {homeownerMenuCard.map((categoryData, index) => (
-        <ModuleMenuCard key={index} data={categoryData}></ModuleMenuCard>
-      ))}
-
-      {/* HOA Admin and Officer Buttons */}
-      {hoaOfficerAdminMenuCard.map((categoryData, index) => (
-        <ModuleMenuCard key={index} data={categoryData}></ModuleMenuCard>
-      ))}
-    </Flex>
-  );
+    <>
+      <Header
+        title='Finance Management'
+        instructions='Navigate through the Finance Management module.'
+      />
+      <Flex className='gap-10 p-10'>
+        {/* Homeowner Reports Buttons */}
+        {homeownerReportsMenuCard.map((categoryData, index) => (
+          <ModuleMenuCard key={index} data={categoryData}></ModuleMenuCard>
+        ))}
+        {/* Fund Management Buttons */}
+        {fundManagementMenuCard.map((categoryData, index) => (
+          <ModuleMenuCard key={index} data={categoryData}></ModuleMenuCard>
+        ))}
+        {/* Your Finances Buttons */}
+        {yourFinancesMenuCard.map((categoryData, index) => (
+          <ModuleMenuCard key={index} data={categoryData}></ModuleMenuCard>
+        ))}
+      </Flex>
+    </>
+  )
 }
