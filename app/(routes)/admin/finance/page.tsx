@@ -23,7 +23,10 @@ export default function FinanceManagementMenu() {
       category: "Fund Management",
       category_users: "the Association Treasurer",
       category_buttons: ["Income & Expense Management", "Budget Planning"],
-      category_hrefs: ["/admin/finance/income-and-expense", "/admin/finance/"],
+      category_hrefs: [
+        "/admin/finance/income-and-expense",
+        "/admin/finance/budget-planning",
+      ],
       category_descriptions: [
         "Enter the organization's revenues and expenditures, and access its reports.",
         "Enter estimated values for organizational funds and expenses to generate a visual representation of the organizational budget for a specified duration.",
@@ -38,7 +41,7 @@ export default function FinanceManagementMenu() {
       category_buttons: ["Statement of Account", "Payment History"],
       category_hrefs: [
         "/admin/finance/statement-of-account",
-        "/admin/finance/",
+        "/admin/finance/payment-history",
       ],
       category_descriptions: [
         "View your outstanding balance to the Homeowners' Association.",

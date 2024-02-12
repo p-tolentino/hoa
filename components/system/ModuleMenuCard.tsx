@@ -70,7 +70,7 @@ const ModuleMenuCard = ({
                     {button}
                   </Button>
                   {category_descriptions[index] !== "" && (
-                    <Text mb="2rem" ml="1rem">
+                    <Text mb="2rem" ml="1rem" fontSize="sm">
                       {category_descriptions[index]}
                     </Text>
                   )}
