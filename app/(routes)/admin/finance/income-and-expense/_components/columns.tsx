@@ -30,7 +30,7 @@ export const columns: ColumnDef<TransactionColumn>[] = [
         </Button>
       )
     },
-    cell: ({ row }) => row.getValue('address')
+    cell: ({ row }) => row.getValue('dateSubmitted')
   },
   {
     accessorKey: 'dateIssued',
