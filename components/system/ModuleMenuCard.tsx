@@ -33,15 +33,14 @@ const ModuleMenuCard = ({
   return (
     <>
       <Card h='max-content' shadow='lg' w='25vw' p='5px'>
-        <CardHeader>
+        <CardHeader pb={category_users !== '' ? '0' : '1'}>
           <Heading size='md' color={'brand.500'} fontFamily='font.heading'>
             {category}
           </Heading>
-          {category_users !== null && (
+          {category_users !== '' && (
             <Text fontSize={'sm'}>For {category_users}</Text>
           )}
         </CardHeader>
-
         <CardBody>
           <ButtonGroup
             flexDir={'column'}
@@ -62,14 +61,17 @@ const ModuleMenuCard = ({
                       transform: 'scale(1.02)',
                       fontWeight: 'semibold'
                     }}
+                    mb={category_users !== '' ? '0' : '10px'}
                     as={Link}
                     href={category_hrefs[index]}
                   >
                     {button}
                   </Button>
-                  <Text mb='2rem' ml='1rem'>
-                    {category_descriptions[index]}
-                  </Text>
+                  {category_descriptions[index] !== '' && (
+                    <Text mb='2rem' ml='1rem'>
+                      {category_descriptions[index]}
+                    </Text>
+                  )}
                 </>
               ))}
             </Stack>

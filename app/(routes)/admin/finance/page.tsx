@@ -3,6 +3,7 @@
 import { Box, Flex } from '@chakra-ui/react'
 import ModuleMenuCard from '@/components/system/ModuleMenuCard'
 import { Heading } from '@/components/ui/heading'
+import { Separator } from '@/components/ui/separator'
 
 export default function FinanceManagementMenu () {
   const homeownerReportsMenuCard = [
@@ -52,7 +53,8 @@ export default function FinanceManagementMenu () {
         title='Finance Management'
         description='Navigate through the Finance Management module'
       />
-      <Flex className='gap-10 pt-8'>
+      <Separator className='mt-4 mb-6' />
+      <Flex className='gap-10'>
         {/* Homeowner Reports Buttons */}
         {homeownerReportsMenuCard.map((categoryData, index) => (
           <ModuleMenuCard key={index} data={categoryData}></ModuleMenuCard>
