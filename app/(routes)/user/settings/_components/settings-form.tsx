@@ -67,25 +67,24 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({
 
   const onSubmit = async (values: SettingsFormValues) => {
     startTransition(() => {
-      update();
-      updateInfo(values)
+      updatePropertyOwner(initialData?.info?.address, "", "")
         .then((data) => {
           if (data.error) {
             console.log(data.error);
           }
 
           if (data.success) {
-            console.log(data.success);
-
-            const occupant = values.firstName + " " + values.lastName;
-
-            updatePropertyOwner(initialData?.info?.address, "", "")
+            updateInfo(values)
               .then((data) => {
                 if (data.error) {
                   console.log(data.error);
                 }
 
                 if (data.success) {
+                  console.log(data.success);
+
+                  const occupant = values.firstName + " " + values.lastName;
+
                   updatePropertyOwner(values.address, initialData?.id, occupant)
                     .then((data) => {
                       if (data.error) {
@@ -93,9 +92,9 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({
                       }
 
                       if (data.success) {
-                        form.reset();
                         router.refresh();
                         update();
+                        form.reset();
                         console.log(data.success);
                       }
                     })

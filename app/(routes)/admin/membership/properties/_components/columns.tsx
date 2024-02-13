@@ -79,7 +79,9 @@ export const columns: ColumnDef<PropertyColumn>[] = [
         </Button>
       );
     },
-    cell: ({ row }) => row.getValue("occupantName"),
+    cell: ({ row }) => (
+      <div className="capitalize">{row.getValue("occupantName")}</div>
+    ),
   },
   {
     accessorKey: "purchaseDate",

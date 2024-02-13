@@ -9,7 +9,6 @@ import { currentRole } from "@/lib/auth";
 import Link from "next/link";
 
 import { FaUserShield as Admin } from "react-icons/fa";
-import Header from "@/components/system/Header";
 
 const AdminLayout = async ({ children }: { children: React.ReactNode }) => {
   const role = await currentRole();
@@ -42,7 +41,6 @@ const AdminLayout = async ({ children }: { children: React.ReactNode }) => {
     <Flex>
       <Sidebar />
       <Flex flexDir={"column"} w="100%">
-        <Header />
         {children}
       </Flex>
     </Flex>

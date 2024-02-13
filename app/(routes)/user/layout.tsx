@@ -6,7 +6,6 @@ import { useCurrentUser } from "@/hooks/use-current-user";
 import { usePathname, useRouter } from "next/navigation";
 import { UserRole } from "@prisma/client";
 import InfoGate from "./_components/info-gate";
-import Header from "@/components/system/Header";
 
 const UserLayout = ({ children }: { children: React.ReactNode }) => {
   const user = useCurrentUser();
@@ -29,7 +28,6 @@ const UserLayout = ({ children }: { children: React.ReactNode }) => {
       <Flex>
         <Sidebar />
         <Flex flexDir={"column"} w="100%">
-          <Header />
           {children}
         </Flex>
       </Flex>

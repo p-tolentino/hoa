@@ -36,8 +36,6 @@ const AddVehicle: React.FC<AddVehicleProps> = ({ initialData, vehicles }) => {
   const { update } = useSession();
   const [isPending, startTransition] = useTransition();
 
-  console.log(vehicles);
-
   const form = useForm<z.infer<typeof VehicleSchema>>({
     resolver: zodResolver(VehicleSchema),
     defaultValues: {
