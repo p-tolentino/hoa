@@ -4,23 +4,29 @@ import { Sidebar } from "@/components/system/Sidebar";
 import { Flex } from "@chakra-ui/react";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { usePathname, useRouter } from "next/navigation";
-import { UserRole } from "@prisma/client";
+import { Status, UserRole } from "@prisma/client";
 import InfoGate from "./_components/info-gate";
+import ApprovalGate from "./_components/approval-gate";
 
 const UserLayout = ({ children }: { children: React.ReactNode }) => {
   const user = useCurrentUser();
   const pathname = usePathname();
   const router = useRouter();
 
+  const isAdmin = user?.role === UserRole.ADMIN;
+  const existingUserInfo = user?.info;
+  const isMemberInfoPath = pathname === "/user/settings"; // TODO: change to whatever new route for member info
+  const isApproved = user?.status === Status.ACTIVE;
+
   // TODO: REVERT AFTER ALL DONE
-  // if (user?.role === UserRole.ADMIN) {
+  // if (isAdmin) {
   //   router.replace("/admin");
   // }
 
-  // return user?.role !== UserRole.ADMIN &&
-  //   !user?.info &&
-  //   pathname !== "/user/settings" ? (
+  // return !isAdmin && !existingUserInfo && !isMemberInfoPath ? (
   //   <InfoGate />
+  // ) : !isAdmin && existingUserInfo && !isMemberInfoPath && !isApproved ? (
+  //   <ApprovalGate />
   // ) :
 
   return (

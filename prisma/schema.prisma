@@ -38,10 +38,12 @@ enum HoaTransactionType {
 // ----------------------------------------------------------------
 // --------------------- DATABASE MODELS --------------------------
 
-model HOA {
+model Hoa {
   id String @id @default(cuid())
   name String
   funds Int
+  fixedDue Int?
+  lotSizeDue Int?
 }
 
 // ----------------------------------------------------------------
@@ -92,8 +94,8 @@ model Vehicle {
 
 model Property {
   id           String        @id @unique @default(cuid())
-  userId       String?    
-  occupantName String?   
+  userId       String?    // !! REMOVE
+  occupantName String?    // !! REMOVE
   address      String?
   lotNumber    String?
   lotSize      String?
@@ -123,14 +125,15 @@ model UserPaymentInfo {
 
 model UserTransaction {
   id String @id @unique @default(cuid())
-  userId String
+  addressId String                       // "Bill this transaction to this address, regardless who will pay"
   purpose String
   description String
   amount Int
   status PaymentStatus
   createdAt DateTime @default(now())  // Date Transaction was made
-  updateAt DateTime @updatedAt
+  updateAt DateTime @updatedAt        
   datePaid DateTime                   // Date Payment was paid
+  paidBy String?                      // userId of who paid
 }
 
 model HoaTransaction {
