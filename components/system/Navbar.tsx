@@ -72,9 +72,10 @@ export const Navbar = () => {
       alignItems="center"
       bg="brand.500"
       color="white"
-      pos="sticky"
+      position="fixed"
       top="0"
       direction="row"
+      width="100%"
     >
       <Link href="/">
         <Flex>
@@ -157,6 +158,7 @@ export const Navbar = () => {
                         ? "text-[#F0CB5B]"
                         : "text-white hover:text-[#F0CB5B]"
                     )}
+                    style={{ textDecoration: "none" }}
                   >
                     {route.label}
                   </Button>

@@ -1,16 +1,16 @@
-"use client";
+'use client'
 
-import { Sidebar } from "@/components/system/Sidebar";
-import { Flex } from "@chakra-ui/react";
-import { useCurrentUser } from "@/hooks/use-current-user";
-import { usePathname, useRouter } from "next/navigation";
-import { UserRole } from "@prisma/client";
-import InfoGate from "./_components/info-gate";
+import { Sidebar } from '@/components/system/Sidebar'
+import { Box, Flex } from '@chakra-ui/react'
+import { useCurrentUser } from '@/hooks/use-current-user'
+import { usePathname, useRouter } from 'next/navigation'
+import { UserRole } from '@prisma/client'
+import InfoGate from './_components/info-gate'
 
 const UserLayout = ({ children }: { children: React.ReactNode }) => {
-  const user = useCurrentUser();
-  const pathname = usePathname();
-  const router = useRouter();
+  const user = useCurrentUser()
+  const pathname = usePathname()
+  const router = useRouter()
 
   // TODO: REVERT AFTER ALL DONE
   // if (user?.role === UserRole.ADMIN) {
@@ -27,11 +27,11 @@ const UserLayout = ({ children }: { children: React.ReactNode }) => {
     <>
       <Flex>
         <Sidebar />
-        <Flex flexDir={"column"} w="100%">
+        <Box className='p-10' w='100%'>
           {children}
-        </Flex>
+        </Box>
       </Flex>
     </>
-  );
-};
-export default UserLayout;
+  )
+}
+export default UserLayout

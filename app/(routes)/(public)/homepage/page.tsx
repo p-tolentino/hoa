@@ -11,7 +11,7 @@ export default function Homepage() {
     <PublicLayout>
       <Box>
         <Center
-          h="30vh"
+          h="40vh"
           bgSize={"cover"}
           bgImage={`url("/landscapeLowerOpacity.png")`}
         >

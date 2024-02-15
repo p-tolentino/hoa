@@ -1,66 +1,62 @@
-import { Flex } from "@chakra-ui/react";
-import ModuleMenuCard from "@/components/system/ModuleMenuCard";
-import { currentUser } from "@/lib/auth";
+import { Box, Flex } from '@chakra-ui/react'
+import ModuleMenuCard from '@/components/system/ModuleMenuCard'
+import { currentUser } from '@/lib/auth'
+import { Heading } from '@/components/ui/heading'
+import { Separator } from '@/components/ui/separator'
 
 const Membership = async () => {
-  const user = await currentUser();
+  const user = await currentUser()
 
   const userManagement = [
     {
-      category: "User Management",
-      category_buttons: ["Homeowners Directory", "Admin Officers Directory"],
+      category: 'User Management',
+      category_buttons: ['Homeowners Directory', 'Admin & Officers Directory'],
+      category_users: 'Admins, Officers, and Board of Directors',
       category_hrefs: [
         `/admin/membership/homeowner-directory`,
-        `/${user?.role.toLowerCase()}/membership/admin-directory`,
+        `/${user?.role.toLowerCase()}/membership/admin-directory`
       ],
       category_descriptions: [
-        "1Lorem ipsum dolor, sit amet consectetur adipisicing elit. Modi, quo veritatis repudiandae amet deserunt pariatur?",
-        "2Lorem ipsum dolor, sit amet consectetur adipisicing elit. Modi, quo veritatis repudiandae amet deserunt pariatur?",
-      ],
-    },
-  ];
+        "View the list of all Homeowners' Association-registered homeowners.",
+        "View the list of all admins and officers within the Homeowners' Association."
+      ]
+    }
+  ]
 
   const propertyManagement = [
     {
-      category: "Property Management",
-      category_buttons: ["Browse House Lots (Maps)", "Property Information"],
+      category: 'Property Management',
+      category_users: 'Admins, Officers, and Board of Directors',
+      category_buttons: ['Browse Properties (Maps)', 'Property Information'],
       category_hrefs: [
         `/admin/membership/properties/map`,
-        `/admin/membership/properties`,
+        `/admin/membership/properties`
       ],
       category_descriptions: [
-        "1Lorem ipsum dolor, sit amet consectetur adipisicing elit. Modi, quo veritatis repudiandae amet deserunt pariatur?",
-        "2Lorem ipsum dolor, sit amet consectetur adipisicing elit. Modi, quo veritatis repudiandae amet deserunt pariatur?",
-      ],
-    },
-  ];
-
-  const userRegistration = [
-    {
-      category: "User Registration",
-      category_buttons: ["Membership Form"],
-      category_hrefs: [`/${user?.role.toLowerCase()}/settings`],
-      category_descriptions: [
-        "1Lorem ipsum dolor, sit amet consectetur adipisicing elit. Modi, quo veritatis repudiandae amet deserunt pariatur?",
-      ],
-    },
-  ];
+        "View property information and browse through properties owned by the Homeowners' Association.",
+        "All homeowners are required to complete the property information form before gaining access to the system's functionalities."
+      ]
+    }
+  ]
 
   return (
-    <Flex className="gap-10 p-10">
-      {userManagement.map((categoryData, index) => (
-        <ModuleMenuCard key={index} data={categoryData}></ModuleMenuCard>
-      ))}
+    <>
+      <Heading
+        title='Membership'
+        description='Navigate through the Membership module'
+      />
+      <Separator className='mt-4 mb-6' />
+      <Flex className='gap-10'>
+        {userManagement.map((categoryData, index) => (
+          <ModuleMenuCard key={index} data={categoryData}></ModuleMenuCard>
+        ))}
 
-      {propertyManagement.map((categoryData, index) => (
-        <ModuleMenuCard key={index} data={categoryData}></ModuleMenuCard>
-      ))}
+        {propertyManagement.map((categoryData, index) => (
+          <ModuleMenuCard key={index} data={categoryData}></ModuleMenuCard>
+        ))}
+      </Flex>
+    </>
+  )
+}
 
-      {/* {userRegistrationMenuCard.map((categoryData, index) => (
-        <ModuleMenuCard key={index} data={categoryData}></ModuleMenuCard>
-      ))} */}
-    </Flex>
-  );
-};
-
-export default Membership;
+export default Membership

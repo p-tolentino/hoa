@@ -1,7 +1,7 @@
 import { format } from 'date-fns'
 
-import { HomeownersClient } from './_components/client'
-import { HomeownerColumn } from './_components/columns'
+import { PaymentRecordClient } from './_components/client'
+import { PaymentRecordColumn } from './_components/columns'
 import { currentUser } from '@/lib/auth'
 import { getAllUsers } from '@/server/data/user'
 
@@ -17,33 +17,33 @@ const Homeowners = async () => {
     return null
   }
 
-  const formattedUsers: HomeownerColumn[] = users.map(item => ({
+  const formattedRecords: PaymentRecordColumn[] = users.map(item => ({
     id: item.id || '',
     name:
       `${item.info?.firstName || '-'} ${
         item.info?.middleName ? `${`${item.info?.middleName}`[0]}.` : ''
       } ${item.info?.lastName || ''}` || '',
-    email: item.email || '',
     status: item.status || '',
-    type: item.info?.type || '',
-    position: item.info?.position || '',
-    phoneNumber: item.info?.phoneNumber || '',
-    birthDay: item.info?.birthDay
+    amount: item.info?.amount || '',
+    dateIssued: item.info?.dateIssued
       ? format(
-          new Date(item.info?.birthDay)?.toISOString().split('T')[0],
+          new Date(item.info?.dateIssued)?.toISOString().split('T')[0],
           'MMMM dd, yyyy'
         )
       : '',
-    address: item.info?.address || '',
-    role: item.role || '',
-    bio: item.info?.bio || '',
-    image: item.image || ''
+    datePaid: item.info?.datePaid
+      ? format(
+          new Date(item.info?.datePaid)?.toISOString().split('T')[0],
+          'MMMM dd, yyyy'
+        )
+      : '',
+    purpose: item.info?.purpose || ''
   }))
 
   return (
     <div className='flex'>
       <div className='flex-1 space-y-4'>
-        <HomeownersClient data={formattedUsers} />
+        <PaymentRecordClient data={formattedRecords} />
       </div>
     </div>
   )
