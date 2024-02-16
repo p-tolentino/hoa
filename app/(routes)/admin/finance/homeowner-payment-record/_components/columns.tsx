@@ -40,9 +40,9 @@ export const columns: ColumnDef<PaymentRecordColumn>[] = [
     cell: ({ row }) => (
       <Badge
         className={cn(
-          row.getValue("status") === Status.PAID
+          row.getValue("status") === Status.ACTIVE
             ? "bg-green-700"
-            : row.getValue("status") === Status.UNPAID
+            : row.getValue("status") === Status.INACTIVE
             ? "bg-red-700"
             : row.getValue("status") === Status.PENDING
             ? "bg-yellow-600"
