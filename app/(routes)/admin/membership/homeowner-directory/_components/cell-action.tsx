@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 
-import { PropertyColumn } from "./columns";
+import { HomeownerColumn } from "./columns";
 import { useParams, useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { AlertModal } from "@/components/modals/alert-modal";
@@ -24,7 +24,7 @@ import { useSession } from "next-auth/react";
 import { deleteProperty } from "@/server/actions/property";
 
 interface CellActionProps {
-  data: PropertyColumn;
+  data: HomeownerColumn;
 }
 
 export const CellAction: React.FC<CellActionProps> = ({ data }) => {
