@@ -1,7 +1,7 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { CellAction } from "./cell-action";
+// import { CellAction } from "./cell-action";
 
 import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
 
@@ -11,9 +11,8 @@ import { cn } from "@/lib/utils";
 import { Status } from "@prisma/client";
 // import { ViewInfo } from "./view-info";
 
-export type PaymentRecordColumn = {
+export type PaymentHistoryColumn = {
   id: string;
-  name: string;
   status: string;
   amount: string;
   dateIssued: string;
@@ -22,7 +21,7 @@ export type PaymentRecordColumn = {
   description: string;
 };
 
-export const columns: ColumnDef<PaymentRecordColumn>[] = [
+export const columns: ColumnDef<PaymentHistoryColumn>[] = [
   {
     accessorKey: "status",
     header: ({ column }) => {
@@ -53,22 +52,6 @@ export const columns: ColumnDef<PaymentRecordColumn>[] = [
         {row.getValue("status")}
       </Badge>
     ),
-  },
-  {
-    accessorKey: "name",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          className="hover:bg-[#ffe492]"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Name
-          <ArrowUpDown className="w-4 h-4 ml-2" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => <div className="capitalize">{row.getValue("name")}</div>,
   },
   {
     accessorKey: "purpose",
@@ -150,9 +133,8 @@ export const columns: ColumnDef<PaymentRecordColumn>[] = [
     },
     cell: ({ row }) => row.getValue("datePaid"),
   },
-
-  {
-    id: "actions",
-    cell: ({ row }) => <CellAction data={row.original} />,
-  },
+  //   {
+  //     id: "actions",
+  //     cell: ({ row }) => <CellAction data={row.original} />,
+  //   },
 ];
