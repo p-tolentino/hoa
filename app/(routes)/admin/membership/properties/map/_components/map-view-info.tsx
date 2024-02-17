@@ -40,6 +40,8 @@ import { ExtendedUser } from "@/next-auth";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 
+import { FaHouseUser as HouseMember } from "react-icons/fa6";
+
 interface MapViewInfoProps {
   properties: Property[];
   users: ExtendedUser[];
@@ -58,7 +60,7 @@ export const MapViewInfo: React.FC<MapViewInfoProps> = ({
 
   const form = useForm<z.infer<typeof SelectSchema>>({
     defaultValues: {
-      address: "-",
+      address: "",
     },
   });
 
@@ -149,6 +151,7 @@ export const MapViewInfo: React.FC<MapViewInfoProps> = ({
                       occupants?.map((occupant) => (
                         <>
                           <div key={occupant.id} className="flex">
+                            <HouseMember className="mt-2 mr-2" />{" "}
                             {`${occupant?.info?.firstName} ${occupant?.info?.lastName}`}
                           </div>
                           <Separator className="my-2" />
