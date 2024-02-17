@@ -33,7 +33,6 @@ import {
 import { useRouter } from "next/navigation";
 import { ExtendedUser } from "@/next-auth";
 import { Property } from "@prisma/client";
-import { updatePropertyOwner } from "@/server/actions/property";
 
 interface SettingsFormProps {
   initialData: ExtendedUser;
@@ -67,45 +66,17 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({
 
   const onSubmit = async (values: SettingsFormValues) => {
     startTransition(() => {
-      updatePropertyOwner(initialData?.info?.address, "", "")
+      updateInfo(values)
         .then((data) => {
           if (data.error) {
             console.log(data.error);
           }
 
           if (data.success) {
-            updateInfo(values)
-              .then((data) => {
-                if (data.error) {
-                  console.log(data.error);
-                }
-
-                if (data.success) {
-                  console.log(data.success);
-
-                  const occupant = values.firstName + " " + values.lastName;
-
-                  updatePropertyOwner(values.address, initialData?.id, occupant)
-                    .then((data) => {
-                      if (data.error) {
-                        console.log(data.error);
-                      }
-
-                      if (data.success) {
-                        router.refresh();
-                        update();
-                        form.reset();
-                        console.log(data.success);
-                      }
-                    })
-                    .catch(() => {
-                      console.log("Something went wrong.");
-                    });
-                }
-              })
-              .catch(() => {
-                console.log("Something went wrong.");
-              });
+            update();
+            form.reset();
+            router.push("/user/settings");
+            console.log(data.success);
           }
         })
         .catch(() => {
@@ -116,10 +87,6 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({
 
   return (
     <div>
-      <div className="flex items-center justify-between">
-        <Heading title="Member Information" description="" />
-      </div>
-      <Separator className="my-2" />
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -266,24 +233,19 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({
                   >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select your home address" />
+                        <SelectValue placeholder={"Select your home address"} />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
                       {properties.map((property) => {
-                        if (
-                          property.userId === initialData.id ||
-                          !property.userId
-                        ) {
-                          return (
-                            <SelectItem
-                              key={property.id}
-                              value={property.address || ""}
-                            >
-                              {property.address}
-                            </SelectItem>
-                          );
-                        }
+                        return (
+                          <SelectItem
+                            key={property.id}
+                            value={property.id || ""}
+                          >
+                            {property.address}
+                          </SelectItem>
+                        );
                       })}
                     </SelectContent>
                   </Select>

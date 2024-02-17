@@ -35,7 +35,7 @@ export const RegisterSchema = z.object({
 
 export const PersonalInfoSchema = z.object({
   firstName: z.string(),
-  middleName: z.string(),
+  middleName: z.optional(z.string()),
   lastName: z.string(),
   bio: z.optional(z.string()),
   birthDay: z.string(),
@@ -57,7 +57,14 @@ export const PersonalInfoSchema = z.object({
 });
 
 export const VehicleSchema = z.object({
-  plateNum: z.string(),
+  plateNum: z
+    .string()
+    .min(7, {
+      message: "Valid plate number required",
+    })
+    .max(8, {
+      message: "Valid plate number required",
+    }),
 });
 
 export const PropertySchema = z.object({

@@ -28,6 +28,7 @@ enum Status {
 enum PaymentStatus {
   PAID
   UNPAID
+  OVERDUE
 }
 
 enum HoaTransactionType {
@@ -38,10 +39,12 @@ enum HoaTransactionType {
 // ----------------------------------------------------------------
 // --------------------- DATABASE MODELS --------------------------
 
-model HOA {
+model Hoa {
   id String @id @default(cuid())
   name String
   funds Int
+  fixedDue Int?
+  lotSizeDue Int?
 }
 
 // ----------------------------------------------------------------
@@ -87,13 +90,11 @@ model PersonalInfo {
 model Vehicle {
   id       String  @id @unique @default(cuid())
   userId   String?  
-  plateNum String?
+  plateNum String
 }
 
 model Property {
   id           String        @id @unique @default(cuid())
-  userId       String?    
-  occupantName String?   
   address      String?
   lotNumber    String?
   lotSize      String?
@@ -123,14 +124,15 @@ model UserPaymentInfo {
 
 model UserTransaction {
   id String @id @unique @default(cuid())
-  userId String
+  addressId String                       // "Bill this transaction to this address, regardless who will pay"
   purpose String
   description String
   amount Int
-  status PaymentStatus
+  status PaymentStatus @default(UNPAID)
   createdAt DateTime @default(now())  // Date Transaction was made
-  updateAt DateTime @updatedAt
-  datePaid DateTime                   // Date Payment was paid
+  updateAt DateTime @updatedAt        
+  datePaid DateTime?                   // Date Payment was paid
+  paidBy String?                      // userId of who paid
 }
 
 model HoaTransaction {

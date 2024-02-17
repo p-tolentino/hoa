@@ -36,22 +36,25 @@ import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { cn } from "@/lib/utils";
+import { ExtendedUser } from "@/next-auth";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Separator } from "@/components/ui/separator";
 
 interface MapViewInfoProps {
-  data: Property[];
+  properties: Property[];
+  users: ExtendedUser[];
 }
 
 const SelectSchema = z.object({
   address: z.string(),
 });
 
-export const MapViewInfo: React.FC<MapViewInfoProps> = ({ data }) => {
+export const MapViewInfo: React.FC<MapViewInfoProps> = ({
+  properties,
+  users,
+}) => {
   const { update } = useSession();
-  const [propertyInfo, setPropertyInfo] = useState({
-    occupant: "-",
-    status: "-",
-    userId: "-",
-  });
+  const [occupants, setOccupants] = useState<ExtendedUser[] | undefined>();
 
   const form = useForm<z.infer<typeof SelectSchema>>({
     defaultValues: {
@@ -61,13 +64,17 @@ export const MapViewInfo: React.FC<MapViewInfoProps> = ({ data }) => {
 
   useEffect(() => {
     const address = form.getValues("address");
-    data.filter((property) => {
-      if (property.address === address) {
-        setPropertyInfo({
-          occupant: property.occupantName || "-",
-          status: property.userId !== "" ? "Occupied" : "Vacant",
-          userId: property.userId || "",
+    properties.filter((property) => {
+      if (property.id === address) {
+        const houseMembers = users.filter((user) => {
+          return property.id === user?.info?.address;
         });
+
+        if (houseMembers) {
+          setOccupants(houseMembers);
+        } else {
+          setOccupants([]);
+        }
       }
     });
     form.reset();
@@ -105,11 +112,11 @@ export const MapViewInfo: React.FC<MapViewInfoProps> = ({ data }) => {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {data.map((property) => {
+                        {properties.map((property) => {
                           return (
                             <SelectItem
                               key={property.id}
-                              value={property.address || ""}
+                              value={property.id || ""}
                             >
                               {property.address}
                             </SelectItem>
@@ -132,10 +139,28 @@ export const MapViewInfo: React.FC<MapViewInfoProps> = ({ data }) => {
           >
             <Box>
               <Heading size={"md"} fontFamily={"font.heading"}>
-                Property Owner
+                Household Members
               </Heading>
               <Text fontSize={"lg"} fontFamily={"font.body"} lineHeight={2}>
-                {`${propertyInfo.occupant || ""}`}
+                {/* {`${propertyInfo.occupants || ""}`} */}
+                <ScrollArea className="h-40 border rounded-md">
+                  <div className="p-4">
+                    {occupants?.length !== 0 ? (
+                      occupants?.map((occupant) => (
+                        <>
+                          <div key={occupant.id} className="flex">
+                            {`${occupant?.info?.firstName} ${occupant?.info?.lastName}`}
+                          </div>
+                          <Separator className="my-2" />
+                        </>
+                      ))
+                    ) : (
+                      <span className="text-gray-400">
+                        No household members found.
+                      </span>
+                    )}
+                  </div>
+                </ScrollArea>
               </Text>
             </Box>
             <Box>
@@ -148,12 +173,18 @@ export const MapViewInfo: React.FC<MapViewInfoProps> = ({ data }) => {
                 lineHeight={2}
                 fontWeight="800"
                 className={cn(
-                  propertyInfo?.status === "Occupied"
+                  occupants && occupants?.length > 0
+                    ? "text-green-700"
+                    : occupants?.length === 0
                     ? "text-orange-500"
-                    : "text-green-700"
+                    : "text-black"
                 )}
               >
-                {propertyInfo.status}
+                {occupants && occupants?.length > 0
+                  ? "Occupied"
+                  : occupants?.length === 0
+                  ? "Vacant"
+                  : "-"}
               </Text>
             </Box>
             <Box>
@@ -194,7 +225,7 @@ export const MapViewInfo: React.FC<MapViewInfoProps> = ({ data }) => {
                 </ListItem>
                 <ListItem>
                   <Link isExternal>
-                    Tax Decleration <ExternalLinkIcon mx={"2px"} />
+                    Tax Declaration <ExternalLinkIcon mx={"2px"} />
                   </Link>
                 </ListItem>
               </UnorderedList>

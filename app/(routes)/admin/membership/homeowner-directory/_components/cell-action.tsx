@@ -5,6 +5,7 @@ import {
   LuCopy as Copy,
   LuTrash as Trash,
   LuMoreHorizontal as MoreHorizontal,
+  LuCheckCheck as Check,
 } from "react-icons/lu";
 
 import {
@@ -16,15 +17,17 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 
-import { PropertyColumn } from "./columns";
+import { HomeownerColumn } from "./columns";
 import { useParams, useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { AlertModal } from "@/components/modals/alert-modal";
 import { useSession } from "next-auth/react";
-import { deleteProperty } from "@/server/actions/property";
+import { Separator } from "@/components/ui/separator";
+import { updateUserStatus } from "@/server/actions/user-info";
+import { Status } from "@prisma/client";
 
 interface CellActionProps {
-  data: PropertyColumn;
+  data: HomeownerColumn;
 }
 
 export const CellAction: React.FC<CellActionProps> = ({ data }) => {
@@ -36,14 +39,9 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
 
   const [open, setOpen] = useState(false);
 
-  const onCopy = (id: string) => {
-    navigator.clipboard.writeText(id);
-    console.log("Property ID copied to the clipboard.");
-  };
-
-  const onDelete = async (id: string) => {
+  const onApprove = async (id: string) => {
     startTransition(() => {
-      deleteProperty(id)
+      updateUserStatus(id)
         .then((data) => {
           if (data.error) {
             console.log(data.error);
@@ -51,7 +49,6 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
 
           if (data.success) {
             update();
-            setOpen(false);
             router.refresh();
             console.log(data.success);
           }
@@ -59,6 +56,34 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
         .catch(() => {
           console.log("Something went wrong.");
         });
+    });
+  };
+
+  const onCopy = (id: string) => {
+    navigator.clipboard.writeText(id);
+    console.log("Property ID copied to the clipboard.");
+  };
+
+  const onDelete = async (id: string) => {
+    startTransition(() => {
+      console.log("TODO: Delete user");
+      setOpen(false);
+      // deleteProperty(id)
+      //   .then((data) => {
+      //     if (data.error) {
+      //       console.log(data.error);
+      //     }
+
+      //     if (data.success) {
+      //       update();
+      //       setOpen(false);
+      //       router.refresh();
+      //       console.log(data.success);
+      //     }
+      //   })
+      //   .catch(() => {
+      //     console.log("Something went wrong.");
+      //   });
     });
   };
 
@@ -79,19 +104,34 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
+          {data.status !== Status.ACTIVE && data.status !== Status.INACTIVE && (
+            <>
+              <DropdownMenuItem onClick={() => onApprove(data.id)}>
+                <Check className="w-4 h-4 mr-2" />
+                Approve Membership
+              </DropdownMenuItem>
+              <Separator />
+            </>
+          )}
           <DropdownMenuItem onClick={() => onCopy(data.id)}>
             <Copy className="w-4 h-4 mr-2" />
             Copy ID
           </DropdownMenuItem>
+          {/* 
+          
+          // !! EDIT USER NOT AVAILABLE FOR ADMIN (wouldn't be logical for someone else to edit your information through the system)
+          
           <DropdownMenuItem
             onClick={() =>
-              // router.push(`/${params.storeId}/products/${data.id}`)
+              router.push(`/${params.storeId}/products/${data.id}`)
               console.log("TRIGGER GO TO EDIT")
             }
           >
             <Edit className="w-4 h-4 mr-2" />
             Update
-          </DropdownMenuItem>
+          </DropdownMenuItem> 
+          
+          */}
           <DropdownMenuItem onClick={() => setOpen(true)}>
             <Trash className="w-4 h-4 mr-2" />
             Delete
