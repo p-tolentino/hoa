@@ -1,7 +1,18 @@
 "use client";
 
 import { Heading } from "@/components/ui/heading";
-import { Box } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  Input,
+  Spacer,
+  Text,
+  HStack,
+} from "@chakra-ui/react";
+import ExpenseTable from "./_components/expenses-table";
+import RevenueTable from "./_components/revenue-table";
+import TotalTable from "./_components/totals";
 
 export default function BudgetPlanning() {
   return (
@@ -10,7 +21,45 @@ export default function BudgetPlanning() {
         title="Budget Planning"
         description="Enter the organization's income, funds, and expenses."
       />
-      <Box className="p-10"></Box>
+      <Box className="p-5"></Box>
+
+      {/* Title, Current and Previous Fiscal Year */}
+      <Flex w="100%">
+        <Input w="30%" type="string" size="md" placeholder="Title" />
+        <Spacer />
+        <HStack>
+          <Text
+            fontSize="sm"
+            w="full"
+            fontFamily="font.heading"
+            fontWeight="semibold"
+          >
+            Current Fiscal Year:
+          </Text>
+          <Input type="number" size="sm"></Input>
+          <Text
+            fontSize="sm"
+            w="full"
+            fontFamily="font.heading"
+            fontWeight="semibold"
+          >
+            Previous Fiscal Year:
+          </Text>
+          <Input type="number" size="sm"></Input>
+        </HStack>
+      </Flex>
+
+      {/* Budget Planning Table */}
+      <RevenueTable />
+      <ExpenseTable />
+      <TotalTable />
+
+      {/* Submit Button */}
+      <Flex justifyContent="center" mt="4" w="100%">
+        <Button type="submit" size="sm" colorScheme="green" ml={2}>
+          Submit
+        </Button>
+      </Flex>
     </>
   );
 }
