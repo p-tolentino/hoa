@@ -87,3 +87,27 @@ export const updateUserStatus = async (id: string) => {
 
   return { success: "Member approved successfully" };
 };
+
+export const getHouseMembers = async (propertyId: string) => {
+  const user = await currentUser();
+
+  // No Current User
+  if (!user) {
+    return { error: "Unauthorized" };
+  }
+
+  // Validation if user is in database (not leftover session)
+  const dbUser = await getUserById(user.id);
+
+  if (!dbUser) {
+    return { error: "Unauthorized" };
+  }
+
+  const users = await db.personalInfo.findMany({
+    where: {
+      address: propertyId,
+    },
+  });
+
+  return { users };
+};

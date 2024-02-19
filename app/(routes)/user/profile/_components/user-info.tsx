@@ -25,9 +25,11 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { useSession } from "next-auth/react";
-import { useEffect, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
+import { getHouseMembers } from "@/server/actions/user-info";
+import { FaHouseUser as HouseMember } from "react-icons/fa6";
 
 interface UserInfoProps {
   user: ExtendedUser;
@@ -45,15 +47,25 @@ const UserInfo: React.FC<UserInfoProps> = ({
   const { update } = useSession();
   const [isPending, startTransition] = useTransition();
 
+  const [houseMembers, setHouseMembers] = useState<
+    PersonalInfo[] | undefined
+  >();
+
   useEffect(() => {
     startTransition(() => {
       update();
+
+      getHouseMembers(user?.info?.address).then((data) => {
+        if (data) {
+          setHouseMembers(data?.users);
+        }
+      });
     });
   }, []);
 
   return isPending ? (
     <Flex justifyContent="center" alignItems="center" minHeight="100vh">
-      <Spinner size="2xl" />
+      <Spinner />
     </Flex>
   ) : (
     <Box zIndex={1}>
@@ -165,7 +177,36 @@ const UserInfo: React.FC<UserInfoProps> = ({
         <Box></Box>
 
         {/* Personal Information */}
+
         <Box mb={{ md: "3rem", lg: "0" }}>
+          <ScrollArea className="w-10/12 mb-5 border rounded-md h-72">
+            <div className="p-4">
+              <h4 className="mb-4 text-lg font-bold leading-none">
+                Other Household Members
+              </h4>
+              {houseMembers?.length ? (
+                houseMembers?.map(
+                  (member) =>
+                    member.userId !== user?.id && (
+                      <>
+                        <div className="flex justify-between">
+                          <div key={member.id} className="flex">
+                            <HouseMember className="mt-2 mr-2" />{" "}
+                            {`${member?.firstName} ${member?.lastName}`}
+                          </div>
+                          <div className="capitalize">{`${member?.relation?.toLowerCase()}`}</div>
+                        </div>
+                        <Separator className="my-2" />
+                      </>
+                    )
+                )
+              ) : (
+                <span className="text-gray-400">
+                  No household members found.
+                </span>
+              )}
+            </div>
+          </ScrollArea>
           <ScrollArea className="w-10/12 border rounded-md h-72">
             <div className="p-4">
               <h4 className="mb-4 text-lg font-bold leading-none">
