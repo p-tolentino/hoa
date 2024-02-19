@@ -16,7 +16,7 @@ import {
   Spinner,
 } from "@chakra-ui/react";
 
-import { PersonalInfo, Status, Vehicle } from "@prisma/client";
+import { PersonalInfo, Property, Status, Vehicle } from "@prisma/client";
 import { LuFileEdit as Edit, LuCar as Car } from "react-icons/lu";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -31,9 +31,15 @@ interface UserInfoProps {
   user: ExtendedUser;
   info: PersonalInfo;
   vehicles: Vehicle[];
+  property: Property;
 }
 
-const UserInfo: React.FC<UserInfoProps> = ({ user, info, vehicles }) => {
+const UserInfo: React.FC<UserInfoProps> = ({
+  user,
+  info,
+  vehicles,
+  property,
+}) => {
   const { update } = useSession();
   const [isPending, startTransition] = useTransition();
 
@@ -121,7 +127,7 @@ const UserInfo: React.FC<UserInfoProps> = ({ user, info, vehicles }) => {
                     House No. & Street
                   </Td>
                   <Td px={0} py={2}>
-                    {info.address}
+                    {property.address}
                   </Td>
                 </Tr>
                 <Tr>

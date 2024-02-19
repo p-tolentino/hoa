@@ -6,7 +6,7 @@ import { PersonalInfoSchema, VehicleSchema } from "@/server/schemas";
 import { db } from "@/lib/db";
 import { currentUser } from "@/lib/auth";
 import { getUserById } from "@/server/data/user";
-import { Status } from "@prisma/client";
+import { HomeRelation, Status } from "@prisma/client";
 
 export const updateInfo = async (
   values: z.infer<typeof PersonalInfoSchema>
@@ -27,10 +27,15 @@ export const updateInfo = async (
 
   await db.personalInfo.upsert({
     where: { userId: dbUser.id },
-    update: { ...values, birthDay: new Date(values.birthDay) },
+    update: {
+      ...values,
+      relation: values.relation as HomeRelation,
+      birthDay: new Date(values.birthDay),
+    },
     create: {
       ...values,
       userId: dbUser.id,
+      relation: values.relation as HomeRelation,
       birthDay: new Date(values.birthDay),
     },
   });

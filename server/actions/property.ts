@@ -70,3 +70,25 @@ export const deleteProperty = async (propertyId: string) => {
 
   return { success: "Deleted property information successfully" };
 };
+
+export const getAddressById = async (propertyId: string) => {
+  const user = await currentUser();
+
+  // No Current User
+  if (!user) {
+    return { error: "Unauthorized" };
+  }
+
+  // Validation if user is in database (not leftover session)
+  const dbUser = await getUserById(user.id);
+
+  if (!dbUser) {
+    return { error: "Unauthorized" };
+  }
+
+  const property = await db.property.findFirst({
+    where: { id: propertyId },
+  });
+
+  return { property };
+};

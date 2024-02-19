@@ -1,6 +1,10 @@
 import { currentUser } from "@/lib/auth";
 import UserInfo from "./_components/user-info";
-import { getInfoById, getVehicleById } from "@/server/data/user-info";
+import {
+  getInfoById,
+  getPropertyById,
+  getVehicleById,
+} from "@/server/data/user-info";
 
 const Profile = async () => {
   const user = await currentUser();
@@ -21,9 +25,20 @@ const Profile = async () => {
     return null;
   }
 
+  const property = await getPropertyById(user?.id);
+
+  if (!property) {
+    return null;
+  }
+
   return (
     <div className="flex-1 p-10 space-y-4">
-      <UserInfo user={user} info={info} vehicles={vehicles} />
+      <UserInfo
+        user={user}
+        info={info}
+        vehicles={vehicles}
+        property={property}
+      />
     </div>
   );
 };

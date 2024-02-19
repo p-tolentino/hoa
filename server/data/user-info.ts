@@ -17,14 +17,14 @@ export const getPropertyById = async (id: string) => {
   const user = await getUserById(id);
 
   try {
-    const properties = await db.property.findMany({
+    const property = await db.property.findFirst({
       where: { id: user?.info?.address || "" },
       include: {
         documents: true,
       },
     });
 
-    return properties;
+    return property;
   } catch {
     return null;
   }

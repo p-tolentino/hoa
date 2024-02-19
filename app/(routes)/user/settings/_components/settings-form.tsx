@@ -32,7 +32,7 @@ import {
 } from "@/components/ui/select";
 import { useRouter } from "next/navigation";
 import { ExtendedUser } from "@/next-auth";
-import { Property } from "@prisma/client";
+import { HomeRelation, Property } from "@prisma/client";
 
 interface SettingsFormProps {
   initialData: ExtendedUser;
@@ -61,6 +61,7 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({
       phoneNumber: initialData?.info?.phoneNumber || "",
       type: initialData?.info?.type || undefined,
       address: initialData?.info?.address || undefined,
+      relation: initialData?.info?.relation || undefined,
     },
   });
 
@@ -79,8 +80,9 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({
             console.log(data.success);
           }
         })
-        .catch(() => {
+        .catch((error) => {
           console.log("Something went wrong.");
+          throw error;
         });
     });
   };
@@ -157,7 +159,7 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({
             />
           </div>
 
-          <div className="grid w-[70vw] grid-cols-3 gap-8">
+          <div className="grid w-full grid-cols-3 gap-8">
             <FormField
               control={form.control}
               name="birthDay"
@@ -199,7 +201,7 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({
                       onValueChange={field.onChange}
                       defaultValue={field.value}
                       className="flex p-1 space-x-10 space-y-1"
-                      disabled={isPending}
+                      disabled={initialData?.info?.type || isPending}
                     >
                       <FormItem className="flex items-center space-x-3 space-y-0">
                         <FormControl>
@@ -220,7 +222,7 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({
               )}
             />
           </div>
-          <div className="w-[70vw] gap-8">
+          <div className="grid w-full grid-cols-2 gap-8">
             <FormField
               control={form.control}
               name="address"
@@ -230,6 +232,7 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={field.value}
+                    disabled={isPending}
                   >
                     <FormControl>
                       <SelectTrigger>
@@ -247,6 +250,39 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({
                           </SelectItem>
                         );
                       })}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="relation"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Relation</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                    disabled={initialData?.info.type || isPending}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue
+                          placeholder={"Select your home relation"}
+                        />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value={HomeRelation.PARENT}>
+                        Parent
+                      </SelectItem>
+                      <SelectItem value={HomeRelation.CHILD}>Child</SelectItem>
+                      <SelectItem value={HomeRelation.HELPER}>
+                        Helper
+                      </SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />

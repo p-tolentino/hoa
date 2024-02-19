@@ -45,8 +45,6 @@ const Admins = async () => {
     (admin) => admin.role === UserRole.ADMIN
   );
 
-  console.log(formattedUsers);
-
   return (
     <div className="flex p-10">
       <div className="flex-1 space-y-4">

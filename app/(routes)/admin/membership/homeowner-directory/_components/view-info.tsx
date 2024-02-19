@@ -25,6 +25,8 @@ import { Status } from "@prisma/client";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { FaUser as User } from "react-icons/fa";
+import { getAddressById } from "@/server/actions/property";
+import { useEffect, useState } from "react";
 
 interface ViewInfoProps {
   data: HomeownerColumn;
@@ -33,6 +35,15 @@ interface ViewInfoProps {
 export const ViewInfo: React.FC<ViewInfoProps> = ({ data }) => {
   const action = "Member Information";
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [property, setProperty] = useState("");
+
+  useEffect(() => {
+    getAddressById(data.address).then((data) => {
+      if (data) {
+        setProperty(data?.property?.address || "");
+      }
+    });
+  }, []);
 
   return (
     <>
@@ -127,7 +138,7 @@ export const ViewInfo: React.FC<ViewInfoProps> = ({ data }) => {
                             House No. & Street:
                           </Td>
                           <Td px={0} py={1} fontFamily="font.body">
-                            {data.address}
+                            {property}
                           </Td>
                         </Tr>
                         <Tr fontFamily="font.body">

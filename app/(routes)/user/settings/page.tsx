@@ -24,7 +24,6 @@ import { getAllProperties } from "@/server/data/property";
 import AddVehicle from "./_components/add-vehicle";
 // import { getRelativesById } from '@/server/data/user-info'
 import { getVehicleById } from "@/server/data/user-info";
-import AddRelatives from "./_components/add-relatives";
 
 const Settings = async () => {
   const user = await currentUser();
@@ -94,7 +93,6 @@ const Settings = async () => {
             </div>
             <Separator className="my-5" />
             <Flex gap="5rem">
-              <AddRelatives />
               <AddVehicle initialData={user} vehicles={vehicles} />
             </Flex>
           </div>

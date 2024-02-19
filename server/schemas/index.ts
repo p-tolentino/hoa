@@ -54,6 +54,9 @@ export const PersonalInfoSchema = z.object({
   address: z.string({
     required_error: "Please choose your home address.",
   }),
+  relation: z.string({
+    required_error: "Please choose your home relation.",
+  }),
 });
 
 export const VehicleSchema = z.object({
