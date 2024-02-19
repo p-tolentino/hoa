@@ -32,7 +32,7 @@ const Profile = async () => {
   }
 
   return (
-    <div className="flex-1 p-10 space-y-4">
+    <div className="flex-1 space-y-4">
       <UserInfo
         user={user}
         info={info}

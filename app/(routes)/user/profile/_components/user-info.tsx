@@ -16,6 +16,8 @@ import {
   Spinner,
 } from "@chakra-ui/react";
 
+import { Heading as HeadingShad } from "@/components/ui/heading";
+
 import { PersonalInfo, Property, Status, Vehicle } from "@prisma/client";
 import { LuFileEdit as Edit, LuCar as Car } from "react-icons/lu";
 import Link from "next/link";
@@ -55,6 +57,8 @@ const UserInfo: React.FC<UserInfoProps> = ({
     </Flex>
   ) : (
     <Box zIndex={1}>
+      <HeadingShad title="My Profile" description="View your profile" />
+      <Separator className="mt-4 mb-6" />
       <Flex
         justifyContent={"space-between"}
         flexDir={{ md: "column", lg: "row" }}
@@ -167,15 +171,21 @@ const UserInfo: React.FC<UserInfoProps> = ({
               <h4 className="mb-4 text-lg font-bold leading-none">
                 Vehicles Owned
               </h4>
-              {vehicles.map((vehicle) => (
-                <>
-                  <div key={vehicle.id} className="flex">
-                    <Car className="w-5 h-5 pt-1 mr-2" />
-                    {vehicle.plateNum}
-                  </div>
-                  <Separator className="my-2" />
-                </>
-              ))}
+              {vehicles.length ? (
+                vehicles.map((vehicle) => (
+                  <>
+                    <div key={vehicle.id} className="flex">
+                      <Car className="w-5 h-5 pt-1 mr-2" />
+                      {vehicle.plateNum}
+                    </div>
+                    <Separator className="my-2" />
+                  </>
+                ))
+              ) : (
+                <div className="italic text-gray-400">
+                  No vehicles recorded.
+                </div>
+              )}
             </div>
           </ScrollArea>
         </Box>

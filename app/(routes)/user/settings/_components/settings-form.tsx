@@ -74,9 +74,10 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({
           }
 
           if (data.success) {
-            update();
             form.reset();
             router.push("/user/settings");
+            router.refresh();
+            update();
             console.log(data.success);
           }
         })
@@ -266,7 +267,7 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={field.value}
-                    disabled={initialData?.info.type || isPending}
+                    disabled={initialData?.info?.relation || isPending}
                   >
                     <FormControl>
                       <SelectTrigger>

@@ -42,7 +42,10 @@ const Settings = async () => {
   return (
     <>
       <div className="flex items-center justify-between">
-        <Heading title="Settings" description="Manage your system settings" />
+        <Heading
+          title="Settings"
+          description="Manage your user and account settings"
+        />
       </div>
       <Separator className="mt-4 mb-6" />
 

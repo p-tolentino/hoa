@@ -312,11 +312,7 @@ export function Sidebar() {
           fontSize={"sm"}
           display={sidebarSize === "small" ? "none" : "flex"}
         >
-          <Text
-            as={Link}
-            href={`/${user?.role.toLowerCase()}/profile`}
-            fontFamily="font.body"
-          >
+          <Text as={Link} href={`/user/profile`} fontFamily="font.body">
             My Profile
           </Text>
         </Flex>
