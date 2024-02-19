@@ -25,6 +25,12 @@ enum Status {
   PENDING
 }
 
+enum HomeRelation {
+  PARENT
+  CHILD
+  HELPER
+}
+
 enum PaymentStatus {
   PAID
   UNPAID
@@ -74,6 +80,7 @@ model PersonalInfo {
   birthDay    DateTime?
 
   address     String?
+  relation    HomeRelation?
 
   bio         String?
 
