@@ -3,7 +3,7 @@
 import { Heading } from "@/components/ui/heading";
 import { Separator } from "@/components/ui/separator";
 
-import { PaymentRecordColumn, columns } from "./columns";
+import { PaymentHistoryColumn, columns } from "./columns";
 import { DataTable } from "@/components/ui/data-table";
 import { HStack, Spacer } from "@chakra-ui/react";
 import {
@@ -15,19 +15,19 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-interface PaymentRecordClientProps {
-  data: PaymentRecordColumn[];
+interface PaymentHistoryClientProps {
+  data: PaymentHistoryColumn[];
 }
 
-export const PaymentRecordClient: React.FC<PaymentRecordClientProps> = ({
+export const PaymentHistoryClient: React.FC<PaymentHistoryClientProps> = ({
   data,
 }) => {
   return (
     <>
       <div className="flex items-center justify-between">
         <Heading
-          title="Homeowners Payment Record"
-          description={`Manage the payment records of Homeowners (Total No. of Transactions = ${data.length})`}
+          title="Payment History"
+          description={`View your payment history in the Homeowners Association (Total No. of Transactions = ${data.length})`}
         />
       </div>
       <Separator />

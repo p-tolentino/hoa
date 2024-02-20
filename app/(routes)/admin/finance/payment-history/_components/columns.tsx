@@ -1,28 +1,27 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { CellAction } from "./cell-action";
+// import { CellAction } from "./cell-action";
 
 import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import { PaymentStatus } from "@prisma/client";
+import { Status } from "@prisma/client";
+// import { ViewInfo } from "./view-info";
 
-export type PaymentRecordColumn = {
+export type PaymentHistoryColumn = {
   id: string;
-  address: string;
   status: string;
   amount: string;
   dateIssued: string;
   datePaid: string;
   purpose: string;
   description: string;
-  paidBy: string;
 };
 
-export const columns: ColumnDef<PaymentRecordColumn>[] = [
+export const columns: ColumnDef<PaymentHistoryColumn>[] = [
   {
     accessorKey: "status",
     header: ({ column }) => {
@@ -40,11 +39,11 @@ export const columns: ColumnDef<PaymentRecordColumn>[] = [
     cell: ({ row }) => (
       <Badge
         className={cn(
-          row.getValue("status") === PaymentStatus.PAID
+          row.getValue("status") === Status.ACTIVE
             ? "bg-green-700"
-            : row.getValue("status") === PaymentStatus.OVERDUE
+            : row.getValue("status") === Status.INACTIVE
             ? "bg-red-700"
-            : row.getValue("status") === PaymentStatus.UNPAID
+            : row.getValue("status") === Status.PENDING
             ? "bg-yellow-600"
             : "display-none"
         )}
@@ -52,24 +51,6 @@ export const columns: ColumnDef<PaymentRecordColumn>[] = [
         {" "}
         {row.getValue("status")}
       </Badge>
-    ),
-  },
-  {
-    accessorKey: "address",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          className="hover:bg-[#ffe492]"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Billed To
-          <ArrowUpDown className="w-4 h-4 ml-2" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("address")}</div>
     ),
   },
   {
@@ -152,9 +133,8 @@ export const columns: ColumnDef<PaymentRecordColumn>[] = [
     },
     cell: ({ row }) => row.getValue("datePaid"),
   },
-
-  {
-    id: "actions",
-    cell: ({ row }) => <CellAction data={row.original} />,
-  },
+  //   {
+  //     id: "actions",
+  //     cell: ({ row }) => <CellAction data={row.original} />,
+  //   },
 ];
