@@ -1,52 +1,64 @@
-import { format } from 'date-fns'
+import { format } from "date-fns";
 
-import { PaymentRecordClient } from './_components/client'
-import { PaymentRecordColumn } from './_components/columns'
-import { currentUser } from '@/lib/auth'
-import { getAllUsers } from '@/server/data/user'
+import { PaymentRecordClient } from "./_components/client";
+import { PaymentRecordColumn } from "./_components/columns";
+import { currentUser } from "@/lib/auth";
+import { getAllTransactions } from "@/server/data/user-transactions";
+import { getAllProperties } from "@/server/data/property";
 
-const Homeowners = async () => {
-  const user = await currentUser()
+const HomeownersPaymentRecord = async () => {
+  const user = await currentUser();
   if (!user) {
-    return null
+    return null;
   }
 
-  const users = await getAllUsers()
+  const transactions = await getAllTransactions();
 
-  if (!users) {
-    return null
+  if (!transactions) {
+    return null;
   }
 
-  const formattedRecords: PaymentRecordColumn[] = users.map(item => ({
-    id: item.id || '',
-    name:
-      `${item.info?.firstName || '-'} ${
-        item.info?.middleName ? `${`${item.info?.middleName}`[0]}.` : ''
-      } ${item.info?.lastName || ''}` || '',
-    status: item.status || '',
-    amount: item.info?.amount || '',
-    dateIssued: item.info?.dateIssued
-      ? format(
-          new Date(item.info?.dateIssued)?.toISOString().split('T')[0],
-          'MMMM dd, yyyy'
-        )
-      : '',
-    datePaid: item.info?.datePaid
-      ? format(
-          new Date(item.info?.datePaid)?.toISOString().split('T')[0],
-          'MMMM dd, yyyy'
-        )
-      : '',
-    purpose: item.info?.purpose || ''
-  }))
+  const properties = await getAllProperties();
+
+  if (!properties) {
+    return null;
+  }
+
+  const formattedRecords: PaymentRecordColumn[] = transactions.map((item) => {
+    const address = properties.find((property) => {
+      return property.id === item.addressId;
+    });
+
+    return {
+      id: item.id || "",
+      address: address?.address || "",
+      purpose: item.id || "",
+      description: item.id || "",
+      amount: item.id || "",
+      status: item.id || "",
+      dateIssued: item.createdAt
+        ? format(
+            new Date(item.createdAt)?.toISOString().split("T")[0],
+            "MMMM dd, yyyy"
+          )
+        : "",
+      datePaid: item.datePaid
+        ? format(
+            new Date(item.datePaid)?.toISOString().split("T")[0],
+            "MMMM dd, yyyy"
+          )
+        : "",
+      paidBy: item.id || "",
+    };
+  });
 
   return (
-    <div className='flex'>
-      <div className='flex-1 space-y-4'>
+    <div className="flex">
+      <div className="flex-1 space-y-4">
         <PaymentRecordClient data={formattedRecords} />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Homeowners
+export default HomeownersPaymentRecord;

@@ -8,18 +8,18 @@ import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import { Status } from "@prisma/client";
-// import { ViewInfo } from "./view-info";
+import { PaymentStatus } from "@prisma/client";
 
 export type PaymentRecordColumn = {
   id: string;
-  name: string;
+  address: string;
   status: string;
   amount: string;
   dateIssued: string;
   datePaid: string;
   purpose: string;
   description: string;
+  paidBy: string;
 };
 
 export const columns: ColumnDef<PaymentRecordColumn>[] = [
@@ -40,11 +40,11 @@ export const columns: ColumnDef<PaymentRecordColumn>[] = [
     cell: ({ row }) => (
       <Badge
         className={cn(
-          row.getValue("status") === Status.ACTIVE
+          row.getValue("status") === PaymentStatus.PAID
             ? "bg-green-700"
-            : row.getValue("status") === Status.INACTIVE
+            : row.getValue("status") === PaymentStatus.OVERDUE
             ? "bg-red-700"
-            : row.getValue("status") === Status.PENDING
+            : row.getValue("status") === PaymentStatus.UNPAID
             ? "bg-yellow-600"
             : "display-none"
         )}
@@ -55,7 +55,7 @@ export const columns: ColumnDef<PaymentRecordColumn>[] = [
     ),
   },
   {
-    accessorKey: "name",
+    accessorKey: "address",
     header: ({ column }) => {
       return (
         <Button
@@ -63,12 +63,14 @@ export const columns: ColumnDef<PaymentRecordColumn>[] = [
           className="hover:bg-[#ffe492]"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Name
+          Billed To
           <ArrowUpDown className="w-4 h-4 ml-2" />
         </Button>
       );
     },
-    cell: ({ row }) => <div className="capitalize">{row.getValue("name")}</div>,
+    cell: ({ row }) => (
+      <div className="capitalize">{row.getValue("address")}</div>
+    ),
   },
   {
     accessorKey: "purpose",

@@ -111,4 +111,8 @@ export const columns: ColumnDef<HomeownerColumn>[] = [
     id: "Member Information",
     cell: ({ row }) => <ViewInfo data={row.original} />,
   },
+  {
+    id: "actions",
+    cell: ({ row }) => <CellAction data={row.original} />,
+  },
 ];

@@ -32,8 +32,7 @@ import {
 } from "@/components/ui/select";
 import { useRouter } from "next/navigation";
 import { ExtendedUser } from "@/next-auth";
-import { Property } from "@prisma/client";
-import { updatePropertyOwner } from "@/server/actions/property";
+import { HomeRelation, Property } from "@prisma/client";
 
 interface SettingsFormProps {
   initialData: ExtendedUser;
@@ -62,12 +61,12 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({
       phoneNumber: initialData?.info?.phoneNumber || "",
       type: initialData?.info?.type || undefined,
       address: initialData?.info?.address || undefined,
+      relation: initialData?.info?.relation || undefined,
     },
   });
 
   const onSubmit = async (values: SettingsFormValues) => {
     startTransition(() => {
-      update();
       updateInfo(values)
         .then((data) => {
           if (data.error) {
@@ -75,52 +74,22 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({
           }
 
           if (data.success) {
+            form.reset();
+            router.push("/user/settings");
+            router.refresh();
+            update();
             console.log(data.success);
-
-            const occupant = values.firstName + " " + values.lastName;
-
-            updatePropertyOwner(initialData?.info?.address, "", "")
-              .then((data) => {
-                if (data.error) {
-                  console.log(data.error);
-                }
-
-                if (data.success) {
-                  updatePropertyOwner(values.address, initialData?.id, occupant)
-                    .then((data) => {
-                      if (data.error) {
-                        console.log(data.error);
-                      }
-
-                      if (data.success) {
-                        form.reset();
-                        router.refresh();
-                        update();
-                        console.log(data.success);
-                      }
-                    })
-                    .catch(() => {
-                      console.log("Something went wrong.");
-                    });
-                }
-              })
-              .catch(() => {
-                console.log("Something went wrong.");
-              });
           }
         })
-        .catch(() => {
+        .catch((error) => {
           console.log("Something went wrong.");
+          throw error;
         });
     });
   };
 
   return (
     <div>
-      <div className="flex items-center justify-between">
-        <Heading title="Member Information" description="" />
-      </div>
-      <Separator className="my-2" />
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -191,7 +160,7 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({
             />
           </div>
 
-          <div className="grid w-[70vw] grid-cols-3 gap-8">
+          <div className="grid w-full grid-cols-3 gap-8">
             <FormField
               control={form.control}
               name="birthDay"
@@ -233,7 +202,7 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({
                       onValueChange={field.onChange}
                       defaultValue={field.value}
                       className="flex p-1 space-x-10 space-y-1"
-                      disabled={isPending}
+                      disabled={initialData?.info?.type || isPending}
                     >
                       <FormItem className="flex items-center space-x-3 space-y-0">
                         <FormControl>
@@ -254,7 +223,7 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({
               )}
             />
           </div>
-          <div className="w-[70vw] gap-8">
+          <div className="grid w-full grid-cols-2 gap-8">
             <FormField
               control={form.control}
               name="address"
@@ -264,28 +233,57 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={field.value}
+                    disabled={isPending}
                   >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select your home address" />
+                        <SelectValue placeholder={"Select your home address"} />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
                       {properties.map((property) => {
-                        if (
-                          property.userId === initialData.id ||
-                          !property.userId
-                        ) {
-                          return (
-                            <SelectItem
-                              key={property.id}
-                              value={property.address || ""}
-                            >
-                              {property.address}
-                            </SelectItem>
-                          );
-                        }
+                        return (
+                          <SelectItem
+                            key={property.id}
+                            value={property.id || ""}
+                          >
+                            {property.address}
+                          </SelectItem>
+                        );
                       })}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="relation"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Relation</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                    disabled={initialData?.info?.relation || isPending}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue
+                          placeholder={"Select your home relation"}
+                        />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value={HomeRelation.PARENT}>
+                        Parent
+                      </SelectItem>
+                      <SelectItem value={HomeRelation.CHILD}>Child</SelectItem>
+                      <SelectItem value={HomeRelation.HELPER}>
+                        Helper
+                      </SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />

@@ -25,6 +25,7 @@ import { addVehicle } from "@/server/actions/user-info";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { LuCar as Car } from "react-icons/lu";
+import { CellAction } from "./cell-action";
 
 interface AddVehicleProps {
   initialData: ExtendedUser;
@@ -35,8 +36,6 @@ const AddVehicle: React.FC<AddVehicleProps> = ({ initialData, vehicles }) => {
   const router = useRouter();
   const { update } = useSession();
   const [isPending, startTransition] = useTransition();
-
-  console.log(vehicles);
 
   const form = useForm<z.infer<typeof VehicleSchema>>({
     resolver: zodResolver(VehicleSchema),
@@ -103,9 +102,15 @@ const AddVehicle: React.FC<AddVehicleProps> = ({ initialData, vehicles }) => {
                     <div className="p-4">
                       {vehicles.map((vehicle) => (
                         <>
-                          <div key={vehicle.id} className="flex">
-                            <Car className="w-5 h-5 pt-1 mr-2" />
-                            {vehicle.plateNum}
+                          <div
+                            key={vehicle.id}
+                            className="flex justify-between"
+                          >
+                            <div className="flex pt-1">
+                              <Car className="w-5 h-5 pt-1 mr-2" />
+                              {vehicle.plateNum}
+                            </div>
+                            <CellAction data={vehicle} />
                           </div>
                           <Separator className="my-2" />
                         </>

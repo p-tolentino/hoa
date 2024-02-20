@@ -1,4 +1,5 @@
 import { db } from "@/lib/db";
+import { getUserById } from "./user";
 
 export const getInfoById = async (id: string) => {
   try {
@@ -13,15 +14,17 @@ export const getInfoById = async (id: string) => {
 };
 
 export const getPropertyById = async (id: string) => {
+  const user = await getUserById(id);
+
   try {
-    const properties = await db.property.findMany({
-      where: { userId: id },
+    const property = await db.property.findFirst({
+      where: { id: user?.info?.address || "" },
       include: {
         documents: true,
       },
     });
 
-    return properties;
+    return property;
   } catch {
     return null;
   }

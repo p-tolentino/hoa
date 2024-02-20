@@ -12,7 +12,7 @@ datasource db {
 }
 
 // ----------------------------------------------------------------
-// --------------------- DATABASE MODELS --------------------------
+// ---------------------- CUSTOM TYPES --------------------------
 
 enum UserRole {
   ADMIN
@@ -24,6 +24,37 @@ enum Status {
   INACTIVE
   PENDING
 }
+
+enum HomeRelation {
+  PARENT
+  CHILD
+  HELPER
+}
+
+enum PaymentStatus {
+  PAID
+  UNPAID
+  OVERDUE
+}
+
+enum HoaTransactionType {
+  INCOME
+  EXPENSE
+}
+
+// ----------------------------------------------------------------
+// --------------------- DATABASE MODELS --------------------------
+
+model Hoa {
+  id String @id @default(cuid())
+  name String
+  funds Int
+  fixedDue Int?
+  lotSizeDue Int?
+}
+
+// ----------------------------------------------------------------
+// --------------------- USER/MEMBER INFO -------------------------
 
 model User {
   id            String        @id @default(cuid())
@@ -49,6 +80,7 @@ model PersonalInfo {
   birthDay    DateTime?
 
   address     String?
+  relation    HomeRelation?
 
   bio         String?
 
@@ -59,16 +91,17 @@ model PersonalInfo {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
+// ----------------------------------------------------------------
+// --------------------- MEMBERSHIP MODULE ------------------------
+
 model Vehicle {
   id       String  @id @unique @default(cuid())
   userId   String?  
-  plateNum String?
+  plateNum String
 }
 
 model Property {
   id           String        @id @unique @default(cuid())
-  userId       String?    
-  occupantName String?   
   address      String?
   lotNumber    String?
   lotSize      String?
@@ -86,6 +119,78 @@ model PropertyDocument {
 
   property Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
 }
+
+// ----------------------------------------------------------------
+// ----------------------- FINANCE MODULE -------------------------
+
+model UserPaymentInfo {
+  id String @id @unique @default(cuid())
+  userId String
+  cardNumber String
+}
+
+model UserTransaction {
+  id String @id @unique @default(cuid())
+  addressId String                       // "Bill this transaction to this address, regardless who will pay"
+  purpose String
+  description String
+  amount Int
+  status PaymentStatus @default(UNPAID)
+  createdAt DateTime @default(now())  // Date Transaction was made
+  updateAt DateTime @updatedAt        
+  datePaid DateTime?                   // Date Payment was paid
+  paidBy String?                      // userId of who paid
+}
+
+model HoaTransaction {
+  id String @id @unique @default(cuid())
+  type HoaTransactionType
+  purpose String
+  description String
+  amount Int
+  dateIssued DateTime                 // Date Payment was made
+  createdAt DateTime @default(now())  // Date Entry was made
+  updateAt DateTime @updatedAt
+  userId String                       // Recorded by
+}
+
+model Inflow {
+  id String @id @unique @default(cuid())
+  planId String
+  title String
+  amount Int
+  plan BudgetPlan @relation(fields: [planId], references: [id], onDelete: Cascade)
+}
+
+model Outflow {
+  id String @id @unique @default(cuid())
+  planId String
+  title String
+  amount Int
+  plan BudgetPlan @relation(fields: [planId], references: [id], onDelete: Cascade)
+}
+
+model BudgetPlan {
+  id String @id @unique @default(cuid())
+  title String
+  inflow Inflow[]
+  outflow Outflow[]
+  totalInflow Int
+  totalOutflow Int
+  total Int
+}
+
+
+// ----------------------------------------------------------------
+// --------------------- MEMBERSHIP MODULE ------------------------
+
+
+// ----------------------------------------------------------------
+// --------------------- MEMBERSHIP MODULE ------------------------
+
+
+// ----------------------------------------------------------------
+// --------------------- ACCOUNT-RELATED --------------------------
 
 model Account {
   id                String  @id @default(cuid())

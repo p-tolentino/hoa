@@ -12,7 +12,6 @@ export type PropertyColumn = {
   address: string;
   lotNumber: string;
   lotSize: string;
-  userId: string;
   purchaseDate: string;
 };
 
@@ -64,22 +63,6 @@ export const columns: ColumnDef<PropertyColumn>[] = [
       );
     },
     cell: ({ row }) => row.getValue("lotSize"),
-  },
-  {
-    accessorKey: "occupantName",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          className="hover:bg-[#ffe492]"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Occupant
-          <ArrowUpDown className="w-4 h-4 ml-2" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => row.getValue("occupantName"),
   },
   {
     accessorKey: "purchaseDate",

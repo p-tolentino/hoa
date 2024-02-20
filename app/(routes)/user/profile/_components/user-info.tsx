@@ -16,39 +16,61 @@ import {
   Spinner,
 } from "@chakra-ui/react";
 
-import { PersonalInfo, Status, Vehicle } from "@prisma/client";
+import { Heading as HeadingShad } from "@/components/ui/heading";
+
+import { PersonalInfo, Property, Status, Vehicle } from "@prisma/client";
 import { LuFileEdit as Edit, LuCar as Car } from "react-icons/lu";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { useSession } from "next-auth/react";
-import { useEffect, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
+import { getHouseMembers } from "@/server/actions/user-info";
+import { FaHouseUser as HouseMember } from "react-icons/fa6";
 
 interface UserInfoProps {
   user: ExtendedUser;
   info: PersonalInfo;
   vehicles: Vehicle[];
+  property: Property;
 }
 
-const UserInfo: React.FC<UserInfoProps> = ({ user, info, vehicles }) => {
+const UserInfo: React.FC<UserInfoProps> = ({
+  user,
+  info,
+  vehicles,
+  property,
+}) => {
   const { update } = useSession();
   const [isPending, startTransition] = useTransition();
+
+  const [houseMembers, setHouseMembers] = useState<
+    PersonalInfo[] | undefined
+  >();
 
   useEffect(() => {
     startTransition(() => {
       update();
+
+      getHouseMembers(user?.info?.address).then((data) => {
+        if (data) {
+          setHouseMembers(data?.users);
+        }
+      });
     });
   }, []);
 
   return isPending ? (
     <Flex justifyContent="center" alignItems="center" minHeight="100vh">
-      <Spinner size="2xl" />
+      <Spinner />
     </Flex>
   ) : (
     <Box zIndex={1}>
+      <HeadingShad title="My Profile" description="View your profile" />
+      <Separator className="mt-4 mb-6" />
       <Flex
         justifyContent={"space-between"}
         flexDir={{ md: "column", lg: "row" }}
@@ -121,7 +143,7 @@ const UserInfo: React.FC<UserInfoProps> = ({ user, info, vehicles }) => {
                     House No. & Street
                   </Td>
                   <Td px={0} py={2}>
-                    {info.address}
+                    {property.address}
                   </Td>
                 </Tr>
                 <Tr>
@@ -155,21 +177,56 @@ const UserInfo: React.FC<UserInfoProps> = ({ user, info, vehicles }) => {
         <Box></Box>
 
         {/* Personal Information */}
+
         <Box mb={{ md: "3rem", lg: "0" }}>
+          <ScrollArea className="w-10/12 mb-5 border rounded-md h-72">
+            <div className="p-4">
+              <h4 className="mb-4 text-lg font-bold leading-none">
+                Other Household Members
+              </h4>
+              {houseMembers?.length ? (
+                houseMembers?.map(
+                  (member) =>
+                    member.userId !== user?.id && (
+                      <>
+                        <div className="flex justify-between">
+                          <div key={member.id} className="flex">
+                            <HouseMember className="mt-2 mr-2" />{" "}
+                            {`${member?.firstName} ${member?.lastName}`}
+                          </div>
+                          <div className="capitalize">{`${member?.relation?.toLowerCase()}`}</div>
+                        </div>
+                        <Separator className="my-2" />
+                      </>
+                    )
+                )
+              ) : (
+                <span className="text-gray-400">
+                  No household members found.
+                </span>
+              )}
+            </div>
+          </ScrollArea>
           <ScrollArea className="w-10/12 border rounded-md h-72">
             <div className="p-4">
               <h4 className="mb-4 text-lg font-bold leading-none">
                 Vehicles Owned
               </h4>
-              {vehicles.map((vehicle) => (
-                <>
-                  <div key={vehicle.id} className="flex">
-                    <Car className="w-5 h-5 pt-1 mr-2" />
-                    {vehicle.plateNum}
-                  </div>
-                  <Separator className="my-2" />
-                </>
-              ))}
+              {vehicles.length ? (
+                vehicles.map((vehicle) => (
+                  <>
+                    <div key={vehicle.id} className="flex">
+                      <Car className="w-5 h-5 pt-1 mr-2" />
+                      {vehicle.plateNum}
+                    </div>
+                    <Separator className="my-2" />
+                  </>
+                ))
+              ) : (
+                <div className="italic text-gray-400">
+                  No vehicles recorded.
+                </div>
+              )}
             </div>
           </ScrollArea>
         </Box>

@@ -21,10 +21,17 @@ import {
   Td,
 } from "@chakra-ui/react";
 import { HomeownerColumn } from "./columns";
-import { Status } from "@prisma/client";
+import { PersonalInfo, Status } from "@prisma/client";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { FaUser as User } from "react-icons/fa";
+import { getAddressById } from "@/server/actions/property";
+import { useEffect, useState } from "react";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Separator } from "@/components/ui/separator";
+
+import { FaHouseUser as HouseMember } from "react-icons/fa6";
+import { getHouseMembers } from "@/server/actions/user-info";
 
 interface ViewInfoProps {
   data: HomeownerColumn;
@@ -33,6 +40,24 @@ interface ViewInfoProps {
 export const ViewInfo: React.FC<ViewInfoProps> = ({ data }) => {
   const action = "Member Information";
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [property, setProperty] = useState("");
+  const [houseMembers, setHouseMembers] = useState<
+    PersonalInfo[] | undefined
+  >();
+
+  useEffect(() => {
+    getAddressById(data.address).then((data) => {
+      if (data) {
+        setProperty(data?.property?.address || "");
+      }
+    });
+
+    getHouseMembers(data.address).then((data) => {
+      if (data) {
+        setHouseMembers(data?.users);
+      }
+    });
+  }, []);
 
   return (
     <>
@@ -127,7 +152,7 @@ export const ViewInfo: React.FC<ViewInfoProps> = ({ data }) => {
                             House No. & Street:
                           </Td>
                           <Td px={0} py={1} fontFamily="font.body">
-                            {data.address}
+                            {property}
                           </Td>
                         </Tr>
                         <Tr fontFamily="font.body">
@@ -160,6 +185,39 @@ export const ViewInfo: React.FC<ViewInfoProps> = ({ data }) => {
                         </Tr>
                       </Tbody>
                     </Table>
+                  </Text>
+                </Box>
+                <Box w="100%" h="100%" p="5">
+                  <Heading size={"md"} fontFamily={"font.heading"}>
+                    Other Household Members
+                  </Heading>
+                  <Text fontSize={"lg"} fontFamily={"font.body"} lineHeight={2}>
+                    {/* {`${propertyInfo.occupants || ""}`} */}
+                    <ScrollArea className="h-40 border rounded-md">
+                      <div className="p-4">
+                        {houseMembers?.length ? (
+                          houseMembers?.map(
+                            (member) =>
+                              member.userId !== data.id && (
+                                <>
+                                  <div className="flex justify-between">
+                                    <div key={member.id} className="flex">
+                                      <HouseMember className="mt-2 mr-2" />{" "}
+                                      {`${member?.firstName} ${member?.lastName}`}
+                                    </div>
+                                    <div className="capitalize">{`${member?.relation?.toLowerCase()}`}</div>
+                                  </div>
+                                  <Separator className="my-2" />
+                                </>
+                              )
+                          )
+                        ) : (
+                          <span className="text-gray-400">
+                            No household members found.
+                          </span>
+                        )}
+                      </div>
+                    </ScrollArea>
                   </Text>
                 </Box>
               </Box>

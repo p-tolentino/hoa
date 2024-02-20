@@ -144,12 +144,11 @@ export const Navbar = () => {
                   key={route.href}
                   href={route.href}
                   className={cn(
-                    "flex justify-between transition-colors",
+                    "flex justify-between transition-colors no-underline",
                     route.active
                       ? "text-[#F0CB5B]"
                       : "text-white hover:text-[#F0CB5B]"
                   )}
-                  style={{ textDecoration: "none" }}
                 >
                   <Button
                     variant="link"
