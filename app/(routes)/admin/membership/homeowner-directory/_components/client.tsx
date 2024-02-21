@@ -26,6 +26,8 @@ import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { Property } from "@prisma/client";
+import { Button } from "@/components/ui/button";
+import { VscRefresh as Refresh } from "react-icons/vsc";
 
 interface HomeownersClientProps {
   data: HomeownerColumn[];
@@ -83,27 +85,39 @@ export const HomeownersClient: React.FC<HomeownersClientProps> = ({
             control={form.control}
             name="address"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="w-3/5">
                 <FormLabel>Homeowners of:</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Please select a house address..." />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {properties.map((property) => {
-                      return (
-                        <SelectItem key={property.id} value={property.id || ""}>
-                          {property.address}
-                        </SelectItem>
-                      );
-                    })}
-                  </SelectContent>
-                </Select>
+                <div className="flex">
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Please select a house address..." />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {properties.map((property) => {
+                        return (
+                          <SelectItem
+                            key={property.id}
+                            value={property.id || ""}
+                          >
+                            {property.address}
+                          </SelectItem>
+                        );
+                      })}
+                    </SelectContent>
+                  </Select>
+                  <Button
+                    variant="outline"
+                    onClick={() => form.reset()}
+                    className="ml-2"
+                  >
+                    <Refresh className="text-xl" />
+                  </Button>
+                </div>
                 <FormMessage />
               </FormItem>
             )}
