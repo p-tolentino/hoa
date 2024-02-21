@@ -3,47 +3,48 @@ import { format } from 'date-fns'
 import { TransactionClient } from './_components/client'
 import { TransactionColumn } from './_components/columns'
 import { currentUser } from '@/lib/auth'
-import { getAllUsers } from '@/server/data/user'
+import { getHoaTransactions } from '@/server/data/hoa-transactions'
+import {getHoaInfo} from '@/server/data/hoa-info'
 
-const Homeowners = async () => {
-  const user = await currentUser()
-  if (!user) {
+const IncomeExpense = async () => {
+
+  const transactions = await getHoaTransactions()
+  if (!transactions) {
     return null
   }
 
-  const users = await getAllUsers()
-
-  if (!users) {
-    return null
+  const hoaInfo = await getHoaInfo();
+  if (!hoaInfo) {
+    return null;
   }
 
-  const formattedRecords: TransactionColumn[] = users.map(item => ({
+  const formattedRecords: TransactionColumn[] = transactions.map(item => ({
     id: item.id || '',
-    dateSubmitted: item.info?.dateSubmitted
+    dateSubmitted: item.createdAt
       ? format(
-          new Date(item.info?.dateSubmitted)?.toISOString().split('T')[0],
+          new Date(item.createdAt)?.toISOString().split('T')[0],
           'MMMM dd, yyyy'
         )
       : '',
-    dateIssued: item.info?.dateIssued
+    dateIssued: item.dateIssued
       ? format(
-          new Date(item.info?.dateIssued)?.toISOString().split('T')[0],
+          new Date(item.dateIssued)?.toISOString().split('T')[0],
           'MMMM dd, yyyy'
         )
       : '',
-    type: item.info?.type || '',
-    title: item.info?.title || '',
-    amount: item.info?.amount || '',
-    description: item.info?.description || ''
+    type: item.type || '',
+    purpose: item.purpose || '',
+    amount: item.amount.toString() || '',
+    description: item.description || ''
   }))
 
   return (
     <div className='flex'>
       <div className='flex-1 space-y-4'>
-        <TransactionClient data={formattedRecords} />
+        <TransactionClient data={formattedRecords} hoaInfo={hoaInfo}/>
       </div>
     </div>
   )
 }
 
-export default Homeowners
+export default IncomeExpense

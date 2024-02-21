@@ -4,6 +4,12 @@ import { ColumnDef } from '@tanstack/react-table'
 import { CellAction } from './cell-action'
 import { ArrowUpDown } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { HoaTransactionType } from "@prisma/client";
+import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
+
+import { Hoa } from "@prisma/client";
+import {getHoaInfo} from '@/server/data/hoa-info'
 
 export type TransactionColumn = {
   id: string
@@ -14,6 +20,8 @@ export type TransactionColumn = {
   amount: string
   description: string
 }
+
+const hoaInfo = getHoaInfo();
 
 export const columns: ColumnDef<TransactionColumn>[] = [
   {
@@ -62,7 +70,20 @@ export const columns: ColumnDef<TransactionColumn>[] = [
         </Button>
       )
     },
-    cell: ({ row }) => row.getValue('type')
+    cell: ({ row }) => (
+      <Badge
+        className={cn(
+          row.getValue("type") === HoaTransactionType.INCOME
+            ? "bg-green-700"
+            : row.getValue("type") === HoaTransactionType.EXPENSE
+            ? "bg-red-700"
+            : "display-none"
+        )}
+      >
+        {" "}
+        {row.getValue('type')}
+      </Badge>
+    ), 
   },
   {
     accessorKey: 'purpose',

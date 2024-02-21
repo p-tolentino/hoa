@@ -8,15 +8,18 @@ import NewTransactionButton from './NewTransactionButton'
 import { TransactionColumn, columns } from './columns'
 import { DataTable } from '@/components/ui/data-table'
 import { Stack, Text } from '@chakra-ui/react'
+import { Hoa } from "@prisma/client";
 
 interface TransactionClientProps {
-  data: TransactionColumn[]
+  data: TransactionColumn[];
+  hoaInfo: Hoa;
 }
 
+
 export const TransactionClient: React.FC<TransactionClientProps> = ({
-  data
+  data,
+  hoaInfo,
 }) => {
-  const totalFunds = '100,000'
 
   return (
     <>
@@ -28,10 +31,10 @@ export const TransactionClient: React.FC<TransactionClientProps> = ({
         <Stack lineHeight={0.8}>
           <Text fontFamily={'fonts.body'}>Total Funds:</Text>
           <Text fontSize={'3xl'} fontWeight={'bold'} color={'brand.500'}>
-            P{totalFunds}
+           P {new Intl.NumberFormat('en-US').format(hoaInfo.funds)}
           </Text>
         </Stack>
-        <NewTransactionButton />
+        <NewTransactionButton currentFunds={hoaInfo.funds}/>
       </div>
       <Separator />
       <DataTable columns={columns} data={data} searchKey='title' />

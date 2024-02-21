@@ -130,3 +130,16 @@ export const NewPasswordSchema = z.object({
     message: "Minimum of 6 characters required",
   }),
 });
+
+export const NewTransactionSchema = z.object({
+  dateIssued: z.string()
+  .refine(date => new Date(date) <= new Date(), {
+    message: "Date issued cannot be in the future",
+  }),
+  type: z.enum(["INCOME", "EXPENSE"], {
+    required_error: "Please specify if it is an income or expense.",
+  }),
+  purpose: z.string(),
+  amount: z.string(),
+  description: z.string(),
+});
