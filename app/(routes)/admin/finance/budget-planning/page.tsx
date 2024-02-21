@@ -13,6 +13,7 @@ import {
 import ExpenseTable from "./_components/expenses-table";
 import RevenueTable from "./_components/revenue-table";
 import TotalTable from "./_components/totals";
+import { Separator } from "@/components/ui/separator";
 
 export default function BudgetPlanning() {
   return (
@@ -21,7 +22,7 @@ export default function BudgetPlanning() {
         title="Budget Planning"
         description="Enter the organization's income, funds, and expenses."
       />
-      <Box className="p-5"></Box>
+      <Separator className="mt-2 mb-5" />
 
       {/* Title, Current and Previous Fiscal Year */}
       <Flex w="100%">
