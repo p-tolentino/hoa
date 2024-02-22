@@ -3,42 +3,59 @@ import { format } from "date-fns";
 import { PaymentHistoryClient } from "./_components/client";
 import { PaymentHistoryColumn } from "./_components/columns";
 import { currentUser } from "@/lib/auth";
-import { getAllUsers } from "@/server/data/user";
+import { getPersonalAddress, getTransactionByAddress, getPersonalInfo } from "@/server/data/user-transactions";
 
-const Homeowners = async () => {
+const PaymentHistory = async () => {
   const user = await currentUser();
   if (!user) {
     return null;
   }
 
-  const users = await getAllUsers();
-
-  if (!users) {
+  const personal = await getPersonalAddress(user.id);
+  if (!personal?.address) {
     return null;
   }
 
-  const formattedRecords: PaymentHistoryColumn[] = users.map((item) => ({
-    id: item.id || "",
-    name:
-      `${item.info?.firstName || "-"} ${
-        item.info?.middleName ? `${`${item.info?.middleName}`[0]}.` : ""
-      } ${item.info?.lastName || ""}` || "",
-    status: item.status || "",
-    amount: item.info?.amount || "",
-    dateIssued: item.info?.dateIssued
+  const transactions = await getTransactionByAddress(personal.address);
+  if (!transactions) {
+    return null;
+  }
+console.log(transactions)
+
+  const formattedHistoryPromises: Promise<PaymentHistoryColumn>[] = transactions
+  .filter(item => item.status === "PAID")
+  .map(async (item) => {
+    let personal;
+    if(item.paidBy){
+      personal = await getPersonalInfo(item.paidBy)
+    }
+    
+    return{
+      id:item.id,
+      status: item.status || "",
+      amount: item.amount.toString() || "",
+      purpose: item.purpose || "",
+      description: item.description || "",
+      createdAt: item.createdAt
       ? format(
-          new Date(item.info?.dateIssued)?.toISOString().split("T")[0],
+          new Date(item.createdAt)?.toISOString().split("T")[0],
           "MMMM dd, yyyy"
         )
       : "",
-    datePaid: item.info?.datePaid
+    datePaid: item.datePaid
       ? format(
-          new Date(item.info?.datePaid)?.toISOString().split("T")[0],
+          new Date(item.datePaid)?.toISOString().split("T")[0],
           "MMMM dd, yyyy"
         )
       : "",
-    purpose: item.info?.purpose || "",
-  }));
+      paidBy:
+        `${personal?.lastName || "-"} ${
+          personal?.middleName ? `${`${personal.middleName}`[0]}.` : ""
+        } ${personal?.firstName || ""}` || "",
+    };
+  });
+
+  const formattedRecords = await Promise.all(formattedHistoryPromises);
 
   return (
     <div className="flex">
@@ -49,4 +66,4 @@ const Homeowners = async () => {
   );
 };
 
-export default Homeowners;
+export default PaymentHistory;
