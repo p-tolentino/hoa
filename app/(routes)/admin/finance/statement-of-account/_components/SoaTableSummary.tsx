@@ -8,20 +8,24 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { PayNow } from "./pay-now";
+import { UserTransaction } from "@prisma/client";
 
 const SoaTableSummary = ({
   data,
+  transactionsToUpdate,
 }: {
   data: {
     purpose: string;
-    debit: string;
-    credit: string;
+    debit: number;
+    credit: number;
   }[];
+  transactionsToUpdate: UserTransaction[];
 }) => {
   // Function to calculate sum of debit
   const calculateDebitSum = () => {
     return data.reduce(
-      (total, fee) => total + parseFloat(fee.debit.replace(",", "")),
+      (total, fee) => total + parseFloat(fee.debit.toString().replace(",", "")),
       0
     );
   };
@@ -29,16 +33,15 @@ const SoaTableSummary = ({
   // Function to calculate sum of credit
   const calculateCreditSum = () => {
     return data.reduce(
-      (total, fee) => total + parseFloat(fee.credit.replace(",", "")),
+      (total, fee) =>
+        total + parseFloat(fee.credit.toString().replace(",", "")),
       0
     );
   };
 
   // Function to calculate balance due
   const calculateBalanceDue = () => {
-    const debitSum = calculateDebitSum();
-    const creditSum = calculateCreditSum();
-    return (creditSum - debitSum).toFixed(2); // Round to 2 decimal places
+    return calculateCreditSum().toFixed(2); // Round to 2 decimal places
   };
 
   // Function to format number with commas and two decimal points
@@ -61,7 +64,7 @@ const SoaTableSummary = ({
           <TableHeader className="bg-[#F0CB5B]">
             <TableRow>
               <TableHead>Fees</TableHead>
-              <TableHead className="text-right">Debit</TableHead>
+              {/* <TableHead className="text-right">Debit</TableHead> */}
               <TableHead className="text-right">Credit</TableHead>
             </TableRow>
           </TableHeader>
@@ -69,40 +72,40 @@ const SoaTableSummary = ({
             {data.map((fee, index) => (
               <TableRow key={index}>
                 <TableCell className="font-medium">{fee.purpose}</TableCell>
+                {/* <TableCell className="font-medium text-right">
+                  {formatNumber(fee.debit)}
+                </TableCell> */}
                 <TableCell className="font-medium text-right">
-                  {fee.debit}
-                </TableCell>
-                <TableCell className="font-medium text-right">
-                  {fee.credit}
+                  ₱ {formatNumber(fee.credit)}
                 </TableCell>
               </TableRow>
             ))}
             <TableRow>
               <TableCell className="font-bold">Total</TableCell>
+              {/* <TableCell className="font-semibold text-right">
+                ₱ {formatNumber(debitSum)}
+              </TableCell> */}
               <TableCell className="font-semibold text-right">
-                ₱ {formatNumber(debitSum)} {/* Display formatted debit sum */}
-              </TableCell>
-              <TableCell className="font-semibold text-right">
-                ₱ {formatNumber(creditSum)} {/* Display formatted credit sum */}
+                ₱ {formatNumber(creditSum)}
               </TableCell>
             </TableRow>
           </TableBody>
           <TableFooter>
             <TableRow>
-              <TableCell colSpan={2} className="text-lg font-bold">
-                Balance Due
-              </TableCell>
+              <TableCell className="text-lg font-bold">Balance Due</TableCell>
               <TableCell className="text-xl font-bold text-right text-red-700">
                 ₱ {formatNumber(parseFloat(balanceDue))}
-                {/* Display formatted balance due */}
               </TableCell>
             </TableRow>
           </TableFooter>
         </Table>
       </div>
-      <Button className="mt-5 text-white lg:text-lg font-semibold bg-[#355E3B]">
-        Pay Now
-      </Button>
+      {Number(balanceDue) !== 0 && (
+        <PayNow
+          amountToPay={balanceDue}
+          transactionsToUpdate={transactionsToUpdate}
+        />
+      )}
     </div>
   );
 };

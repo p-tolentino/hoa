@@ -19,7 +19,7 @@ import { format } from "date-fns";
 import SoaTableCategory from "./SoaTableCategory";
 import SoaTableSummary from "./SoaTableSummary";
 import { ExtendedUser } from "@/next-auth";
-import { Property } from "@prisma/client";
+import { PaymentStatus, Property, UserTransaction } from "@prisma/client";
 import { useForm } from "react-hook-form";
 import {
   Form,
@@ -33,124 +33,210 @@ import { useEffect } from "react";
 interface SoaInfoProps {
   user: ExtendedUser;
   property: Property;
+  transactions: UserTransaction[];
+  allUsers: ExtendedUser[];
 }
 
 const SelectSchema = z.object({
   dueType: z.string(),
 });
 
-export const SoaInfo: React.FC<SoaInfoProps> = ({ user, property }) => {
-  const hoaName = "ABC Homeowners' Association";
-
+export const SoaInfo: React.FC<SoaInfoProps> = ({
+  user,
+  property,
+  transactions,
+  allUsers,
+}) => {
   const form = useForm<z.infer<typeof SelectSchema>>({
     defaultValues: {
       dueType: "all",
     },
   });
 
+  const assocDues = transactions.filter((transaction) => {
+    if (transaction.purpose === "assocDues") {
+      return transaction;
+    }
+  });
+
+  const disputeFees = transactions.filter((transaction) => {
+    if (transaction.purpose === "dispute") {
+      return transaction;
+    }
+  });
+
+  const violationFees = transactions.filter((transaction) => {
+    if (transaction.purpose === "violation") {
+      return transaction;
+    }
+  });
+
+  const facilityFees = transactions.filter((transaction) => {
+    if (transaction.purpose === "facility") {
+      return transaction;
+    }
+  });
+
+  const maintenanceFees = transactions.filter((transaction) => {
+    if (transaction.purpose === "maintenance") {
+      return transaction;
+    }
+  });
+
+  const summary = [{}];
+
   const summarySoa = [
     {
       purpose: "Association Dues",
-      debit: "6,000.00",
-      credit: "6,000.00",
+      debit: (() => {
+        let paidSum = 0;
+
+        assocDues.forEach((fee) => {
+          if (fee.status === PaymentStatus.PAID) {
+            paidSum += parseFloat(fee.amount.toString().replace(/,/g, ""));
+          }
+        });
+
+        return paidSum;
+      })(),
+      credit: (() => {
+        let unpaidSum = 0;
+
+        assocDues.forEach((fee) => {
+          if (
+            fee.status === PaymentStatus.UNPAID ||
+            fee.status === PaymentStatus.OVERDUE
+          ) {
+            unpaidSum += parseFloat(fee.amount.toString().replace(/,/g, ""));
+          }
+        });
+
+        return unpaidSum;
+      })(),
     },
     {
       purpose: "Dispute Fees",
-      debit: "6,000.00",
-      credit: "12,000.00",
+      debit: (() => {
+        let paidSum = 0;
+
+        disputeFees.forEach((fee) => {
+          if (fee.status === PaymentStatus.PAID) {
+            paidSum += parseFloat(fee.amount.toString().replace(/,/g, ""));
+          }
+        });
+
+        return paidSum;
+      })(),
+      credit: (() => {
+        let unpaidSum = 0;
+
+        disputeFees.forEach((fee) => {
+          if (
+            fee.status === PaymentStatus.UNPAID ||
+            fee.status === PaymentStatus.OVERDUE
+          ) {
+            unpaidSum += parseFloat(fee.amount.toString().replace(/,/g, ""));
+          }
+        });
+
+        return unpaidSum;
+      })(),
     },
     {
       purpose: "Violation Fees",
-      debit: "0.00",
-      credit: "50.00",
+      debit: (() => {
+        let paidSum = 0;
+
+        violationFees.forEach((fee) => {
+          if (fee.status === PaymentStatus.PAID) {
+            paidSum += parseFloat(fee.amount.toString().replace(/,/g, ""));
+          }
+        });
+
+        return paidSum;
+      })(),
+      credit: (() => {
+        let unpaidSum = 0;
+
+        violationFees.forEach((fee) => {
+          if (
+            fee.status === PaymentStatus.UNPAID ||
+            fee.status === PaymentStatus.OVERDUE
+          ) {
+            unpaidSum += parseFloat(fee.amount.toString().replace(/,/g, ""));
+          }
+        });
+
+        return unpaidSum;
+      })(),
     },
     {
       purpose: "Facility Reservation Fees",
-      debit: "250.00",
-      credit: "600.00",
+      debit: (() => {
+        let paidSum = 0;
+
+        facilityFees.forEach((fee) => {
+          if (fee.status === PaymentStatus.PAID) {
+            paidSum += parseFloat(fee.amount.toString().replace(/,/g, ""));
+          }
+        });
+
+        return paidSum;
+      })(),
+      credit: (() => {
+        let unpaidSum = 0;
+
+        facilityFees.forEach((fee) => {
+          if (
+            fee.status === PaymentStatus.UNPAID ||
+            fee.status === PaymentStatus.OVERDUE
+          ) {
+            unpaidSum += parseFloat(fee.amount.toString().replace(/,/g, ""));
+          }
+        });
+
+        return unpaidSum;
+      })(),
     },
     {
-      purpose: "Maintenance Fees",
-      debit: "50.00",
-      credit: "50.00",
-    },
-  ];
-  const associationDues = [
-    {
-      status: "Paid",
-      dateIssued: "01/01/2024",
-      datePaid: "01/01/2024",
-      description: "Association Due: Jan 2024",
-      amount: "3,000.00",
-    },
-    {
-      status: "Paid",
-      dateIssued: "02/01/2024",
-      datePaid: "02/01/2024",
-      description: "Association Due: Feb 2024",
-      amount: "3,000.00",
-    },
-  ];
-  const disputeFees = [
-    {
-      status: "Paid",
-      dateIssued: "02/01/2024",
-      datePaid: "02/04/2024",
-      description: "Dispute Settlement Amount",
-      amount: "6,000.00",
-    },
-    {
-      status: "Unpaid",
-      dateIssued: "02/01/2024",
-      datePaid: "",
-      description: "Settlement Amount Balance",
-      amount: "6,000.00",
-    },
-  ];
-  const violationFees = [
-    {
-      status: "Unpaid",
-      dateIssued: "01/29/2024",
-      datePaid: "N/A",
-      description: "Wrongful Parking",
-      amount: "50.00",
-    },
-  ];
-  const facilityReservations = [
-    {
-      status: "Paid",
-      dateIssued: "02/02/2024",
-      datePaid: "02/02/2024",
-      description: "Basketball Court Reservation",
-      amount: "250.00",
-    },
-    {
-      status: "Unpaid",
-      dateIssued: "02/01/2024",
-      datePaid: "N/A",
-      description: "Clubhouse Reservation",
-      amount: "350.00",
-    },
-  ];
-  const maintenanceFees = [
-    {
-      status: "Paid",
-      dateIssued: "01/29/2024",
-      datePaid: "01/30/2024",
-      description: "Grass Cutting",
-      amount: "50.00",
+      purpose: "Maintenance Service Fees",
+      debit: (() => {
+        let paidSum = 0;
+
+        maintenanceFees.forEach((fee) => {
+          if (fee.status === PaymentStatus.PAID) {
+            paidSum += parseFloat(fee.amount.toString().replace(/,/g, ""));
+          }
+        });
+
+        return paidSum;
+      })(),
+      credit: (() => {
+        let unpaidSum = 0;
+
+        maintenanceFees.forEach((fee) => {
+          if (
+            fee.status === PaymentStatus.UNPAID ||
+            fee.status === PaymentStatus.OVERDUE
+          ) {
+            unpaidSum += parseFloat(fee.amount.toString().replace(/,/g, ""));
+          }
+        });
+
+        return unpaidSum;
+      })(),
     },
   ];
 
-  useEffect(() => {
-    const type = form.getValues("dueType");
-    console.log(type);
-  }, [form.watch("dueType")]);
+  useEffect(() => {}, [form.watch("dueType")]);
 
   return (
     <>
       <div className="flex items-center justify-between">
-        <Heading title={`Statement of Account`} description={`${hoaName}`} />
+        <Heading
+          title={`Statement of Account`}
+          description="ABC Homeowners' Association"
+        />
       </div>
       <Separator className="mt-4 mb-6" />
 
@@ -216,23 +302,26 @@ export const SoaInfo: React.FC<SoaInfoProps> = ({ user, property }) => {
         <Box mt="15px">
           {/* SOA Summary Table */}
           {form.getValues("dueType") === "all" && (
-            <SoaTableSummary data={summarySoa} />
+            <SoaTableSummary
+              data={summarySoa}
+              transactionsToUpdate={transactions}
+            />
           )}
 
           {form.getValues("dueType") === "assocDues" && (
-            <SoaTableCategory data={associationDues} />
+            <SoaTableCategory data={assocDues} users={allUsers} />
           )}
           {form.getValues("dueType") === "dispute" && (
-            <SoaTableCategory data={disputeFees} />
+            <SoaTableCategory data={disputeFees} users={allUsers} />
           )}
           {form.getValues("dueType") === "violation" && (
-            <SoaTableCategory data={violationFees} />
+            <SoaTableCategory data={violationFees} users={allUsers} />
           )}
           {form.getValues("dueType") === "facility" && (
-            <SoaTableCategory data={facilityReservations} />
+            <SoaTableCategory data={facilityFees} users={allUsers} />
           )}
           {form.getValues("dueType") === "maintenance" && (
-            <SoaTableCategory data={maintenanceFees} />
+            <SoaTableCategory data={maintenanceFees} users={allUsers} />
           )}
         </Box>
       </VStack>

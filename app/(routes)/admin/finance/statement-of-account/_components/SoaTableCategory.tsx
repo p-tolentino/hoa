@@ -9,27 +9,28 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { getUserById } from "@/server/data/user";
+import { PaymentStatus, UserTransaction } from "@prisma/client";
+import { format } from "date-fns";
+import { PayNow } from "./pay-now";
+import { ExtendedUser } from "@/next-auth";
 
 const SoaTableCategory = ({
   data,
+  users,
 }: {
-  data: {
-    status: string;
-    dateIssued: string;
-    datePaid: string;
-    description: string;
-    amount: string;
-  }[];
+  data: UserTransaction[];
+  users: ExtendedUser[];
 }) => {
   // Calculate the sum of paid and unpaid amounts
   const calculateSums = () => {
     let paidSum = 0;
     let unpaidSum = 0;
     data.forEach((fee) => {
-      if (fee.status === "Paid") {
-        paidSum += parseFloat(fee.amount.replace(/,/g, ""));
+      if (fee.status === PaymentStatus.PAID) {
+        paidSum += parseFloat(fee.amount.toString().replace(/,/g, ""));
       } else {
-        unpaidSum += parseFloat(fee.amount.replace(/,/g, ""));
+        unpaidSum += parseFloat(fee.amount.toString().replace(/,/g, ""));
       }
     });
     return {
@@ -54,7 +55,7 @@ const SoaTableCategory = ({
 
   return (
     <div className="flex flex-col items-center">
-      <div className="border rounded-md mb-3 w-[50vw]">
+      <div className="w-full mb-3 border rounded-md">
         <Table>
           <TableHeader className="bg-[#F0CB5B]">
             <TableRow>
@@ -62,7 +63,8 @@ const SoaTableCategory = ({
               <TableHead className="w-[150px]">Date Issued</TableHead>
               <TableHead className="w-[150px]">Date Paid</TableHead>
               <TableHead>Description</TableHead>
-              <TableHead className="text-right">Amount</TableHead>
+              <TableHead>Paid By</TableHead>
+              <TableHead className="text-right">Amount Due</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -71,24 +73,53 @@ const SoaTableCategory = ({
                 <TableCell className="font-medium">
                   <Badge
                     className={
-                      fee.status === "Paid" ? "bg-green-700" : "bg-red-700"
+                      fee.status === PaymentStatus.PAID
+                        ? "bg-green-700"
+                        : fee.status === PaymentStatus.OVERDUE
+                        ? "bg-red-700"
+                        : fee.status === PaymentStatus.UNPAID
+                        ? "bg-yellow-600"
+                        : "display-none"
                     }
                   >
                     {fee.status}
                   </Badge>
                 </TableCell>
-                <TableCell className="font-medium">{fee.dateIssued}</TableCell>
-                <TableCell className="font-medium">{fee.datePaid}</TableCell>
+                <TableCell className="font-medium">
+                  {fee.createdAt
+                    ? format(
+                        new Date(fee.createdAt)?.toISOString().split("T")[0],
+                        "MMMM dd, yyyy"
+                      )
+                    : ""}
+                </TableCell>
+                <TableCell className="font-medium">
+                  {fee.datePaid
+                    ? format(
+                        new Date(fee.datePaid)?.toISOString().split("T")[0],
+                        "MMMM dd, yyyy"
+                      )
+                    : ""}
+                </TableCell>
                 <TableCell className="font-medium">{fee.description}</TableCell>
+                <TableCell className="font-medium">
+                  {`${
+                    users?.find((user) => user.id === fee.paidBy)?.info
+                      .firstName || ""
+                  } ${
+                    users?.find((user) => user.id === fee.paidBy)?.info
+                      .lastName || ""
+                  }`}
+                </TableCell>
                 <TableCell className="font-medium text-right">
-                  {fee.amount}
+                  {formatNumber(parseFloat(fee.amount.toFixed(2)))}
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
           <TableFooter>
             <TableRow>
-              <TableCell colSpan={4} className="text-lg font-bold">
+              <TableCell colSpan={5} className="text-lg font-bold">
                 Balance Due
               </TableCell>
               <TableCell
@@ -103,9 +134,12 @@ const SoaTableCategory = ({
           </TableFooter>
         </Table>
       </div>
-      <Button className="mt-5 text-white lg:text-lg font-semibold bg-[#355E3B]">
-        Pay Now
-      </Button>
+      {Number(unpaidSum) !== 0 && (
+        <PayNow
+          amountToPay={unpaidSum.toString()}
+          transactionsToUpdate={data}
+        />
+      )}
     </div>
   );
 };
