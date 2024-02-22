@@ -5,6 +5,7 @@ import { TransactionColumn } from './_components/columns'
 import { currentUser } from '@/lib/auth'
 import { getHoaTransactions } from '@/server/data/hoa-transactions'
 import {getHoaInfo} from '@/server/data/hoa-info'
+import {getUserById} from '@/server/data/user'
 
 const IncomeExpense = async () => {
 
@@ -18,25 +19,25 @@ const IncomeExpense = async () => {
     return null;
   }
 
-  const formattedRecords: TransactionColumn[] = transactions.map(item => ({
-    id: item.id || '',
-    dateSubmitted: item.createdAt
-      ? format(
-          new Date(item.createdAt)?.toISOString().split('T')[0],
-          'MMMM dd, yyyy'
-        )
-      : '',
-    dateIssued: item.dateIssued
-      ? format(
-          new Date(item.dateIssued)?.toISOString().split('T')[0],
-          'MMMM dd, yyyy'
-        )
-      : '',
-    type: item.type || '',
-    purpose: item.purpose || '',
-    amount: item.amount.toString() || '',
-    description: item.description || ''
-  }))
+  const formattedRecordsPromise: Promise<TransactionColumn>[] = transactions.map(async (item) => {
+    const user = await getUserById(item.userId);
+
+    return {
+      id: user?.info?.lastName || '', // Fixed a typo here from lastNamme to lastName
+      dateSubmitted: item.createdAt
+        ? format(new Date(item.createdAt).toISOString().split('T')[0], 'MMMM dd, yyyy')
+        : '',
+      dateIssued: item.dateIssued
+        ? format(new Date(item.dateIssued).toISOString().split('T')[0], 'MMMM dd, yyyy')
+        : '',
+      type: item.type || '',
+      purpose: item.purpose || '',
+      amount: item.amount.toString() || '',
+      description: item.description || '',
+    };
+  });
+
+  const formattedRecords = await Promise.all(formattedRecordsPromise);
 
   return (
     <div className='flex'>

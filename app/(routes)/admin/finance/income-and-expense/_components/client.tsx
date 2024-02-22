@@ -37,7 +37,7 @@ export const TransactionClient: React.FC<TransactionClientProps> = ({
         <NewTransactionButton currentFunds={hoaInfo.funds}/>
       </div>
       <Separator />
-      <DataTable columns={columns} data={data} searchKey='title' />
+      <DataTable columns={columns} data={data} searchKey="purpose" />
     </>
   )
 }

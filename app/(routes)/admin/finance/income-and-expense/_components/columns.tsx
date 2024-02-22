@@ -134,6 +134,22 @@ export const columns: ColumnDef<TransactionColumn>[] = [
     cell: ({ row }) => row.getValue('description')
   },
   {
+    accessorKey: 'id',
+    header: ({ column }) => {
+      return (
+        <Button
+          variant='ghost'
+          className='hover:bg-[#ffe492]'
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
+          Created By
+          <ArrowUpDown className='w-4 h-4 ml-2' />
+        </Button>
+      )
+    },
+    cell: ({ row }) => row.getValue('id')
+  },
+  {
     id: 'actions',
     cell: ({ row }) => <CellAction data={row.original} />
   }
