@@ -1,5 +1,6 @@
 "use client";
 
+import React, { useState, useMemo } from 'react';
 import { Heading } from "@/components/ui/heading";
 import { Separator } from "@/components/ui/separator";
 
@@ -22,6 +23,19 @@ interface PaymentHistoryClientProps {
 export const PaymentHistoryClient: React.FC<PaymentHistoryClientProps> = ({
   data,
 }) => {
+
+  const [selectedCategoryFilter, setSelectedCategoryFilter] = useState('showAll');
+  const filteredData = useMemo(() => {
+    return data.filter(item => {
+      // Check status filter
+
+      // Check category filter
+      const categoryMatch = selectedCategoryFilter === 'showAll' || item.purpose === selectedCategoryFilter; // Assuming 'category' is the correct field
+
+      return categoryMatch;
+    });
+  }, [data, selectedCategoryFilter]);
+
   return (
     <>
       <div className="flex items-center justify-between">
@@ -34,7 +48,7 @@ export const PaymentHistoryClient: React.FC<PaymentHistoryClientProps> = ({
 
       <HStack>
         {/* Select category to show */}
-        <Select>
+        <Select value={selectedCategoryFilter} onValueChange={(value) => setSelectedCategoryFilter(value)}>
           <SelectTrigger className="w-[250px]">
             <SelectValue placeholder="Show All" />
           </SelectTrigger>
@@ -43,7 +57,7 @@ export const PaymentHistoryClient: React.FC<PaymentHistoryClientProps> = ({
               <SelectItem value="showAll" className="font-semibold">
                 Show All
               </SelectItem>
-              <SelectItem value="finance">Association Dues</SelectItem>
+              <SelectItem value="assocDues">Association Dues</SelectItem>
               <SelectItem value="dispute">Dispute Fines</SelectItem>
               <SelectItem value="violation">Violation Fines</SelectItem>
               <SelectItem value="facility">
@@ -56,7 +70,7 @@ export const PaymentHistoryClient: React.FC<PaymentHistoryClientProps> = ({
         <Spacer />
 
         {/* Filter status to show */}
-        <Select>
+        {/* <Select>
           <SelectTrigger className="w-[250px]">
             <SelectValue placeholder="Filter Status" />
           </SelectTrigger>
@@ -65,18 +79,17 @@ export const PaymentHistoryClient: React.FC<PaymentHistoryClientProps> = ({
               <SelectItem value="showAll" className="font-semibold">
                 Show All
               </SelectItem>
-              {/* Active = Paid , Inactive = 'UNPAID' */}
               <SelectItem value="ACTIVE">PAID</SelectItem>
               <SelectItem value="INACTIVE" defaultValue={1}>
                 UNPAID
               </SelectItem>
             </SelectGroup>
           </SelectContent>
-        </Select>
+        </Select> */}
       </HStack>
 
       {/* Table */}
-      <DataTable columns={columns} data={data} searchKey="purpose" />
+      <DataTable columns={columns} data={filteredData} searchKey="paidBy" />
     </>
   );
 };

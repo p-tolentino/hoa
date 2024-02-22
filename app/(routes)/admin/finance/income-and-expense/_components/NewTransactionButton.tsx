@@ -15,7 +15,11 @@ import {
 import NewTransactionForm from './NewTransactionForm'
 import { AddIcon } from '@chakra-ui/icons'
 
-export default function NewTransactionFormButton () {
+interface NewTransactionButtonProps {
+  currentFunds: number;
+}
+
+export default function NewTransactionFormButton ({currentFunds}:NewTransactionButtonProps) {
   // Form Title and instructions
   const formTitle = 'New Transaction'
   const formInstructions =
@@ -23,6 +27,10 @@ export default function NewTransactionFormButton () {
 
   // Modal functions
   const { isOpen, onClose, onOpen } = useDisclosure()
+
+  const handleSuccess = () => {
+    onClose(); // This uses the onClose function from useDisclosure to close the modal
+  };
 
   return (
     <>
@@ -48,7 +56,7 @@ export default function NewTransactionFormButton () {
             </Text>
           </ModalHeader>
           <ModalBody>
-            <NewTransactionForm />
+            <NewTransactionForm onSuccess={handleSuccess} currentFunds={currentFunds}/>
           </ModalBody>
         </ModalContent>
       </Modal>

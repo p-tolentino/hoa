@@ -73,6 +73,22 @@ export const columns: ColumnDef<PaymentRecordColumn>[] = [
     ),
   },
   {
+    accessorKey: "amount",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          className="hover:bg-[#ffe492]"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Amount
+          <ArrowUpDown className="w-4 h-4 ml-2" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => row.getValue("amount"),
+  },
+  {
     accessorKey: "purpose",
     header: ({ column }) => {
       return (
@@ -121,22 +137,6 @@ export const columns: ColumnDef<PaymentRecordColumn>[] = [
     cell: ({ row }) => row.getValue("dateIssued"),
   },
   {
-    accessorKey: "amount",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          className="hover:bg-[#ffe492]"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Amount
-          <ArrowUpDown className="w-4 h-4 ml-2" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => row.getValue("amount"),
-  },
-  {
     accessorKey: "datePaid",
     header: ({ column }) => {
       return (
@@ -152,7 +152,22 @@ export const columns: ColumnDef<PaymentRecordColumn>[] = [
     },
     cell: ({ row }) => row.getValue("datePaid"),
   },
-
+  {
+    accessorKey: "paidBy",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          className="hover:bg-[#ffe492]"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Paid By
+          <ArrowUpDown className="w-4 h-4 ml-2" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => row.getValue("paidBy"),
+  },
   {
     id: "actions",
     cell: ({ row }) => <CellAction data={row.original} />,
