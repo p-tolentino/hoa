@@ -21,7 +21,7 @@ export default function CreateBudgetPlan () {
     <>
       <Flex justifyContent='space-between'>
         <Heading
-          title='Budget Planning'
+          title='Create Budget Plan'
           description="Enter the organization's income, funds, and expenses. Make sure to review the totals table at the bottom before submitting."
         />
         <ButtonGroup>
