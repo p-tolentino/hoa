@@ -3,6 +3,9 @@ import SoaInfo from "./_components/soa-info";
 import { getPropertyById } from "@/server/data/user-info";
 import { getTransactionByAddress } from "@/server/data/user-transactions";
 import { getAllUsers } from "@/server/data/user";
+import { addDays } from "date-fns";
+import { overdueTransaction } from "@/server/actions/user-transactions";
+import { PaymentStatus } from "@prisma/client";
 
 const StatementOfAccount = async () => {
   const user = await currentUser();
@@ -22,6 +25,15 @@ const StatementOfAccount = async () => {
   if (!transactions) {
     return null;
   }
+
+  transactions.map((transaction) => {
+    const deadline = addDays(new Date(transaction.createdAt), 30);
+
+    if (transaction.status === PaymentStatus.UNPAID && new Date() > deadline) {
+      transaction.status = PaymentStatus.OVERDUE;
+      overdueTransaction(transaction.id);
+    }
+  });
 
   const allUsers = await getAllUsers();
 
