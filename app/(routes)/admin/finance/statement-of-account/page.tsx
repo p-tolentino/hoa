@@ -4,7 +4,10 @@ import { getPropertyById } from "@/server/data/user-info";
 import { getTransactionByAddress } from "@/server/data/user-transactions";
 import { getAllUsers } from "@/server/data/user";
 import { addDays } from "date-fns";
-import { overdueTransaction } from "@/server/actions/user-transactions";
+import {
+  createAssocDue,
+  overdueTransaction,
+} from "@/server/actions/user-transactions";
 import { PaymentStatus } from "@prisma/client";
 
 const StatementOfAccount = async () => {
@@ -24,6 +27,21 @@ const StatementOfAccount = async () => {
 
   if (!transactions) {
     return null;
+  }
+
+  const existingAssocDuesBill = transactions.find((transaction) => {
+    return (
+      transaction.purpose === "assocDues" &&
+      transaction.createdAt.getMonth() + 1 === new Date().getMonth() + 1
+    );
+  });
+
+  if (!existingAssocDuesBill) {
+    await createAssocDue().then((data) => {
+      if (data) {
+        console.log(data.success);
+      }
+    });
   }
 
   transactions.map((transaction) => {
