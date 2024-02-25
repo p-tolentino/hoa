@@ -11,33 +11,53 @@ import {
   Button
 } from '@chakra-ui/react'
 import { AddIcon, DeleteIcon } from '@chakra-ui/icons'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from '@/components/ui/select'
 
 interface TableRow {
   id: number
   expense: string
   currentyearbudget: number
-  yeartodateactuals: number
 }
 
 const initialData: TableRow[] = [
   {
     id: 1,
-    expense: 'Salaries and Wages',
-    currentyearbudget: 25,
-    yeartodateactuals: 10
+    expense: 'Salaries and Benefits',
+    currentyearbudget: 25
   },
   {
     id: 2,
     expense: 'Office Supplies',
-    currentyearbudget: 25,
-    yeartodateactuals: 10
+    currentyearbudget: 25
   },
   {
     id: 3,
     expense: 'Utilities',
-    currentyearbudget: 25,
-    yeartodateactuals: 10
+    currentyearbudget: 25
   }
+]
+
+// Select Expense Items
+const selectExpense = [
+  { value: 'salaries', text: 'Salaries and Benefits' },
+  { value: 'utilities', text: 'Utilities' },
+  { value: 'supplies', text: 'Office Supplies' },
+  {
+    value: 'maintenance',
+    text: 'Repairs & Maintenance'
+  },
+  { value: 'donations', text: 'Donations' },
+  { value: 'furnitures', text: 'Furnitures & Fixtures' },
+  { value: 'representation', text: 'Representation Expenses' },
+  { value: 'legal', text: 'Legal & Professional Fees' },
+  { value: 'administrative', text: 'Administrative Costs' },
+  { value: 'furnitures', text: 'Furnitures & Fixtures' }
 ]
 
 const ExpenseTable: React.FC = () => {
@@ -45,8 +65,7 @@ const ExpenseTable: React.FC = () => {
   const [totals, setTotals] = useState<TableRow>({
     id: 0,
     expense: 'Total Yearly Expenses',
-    currentyearbudget: 0,
-    yeartodateactuals: 0
+    currentyearbudget: 0
   })
 
   useEffect(() => {
@@ -60,10 +79,6 @@ const ExpenseTable: React.FC = () => {
       currentyearbudget: data.reduce(
         (sum, row) => sum + parseFloat(row.currentyearbudget.toString()) || 0,
         0
-      ),
-      yeartodateactuals: data.reduce(
-        (sum, row) => sum + parseFloat(row.yeartodateactuals.toString()) || 0,
-        0
       )
     }
     setTotals(total)
@@ -72,7 +87,7 @@ const ExpenseTable: React.FC = () => {
   const handleExpenseChange = (id: number, newExpense: string) => {
     setData(prevData => {
       const newData = prevData.map(row =>
-        row.id === id ? { ...row, revenue: newExpense } : row
+        row.id === id ? { ...row, expense: newExpense } : row
       )
       updateTotals()
       return newData
@@ -92,25 +107,11 @@ const ExpenseTable: React.FC = () => {
     )
   }
 
-  const handleYearToDateActualsChange = (
-    id: number,
-    newyeartodateactuals: number
-  ) => {
-    setData(prevData =>
-      prevData.map(row =>
-        row.id === id
-          ? { ...row, yeartodateactuals: newyeartodateactuals }
-          : row
-      )
-    )
-  }
-
   const handleAddRow = () => {
     const newRow: TableRow = {
       id: data.length + 1,
       expense: '',
-      currentyearbudget: 0,
-      yeartodateactuals: 0
+      currentyearbudget: 0
     }
     setData(prevData => [...prevData, newRow])
   }
@@ -119,28 +120,39 @@ const ExpenseTable: React.FC = () => {
   }
   return (
     <VStack>
-      <Table variant='simple' size='xs' mt='20px'>
+      <Table variant='simple' size='xs' mt='20px' w='60vw'>
         <Thead bgColor='brand.300'>
           <Tr h='3rem'>
-            <Th p='1rem' fontSize='sm' fontFamily='font.heading' width='50%'>
+            <Th p='1rem' fontSize='sm' fontFamily='font.heading'>
               Expenses
             </Th>
-            <Th p='1rem' fontSize='xs' fontFamily='font.heading'>
+            <Th p='1rem' fontSize='sm' fontFamily='font.heading' w='250px'>
               Current Year Budget
             </Th>
-            <Th p='1rem' fontSize='xs' fontFamily='font.heading'>
-              Year to Date Actuals
-            </Th>
+            <Th p='1rem' fontSize='sm' w='100px'></Th>
           </Tr>
         </Thead>
         <Tbody>
           {data.map(row => (
             <Tr key={row.id} fontFamily='font.body'>
               <Td>
-                <Input
-                  defaultValue={row.expense}
-                  onChange={value => handleExpenseChange(row.id, String(value))}
-                ></Input>
+                <Select>
+                  <SelectTrigger>
+                    <SelectValue
+                      placeholder={row.expense}
+                      onChange={value =>
+                        handleExpenseChange(row.id, String(value))
+                      }
+                    />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {selectExpense.map(item => (
+                      <SelectItem key={item.value} value={item.value}>
+                        {item.text}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </Td>
               <Td>
                 <Input
@@ -151,16 +163,8 @@ const ExpenseTable: React.FC = () => {
                   }
                 ></Input>
               </Td>
-              <Td>
-                <Input
-                  textAlign='right'
-                  defaultValue={row.yeartodateactuals}
-                  onChange={value =>
-                    handleYearToDateActualsChange(row.id, Number(value))
-                  }
-                ></Input>
-              </Td>
-              <Td>
+
+              <Td textAlign='center'>
                 <Button
                   onClick={() => handleDeleteRow(row.id)}
                   colorScheme='red'
@@ -177,9 +181,7 @@ const ExpenseTable: React.FC = () => {
             <Td textAlign='right' pr='1rem'>
               {totals.currentyearbudget}
             </Td>
-            <Td textAlign='right' pr='1rem'>
-              {totals.yeartodateactuals}
-            </Td>
+            <Td />
           </Tr>
         </Tbody>
       </Table>

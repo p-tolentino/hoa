@@ -11,33 +11,44 @@ import {
   Button
 } from '@chakra-ui/react'
 import { AddIcon, DeleteIcon } from '@chakra-ui/icons'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from '@/components/ui/select'
 
 interface TableRow {
   id: number
   revenue: string
   currentyearbudget: number
-  yeartodateactuals: number
 }
 
 const initialData: TableRow[] = [
   {
     id: 1,
-    revenue: 'Fundraising',
-    currentyearbudget: 25,
-    yeartodateactuals: 10
+    revenue: 'Association Dues',
+    currentyearbudget: 25
   },
   {
     id: 2,
-    revenue: 'Association Dues',
-    currentyearbudget: 25,
-    yeartodateactuals: 10
-  },
-  {
-    id: 3,
-    revenue: 'Foundations',
-    currentyearbudget: 25,
-    yeartodateactuals: 10
+    revenue: 'Other Income',
+    currentyearbudget: 25
   }
+]
+
+// Select Revenue Items
+const selectRevenue = [
+  { value: 'associationDues', text: 'Association Dues' },
+  { value: 'tollFees', text: 'Toll Fees' },
+  { value: 'facilityRentals', text: 'Facility Rentals' },
+  {
+    value: 'renovationAndDemolitionFees',
+    text: 'Renovation and Demolition Fees'
+  },
+  { value: 'carStickerReceipts', text: 'Car Sticker Receipts' },
+  { value: 'otherRevenue', text: 'Other Revenue' }
 ]
 
 const RevenueTable: React.FC = () => {
@@ -45,8 +56,7 @@ const RevenueTable: React.FC = () => {
   const [totals, setTotals] = useState<TableRow>({
     id: 0,
     revenue: 'Total Yearly Revenue',
-    currentyearbudget: 0,
-    yeartodateactuals: 0
+    currentyearbudget: 0
   })
 
   useEffect(() => {
@@ -59,10 +69,6 @@ const RevenueTable: React.FC = () => {
       revenue: 'Total Yearly Revenue',
       currentyearbudget: data.reduce(
         (sum, row) => sum + parseFloat(row.currentyearbudget.toString()) || 0,
-        0
-      ),
-      yeartodateactuals: data.reduce(
-        (sum, row) => sum + parseFloat(row.yeartodateactuals.toString()) || 0,
         0
       )
     }
@@ -92,25 +98,11 @@ const RevenueTable: React.FC = () => {
     )
   }
 
-  const handleYearToDateActualsChange = (
-    id: number,
-    newYearToDateActuals: number
-  ) => {
-    setData(prevData =>
-      prevData.map(row =>
-        row.id === id
-          ? { ...row, yeartodateactuals: newYearToDateActuals }
-          : row
-      )
-    )
-  }
-
   const handleAddRow = () => {
     const newRow: TableRow = {
       id: data.length + 1,
       revenue: '',
-      currentyearbudget: 0,
-      yeartodateactuals: 0
+      currentyearbudget: 0
     }
     setData(prevData => [...prevData, newRow])
   }
@@ -121,29 +113,41 @@ const RevenueTable: React.FC = () => {
 
   return (
     <VStack>
-      <Table variant='simple' size='xs' mt='20px'>
+      <Table variant='simple' size='xs' mt='20px' w='60vw'>
         <Thead bgColor='brand.300'>
           <Tr h='3rem'>
-            <Th p='1rem' fontSize='sm' fontFamily='font.heading' width='50%'>
+            <Th p='1rem' fontSize='sm' fontFamily='font.heading'>
               Revenue
             </Th>
-            <Th p='1rem' fontSize='xs' fontFamily='font.heading'>
+            <Th p='1rem' fontSize='sm' fontFamily='font.heading' w='250px'>
               Current Year Budget
             </Th>
-            <Th p='1rem' fontSize='xs' fontFamily='font.heading'>
-              Year to Date Actuals
-            </Th>
+            <Th p='1rem' fontSize='xs' w='100px'></Th>
           </Tr>
         </Thead>
         <Tbody>
           {data.map(row => (
             <Tr key={row.id} fontFamily='font.body'>
               <Td>
-                <Input
-                  defaultValue={row.revenue}
-                  onChange={value => handleRevenueChange(row.id, String(value))}
-                ></Input>
+                <Select>
+                  <SelectTrigger>
+                    <SelectValue
+                      placeholder={row.revenue}
+                      onChange={value =>
+                        handleRevenueChange(row.id, String(value))
+                      }
+                    />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {selectRevenue.map(item => (
+                      <SelectItem key={item.value} value={item.value}>
+                        {item.text}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </Td>
+
               <Td>
                 <Input
                   textAlign='right'
@@ -153,16 +157,8 @@ const RevenueTable: React.FC = () => {
                   }
                 ></Input>
               </Td>
-              <Td>
-                <Input
-                  textAlign='right'
-                  defaultValue={row.yeartodateactuals}
-                  onChange={value =>
-                    handleYearToDateActualsChange(row.id, Number(value))
-                  }
-                ></Input>
-              </Td>
-              <Td>
+
+              <Td textAlign='center'>
                 <Button
                   onClick={() => handleDeleteRow(row.id)}
                   colorScheme='red'
@@ -179,9 +175,7 @@ const RevenueTable: React.FC = () => {
             <Td pr='1rem' textAlign='right'>
               {totals.currentyearbudget}
             </Td>
-            <Td pr='1rem' textAlign='right'>
-              {totals.yeartodateactuals}
-            </Td>
+            <Td />
           </Tr>
         </Tbody>
       </Table>

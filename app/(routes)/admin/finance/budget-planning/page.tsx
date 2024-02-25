@@ -32,6 +32,9 @@ export default function BudgetPlanning () {
       {/* Table Data for all Budget Plans saved */}
       <Center bg='lightgray' h='50vh'>
         Table Data of all Budget Plans saved.
+        <Button as={Link} href='/admin/finance/budget-planning/view'>
+          View Budget Plan
+        </Button>
       </Center>
     </>
   )
