@@ -53,6 +53,14 @@ const StatementOfAccount = async () => {
     }
   });
 
+  const updatedTransactions = await getTransactionByAddress(
+    user?.info?.address
+  );
+
+  if (!updatedTransactions) {
+    return null;
+  }
+
   const allUsers = await getAllUsers();
 
   if (!allUsers) {
@@ -65,7 +73,7 @@ const StatementOfAccount = async () => {
         <SoaInfo
           user={user}
           property={property}
-          transactions={transactions}
+          transactions={updatedTransactions}
           allUsers={allUsers}
         />
       </div>
