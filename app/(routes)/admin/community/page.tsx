@@ -21,7 +21,7 @@ const Community = () => {
       <Separator className='mt-4 mb-6' />
       <Flex className='gap-10'></Flex>
       <Flex gap='2rem' w='80vw'>
-        <Tabs defaultValue='dis1cussions' className='w-[70vw]'>
+        <Tabs defaultValue='discussions' className='w-[70vw]'>
           <TabsList className='grid w-full grid-cols-4'>
             <TabsTrigger value='discussions'>Discussions</TabsTrigger>
             <TabsTrigger value='business'>Business Forum</TabsTrigger>
