@@ -1,26 +1,98 @@
-'use client'
+"use client";
 
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle
-} from '@/components/ui/card'
-import React from 'react'
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Button,
+  Input,
+  Flex,
+  Stack,
+  Spacer,
+  Text,
+  HStack,
+} from "@chakra-ui/react";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import React from "react";
+import { AddIcon } from "@chakra-ui/icons";
+import { ScrollArea } from "@radix-ui/react-scroll-area";
+import Link from "next/link";
 
-export default function PollsAndSurveysCard () {
+import PollPosts from "./_posts/poll";
+import SurveyPosts from "./_posts/survey";
+import CreatePoll from "./_create/polls";
+import CreateSurvey from "./_create/surveys";
+
+export default function PollsAndSurveysCard() {
   return (
     <>
-      <Card className='h-[70vh]'>
-        <CardHeader>
-          <CardTitle>Polls & Surveys</CardTitle>
-          <CardDescription>
-            View and answer polls and surveys posted by HOA Officers.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className='space-y-2'></CardContent>
+      <Card className="h-[70vh]">
+        <Flex justifyContent="space-between">
+          <CardHeader>
+            <CardTitle>Polls & Surveys</CardTitle>
+            <CardDescription>
+              View and answer polls and surveys posted by HOA Officers.
+            </CardDescription>
+          </CardHeader>
+          <HStack p="20px">
+            {/* Create Poll Button*/}
+            <CreatePoll />
+            {/* Create Survey Button */}
+            <CreateSurvey />
+          </HStack>
+        </Flex>
+        <CardContent className="space-y-2">
+          <Flex justifyContent="space-between" mb="1%">
+            <Input
+              size="sm"
+              w="30%"
+              type="string"
+              placeholder="Search by Poll or Survey Title"
+            />
+            <Spacer />
+            {/* Select category to show */}
+            <Select /*value={selectedCategoryFilter} onValueChange={(value) => setSelectedCategoryFilter(value)}*/
+            >
+              <SelectTrigger className="w-[250px]">
+                <SelectValue placeholder="Show All" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectItem value="showAll" className="font-semibold">
+                    Show All
+                  </SelectItem>
+                  <SelectItem value="meeting">Meeting</SelectItem>
+                  <SelectItem value="election">Election</SelectItem>
+                  <SelectItem value="inquiry">Inquiry</SelectItem>
+                  <SelectItem value="event">Event</SelectItem>
+                  <SelectItem value="addedCategory">Added Category</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </Flex>
+
+          {/* Wrap the PollPosts and SurveyPosts inside ScrollArea */}
+          <ScrollArea
+            style={{ maxHeight: "calc(65vh - 120px)", overflowY: "auto" }}
+          >
+            <PollPosts />
+            <SurveyPosts />
+            <PollPosts />
+            <SurveyPosts />
+          </ScrollArea>
+        </CardContent>
       </Card>
     </>
-  )
+  );
 }
