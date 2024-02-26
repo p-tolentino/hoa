@@ -17,6 +17,8 @@ interface TableRow {
   revenue: string;
   currentyearbudget: number;
   yeartodateactuals: number;
+  previousyearbudget: number;
+  previousyearactuals: number;
 }
 
 // Revenue Items
@@ -35,7 +37,7 @@ function ViewRevenueTable() {
       <Table variant="simple" size="sm" mt="20px" w="60vw">
         <Thead bgColor="brand.300">
           <Tr h="3rem" fontSize="xs">
-            <Th p="1rem" fontFamily="font.heading">
+            <Th p="1rem" fontFamily="font.heading" w="20%">
               Revenue
             </Th>
             <Th p="1rem" fontFamily="font.heading" w="300px" textAlign="right">
@@ -43,6 +45,12 @@ function ViewRevenueTable() {
             </Th>
             <Th p="1rem" fontFamily="font.heading" w="300px" textAlign="right">
               Year to Date Actuals (YTD-A)
+            </Th>
+            <Th p="1rem" fontFamily="font.heading" w="300px" textAlign="right">
+              Previous Year Budget (PYB)
+            </Th>
+            <Th p="1rem" fontFamily="font.heading" w="300px" textAlign="right">
+              Previous Year Actuals (PYA)
             </Th>
           </Tr>
         </Thead>
@@ -56,10 +64,22 @@ function ViewRevenueTable() {
               <Td px="2rem" textAlign="right">
                 0
               </Td>
+              <Td px="2rem" textAlign="right">
+                0
+              </Td>
+              <Td px="2rem" textAlign="right">
+                0
+              </Td>
             </Tr>
           ))}
           <Tr h="3rem" key="total" fontFamily="font.body" bg="brand.400">
             <Td px="1rem">Total Yearly Revenue</Td>
+            <Td px="3rem" textAlign="right" fontSize="md" fontWeight="bold">
+              0
+            </Td>
+            <Td px="3rem" textAlign="right" fontSize="md" fontWeight="bold">
+              0
+            </Td>
             <Td px="3rem" textAlign="right" fontSize="md" fontWeight="bold">
               0
             </Td>

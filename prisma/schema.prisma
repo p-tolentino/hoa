@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,8 +8,207 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
-// ----------------------------------------------------------------
-// ---------------------- CUSTOM TYPES --------------------------
+model Hoa {
+  id         String @id @default(cuid())
+  name       String
+  funds      Int
+  fixedDue   Int?
+  lotSizeDue Int?
+}
+
+model User {
+  id            String        @id @default(cuid())
+  name          String?
+  email         String?       @unique
+  image         String?
+  emailVerified DateTime?
+  password      String?
+  role          UserRole      @default(USER)
+  status        Status        @default(PENDING)
+  accounts      Account[]
+  info          PersonalInfo?
+}
+
+model PersonalInfo {
+  id          String        @id @default(cuid())
+  userId      String        @unique
+  firstName   String?
+  middleName  String?
+  lastName    String?
+  phoneNumber String?
+  birthDay    DateTime?
+  address     String?
+  relation    HomeRelation?
+  bio         String?
+  type        String?
+  position    String?       @default("Member")
+  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Vehicle {
+  id       String  @id @unique @default(cuid())
+  userId   String?
+  plateNum String
+}
+
+model Property {
+  id           String             @id @unique @default(cuid())
+  address      String?
+  lotNumber    String?
+  lotSize      String?
+  latitude     Int?
+  longitude    Int?
+  purchaseDate DateTime?
+  documents    PropertyDocument[]
+}
+
+model PropertyDocument {
+  id         String   @id @unique @default(cuid())
+  propertyId String
+  fileName   String?
+  imageUrl   String?
+  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+}
+
+model UserPaymentInfo {
+  id         String @id @unique @default(cuid())
+  userId     String
+  cardNumber String
+}
+
+model UserTransaction {
+  id          String        @id @unique @default(cuid())
+  addressId   String
+  purpose     String
+  description String
+  amount      Int
+  status      PaymentStatus @default(UNPAID)
+  createdAt   DateTime      @default(now())
+  updateAt    DateTime      @updatedAt
+  datePaid    DateTime?
+  paidBy      String?
+}
+
+model HoaTransaction {
+  id          String             @id @unique @default(cuid())
+  type        HoaTransactionType
+  purpose     String
+  description String
+  amount      Int
+  dateIssued  DateTime
+  createdAt   DateTime           @default(now())
+  updateAt    DateTime           @updatedAt
+  userId      String
+}
+
+model BudgetPlan {
+  id                        String @id @unique @default(cuid())
+  title                     String
+  forYear                   Int
+  cybAssocDues              Int
+  cybToll                   Int
+  cybFacility               Int
+  cybConstruction           Int
+  cybCarSticker             Int
+  cybOtherRev               Int
+  ytdaAssocDues             Int?
+  ytdaToll                  Int?
+  ytdaFacility              Int?
+  ytdaConstruction          Int?
+  ytdaCarSticker            Int?
+  ytdaOtherRev              Int?
+  pybAssocDues              Int?
+  pybToll                   Int?
+  pybFacility               Int?
+  pybConstruction           Int?
+  pybCarSticker             Int?
+  pybOtherRev               Int?
+  pyaAssocDues              Int?
+  pyaToll                   Int?
+  pyaFacility               Int?
+  pyaConstruction           Int?
+  pyaCarSticker             Int?
+  pyaOtherRev               Int?
+  cybSalariesBenefits       Int
+  cybUtilities              Int
+  cybOfficeSupplies         Int
+  cybRepairMaintenance      Int
+  cybDonations              Int
+  cybFurnituresFixtures     Int
+  cybRepresentation         Int
+  cybLegalProfessionalFees  Int
+  cybAdministrativeCosts    Int
+  cybOtherExp               Int
+  ytdaSalariesBenefits      Int?
+  ytdaUtilities             Int?
+  ytdaOfficeSupplies        Int?
+  ytdaRepairMaintenance     Int?
+  ytdaDonations             Int?
+  ytdaFurnituresFixtures    Int?
+  ytdaRepresentation        Int?
+  ytdaLegalProfessionalFees Int?
+  ytdaAdministrativeCosts   Int?
+  ytdaOtherExp              Int?
+  pybSalariesBenefits       Int?
+  pybUtilities              Int?
+  pybOfficeSupplies         Int?
+  pybRepairMaintenance      Int?
+  pybDonations              Int?
+  pybFurnituresFixtures     Int?
+  pybRepresentation         Int?
+  pybLegalProfessionalFees  Int?
+  pybAdministrativeCosts    Int?
+  pybOtherExp               Int?
+  pyaSalariesBenefits       Int?
+  pyaUtilities              Int?
+  pyaOfficeSupplies         Int?
+  pyaRepairMaintenance      Int?
+  pyaDonations              Int?
+  pyaFurnituresFixtures     Int?
+  pyaRepresentation         Int?
+  pyaLegalProfessionalFees  Int?
+  pyaAdministrativeCosts    Int?
+  pyaOtherExp               Int?
+  cybTotalYearlyExp         Int
+  cybTotalYearlyRev         Int
+  cybTotalYearlySurplus     Int
+  pyaTotalYearlyExp         Int?
+  pyaTotalYearlyRev         Int?
+  pyaTotalYearlySurplus     Int?
+  pybTotalYearlyExp         Int?
+  pybTotalYearlyRev         Int?
+  pybTotalYearlySurplus     Int?
+  ytdaTotalYearlyExp        Int?
+  ytdaTotalYearlyRev        Int?
+  ytdaTotalYearlySurplus    Int?
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model ResetPasswordToken {
+  id      String   @id @default(cuid())
+  email   String
+  token   String   @unique
+  expires DateTime
+
+  @@unique([email, token])
+}
 
 enum UserRole {
   ADMIN
@@ -62,249 +258,4 @@ enum ExpenseCategory {
   LegalProfessionalFees
   AdministrativeCosts
   Other
-}
-
-// ----------------------------------------------------------------
-// --------------------- DATABASE MODELS --------------------------
-
-model Hoa {
-  id String @id @default(cuid())
-  name String
-  funds Int
-  fixedDue Int?
-  lotSizeDue Int?
-}
-
-// ----------------------------------------------------------------
-// --------------------- USER/MEMBER INFO -------------------------
-
-model User {
-  id            String        @id @default(cuid())
-  name          String?
-  email         String?       @unique
-  image         String?
-  emailVerified DateTime?
-  password      String?
-  accounts      Account[]
-
-  role          UserRole      @default(USER)
-  status        Status        @default(PENDING)
-  info          PersonalInfo?
-}
-
-model PersonalInfo {
-  id          String    @id @default(cuid())
-  userId      String    @unique
-  firstName   String?
-  middleName  String?
-  lastName    String?
-  phoneNumber String?
-  birthDay    DateTime?
-
-  address     String?
-  relation    HomeRelation?
-
-  bio         String?
-
-  type        String?
-  position    String?   @default("Member")
-
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-}
-
-// ----------------------------------------------------------------
-// --------------------- MEMBERSHIP MODULE ------------------------
-
-model Vehicle {
-  id       String  @id @unique @default(cuid())
-  userId   String?  
-  plateNum String
-}
-
-model Property {
-  id           String        @id @unique @default(cuid())
-  address      String?
-  lotNumber    String?
-  lotSize      String?
-  latitude     Int?
-  longitude    Int?
-  documents    PropertyDocument[]
-  purchaseDate DateTime?
-}
-
-model PropertyDocument {
-  id         String  @id @unique @default(cuid())
-  propertyId String
-  fileName   String?
-  imageUrl   String?
-
-  property Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
-}
-
-// ----------------------------------------------------------------
-// ----------------------- FINANCE MODULE -------------------------
-
-model UserPaymentInfo {
-  id String @id @unique @default(cuid())
-  userId String
-  cardNumber String
-}
-
-model UserTransaction {
-  id String @id @unique @default(cuid())
-  addressId String                       // "Bill this transaction to this address, regardless who will pay"
-  purpose String
-  description String
-  amount Int
-  status PaymentStatus @default(UNPAID)
-  createdAt DateTime @default(now())  // Date Transaction was made
-  updateAt DateTime @updatedAt        
-  datePaid DateTime?                   // Date Payment was paid
-  paidBy String?                      // userId of who paid
-}
-
-model HoaTransaction {
-  id String @id @unique @default(cuid())
-  type HoaTransactionType
-  purpose String
-  description String
-  amount Int
-  dateIssued DateTime                 // Date Payment was made
-  createdAt DateTime @default(now())  // Date Entry was made
-  updateAt DateTime @updatedAt
-  userId String                       // Recorded by
-}
-
-model BudgetPlan {
-  id String @id @unique @default(cuid())
-  title String
-  forYear Int
-  cybAssocDues Int
-  cybToll Int
-  cybFacility Int
-  cybConstruction Int
-  cybCarSticker Int
-  cybOtherRev Int
-
-  ytdaAssocDues Int?
-  ytdaToll Int?
-  ytdaFacility Int?
-  ytdaConstruction Int?
-  ytdaCarSticker Int?
-  ytdaOtherRev Int?
-
-  pybAssocDues Int?
-  pybToll Int?
-  pybFacility Int?
-  pybConstruction Int?
-  pybCarSticker Int?
-  pybOtherRev Int?
-
-  pyaAssocDues Int?
-  pyaToll Int?
-  pyaFacility Int?
-  pyaConstruction Int?
-  pyaCarSticker Int?
-  pyaOtherRev Int?
-
-  cybSalariesBenefits Int
-  cybUtilities Int
-  cybOfficeSupplies Int
-  cybRepairMaintenance Int
-  cybDonations Int
-  cybFurnituresFixtures Int
-  cybRepresentation Int
-  cybLegalProfessionalFees Int
-  cybAdministrativeCosts Int
-  cybOtherExp Int
-
-  ytdaSalariesBenefits Int?
-  ytdaUtilities Int?
-  ytdaOfficeSupplies Int?
-  ytdaRepairMaintenance Int?
-  ytdaDonations Int?
-  ytdaFurnituresFixtures Int?
-  ytdaRepresentation Int?
-  ytdaLegalProfessionalFees Int?
-  ytdaAdministrativeCosts Int?
-  ytdaOtherExp Int?
-
-  pybSalariesBenefits Int?
-  pybUtilities Int?
-  pybOfficeSupplies Int?
-  pybRepairMaintenance Int?
-  pybDonations Int?
-  pybFurnituresFixtures Int?
-  pybRepresentation Int?
-  pybLegalProfessionalFees Int?
-  pybAdministrativeCosts Int?
-  pybOtherExp Int?
-
-  pyaSalariesBenefits Int?
-  pyaUtilities Int?
-  pyaOfficeSupplies Int?
-  pyaRepairMaintenance Int?
-  pyaDonations Int?
-  pyaFurnituresFixtures Int?
-  pyaRepresentation Int?
-  pyaLegalProfessionalFees Int?
-  pyaAdministrativeCosts Int?
-  pyaOtherExp Int?
-
-  cybTotalYearlyRev Int
-  cybTotalYearlyExp Int
-  cybTotalYearlySurplus Int
-
-  ytdaTotalYearlyRev Int?
-  ytdaTotalYearlyExp Int?
-  ytdaTotalYearlySurplus Int?
-
-  pybTotalYearlyRev Int?
-  pybTotalYearlyExp Int?
-  pybTotalYearlySurplus Int?
-
-  pyaTotalYearlyRev Int?
-  pyaTotalYearlyExp Int?
-  pyaTotalYearlySurplus Int?
-}
-
-
-// ----------------------------------------------------------------
-// --------------------- MEMBERSHIP MODULE ------------------------
-
-
-// ----------------------------------------------------------------
-// --------------------- MEMBERSHIP MODULE ------------------------
-
-
-// ----------------------------------------------------------------
-// --------------------- ACCOUNT-RELATED --------------------------
-
-model Account {
-  id                String  @id @default(cuid())
-  userId            String
-  type              String
-  provider          String
-  providerAccountId String
-  refresh_token     String? @db.Text
-  access_token      String? @db.Text
-  expires_at        Int?
-  token_type        String?
-  scope             String?
-  id_token          String? @db.Text
-  session_state     String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@unique([provider, providerAccountId])
-}
-
-model ResetPasswordToken {
-  id      String   @id @default(cuid())
-  email   String
-  token   String   @unique
-  expires DateTime
-
-  @@unique([email, token])
 }
