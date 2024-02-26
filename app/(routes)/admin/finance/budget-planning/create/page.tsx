@@ -24,8 +24,8 @@ import Link from "next/link";
 
 export default function CreateBudgetPlan() {
   const [date, setDate] = useState<DateRange | undefined>({
-    from: new Date(),
-    to: addDays(new Date(), 30),
+    from: new Date(new Date().getFullYear(), 0, 1),
+    to: new Date(new Date().getFullYear(), 11, 31),
   });
 
   return (
@@ -99,6 +99,7 @@ export default function CreateBudgetPlan() {
       <RevenueTable />
       <ExpenseTable />
       <TotalTable />
+
       <div className="flex justify-end pr-24">
         <ButtonGroup>
           {/* Cancel Button */}
