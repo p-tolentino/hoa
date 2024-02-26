@@ -74,16 +74,16 @@ function ViewRevenueTable() {
           ))}
           <Tr h="3rem" key="total" fontFamily="font.body" bg="brand.400">
             <Td px="1rem">Total Yearly Revenue</Td>
-            <Td px="3rem" textAlign="right" fontSize="md" fontWeight="bold">
+            <Td px="2rem" textAlign="right" fontSize="md" fontWeight="bold">
               0
             </Td>
-            <Td px="3rem" textAlign="right" fontSize="md" fontWeight="bold">
+            <Td px="2rem" textAlign="right" fontSize="md" fontWeight="bold">
               0
             </Td>
-            <Td px="3rem" textAlign="right" fontSize="md" fontWeight="bold">
+            <Td px="2rem" textAlign="right" fontSize="md" fontWeight="bold">
               0
             </Td>
-            <Td px="3rem" textAlign="right" fontSize="md" fontWeight="bold">
+            <Td px="2rem" textAlign="right" fontSize="md" fontWeight="bold">
               0
             </Td>
           </Tr>
