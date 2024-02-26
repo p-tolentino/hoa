@@ -142,3 +142,29 @@ export const NewTransactionSchema = z.object({
   amount: z.string(),
   description: z.string(),
 });
+
+export const NewBudgetPlanSchema = z.object({
+  title: z.string(),
+  forYear: z.number(),
+  cybAssocDues: z.number(),
+  cybToll: z.number(),
+  cybFacility: z.number(),
+  cybConstruction: z.number(),
+  cybCarSticker: z.number(),
+  cybOtherRev: z.number(),
+
+  cybSalariesBenefits: z.number(),
+  cybUtilities: z.number(),
+  cybOfficeSupplies: z.number(),
+  cybRepairMaintenance: z.number(),
+  cybDonations: z.number(),
+  cybFurnituresFixtures: z.number(),
+  cybRepresentation: z.number(),
+  cybLegalProfessionalFees: z.number(),
+  cybAdministrativeCosts: z.number(),
+  cybOtherExp: z.number(),
+
+  cybTotalYearlyRev: z.number(),
+  cybTotalYearlyExp: z.number(),
+  cybTotalYearlySurplus: z.number(),
+});

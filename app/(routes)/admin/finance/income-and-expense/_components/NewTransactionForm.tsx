@@ -168,24 +168,40 @@ export default function NewTransactionForm({
               >
                 {form.watch("type") === "REVENUE" ? (
                   <>
-                    <option value="1">Association Dues</option>
-                    <option value="2">Toll Fees</option>
-                    <option value="3">Facility Rentals</option>
-                    <option value="4">Renovation and Demolition Fees</option>
-                    <option value="5">Car Sticker Receipts</option>
-                    <option value="6">Others</option>
+                    <option value="Association Dues">Association Dues</option>
+                    <option value="Toll Fees">Toll Fees</option>
+                    <option value="Facility Rentals">Facility Rentals</option>
+                    <option value="Renovation and Demolition Fees">
+                      Renovation and Demolition Fees
+                    </option>
+                    <option value="Car Sticker Receipts">
+                      Car Sticker Receipts
+                    </option>
+                    <option value="Other Revenues">Others</option>
                   </>
                 ) : form.watch("type") === "EXPENSE" ? (
                   <>
-                    <option value="7">Salaries and Benefits</option>
-                    <option value="8">Utilities</option>
-                    <option value="9">Office Supplies</option>
-                    <option value="10">Repair and Maintenance</option>
-                    <option value="11">Furnitures and Fixtures</option>
-                    <option value="12">Representation Expenses</option>
-                    <option value="13">Legal & Professional Fees</option>
-                    <option value="14">Administrative Costs</option>
-                    <option value="15">Others</option>
+                    <option value="Salaries and Benefits">
+                      Salaries and Benefits
+                    </option>
+                    <option value="Utilities">Utilities</option>
+                    <option value="Office Supplies">Office Supplies</option>
+                    <option value="Repair and Maintenance">
+                      Repair and Maintenance
+                    </option>
+                    <option value="Furnitures and Fixtures">
+                      Furnitures and Fixtures
+                    </option>
+                    <option value="Representation Expenses">
+                      Representation Expenses
+                    </option>
+                    <option value="Legal & Professional Fees">
+                      Legal & Professional Fees
+                    </option>
+                    <option value="Administrative Costs">
+                      Administrative Costs
+                    </option>
+                    <option value="Other Expenses">Others</option>
                   </>
                 ) : (
                   <option value="">

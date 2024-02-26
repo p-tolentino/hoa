@@ -31,7 +31,7 @@ const StatementOfAccount = async () => {
 
   const existingAssocDuesBill = transactions.find((transaction) => {
     return (
-      transaction.purpose === "assocDues" &&
+      transaction.purpose === "Association Dues" &&
       transaction.createdAt.getMonth() + 1 === new Date().getMonth() + 1
     );
   });
@@ -77,6 +77,8 @@ const StatementOfAccount = async () => {
   if (!allUsers) {
     return null;
   }
+
+  await Promise.all(monthlyUnpaidTransactions);
 
   return (
     <div className="flex">

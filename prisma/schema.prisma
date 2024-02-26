@@ -252,22 +252,21 @@ model BudgetPlan {
   pyaAdministrativeCosts Int?
   pyaOtherExp Int?
 
-  cybtotalYearlyRev Int
-  cybtotalYearlyExp Int
-  cybtotalYearlySurplus Int
+  cybTotalYearlyRev Int
+  cybTotalYearlyExp Int
+  cybTotalYearlySurplus Int
 
-  ytdatotalYearlyRev Int?
-  ytdatotalYearlyExp Int?
-  ytdatotalYearlySurplus Int?
+  ytdaTotalYearlyRev Int?
+  ytdaTotalYearlyExp Int?
+  ytdaTotalYearlySurplus Int?
 
-  pybtotalYearlyRev Int?
-  pybtotalYearlyExp Int?
-  pybtotalYearlySurplus Int?
+  pybTotalYearlyRev Int?
+  pybTotalYearlyExp Int?
+  pybTotalYearlySurplus Int?
 
-  pyatotalYearlyRev Int?
-  pyatotalYearlyExp Int?
-  pyatotalYearlySurplus Int?
-
+  pyaTotalYearlyRev Int?
+  pyaTotalYearlyExp Int?
+  pyaTotalYearlySurplus Int?
 }
 
 
