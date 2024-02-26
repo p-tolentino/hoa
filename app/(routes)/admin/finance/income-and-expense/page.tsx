@@ -7,7 +7,7 @@ import { getHoaTransactions } from "@/server/data/hoa-transactions";
 import { getHoaInfo } from "@/server/data/hoa-info";
 import { getUserById } from "@/server/data/user";
 
-const IncomeExpense = async () => {
+const RevenueExpense = async () => {
   const user = await currentUser();
   if (!user) {
     return null;
@@ -59,4 +59,4 @@ const IncomeExpense = async () => {
   );
 };
 
-export default IncomeExpense;
+export default RevenueExpense;

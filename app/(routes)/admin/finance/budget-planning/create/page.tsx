@@ -33,30 +33,8 @@ export default function CreateBudgetPlan() {
       <Flex justifyContent="space-between">
         <Heading
           title="Create Budget Plan"
-          description="Enter the organization's income, funds, and expenses. Make sure to review the totals table at the bottom before submitting."
+          description="Enter the organization's revenue, funds, and expenses. Make sure to review the totals table at the bottom before submitting."
         />
-        <ButtonGroup>
-          {/* Cancel Button */}
-          <Button
-            type="reset"
-            size="md"
-            colorScheme="gray"
-            as={Link}
-            href="/admin/finance/budget-planning"
-          >
-            Cancel
-          </Button>
-          {/* Save Button */}
-          <Button
-            size="md"
-            colorScheme="green"
-            onClick={() => {
-              console.log("TOGGLE SUBMIT/SAVE");
-            }}
-          >
-            Save Budget Plan
-          </Button>
-        </ButtonGroup>
       </Flex>
       <Separator className="mt-2 mb-5" />
 

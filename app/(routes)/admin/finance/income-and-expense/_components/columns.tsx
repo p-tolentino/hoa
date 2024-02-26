@@ -32,22 +32,6 @@ const hoaInfo = getHoaInfo();
 
 export const columns: ColumnDef<TransactionColumn>[] = [
   {
-    accessorKey: "dateSubmitted",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          className="hover:bg-[#ffe492]"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Date Submitted
-          <ArrowUpDown className="w-4 h-4 ml-2" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => row.getValue("dateSubmitted"),
-  },
-  {
     accessorKey: "dateIssued",
     header: ({ column }) => {
       return (
@@ -80,7 +64,7 @@ export const columns: ColumnDef<TransactionColumn>[] = [
     cell: ({ row }) => (
       <Badge
         className={cn(
-          row.getValue("type") === HoaTransactionType.INCOME
+          row.getValue("type") === HoaTransactionType.REVENUE
             ? "bg-green-700"
             : row.getValue("type") === HoaTransactionType.EXPENSE
             ? "bg-red-700"
@@ -143,6 +127,22 @@ export const columns: ColumnDef<TransactionColumn>[] = [
       );
     },
     cell: ({ row }) => row.getValue("description"),
+  },
+  {
+    accessorKey: "dateSubmitted",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          className="hover:bg-[#ffe492]"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Date Recorded
+          <ArrowUpDown className="w-4 h-4 ml-2" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => row.getValue("dateSubmitted"),
   },
   {
     accessorKey: "recordedBy",
