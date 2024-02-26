@@ -1,5 +1,3 @@
-"use client";
-
 import { Box, Flex } from "@chakra-ui/react";
 import ModuleMenuCard from "@/components/system/ModuleMenuCard";
 import { Heading } from "@/components/ui/heading";

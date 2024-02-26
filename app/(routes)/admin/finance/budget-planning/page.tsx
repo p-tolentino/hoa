@@ -1,41 +1,27 @@
-"use client";
+import { currentUser } from "@/lib/auth";
+import BudgetPlanning from "./_components/budget-plans-table";
+import { getAllBudgetPlans } from "@/server/data/budget-plan";
 
-import { Heading } from "@/components/ui/heading";
-import { Button, Center, Flex, Text } from "@chakra-ui/react";
-import { Separator } from "@/components/ui/separator";
-import { AddIcon } from "@chakra-ui/icons";
-import Link from "next/link";
+export const BudgetPlanPage = async () => {
+  const user = await currentUser();
 
-export default function BudgetPlanning() {
+  if (!user) {
+    return null;
+  }
+
+  const plans = await getAllBudgetPlans();
+
+  if (!plans) {
+    return null;
+  }
+
+  await Promise.all(plans);
+
   return (
     <>
-      <Flex justifyContent="space-between">
-        <Heading
-          title="Budget Planning"
-          description="View the list of all budget plans of the Homeowners Association."
-        />
-        {/* Create Button */}
-        <Button
-          colorScheme="yellow"
-          mb="10px"
-          as={Link}
-          href="/admin/finance/budget-planning/create"
-        >
-          <AddIcon mr="10px" />
-          <Text fontSize={"lg"} fontFamily={"font.body"}>
-            Create Budget Plan
-          </Text>
-        </Button>
-      </Flex>
-      <Separator className="mt-2 mb-5" />
-
-      {/* Table Data for all Budget Plans saved */}
-      <Center bg="lightgray" h="50vh">
-        Table Data of all Budget Plans saved.
-        <Button as={Link} href="/admin/finance/budget-planning/view">
-          View Budget Plan
-        </Button>
-      </Center>
+      <BudgetPlanning budgetPlans={plans} />
     </>
   );
-}
+};
+
+export default BudgetPlanPage;
