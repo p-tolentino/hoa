@@ -19,7 +19,7 @@ import {
 import React from 'react'
 import { ScrollArea } from '@radix-ui/react-scroll-area'
 
-import BusinessPost from './_components/BusinessPost'
+import BusinessPosts from './_components/BusinessPost'
 import CreateBusinessPostButton from './_components/CreateBusinessPostButton'
 
 export default function BusinessForumCard () {
@@ -58,10 +58,12 @@ export default function BusinessForumCard () {
                   <SelectItem value='showAll' className='font-semibold'>
                     Show All
                   </SelectItem>
-                  <SelectItem value='meeting'>Meeting</SelectItem>
-                  <SelectItem value='election'>Election</SelectItem>
-                  <SelectItem value='inquiry'>Inquiry</SelectItem>
-                  <SelectItem value='event'>Event</SelectItem>
+                  <SelectItem value='foodAndDrink'>Food and Drink</SelectItem>
+                  <SelectItem value='clothing'>Clothing</SelectItem>
+                  <SelectItem value='householdItems'>
+                    Household Items
+                  </SelectItem>
+                  <SelectItem value='homeServices'>HomeServices</SelectItem>
                   <SelectItem value='addedCategory'>Added Category</SelectItem>
                 </SelectGroup>
               </SelectContent>
@@ -72,11 +74,7 @@ export default function BusinessForumCard () {
           <ScrollArea
             style={{ maxHeight: 'calc(65vh - 120px)', overflowY: 'auto' }}
           >
-            <BusinessPost />
-            <BusinessPost />
-            <BusinessPost />
-            <BusinessPost />
-            <BusinessPost />
+            <BusinessPosts />
           </ScrollArea>
         </CardContent>
       </Card>
