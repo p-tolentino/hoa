@@ -89,7 +89,7 @@ function CreateBusinessPostButton () {
                   <Input
                     size='xs'
                     type='string'
-                    placeholder='Enter Other Business Nature'
+                    placeholder='Enter Nature of Business'
                     p='1rem'
                     mt='0.5rem'
                   />

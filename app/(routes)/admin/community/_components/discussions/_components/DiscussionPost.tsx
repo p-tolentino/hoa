@@ -10,13 +10,15 @@ import {
   ButtonGroup,
   Button
 } from '@chakra-ui/react'
+import { PiThumbsUpFill, PiThumbsDownFill } from 'react-icons/pi'
 
 function DiscussionPost () {
   const postCategories = [
     { category: 'Meeting', color: 'purple.200' },
     { category: 'Election', color: 'red.200' },
     { category: 'Inquiry', color: 'blue.200' },
-    { category: 'Event', color: 'orange.200' }
+    { category: 'Event', color: 'orange.200' },
+    { category: 'New Category', color: 'pink.200' }
   ]
 
   return (
@@ -85,10 +87,11 @@ function DiscussionPost () {
               quis fugit dignissimos, inventore omnis eveniet alias nemo quasi.
             </Text>
             <ButtonGroup size='xs' mt='1rem'>
-              <Button colorScheme='yellow' variant='outline'>
-                Like
+              <Button colorScheme='yellow' variant='outline' gap='5px'>
+                <PiThumbsUpFill /> Like
               </Button>
-              <Button colorScheme='yellow' variant='outline'>
+              <Button colorScheme='yellow' variant='outline' gap='5px'>
+                <PiThumbsDownFill />
                 Dislike
               </Button>
               <Button colorScheme='yellow' variant='outline'>
