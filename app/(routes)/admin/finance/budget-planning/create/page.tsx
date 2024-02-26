@@ -35,16 +35,39 @@ export default function CreateBudgetPlan() {
           title="Create Budget Plan"
           description="Enter the organization's income, funds, and expenses. Make sure to review the totals table at the bottom before submitting."
         />
+        <ButtonGroup>
+          {/* Cancel Button */}
+          <Button
+            type="reset"
+            size="md"
+            colorScheme="gray"
+            as={Link}
+            href="/admin/finance/budget-planning"
+          >
+            Cancel
+          </Button>
+          {/* Save Button */}
+          <Button
+            size="md"
+            colorScheme="green"
+            onClick={() => {
+              console.log("TOGGLE SUBMIT/SAVE");
+            }}
+          >
+            Save Budget Plan
+          </Button>
+        </ButtonGroup>
       </Flex>
       <Separator className="mt-2 mb-5" />
 
-      <Flex w="100%" mt="2rem" mb="1rem" justifyContent="center">
+      <Flex w="100%" mt="3rem" justifyContent="center">
         {/* Budget Plan Title  */}
         <Input
           w="30%"
           mr="5rem"
           type="string"
-          size="md"
+          size="lg"
+          fontWeight="bold"
           placeholder="Budget Plan Title"
         />
 
