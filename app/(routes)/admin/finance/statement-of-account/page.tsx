@@ -61,6 +61,17 @@ const StatementOfAccount = async () => {
     return null;
   }
 
+  const monthlyUnpaidTransactions = updatedTransactions.filter(
+    (transaction) => {
+      if (
+        transaction.createdAt.getMonth() >= new Date().getMonth() - 1 ||
+        transaction.status !== PaymentStatus.PAID
+      ) {
+        return transaction;
+      }
+    }
+  );
+
   const allUsers = await getAllUsers();
 
   if (!allUsers) {
@@ -73,7 +84,7 @@ const StatementOfAccount = async () => {
         <SoaInfo
           user={user}
           property={property}
-          transactions={updatedTransactions}
+          transactions={monthlyUnpaidTransactions}
           allUsers={allUsers}
         />
       </div>
