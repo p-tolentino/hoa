@@ -37,13 +37,7 @@ export const TotalTable = () => {
       <Thead bgColor="brand.300">
         <Tr h="2rem">
           <Th p="1rem"></Th>
-          <Th
-            p="1rem"
-            w="300px"
-            fontSize="sm"
-            fontFamily="font.heading"
-            textAlign="right"
-          >
+          <Th p="1rem" w="300px" fontFamily="font.heading" textAlign="right">
             Current Year Budget (CYB)
           </Th>
           {/* <Th
@@ -58,7 +52,7 @@ export const TotalTable = () => {
         </Tr>
       </Thead>
       <Tbody>
-        <Tr fontFamily="font.body">
+        <Tr fontFamily="font.body" fontSize="md">
           <Td p="0.5rem">Total Yearly Revenue</Td>
           <Td p="0.5rem" textAlign="right">
             {totals.totalRev !== null ? `${formatNumber(totals.totalRev)}` : ""}
@@ -67,7 +61,7 @@ export const TotalTable = () => {
             0
           </Td> */}
         </Tr>
-        <Tr fontFamily="font.body">
+        <Tr fontFamily="font.body" fontSize="md">
           <Td p="0.5rem">Total Yearly Expenses</Td>
           <Td p="0.5rem" textAlign="right">
             {totals.totalExp !== null ? `${formatNumber(totals.totalExp)}` : ""}
@@ -76,7 +70,7 @@ export const TotalTable = () => {
             0
           </Td> */}
         </Tr>
-        <Tr fontFamily="font.body">
+        <Tr fontFamily="font.body" fontSize="md">
           <Td p="0.5rem">Total Yearly Operating Overage/Surplus</Td>
           <Td p="0.5rem" textAlign="right">
             {totals.totalSurplus !== null

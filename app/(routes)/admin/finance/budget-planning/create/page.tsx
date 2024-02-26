@@ -127,7 +127,7 @@ export default function CreateBudgetPlan() {
                   w="30%"
                   mr="5rem"
                   type="string"
-                  size="lg"
+                  size="md"
                   fontWeight="bold"
                   placeholder="Budget Plan Title"
                   {...field}
@@ -149,6 +149,7 @@ export default function CreateBudgetPlan() {
                 <PopoverTrigger asChild>
                   <Button
                     id="date"
+                    size="sm"
                     variant={"outline"}
                     className={cn(
                       "w-[500px] justify-start text-left font-normal",
@@ -190,7 +191,7 @@ export default function CreateBudgetPlan() {
             <ButtonGroup>
               {/* Cancel Button */}
               <Button
-                size="md"
+                size="sm"
                 colorScheme="gray"
                 as={Link}
                 href="/admin/finance/budget-planning"
@@ -198,7 +199,7 @@ export default function CreateBudgetPlan() {
                 Cancel
               </Button>
               {/* Save Button */}
-              <Button size="md" colorScheme="green" type="submit">
+              <Button size="sm" colorScheme="green" type="submit">
                 Create Budget Plan
               </Button>
             </ButtonGroup>

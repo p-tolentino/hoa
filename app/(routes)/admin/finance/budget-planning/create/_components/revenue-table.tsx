@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect, useState } from "react";
 import {
   Table,
@@ -62,11 +64,11 @@ export const RevenueTable = () => {
     <VStack mt="1rem">
       <Table variant="simple" size="xs" mt="20px" w="60vw">
         <Thead bgColor="brand.300">
-          <Tr h="3rem">
-            <Th p="1rem" fontSize="sm" fontFamily="font.heading">
+          <Tr h="3rem" fontSize="xs">
+            <Th p="1rem" fontFamily="font.heading">
               Revenue
             </Th>
-            <Th p="1rem" fontSize="sm" fontFamily="font.heading" w="300px">
+            <Th p="1rem" fontFamily="font.heading" w="300px" textAlign="right">
               Current Year Budget (CYB)
             </Th>
           </Tr>
