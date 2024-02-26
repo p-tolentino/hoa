@@ -75,7 +75,7 @@ function createSurveys () {
               <Checkbox>Election</Checkbox>
               <Checkbox>Inquiry</Checkbox>
               <Checkbox>Event</Checkbox>
-              <Checkbox onChange={handleCheckboxChange}>New Category</Checkbox>
+              <Checkbox onChange={handleCheckboxChange}>Other</Checkbox>
             </Stack>
             {/* New Category selected */}
             {isNewCategorySelected && (
