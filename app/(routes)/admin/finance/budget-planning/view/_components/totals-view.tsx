@@ -9,7 +9,7 @@ import { Table, Thead, Tbody, Tr, Th, Td } from "@chakra-ui/react";
 //   currentyearactuals: number
 // }
 
-function TotalTable() {
+function ViewTotalTable() {
   return (
     <Table variant="simple" my="50px" width="65%" align="center">
       <Thead bgColor="brand.300">
@@ -17,6 +17,9 @@ function TotalTable() {
           <Th p="1rem"></Th>
           <Th p="1rem" w="300px" fontFamily="font.heading" textAlign="right">
             Current Year Budget (CYB)
+          </Th>
+          <Th p="1rem" w="300px" fontFamily="font.heading" textAlign="right">
+            Year to Date Actuals (YTD-A)
           </Th>
         </Tr>
       </Thead>
@@ -26,9 +29,15 @@ function TotalTable() {
           <Td p="0.5rem" textAlign="right">
             0
           </Td>
+          <Td p="0.5rem" textAlign="right">
+            0
+          </Td>
         </Tr>
         <Tr fontFamily="font.body" fontSize="md">
           <Td p="0.5rem">Total Yearly Expenses</Td>
+          <Td p="0.5rem" textAlign="right">
+            0
+          </Td>
           <Td p="0.5rem" textAlign="right">
             0
           </Td>
@@ -38,10 +47,13 @@ function TotalTable() {
           <Td p="0.5rem" textAlign="right">
             0
           </Td>
+          <Td p="0.5rem" textAlign="right">
+            0
+          </Td>
         </Tr>
       </Tbody>
     </Table>
   );
 }
 
-export default TotalTable;
+export default ViewTotalTable;

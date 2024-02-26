@@ -44,7 +44,7 @@ export default function CreateBudgetPlan() {
           w="30%"
           mr="5rem"
           type="string"
-          size="lg"
+          size="md"
           fontWeight="bold"
           placeholder="Budget Plan Title"
         />
@@ -63,6 +63,7 @@ export default function CreateBudgetPlan() {
             <PopoverTrigger asChild>
               <Button
                 id="date"
+                size="sm"
                 variant={"outline"}
                 className={cn(
                   "w-[500px] justify-start text-left font-normal",
@@ -106,7 +107,7 @@ export default function CreateBudgetPlan() {
           {/* Cancel Button */}
           <Button
             type="reset"
-            size="md"
+            size="sm"
             colorScheme="gray"
             as={Link}
             href="/admin/finance/budget-planning"
@@ -115,7 +116,7 @@ export default function CreateBudgetPlan() {
           </Button>
           {/* Save Button */}
           <Button
-            size="md"
+            size="sm"
             colorScheme="green"
             onClick={() => {
               console.log("TOGGLE SUBMIT/SAVE");

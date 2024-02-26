@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from 'react'
+"use client";
+
+import React, { useEffect, useState } from "react";
 import {
   Table,
   Thead,
@@ -7,29 +9,29 @@ import {
   Th,
   Td,
   Input,
-  VStack
-} from '@chakra-ui/react'
+  VStack,
+} from "@chakra-ui/react";
 
 interface TableRow {
-  id: number
-  expense: string
-  currentyearbudget: number
+  id: number;
+  expense: string;
+  currentyearbudget: number;
 }
 
 // Expense Items
 const expenseItems = [
-  'Salaries and Benefits',
-  'Utilities',
-  'OFfice Supplies',
-  'Repair and Maintenance',
-  'Donations',
-  'Furnitures and Fixtures',
-  'Furnitures & Fixtures',
-  'Representation Expenses',
-  'Legal & Professional Fees',
-  'Administrative Costs',
-  'Other Expenses'
-]
+  "Salaries and Benefits",
+  "Utilities",
+  "OFfice Supplies",
+  "Repair and Maintenance",
+  "Donations",
+  "Furnitures and Fixtures",
+  "Furnitures & Fixtures",
+  "Representation Expenses",
+  "Legal & Professional Fees",
+  "Administrative Costs",
+  "Other Expenses",
+];
 
 const ExpenseTable: React.FC = () => {
   // const [data, setData] = useState<TableRow[]>(initialData)
@@ -79,25 +81,26 @@ const ExpenseTable: React.FC = () => {
   // }
 
   return (
-    <VStack mt='1rem'>
-      <Table variant='simple' size='xs' mt='20px' w='60vw'>
-        <Thead bgColor='brand.300'>
-          <Tr h='3rem'>
-            <Th p='1rem' fontSize='sm' fontFamily='font.heading'>
+    <VStack mt="1rem">
+      <Table variant="simple" size="xs" mt="20px" w="60vw">
+        <Thead bgColor="brand.300">
+          <Tr h="3rem" fontSize="xs">
+            <Th p="1rem" fontFamily="font.heading">
               Expenses
             </Th>
-            <Th p='1rem' fontSize='sm' fontFamily='font.heading' w='300px'>
+            <Th p="1rem" fontFamily="font.heading" w="300px" textAlign="right">
               Current Year Budget (CYB)
             </Th>
           </Tr>
         </Thead>
         <Tbody>
-          {expenseItems.map(row => (
-            <Tr fontFamily='font.body'>
-              <Td px='1rem'>{row}</Td>
-              <Td px='2rem'>
+          {expenseItems.map((row) => (
+            <Tr fontFamily="font.body" fontSize="sm">
+              <Td px="1rem">{row}</Td>
+              <Td px="2rem">
                 <Input
-                  textAlign='right'
+                  size="sm"
+                  textAlign="right"
                   defaultValue={0}
                   // onChange={(value) =>
                   //   handleCurrentYearBudgetChange(row.id, Number(value))
@@ -106,16 +109,16 @@ const ExpenseTable: React.FC = () => {
               </Td>
             </Tr>
           ))}
-          <Tr h='3rem' key='total' fontFamily='font.body' bg='brand.400'>
-            <Td px='1rem'>Total Yearly Expense</Td>
-            <Td px='3rem' textAlign='right' fontSize='xl' fontWeight='bold'>
+          <Tr h="3rem" key="total" fontFamily="font.body" bg="brand.400">
+            <Td px="1rem">Total Yearly Expense</Td>
+            <Td px="3rem" textAlign="right" fontSize="md" fontWeight="bold">
               0
             </Td>
           </Tr>
         </Tbody>
       </Table>
     </VStack>
-  )
-}
+  );
+};
 
-export default ExpenseTable
+export default ExpenseTable;

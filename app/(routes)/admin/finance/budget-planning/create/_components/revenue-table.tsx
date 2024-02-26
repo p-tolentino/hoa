@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect, useState } from "react";
 import {
   Table,
@@ -77,21 +79,22 @@ const RevenueTable: React.FC = () => {
     <VStack mt="1rem">
       <Table variant="simple" size="xs" mt="20px" w="60vw">
         <Thead bgColor="brand.300">
-          <Tr h="3rem">
-            <Th p="1rem" fontSize="sm" fontFamily="font.heading">
+          <Tr h="3rem" fontSize="xs">
+            <Th p="1rem" fontFamily="font.heading">
               Revenue
             </Th>
-            <Th p="1rem" fontSize="sm" fontFamily="font.heading" w="300px">
+            <Th p="1rem" fontFamily="font.heading" w="300px" textAlign="right">
               Current Year Budget (CYB)
             </Th>
           </Tr>
         </Thead>
         <Tbody>
           {revenueItems.map((row) => (
-            <Tr fontFamily="font.body">
+            <Tr fontFamily="font.body" fontSize="sm">
               <Td px="1rem">{row}</Td>
               <Td px="2rem">
                 <Input
+                  size="sm"
                   textAlign="right"
                   defaultValue={0}
                   // onChange={(value) =>
@@ -103,7 +106,7 @@ const RevenueTable: React.FC = () => {
           ))}
           <Tr h="3rem" key="total" fontFamily="font.body" bg="brand.400">
             <Td px="1rem">Total Yearly Revenue</Td>
-            <Td px="3rem" textAlign="right" fontSize="xl" fontWeight="bold">
+            <Td px="3rem" textAlign="right" fontSize="md" fontWeight="bold">
               0
             </Td>
           </Tr>
