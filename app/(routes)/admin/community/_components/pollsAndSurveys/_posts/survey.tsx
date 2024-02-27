@@ -13,8 +13,12 @@ import {
 } from "@chakra-ui/react";
 import AnswerSurvey from "./_answer/survey";
 import SurveyResult from "./_result/survey";
+import { formatDistanceToNowStrict } from "date-fns";
 
 function surveyPosts() {
+  const datePosted = new Date(2024, 2, 1);
+  const dateDistance = formatDistanceToNowStrict(datePosted);
+
   return (
     <Flex p="10px">
       <Box
@@ -152,6 +156,16 @@ function surveyPosts() {
             Description of Survey Description of Survey Description of Survey
             Description of Survey Description of Survey Description of Survey
             Description of Survey Description of Survey Description of Survey
+          </Text>
+          {/* Date distance */}
+          <Text
+            fontFamily="font.body"
+            color="grey"
+            fontSize="xs"
+            ml="5.5%"
+            p="5px"
+          >
+            Posted {dateDistance} ago
           </Text>
         </Box>
       </Box>

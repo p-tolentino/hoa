@@ -11,6 +11,7 @@ import {
   Button
 } from '@chakra-ui/react'
 import { PiThumbsUpFill, PiThumbsDownFill } from 'react-icons/pi'
+import { formatDistanceToNowStrict } from 'date-fns'
 
 function DiscussionPost () {
   const postCategories = [
@@ -20,6 +21,9 @@ function DiscussionPost () {
     { category: 'Event', color: 'orange.200' },
     { category: 'New Category', color: 'pink.200' }
   ]
+
+  const datePosted = new Date(2024, 2, 1)
+  const dateDistance = formatDistanceToNowStrict(datePosted)
 
   return (
     <Flex p='10px'>
@@ -43,7 +47,7 @@ function DiscussionPost () {
               fontFamily='font.heading'
               fontSize='xs'
               fontWeight='semibold'
-              w='10%'
+              w='12%'
               p='3px'
               textAlign='center'
               rounded='md'
@@ -86,7 +90,12 @@ function DiscussionPost () {
               aliquid repellendus ad? Reprehenderit beatae praesentium eaque,
               quis fugit dignissimos, inventore omnis eveniet alias nemo quasi.
             </Text>
-            <ButtonGroup size='xs' mt='1rem'>
+            {/* Date distance */}
+            <Text fontFamily='font.body' color='grey' fontSize='xs'>
+              Posted {dateDistance} ago
+            </Text>
+            {/* Discussion Post Actions */}
+            <ButtonGroup size='xs' mt='1.5rem'>
               <Button colorScheme='yellow' variant='outline' gap='5px'>
                 <PiThumbsUpFill /> Like
               </Button>

@@ -13,8 +13,12 @@ import {
 } from "@chakra-ui/react";
 import AnswerPoll from "./_answer/poll";
 import PollResult from "./_result/poll";
+import { formatDistanceToNowStrict } from "date-fns";
 
 function pollPosts() {
+  const datePosted = new Date(2024, 2, 1);
+  const dateDistance = formatDistanceToNowStrict(datePosted);
+
   return (
     <Flex p="10px">
       <Box
@@ -141,6 +145,16 @@ function pollPosts() {
             Description of Poll Description of Poll Description of Poll
             Description of Poll Description of Poll Description of Poll
             Description of Poll
+          </Text>
+          {/* Date distance */}
+          <Text
+            fontFamily="font.body"
+            color="grey"
+            fontSize="xs"
+            ml="5.5%"
+            p="5px"
+          >
+            Posted {dateDistance} ago
           </Text>
         </Box>
       </Box>

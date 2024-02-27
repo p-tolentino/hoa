@@ -11,6 +11,7 @@ import {
   Button
 } from '@chakra-ui/react'
 import { PiThumbsUpFill, PiThumbsDownFill } from 'react-icons/pi'
+import { formatDistanceToNowStrict } from 'date-fns'
 
 function BusinessPost () {
   const postNature = [
@@ -20,6 +21,9 @@ function BusinessPost () {
     { nature: 'Home Services', color: 'orange.200' },
     { nature: 'New Nature', color: 'pink.200' }
   ]
+
+  const datePosted = new Date(2024, 2, 1)
+  const dateDistance = formatDistanceToNowStrict(datePosted)
 
   return (
     <>
@@ -87,7 +91,12 @@ function BusinessPost () {
                   praesentium eaque, quis fugit dignissimos, inventore omnis
                   eveniet alias nemo quasi.
                 </Text>
-                <ButtonGroup size='xs' mt='1rem'>
+                {/* Date distance */}
+                <Text fontFamily='font.body' color='grey' fontSize='xs'>
+                  Posted {dateDistance} ago
+                </Text>
+                {/* Discussion Post Actions */}
+                <ButtonGroup size='xs' mt='1.5rem'>
                   <Button colorScheme='yellow' variant='outline' gap='5px'>
                     <PiThumbsUpFill /> Like
                   </Button>
