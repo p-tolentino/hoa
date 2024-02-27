@@ -61,7 +61,7 @@ export const PaymentRecordClient: React.FC<PaymentRecordClientProps> = ({
               <SelectItem value="showAll" className="font-semibold">
                 Show All
               </SelectItem>
-              <SelectItem value="assocDues">Association Dues</SelectItem>
+              <SelectItem value="Association Dues">Association Dues</SelectItem>
               <SelectItem value="dispute">Dispute Fines</SelectItem>
               <SelectItem value="violation">Violation Fines</SelectItem>
               <SelectItem value="facility">
