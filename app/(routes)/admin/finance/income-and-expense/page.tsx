@@ -28,6 +28,7 @@ const RevenueExpense = async () => {
       const issuedBy = await getUserById(item.userId);
 
       return {
+        id: item.id,
         recordedBy: issuedBy?.info?.lastName || "",
         dateSubmitted: item.createdAt
           ? format(

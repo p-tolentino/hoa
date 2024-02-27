@@ -194,6 +194,7 @@ export function Sidebar() {
                 alignItems={sidebarSize === "small" ? "center" : "left"}
                 fontSize={"sm"}
                 fontFamily={"font.body"}
+                key={route.href}
               >
                 <Menu placement="right">
                   <Link
@@ -234,6 +235,7 @@ export function Sidebar() {
                 alignItems={sidebarSize === "small" ? "center" : "left"}
                 fontSize={"sm"}
                 fontFamily={"font.body"}
+                key={route.href}
               >
                 <Menu placement="right">
                   <Link

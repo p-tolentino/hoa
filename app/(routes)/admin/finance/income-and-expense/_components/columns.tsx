@@ -19,6 +19,7 @@ const formatNumber = (value: number) => {
 };
 
 export type TransactionColumn = {
+  id: string;
   recordedBy: string;
   dateSubmitted: string;
   dateIssued: string;

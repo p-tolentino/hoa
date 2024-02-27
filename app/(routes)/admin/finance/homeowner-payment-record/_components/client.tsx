@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo } from "react";
 import { Heading } from "@/components/ui/heading";
 import { Separator } from "@/components/ui/separator";
 
@@ -23,18 +23,21 @@ interface PaymentRecordClientProps {
 export const PaymentRecordClient: React.FC<PaymentRecordClientProps> = ({
   data,
 }) => {
-
-  const [selectedStatusFilter, setSelectedStatusFilter] = useState('showAll');
-  const [selectedCategoryFilter, setSelectedCategoryFilter] = useState('showAll');
-
+  const [selectedStatusFilter, setSelectedStatusFilter] = useState("showAll");
+  const [selectedCategoryFilter, setSelectedCategoryFilter] =
+    useState("showAll");
 
   // Filter the data based on the selected status filter
   const filteredData = useMemo(() => {
-    return data.filter(item => {
+    return data.filter((item) => {
       // Check status filter
-      const statusMatch = selectedStatusFilter === 'showAll' || item.status === selectedStatusFilter;
+      const statusMatch =
+        selectedStatusFilter === "showAll" ||
+        item.status === selectedStatusFilter;
       // Check category filter
-      const categoryMatch = selectedCategoryFilter === 'showAll' || item.purpose === selectedCategoryFilter; // Assuming 'category' is the correct field
+      const categoryMatch =
+        selectedCategoryFilter === "showAll" ||
+        item.purpose === selectedCategoryFilter; // Assuming 'category' is the correct field
 
       return statusMatch && categoryMatch;
     });
@@ -52,7 +55,10 @@ export const PaymentRecordClient: React.FC<PaymentRecordClientProps> = ({
 
       <HStack>
         {/* Select category to show */}
-        <Select value={selectedCategoryFilter} onValueChange={(value) => setSelectedCategoryFilter(value)}>
+        <Select
+          value={selectedCategoryFilter}
+          onValueChange={(value) => setSelectedCategoryFilter(value)}
+        >
           <SelectTrigger className="w-[250px]">
             <SelectValue placeholder="Show All" />
           </SelectTrigger>
@@ -62,19 +68,24 @@ export const PaymentRecordClient: React.FC<PaymentRecordClientProps> = ({
                 Show All
               </SelectItem>
               <SelectItem value="Association Dues">Association Dues</SelectItem>
-              <SelectItem value="dispute">Dispute Fines</SelectItem>
-              <SelectItem value="violation">Violation Fines</SelectItem>
-              <SelectItem value="facility">
+              <SelectItem value="Dispute Fees">Dispute Fees</SelectItem>
+              <SelectItem value="Violation Fines">Violation Fines</SelectItem>
+              <SelectItem value="Facility Rentals">
                 Facility Reservation Fees
               </SelectItem>
-              <SelectItem value="maintenance">Maintenance Fees</SelectItem>
+              <SelectItem value="Repair and Maintenance">
+                Maintenance Fees
+              </SelectItem>
             </SelectGroup>
           </SelectContent>
         </Select>
         <Spacer />
 
         {/* Filter status to show */}
-        <Select value={selectedStatusFilter} onValueChange={(value) => setSelectedStatusFilter(value)}>
+        <Select
+          value={selectedStatusFilter}
+          onValueChange={(value) => setSelectedStatusFilter(value)}
+        >
           <SelectTrigger className="w-[250px]">
             <SelectValue placeholder="Filter Status" />
           </SelectTrigger>
@@ -83,9 +94,9 @@ export const PaymentRecordClient: React.FC<PaymentRecordClientProps> = ({
               <SelectItem value="showAll" className="font-semibold">
                 Show All
               </SelectItem>
-              {/* Active = Paid , Inactive = 'UNPAID' */}
+
               <SelectItem value="PAID">Paid</SelectItem>
-              <SelectItem value="UNPAID" > Unpaid</SelectItem>
+              <SelectItem value="UNPAID"> Unpaid</SelectItem>
               <SelectItem value="OVERDUE">Overdue</SelectItem>
             </SelectGroup>
           </SelectContent>
