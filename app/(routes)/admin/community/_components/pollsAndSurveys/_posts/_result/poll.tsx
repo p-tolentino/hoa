@@ -15,13 +15,13 @@ function pollResult() {
     <Dialog /*open={open} onOpenChange={setOpen}*/>
       <DialogTrigger asChild>
         <Button size="sm" fontFamily="font.body" colorScheme="green">
-          Poll Result
+          View Report
         </Button>
       </DialogTrigger>
       <DialogContent className="lg:min-w-[800px]">
         <DialogHeader>
-          <DialogTitle>Poll Result</DialogTitle>
-          <DialogDescription>View the results of the poll.</DialogDescription>
+          <DialogTitle>Poll Report</DialogTitle>
+          <DialogDescription>View the report of the poll.</DialogDescription>
         </DialogHeader>
 
         {/* Form Content */}

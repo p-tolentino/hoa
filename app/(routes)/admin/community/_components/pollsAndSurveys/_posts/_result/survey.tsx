@@ -24,13 +24,13 @@ function surveyResult() {
     <Dialog /*open={open} onOpenChange={setOpen}*/>
       <DialogTrigger asChild>
         <Button size="sm" fontFamily="font.body" colorScheme="green">
-          Survey Result
+          View Report
         </Button>
       </DialogTrigger>
       <DialogContent className="lg:min-w-[800px]">
         <DialogHeader>
-          <DialogTitle>Survey Result</DialogTitle>
-          <DialogDescription>View the results of the survey.</DialogDescription>
+          <DialogTitle>Survey Report</DialogTitle>
+          <DialogDescription>View the report of the survey.</DialogDescription>
         </DialogHeader>
 
         {/* Form Content */}
