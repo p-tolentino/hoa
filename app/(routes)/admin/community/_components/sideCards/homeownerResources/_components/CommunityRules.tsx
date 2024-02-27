@@ -48,52 +48,54 @@ export function CommunityRules () {
   const description =
     "To continue, please read the following Community Rules carefully. Understanding and agreeing to these rules will contribute to a healthy community engagement platform within the Homeowners' Association."
   return (
-    <AlertDialog defaultOpen>
-      <AlertDialogTrigger>
-        <Link isExternal fontSize='sm'>
-          Community Rules
-        </Link>
-      </AlertDialogTrigger>
-      <AlertDialogContent className='lg:min-w-[1000px]'>
-        <AlertDialogHeader className='mb-3'>
-          <AlertDialogTitle className='text-2xl'>
+    <>
+      <AlertDialog defaultOpen>
+        <AlertDialogTrigger>
+          <Link isExternal fontSize='sm'>
             Community Rules
-          </AlertDialogTitle>
-          <AlertDialogDescription>{description}</AlertDialogDescription>
-        </AlertDialogHeader>
-        <ScrollArea className='h-80 w-full rounded-md'>
-          <List spacing={3} fontSize='md'>
-            {rules.map(rule => (
-              <ListItem>
-                <Flex>
-                  <ListIcon
-                    as={ArrowRightIcon}
-                    color='yellow.500'
-                    boxSize={4}
-                  />
-                  <Box>
-                    <Text fontSize='lg' fontWeight='bold' mb='0.5rem'>
-                      {rule.title}
-                    </Text>
-                    <Text>{rule.description}</Text>
-                  </Box>
-                </Flex>
-              </ListItem>
-            ))}
-          </List>
-        </ScrollArea>
-        <AlertDialogFooter>
-          <AlertDialogAction>
-            <Text w='full'>
-              I have read and agreed to the
-              <Text as='span' color='yellow.300'>
-                {' '}
-                Community Rules
+          </Link>
+        </AlertDialogTrigger>
+        <AlertDialogContent className='lg:min-w-[1000px]'>
+          <AlertDialogHeader className='mb-3'>
+            <AlertDialogTitle className='text-2xl'>
+              Community Rules
+            </AlertDialogTitle>
+            <AlertDialogDescription>{description}</AlertDialogDescription>
+          </AlertDialogHeader>
+          <ScrollArea className='h-80 w-full rounded-md'>
+            <List spacing={3} fontSize='md'>
+              {rules.map(rule => (
+                <ListItem>
+                  <Flex>
+                    <ListIcon
+                      as={ArrowRightIcon}
+                      color='yellow.500'
+                      boxSize={4}
+                    />
+                    <Box>
+                      <Text fontSize='lg' fontWeight='bold' mb='0.5rem'>
+                        {rule.title}
+                      </Text>
+                      <Text>{rule.description}</Text>
+                    </Box>
+                  </Flex>
+                </ListItem>
+              ))}
+            </List>
+          </ScrollArea>
+          <AlertDialogFooter>
+            <AlertDialogAction>
+              <Text w='full'>
+                I have read and agreed to the
+                <Text as='span' color='yellow.300'>
+                  {' '}
+                  Community Rules
+                </Text>
               </Text>
-            </Text>
-          </AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
   )
 }

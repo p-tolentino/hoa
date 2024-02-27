@@ -2,11 +2,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Link, ListItem, UnorderedList } from '@chakra-ui/react'
-<<<<<<<< HEAD:app/(routes)/admin/community/_components/sideCards/homeownerResources/HomeownerResources.tsx
 import { CommunityRules } from './_components/CommunityRules'
-========
-import { CommunityRules } from './sideCards/CommunityRules'
->>>>>>>> c4dfc7a47c13a824734cc69c8213dbe25e1c937d:app/(routes)/admin/community/_components/HomeownerResources.tsx
 
 export default function HomeownerResources () {
   return (
