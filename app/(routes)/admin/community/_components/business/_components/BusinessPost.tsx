@@ -12,6 +12,7 @@ import {
 } from '@chakra-ui/react'
 import { PiThumbsUpFill, PiThumbsDownFill } from 'react-icons/pi'
 import { formatDistanceToNowStrict } from 'date-fns'
+import { useState } from 'react'
 
 function BusinessPost () {
   const postNature = [
@@ -25,10 +26,49 @@ function BusinessPost () {
   const datePosted = new Date(2024, 2, 1)
   const dateDistance = formatDistanceToNowStrict(datePosted)
 
+  const [likeCount, setLikeCount] = useState(0)
+  const [dislikeCount, setDislikeCount] = useState(0)
+  const [liked, setLiked] = useState(false)
+  const [disliked, setDisliked] = useState(false)
+
+  const handleLike = () => {
+    if (!liked) {
+      setLikeCount(likeCount + 1)
+      if (disliked) {
+        setDislikeCount(dislikeCount - 1)
+        setDisliked(false)
+      }
+    } else {
+      setLikeCount(likeCount - 1)
+    }
+    setLiked(!liked)
+  }
+
+  const handleDislike = () => {
+    if (!disliked) {
+      setDislikeCount(dislikeCount + 1)
+      if (liked) {
+        setLikeCount(likeCount - 1)
+        setLiked(false)
+      }
+    } else {
+      setDislikeCount(dislikeCount - 1)
+    }
+    setDisliked(!disliked)
+  }
+
+  const handleLikeClick = () => {
+    setLikeCount(likeCount + 1)
+  }
+
+  const handleDislikeClick = () => {
+    setDislikeCount(dislikeCount + 1)
+  }
+
   return (
     <>
-      {postNature.map(postNature => (
-        <Flex p='10px'>
+      {postNature.map((postNature, index) => (
+        <Flex key={index} p='10px'>
           <Box
             w='100%'
             h='100%'
@@ -57,7 +97,7 @@ function BusinessPost () {
               </Box>
             </HStack>
 
-            {/* Discussion Post Details */}
+            {/* Business Post Details */}
             <Flex gap='0.5rem'>
               <Avatar /> {/*default size is medium*/}
               <Box>
@@ -95,14 +135,24 @@ function BusinessPost () {
                 <Text fontFamily='font.body' color='grey' fontSize='xs'>
                   Posted {dateDistance} ago
                 </Text>
-                {/* Discussion Post Actions */}
+                {/* Business Post Actions */}
                 <ButtonGroup size='xs' mt='1.5rem'>
-                  <Button colorScheme='yellow' variant='outline' gap='5px'>
-                    <PiThumbsUpFill /> Like
+                  <Button
+                    colorScheme='yellow'
+                    variant={liked ? 'solid' : 'outline'}
+                    gap='5px'
+                    onClick={handleLike}
+                  >
+                    <PiThumbsUpFill /> Like ({likeCount})
                   </Button>
-                  <Button colorScheme='yellow' variant='outline' gap='5px'>
+                  <Button
+                    colorScheme='yellow'
+                    variant={disliked ? 'solid' : 'outline'}
+                    gap='5px'
+                    onClick={handleDislike}
+                  >
                     <PiThumbsDownFill />
-                    Dislike
+                    Dislike ({dislikeCount})
                   </Button>
                   <Button colorScheme='yellow' variant='outline'>
                     Comment

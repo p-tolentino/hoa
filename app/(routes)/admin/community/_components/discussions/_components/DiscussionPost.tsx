@@ -12,6 +12,7 @@ import {
 } from '@chakra-ui/react'
 import { PiThumbsUpFill, PiThumbsDownFill } from 'react-icons/pi'
 import { formatDistanceToNowStrict } from 'date-fns'
+import { useState } from 'react'
 
 function DiscussionPost () {
   const postCategories = [
@@ -24,6 +25,37 @@ function DiscussionPost () {
 
   const datePosted = new Date(2024, 2, 1)
   const dateDistance = formatDistanceToNowStrict(datePosted)
+
+  const [likeCount, setLikeCount] = useState(0)
+  const [dislikeCount, setDislikeCount] = useState(0)
+  const [liked, setLiked] = useState(false)
+  const [disliked, setDisliked] = useState(false)
+
+  const handleLike = () => {
+    if (!liked) {
+      setLikeCount(likeCount + 1)
+      if (disliked) {
+        setDislikeCount(dislikeCount - 1)
+        setDisliked(false)
+      }
+    } else {
+      setLikeCount(likeCount - 1)
+    }
+    setLiked(!liked)
+  }
+
+  const handleDislike = () => {
+    if (!disliked) {
+      setDislikeCount(dislikeCount + 1)
+      if (liked) {
+        setLikeCount(likeCount - 1)
+        setLiked(false)
+      }
+    } else {
+      setDislikeCount(dislikeCount - 1)
+    }
+    setDisliked(!disliked)
+  }
 
   return (
     <Flex p='10px'>
@@ -41,8 +73,9 @@ function DiscussionPost () {
         </Heading>
         {/* Post Categories */}
         <HStack mb='2%'>
-          {postCategories.map(postCategory => (
+          {postCategories.map((postCategory, index) => (
             <Box
+              key={index}
               bg={postCategory.color}
               fontFamily='font.heading'
               fontSize='xs'
@@ -96,12 +129,22 @@ function DiscussionPost () {
             </Text>
             {/* Discussion Post Actions */}
             <ButtonGroup size='xs' mt='1.5rem'>
-              <Button colorScheme='yellow' variant='outline' gap='5px'>
-                <PiThumbsUpFill /> Like
+              <Button
+                colorScheme='yellow'
+                variant={liked ? 'solid' : 'outline'}
+                gap='5px'
+                onClick={handleLike}
+              >
+                <PiThumbsUpFill /> Like ({likeCount})
               </Button>
-              <Button colorScheme='yellow' variant='outline' gap='5px'>
+              <Button
+                colorScheme='yellow'
+                variant={disliked ? 'solid' : 'outline'}
+                gap='5px'
+                onClick={handleDislike}
+              >
                 <PiThumbsDownFill />
-                Dislike
+                Dislike ({dislikeCount})
               </Button>
               <Button colorScheme='yellow' variant='outline'>
                 Comment
