@@ -22,7 +22,7 @@ import { format } from 'date-fns'
 
 export default function AnnouncementBoard () {
   // Get Current Month
-  const currentMonth = format(new Date(), 'LLLL')
+  const currentMonthYear = format(new Date(), 'LLLL RRRR')
 
   const monthCelebrants = [
     {
@@ -55,16 +55,15 @@ export default function AnnouncementBoard () {
               <Dialog>
                 <DialogTrigger asChild>
                   <Link fontSize='sm'>
-                    Homeowners:{' '}
+                    {currentMonthYear} Celebrants{' '}
                     <Text as='span' fontWeight='bold'>
-                      {currentMonth}
-                    </Text>{' '}
-                    Celebrants (3)
+                      (3)
+                    </Text>
                   </Link>
                 </DialogTrigger>
                 <DialogContent className='sm:max-w-[425px]'>
                   <DialogHeader>
-                    <DialogTitle>{currentMonth} Celebrants</DialogTitle>
+                    <DialogTitle>{currentMonthYear} Celebrants</DialogTitle>
                     <DialogDescription></DialogDescription>
                   </DialogHeader>
                   <Stack>
