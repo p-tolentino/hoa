@@ -27,7 +27,7 @@ export const getBudget = async (budgetId: string) => {
     var plan = await db.budgetPlan.findUnique({
       where: { id: budgetId },
     });
-    console.log("success")
+
     return plan;
   } catch {
     return null;

@@ -21,7 +21,6 @@ const PaymentHistory = async () => {
   if (!transactions) {
     return null;
   }
-  console.log(transactions);
 
   const formattedHistoryPromises: Promise<PaymentHistoryColumn>[] = transactions
     .filter((item) => item.status === "PAID")

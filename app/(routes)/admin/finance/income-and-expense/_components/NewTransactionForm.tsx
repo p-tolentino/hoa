@@ -189,6 +189,7 @@ export default function NewTransactionForm({
                     <option value="Repair and Maintenance">
                       Repair and Maintenance
                     </option>
+                    <option value="Donations">Donations</option>
                     <option value="Furnitures and Fixtures">
                       Furnitures and Fixtures
                     </option>

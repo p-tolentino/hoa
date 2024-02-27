@@ -3,7 +3,6 @@
 import { Heading } from "@/components/ui/heading";
 import {
   Button,
-  Center,
   Flex,
   Text,
   Table,
@@ -18,12 +17,6 @@ import { Separator } from "@/components/ui/separator";
 import { AddIcon } from "@chakra-ui/icons";
 import Link from "next/link";
 import { BudgetPlan } from "@prisma/client";
-
-interface TableRow {
-  id: number;
-  title: string;
-  fiscalyear: number;
-}
 
 export const BudgetPlanning = ({
   budgetPlans,
@@ -67,21 +60,21 @@ export const BudgetPlanning = ({
             </Tr>
           </Thead>
           <Tbody>
-      {budgetPlans.map((plan) => (
-    <Tr key={plan.id} fontFamily="font.body">
-      <Td px="1rem">{plan.title}</Td>
-      <Td px="2rem">{plan.forYear}</Td>
-      <Td textAlign="center">
-        <Button
-          size="sm"
-          as={Link}
-          href={`/admin/finance/budget-planning/view?id=${plan.id}`}
-        >
-          View Detailed Budget Plan
-        </Button>
-      </Td>
-    </Tr>
-  ))}
+            {budgetPlans.map((plan) => (
+              <Tr key={plan.id} fontFamily="font.body">
+                <Td px="1rem">{plan.title}</Td>
+                <Td px="2rem">{plan.forYear}</Td>
+                <Td textAlign="center">
+                  <Button
+                    size="sm"
+                    as={Link}
+                    href={`/admin/finance/budget-planning/${plan.id}`}
+                  >
+                    View Detailed Budget Plan
+                  </Button>
+                </Td>
+              </Tr>
+            ))}
           </Tbody>
         </Table>
       </VStack>
