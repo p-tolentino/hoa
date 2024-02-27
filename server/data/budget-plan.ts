@@ -22,12 +22,12 @@ export const getBudgetPlanByYear = async (forYear: number) => {
   }
 };
 
-export const getBudgetPlan = async (id: string) => {
+export const getBudget = async (budgetId: string) => {
   try {
-    const plan = await db.budgetPlan.findFirst({
-      where: {id}
+    var plan = await db.budgetPlan.findUnique({
+      where: { id: budgetId },
     });
-
+    console.log("success")
     return plan;
   } catch {
     return null;

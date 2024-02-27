@@ -75,7 +75,7 @@ export const BudgetPlanning = ({
         <Button
           size="sm"
           as={Link}
-          href={`/admin/finance/budget-planning/view/${plan.id}`}
+          href={`/admin/finance/budget-planning/view?id=${plan.id}`}
         >
           View Detailed Budget Plan
         </Button>
