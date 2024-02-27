@@ -16,6 +16,14 @@ import SurveyResult from "./_result/survey";
 import { formatDistanceToNowStrict } from "date-fns";
 
 function surveyPosts() {
+  const pollCategories = [
+    { category: "Meeting", color: "purple.200" },
+    { category: "Election", color: "pink.200" },
+    { category: "Inquiry", color: "blue.200" },
+    { category: "Event", color: "orange.200" },
+    { category: "New Category", color: "teal.200" },
+  ];
+
   const datePosted = new Date(2024, 2, 1);
   const dateDistance = formatDistanceToNowStrict(datePosted);
 
@@ -60,68 +68,23 @@ function surveyPosts() {
             <SurveyResult />
           </HStack>
 
-          {/* Catergories */}
+          {/* Survey Catergories */}
           <HStack mb="2%">
-            <Box
-              bg="purple.200"
-              fontFamily="font.heading"
-              fontSize="xs"
-              fontWeight="semibold"
-              w="10%"
-              p="3px"
-              textAlign="center"
-              rounded="md"
-            >
-              Meeting
-            </Box>
-            <Box
-              bg="pink.200"
-              fontFamily="font.heading"
-              fontSize="xs"
-              fontWeight="semibold"
-              w="10%"
-              p="3px"
-              textAlign="center"
-              rounded="md"
-            >
-              Election
-            </Box>
-            <Box
-              bg="blue.200"
-              fontFamily="font.heading"
-              fontSize="xs"
-              fontWeight="semibold"
-              w="10%"
-              p="3px"
-              textAlign="center"
-              rounded="md"
-            >
-              Inquiry
-            </Box>
-            <Box
-              bg="orange.200"
-              fontFamily="font.heading"
-              fontSize="xs"
-              fontWeight="semibold"
-              w="10%"
-              p="3px"
-              textAlign="center"
-              rounded="md"
-            >
-              Event
-            </Box>
-            <Box
-              bg="teal.200"
-              fontFamily="font.heading"
-              fontSize="xs"
-              fontWeight="semibold"
-              w="10%"
-              p="3px"
-              textAlign="center"
-              rounded="md"
-            >
-              New Category
-            </Box>
+            {pollCategories.map((pollCategory, index) => (
+              <Box
+                key={index}
+                bg={pollCategory.color}
+                fontFamily="font.heading"
+                fontSize="xs"
+                fontWeight="semibold"
+                w="10%"
+                p="3px"
+                textAlign="center"
+                rounded="md"
+              >
+                {pollCategory.category}
+              </Box>
+            ))}
           </HStack>
 
           {/* Survey Details */}

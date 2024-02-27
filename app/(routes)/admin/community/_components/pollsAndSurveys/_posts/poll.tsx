@@ -16,6 +16,13 @@ import PollResult from "./_result/poll";
 import { formatDistanceToNowStrict } from "date-fns";
 
 function pollPosts() {
+  const pollCategories = [
+    { category: "Meeting", color: "purple.200" },
+    { category: "Election", color: "pink.200" },
+    { category: "Inquiry", color: "blue.200" },
+    { category: "Event", color: "orange.200" },
+  ];
+
   const datePosted = new Date(2024, 2, 1);
   const dateDistance = formatDistanceToNowStrict(datePosted);
 
@@ -60,56 +67,23 @@ function pollPosts() {
             <PollResult />
           </HStack>
 
-          {/* Catergories */}
+          {/* Poll Catergories */}
           <HStack mb="2%">
-            <Box
-              bg="purple.200"
-              fontFamily="font.heading"
-              fontSize="xs"
-              fontWeight="semibold"
-              w="10%"
-              p="3px"
-              textAlign="center"
-              rounded="md"
-            >
-              Meeting
-            </Box>
-            <Box
-              bg="pink.200"
-              fontFamily="font.heading"
-              fontSize="xs"
-              fontWeight="semibold"
-              w="10%"
-              p="3px"
-              textAlign="center"
-              rounded="md"
-            >
-              Election
-            </Box>
-            <Box
-              bg="blue.200"
-              fontFamily="font.heading"
-              fontSize="xs"
-              fontWeight="semibold"
-              w="10%"
-              p="3px"
-              textAlign="center"
-              rounded="md"
-            >
-              Inquiry
-            </Box>
-            <Box
-              bg="orange.200"
-              fontFamily="font.heading"
-              fontSize="xs"
-              fontWeight="semibold"
-              w="10%"
-              p="3px"
-              textAlign="center"
-              rounded="md"
-            >
-              Event
-            </Box>
+            {pollCategories.map((pollCategory, index) => (
+              <Box
+                key={index}
+                bg={pollCategory.color}
+                fontFamily="font.heading"
+                fontSize="xs"
+                fontWeight="semibold"
+                w="10%"
+                p="3px"
+                textAlign="center"
+                rounded="md"
+              >
+                {pollCategory.category}
+              </Box>
+            ))}
           </HStack>
 
           {/* Poll Details */}
