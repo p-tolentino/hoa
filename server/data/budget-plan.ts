@@ -21,3 +21,15 @@ export const getBudgetPlanByYear = async (forYear: number) => {
     throw error;
   }
 };
+
+export const getBudgetPlan = async (id: string) => {
+  try {
+    const plan = await db.budgetPlan.findFirst({
+      where: {id}
+    });
+
+    return plan;
+  } catch {
+    return null;
+  }
+};
