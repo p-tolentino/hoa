@@ -67,45 +67,21 @@ export const BudgetPlanning = ({
             </Tr>
           </Thead>
           <Tbody>
-            <Tr fontFamily="font.body">
-              <Td px="1rem">Budget Plan for 2023</Td>
-              <Td px="2rem">01/01/2023</Td>
-              <Td textAlign="center">
-                <Button
-                  size="sm"
-                  as={Link}
-                  href="/admin/finance/budget-planning/view"
-                >
-                  View Detailed Budget Plan
-                </Button>
-              </Td>
-            </Tr>
-            <Tr fontFamily="font.body">
-              <Td px="1rem">Budget Plan for 2024</Td>
-              <Td px="2rem">01/01/2024</Td>
-              <Td textAlign="center">
-                <Button
-                  size="sm"
-                  as={Link}
-                  href="/admin/finance/budget-planning/view"
-                >
-                  View Detailed Budget Plan
-                </Button>
-              </Td>
-            </Tr>
-            <Tr fontFamily="font.body">
-              <Td px="1rem">Budget Plan for 2025</Td>
-              <Td px="2rem">01/01/2025</Td>
-              <Td textAlign="center">
-                <Button
-                  size="sm"
-                  as={Link}
-                  href="/admin/finance/budget-planning/view"
-                >
-                  View Detailed Budget Plan
-                </Button>
-              </Td>
-            </Tr>
+      {budgetPlans.map((plan) => (
+    <Tr key={plan.id} fontFamily="font.body">
+      <Td px="1rem">{plan.title}</Td>
+      <Td px="2rem">{plan.forYear}</Td>
+      <Td textAlign="center">
+        <Button
+          size="sm"
+          as={Link}
+          href={`/admin/finance/budget-planning/view/${plan.id}`}
+        >
+          View Detailed Budget Plan
+        </Button>
+      </Td>
+    </Tr>
+  ))}
           </Tbody>
         </Table>
       </VStack>
