@@ -7,15 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  Button,
-  Input,
-  Flex,
-  Stack,
-  Spacer,
-  Text,
-  HStack,
-} from "@chakra-ui/react";
+import { Input, Flex, Spacer, HStack } from "@chakra-ui/react";
 import {
   Select,
   SelectContent,
@@ -25,9 +17,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import React from "react";
-import { AddIcon } from "@chakra-ui/icons";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
-import Link from "next/link";
 
 import PollPosts from "./_posts/poll";
 import SurveyPosts from "./_posts/survey";
@@ -37,7 +27,7 @@ import CreateSurvey from "./_create/surveys";
 export default function PollsAndSurveysCard() {
   return (
     <>
-      <Card className="h-[70vh]">
+      <Card className="h-[75vh]">
         <Flex justifyContent="space-between">
           <CardHeader>
             <CardTitle>Polls & Surveys</CardTitle>
@@ -84,7 +74,7 @@ export default function PollsAndSurveysCard() {
 
           {/* Wrap the PollPosts and SurveyPosts inside ScrollArea */}
           <ScrollArea
-            style={{ maxHeight: "calc(65vh - 120px)", overflowY: "auto" }}
+            style={{ maxHeight: "calc(70vh - 120px)", overflowY: "auto" }}
           >
             <PollPosts />
             <SurveyPosts />

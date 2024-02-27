@@ -53,7 +53,7 @@ function createPoll() {
     <Dialog /*open={open} onOpenChange={setOpen}*/>
       <DialogTrigger asChild>
         <Button size="sm" colorScheme="yellow">
-          <AddIcon mr="10px" />
+          <AddIcon boxSize={3} mr="10px" />
           Create Poll
         </Button>
       </DialogTrigger>

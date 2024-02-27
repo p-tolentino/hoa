@@ -4,33 +4,24 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import {
-  Stack,
-  Text,
-  Box,
-  Divider,
-  Radio,
-  RadioGroup,
-  Button,
-} from "@chakra-ui/react";
+import { Stack, Text, Box, Divider, Progress, Button } from "@chakra-ui/react";
 
-function answerPoll() {
+function pollResult() {
   return (
     <Dialog /*open={open} onOpenChange={setOpen}*/>
       <DialogTrigger asChild>
-        <Button size="sm" fontFamily="font.body">
-          Answer Poll
+        <Button size="sm" fontFamily="font.body" colorScheme="green">
+          Poll Result
         </Button>
       </DialogTrigger>
       <DialogContent className="lg:min-w-[800px]">
         <DialogHeader>
-          <DialogTitle>Answer Poll</DialogTitle>
-          <DialogDescription>Enter your answers to the poll.</DialogDescription>
+          <DialogTitle>Poll Result</DialogTitle>
+          <DialogDescription>View the results of the poll.</DialogDescription>
         </DialogHeader>
 
         {/* Form Content */}
@@ -49,7 +40,7 @@ function answerPoll() {
           </Text>
           <Divider />
 
-          {/* Poll Question */}
+          {/* Poll Result */}
           <Box p="10px">
             <Stack spacing="15px">
               <Text fontSize="sm" fontWeight="semibold">
@@ -58,30 +49,25 @@ function answerPoll() {
               <Text fontSize="sm" fontFamily="font.body">
                 Display Question Here
               </Text>
-              <RadioGroup size="sm" fontFamily="font.body">
-                <Stack spacing={2}>
-                  <Radio value="1">Option 1</Radio>
-                  <Radio value="2">Option 2</Radio>
-                  <Radio value="3">Option 3</Radio>
-                </Stack>
-              </RadioGroup>
+              <Stack spacing={2}>
+                <Text fontSize="sm" fontFamily="font.body">
+                  Option 1
+                </Text>
+                <Progress colorScheme="yellow" size="sm" value={20} />
+                <Text fontSize="sm" fontFamily="font.body">
+                  Option 2
+                </Text>
+                <Progress colorScheme="yellow" size="sm" value={80} />
+                <Text fontSize="sm" fontFamily="font.body">
+                  Option 3
+                </Text>
+                <Progress colorScheme="yellow" size="sm" value={60} />
+              </Stack>
             </Stack>
           </Box>
         </Stack>
-
-        <DialogFooter>
-          <Button
-            w="full"
-            size="sm"
-            colorScheme="yellow"
-            type="submit"
-            // onClick={() => onSubmit()}
-          >
-            Submit
-          </Button>
-        </DialogFooter>
       </DialogContent>
     </Dialog>
   );
 }
-export default answerPoll;
+export default pollResult;

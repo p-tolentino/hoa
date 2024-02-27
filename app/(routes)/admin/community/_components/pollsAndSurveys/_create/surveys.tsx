@@ -61,7 +61,7 @@ function createSurveys() {
     <Dialog /*open={open} onOpenChange={setOpen}*/>
       <DialogTrigger asChild>
         <Button size="sm" colorScheme="yellow">
-          <AddIcon mr="10px" />
+          <AddIcon boxSize={3} mr="10px" />
           Create Survey
         </Button>
       </DialogTrigger>
@@ -140,7 +140,7 @@ function createSurveys() {
             <Box p="10px" maxH="300px" overflowY="auto">
               <Stack spacing="15px">
                 {questions.map((question, index) => (
-                  <FormControl key={index} isRequired>
+                  <FormControl key={index} isRequired mb="3%">
                     <HStack>
                       <FormLabel fontSize="sm" fontWeight="semibold">
                         Survey Question:

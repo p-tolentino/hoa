@@ -12,6 +12,7 @@ import {
   Button,
 } from "@chakra-ui/react";
 import AnswerSurvey from "./_answer/survey";
+import SurveyResult from "./_result/survey";
 
 function surveyPosts() {
   return (
@@ -19,117 +20,140 @@ function surveyPosts() {
       <Box
         w="100%"
         h="100%"
-        p="20px"
         border="1px"
         borderColor="gray.200"
         borderRadius="10px"
         mb="1%"
       >
-        <HStack>
-          <Heading size="md" fontFamily="font.heading" mb="1%">
-            Survey Title
-          </Heading>
-          <Spacer />
-          <AnswerSurvey />
-        </HStack>
-
-        {/* Catergories */}
-        <HStack mb="2%">
-          <Box
-            bg="purple.200"
-            fontFamily="font.heading"
-            fontSize="xs"
-            fontWeight="semibold"
-            w="10%"
-            p="3px"
-            textAlign="center"
-            rounded="md"
-          >
-            Meeting
-          </Box>
-          <Box
-            bg="red.200"
-            fontFamily="font.heading"
-            fontSize="xs"
-            fontWeight="semibold"
-            w="10%"
-            p="3px"
-            textAlign="center"
-            rounded="md"
-          >
-            Election
-          </Box>
-          <Box
-            bg="blue.200"
-            fontFamily="font.heading"
-            fontSize="xs"
-            fontWeight="semibold"
-            w="10%"
-            p="3px"
-            textAlign="center"
-            rounded="md"
-          >
-            Inquiry
-          </Box>
-          <Box
-            bg="orange.200"
-            fontFamily="font.heading"
-            fontSize="xs"
-            fontWeight="semibold"
-            w="10%"
-            p="3px"
-            textAlign="center"
-            rounded="md"
-          >
-            Event
-          </Box>
-          <Box
-            bg="pink.200"
-            fontFamily="font.heading"
-            fontSize="xs"
-            fontWeight="semibold"
-            w="10%"
-            p="3px"
-            textAlign="center"
-            rounded="md"
-          >
-            New Category
-          </Box>
-        </HStack>
-
-        {/* Survey Details */}
-        <HStack p="5px">
-          <Avatar /> {/*default size is medium*/}
-          <Stack spacing="0.5px">
-            <Text
-              id="name"
-              fontSize="sm"
-              fontWeight="bold"
-              fontFamily="font.body"
-            >
-              Name
-            </Text>
-            <Text
-              id="position"
-              fontSize="sm"
-              fontWeight="bold"
-              fontFamily="font.body"
-            >
-              Position (Homeowner or Officer)
-            </Text>
-          </Stack>
-        </HStack>
-        <Text
-          id="description"
-          ml="5.5%"
-          fontSize="sm"
-          p="5px"
-          fontFamily="font.body"
+        <Box
+          bgColor="green.200"
+          fontSize="xs"
+          fontWeight="bold"
+          w="5%"
+          textAlign="center"
+          ml="20px"
         >
-          Description of Survey Description of Survey Description of Survey
-          Description of Survey Description of Survey Description of Survey
-          Description of Survey Description of Survey Description of Survey
-        </Text>
+          Open
+        </Box>
+        {/* <Box
+          bgColor="red.200"
+          fontSize="xs"
+          fontWeight="semibold"
+          w="6%"
+          textAlign="center"
+          ml="20px"
+        >
+          Closed
+        </Box> */}
+
+        <Box p="20px">
+          <HStack>
+            <Heading size="md" fontFamily="font.heading" mb="1%">
+              Survey Title
+            </Heading>
+            <Spacer />
+            {/* <AnswerSurvey /> */}
+            <SurveyResult />
+          </HStack>
+
+          {/* Catergories */}
+          <HStack mb="2%">
+            <Box
+              bg="purple.200"
+              fontFamily="font.heading"
+              fontSize="xs"
+              fontWeight="semibold"
+              w="10%"
+              p="3px"
+              textAlign="center"
+              rounded="md"
+            >
+              Meeting
+            </Box>
+            <Box
+              bg="pink.200"
+              fontFamily="font.heading"
+              fontSize="xs"
+              fontWeight="semibold"
+              w="10%"
+              p="3px"
+              textAlign="center"
+              rounded="md"
+            >
+              Election
+            </Box>
+            <Box
+              bg="blue.200"
+              fontFamily="font.heading"
+              fontSize="xs"
+              fontWeight="semibold"
+              w="10%"
+              p="3px"
+              textAlign="center"
+              rounded="md"
+            >
+              Inquiry
+            </Box>
+            <Box
+              bg="orange.200"
+              fontFamily="font.heading"
+              fontSize="xs"
+              fontWeight="semibold"
+              w="10%"
+              p="3px"
+              textAlign="center"
+              rounded="md"
+            >
+              Event
+            </Box>
+            <Box
+              bg="teal.200"
+              fontFamily="font.heading"
+              fontSize="xs"
+              fontWeight="semibold"
+              w="10%"
+              p="3px"
+              textAlign="center"
+              rounded="md"
+            >
+              New Category
+            </Box>
+          </HStack>
+
+          {/* Survey Details */}
+          <HStack p="5px">
+            <Avatar /> {/*default size is medium*/}
+            <Stack spacing="0.5px">
+              <Text
+                id="name"
+                fontSize="sm"
+                fontWeight="bold"
+                fontFamily="font.body"
+              >
+                Name
+              </Text>
+              <Text
+                id="position"
+                fontSize="sm"
+                fontWeight="bold"
+                fontFamily="font.body"
+              >
+                Position (Homeowner or Officer)
+              </Text>
+            </Stack>
+          </HStack>
+          <Text
+            id="description"
+            ml="5.5%"
+            fontSize="sm"
+            p="5px"
+            fontFamily="font.body"
+          >
+            Description of Survey Description of Survey Description of Survey
+            Description of Survey Description of Survey Description of Survey
+            Description of Survey Description of Survey Description of Survey
+          </Text>
+        </Box>
       </Box>
     </Flex>
   );

@@ -9,9 +9,15 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Stack, Text, Box, Divider } from "@chakra-ui/react";
-import { Radio, RadioGroup } from "@chakra-ui/react";
-import { Button } from "@chakra-ui/react";
+import {
+  Stack,
+  Text,
+  Box,
+  Divider,
+  Radio,
+  RadioGroup,
+  Button,
+} from "@chakra-ui/react";
 
 function answerSurvey() {
   return (
@@ -21,7 +27,7 @@ function answerSurvey() {
           Answer Survey
         </Button>
       </DialogTrigger>
-      <DialogContent className="">
+      <DialogContent className="lg:min-w-[800px]">
         <DialogHeader>
           <DialogTitle>Answer Survey</DialogTitle>
           <DialogDescription>
