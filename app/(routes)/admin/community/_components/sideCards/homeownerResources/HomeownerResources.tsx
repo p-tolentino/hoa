@@ -2,8 +2,9 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Link, ListItem, UnorderedList } from '@chakra-ui/react'
+import { CommunityRules } from './_components/CommunityRules'
 
-export default function HomeownerLinks () {
+export default function HomeownerResources () {
   return (
     <>
       <Card>
@@ -13,9 +14,7 @@ export default function HomeownerLinks () {
         <CardContent className='space-y-2'>
           <UnorderedList fontFamily={'font.body'}>
             <ListItem>
-              <Link isExternal fontSize='sm'>
-                Community Rules
-              </Link>
+              <CommunityRules />
             </ListItem>
             <ListItem>
               <Link isExternal fontSize='sm'>

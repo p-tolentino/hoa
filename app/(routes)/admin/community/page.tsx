@@ -4,9 +4,9 @@ import { Flex } from '@chakra-ui/react'
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import DiscussionsCard from './_components/discussions/DiscussionsCard'
-import AnnouncementBoard from './_components/AnnouncementBoard'
-import HomeownerLinks from './_components/HomeownerLinks'
-import AdminOfficerLinks from './_components/AdminOfficerLinks'
+import AnnouncementBoard from './_components/sideCards/announcements/AnnouncementBoard'
+import HomeownerResources from './_components/sideCards/homeownerResources/HomeownerResources'
+import AdminOfficerLinks from './_components/sideCards/adminOfficerLinks/AdminOfficerLinks'
 import BusinessForumCard from './_components/business/BusinessForumCard'
 import PollsAndSurveysCard from './_components/pollsAndSurveys/PollsAndSurveysCard'
 import EventsCard from './_components/events/EventsCard'
@@ -43,7 +43,7 @@ const Community = () => {
         </Tabs>
         <Flex flexDir='column' w='20vw' gap='2rem'>
           <AnnouncementBoard />
-          <HomeownerLinks />
+          <HomeownerResources />
           <AdminOfficerLinks />
         </Flex>
       </Flex>
