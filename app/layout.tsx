@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import "./globals.css";
+import "@uploadthing/react/styles.css";
 
 import { auth } from "@/auth";
 import { SessionProvider } from "next-auth/react";

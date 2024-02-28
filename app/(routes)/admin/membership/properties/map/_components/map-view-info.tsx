@@ -7,11 +7,8 @@ import {
   Center,
   Heading,
   SimpleGrid,
-  UnorderedList,
-  Link,
   VStack,
   Text,
-  ListItem,
 } from "@chakra-ui/react";
 
 import {
@@ -31,7 +28,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-import { Property } from "@prisma/client";
+import { Property, PropertyDocument } from "@prisma/client";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
@@ -41,9 +38,11 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 
 import { FaHouseUser as HouseMember } from "react-icons/fa6";
+import Link from "next/link";
 
 interface MapViewInfoProps {
   properties: Property[];
+  documents: PropertyDocument[];
   users: ExtendedUser[];
 }
 
@@ -51,12 +50,40 @@ const SelectSchema = z.object({
   address: z.string(),
 });
 
+const requiredDocs = [
+  {
+    title: "Intent to Purchase or Letter of Intent",
+  },
+  {
+    title: "Reservation Letter",
+  },
+  {
+    title: "Contract to Sell",
+  },
+  {
+    title: "Letter of Guarantee",
+  },
+  {
+    title: "Deed of Absolute Sale",
+  },
+  {
+    title: "Certification of Title",
+  },
+  {
+    title: "Tax Declaration",
+  },
+];
+
 export const MapViewInfo: React.FC<MapViewInfoProps> = ({
   properties,
+  documents,
   users,
 }) => {
   const { update } = useSession();
   const [occupants, setOccupants] = useState<ExtendedUser[] | undefined>();
+  const [propertyDocuments, setDocuments] = useState<
+    PropertyDocument[] | undefined
+  >();
 
   const form = useForm<z.infer<typeof SelectSchema>>({
     defaultValues: {
@@ -79,8 +106,16 @@ export const MapViewInfo: React.FC<MapViewInfoProps> = ({
         }
       }
     });
-    form.reset();
-    // TODO: Include documents
+
+    const docus = documents.filter((propDoc) => {
+      return propDoc.propertyId === address;
+    });
+
+    if (docus) {
+      setDocuments(docus);
+    } else {
+      setDocuments([]);
+    }
   }, [form.watch("address")]);
 
   return (
@@ -144,7 +179,6 @@ export const MapViewInfo: React.FC<MapViewInfoProps> = ({
                 Household Members
               </Heading>
               <Text fontSize={"lg"} fontFamily={"font.body"} lineHeight={2}>
-                {/* {`${propertyInfo.occupants || ""}`} */}
                 <ScrollArea className="h-40 border rounded-md">
                   <div className="p-4">
                     {occupants?.length !== 0 ? (
@@ -194,44 +228,36 @@ export const MapViewInfo: React.FC<MapViewInfoProps> = ({
               <Heading size={"md"} fontFamily={"font.heading"} mb={"1rem"}>
                 Property Documents
               </Heading>
-              <UnorderedList spacing={2} fontFamily={"font.body"}>
-                <ListItem>
-                  <Link isExternal>
-                    Intent to Purchase or Letter of Intent{" "}
-                    <ExternalLinkIcon mx={"2px"} />
-                  </Link>
-                </ListItem>
-                <ListItem>
-                  <Link isExternal>
-                    Reservation Letter <ExternalLinkIcon mx={"2px"} />
-                  </Link>
-                </ListItem>
-                <ListItem>
-                  <Link isExternal>
-                    Contract to Sell <ExternalLinkIcon mx={"2px"} />
-                  </Link>
-                </ListItem>
-                <ListItem>
-                  <Link isExternal>
-                    Letter of Guarantee <ExternalLinkIcon mx={"2px"} />
-                  </Link>
-                </ListItem>
-                <ListItem>
-                  <Link isExternal>
-                    Deed of Absolute Sale <ExternalLinkIcon mx={"2px"} />
-                  </Link>
-                </ListItem>
-                <ListItem>
-                  <Link isExternal>
-                    Certification of Title <ExternalLinkIcon mx={"2px"} />
-                  </Link>
-                </ListItem>
-                <ListItem>
-                  <Link isExternal>
-                    Tax Declaration <ExternalLinkIcon mx={"2px"} />
-                  </Link>
-                </ListItem>
-              </UnorderedList>
+              <div className="flex flex-col gap-2">
+                {propertyDocuments?.length !== 0 ? (
+                  requiredDocs.map((doc) => {
+                    const propDoc = propertyDocuments?.find((item) => {
+                      return item.fileName === doc.title;
+                    });
+
+                    return (
+                      <Link
+                        key={doc.title}
+                        rel="noopener noreferrer"
+                        target="_blank"
+                        href={propDoc?.imageUrl || "#"}
+                        className={cn(
+                          "flex items-center w-[45%] gap-x-1 hover:underline hover:underline-offset-4",
+                          !propDoc?.imageUrl &&
+                            "pointer-events-none text-gray-300"
+                        )}
+                      >
+                        • {doc.title}
+                        <ExternalLinkIcon mx={"2px"} />
+                      </Link>
+                    );
+                  })
+                ) : (
+                  <span className="text-gray-400">
+                    No existing documents uploaded.
+                  </span>
+                )}
+              </div>
             </Box>
           </VStack>
         </Box>
