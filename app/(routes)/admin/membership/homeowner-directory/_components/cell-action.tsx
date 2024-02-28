@@ -106,7 +106,10 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
           {data.status !== Status.ACTIVE && data.status !== Status.INACTIVE && (
             <>
-              <DropdownMenuItem onClick={() => onApprove(data.id)}>
+              <DropdownMenuItem
+                disabled={!data.address}
+                onClick={() => onApprove(data.id)}
+              >
                 <Check className="w-4 h-4 mr-2" />
                 Approve Membership
               </DropdownMenuItem>
