@@ -49,7 +49,7 @@ export function CommunityRules () {
     "To continue, please read the following Community Rules carefully. Understanding and agreeing to these rules will contribute to a healthy community engagement platform within the Homeowners' Association."
   return (
     <div>
-      <AlertDialog>
+      <AlertDialog defaultOpen>
         <AlertDialogTrigger>
           <Link fontSize='sm'>Community Rules</Link>
         </AlertDialogTrigger>
