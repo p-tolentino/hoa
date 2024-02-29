@@ -126,7 +126,7 @@ function pollPosts () {
         {postStatus === 'Open' ? (
           <Stack p='1rem'>
             <Button size='sm' fontFamily='font.body' colorScheme='red'>
-              End Form
+              Close Form
             </Button>{' '}
             <AnswerPoll />
           </Stack>
