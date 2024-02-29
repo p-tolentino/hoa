@@ -19,24 +19,24 @@ import {
   Button,
 } from "@chakra-ui/react";
 
-function answerPoll() {
+function Answer() {
   return (
     <Dialog /*open={open} onOpenChange={setOpen}*/>
       <DialogTrigger asChild>
         <Button size="sm" fontFamily="font.body">
-          Answer Poll
+          Answer
         </Button>
       </DialogTrigger>
       <DialogContent className="lg:min-w-[800px]">
         <DialogHeader>
-          <DialogTitle>Answer Poll</DialogTitle>
-          <DialogDescription>Enter your answers to the poll.</DialogDescription>
+          <DialogTitle>Answer</DialogTitle>
+          <DialogDescription>Enter your answers.</DialogDescription>
         </DialogHeader>
 
         {/* Form Content */}
         <Stack spacing="15px">
           <Text fontSize="sm" fontWeight="semibold">
-            Poll Title:
+            Title:
           </Text>
           <Text fontSize="sm" fontFamily="font.body">
             Display Title Here
@@ -50,10 +50,36 @@ function answerPoll() {
           <Divider />
 
           {/* Poll Question */}
-          <Box p="10px">
+          <Box p="10px" maxH="300px" overflowY="auto">
             <Stack spacing="15px">
               <Text fontSize="sm" fontWeight="semibold">
-                Poll Question:
+                Question 1:
+              </Text>
+              <Text fontSize="sm" fontFamily="font.body">
+                Display Question Here
+              </Text>
+              <RadioGroup size="sm" fontFamily="font.body">
+                <Stack spacing={2}>
+                  <Radio value="1">Option 1</Radio>
+                  <Radio value="2">Option 2</Radio>
+                  <Radio value="3">Option 3</Radio>
+                </Stack>
+              </RadioGroup>
+              <Text fontSize="sm" fontWeight="semibold">
+                Question 2:
+              </Text>
+              <Text fontSize="sm" fontFamily="font.body">
+                Display Question Here
+              </Text>
+              <RadioGroup size="sm" fontFamily="font.body">
+                <Stack spacing={2}>
+                  <Radio value="1">Option 1</Radio>
+                  <Radio value="2">Option 2</Radio>
+                  <Radio value="3">Option 3</Radio>
+                </Stack>
+              </RadioGroup>
+              <Text fontSize="sm" fontWeight="semibold">
+                Question 3:
               </Text>
               <Text fontSize="sm" fontFamily="font.body">
                 Display Question Here
@@ -84,4 +110,4 @@ function answerPoll() {
     </Dialog>
   );
 }
-export default answerPoll;
+export default Answer;
