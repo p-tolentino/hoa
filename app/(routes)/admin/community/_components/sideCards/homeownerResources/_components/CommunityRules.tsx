@@ -51,9 +51,7 @@ export function CommunityRules () {
     <>
       <AlertDialog defaultOpen>
         <AlertDialogTrigger>
-          <Link isExternal fontSize='sm'>
-            Community Rules
-          </Link>
+          <Link fontSize='sm'>Community Rules</Link>
         </AlertDialogTrigger>
         <AlertDialogContent className='lg:min-w-[1000px]'>
           <AlertDialogHeader className='mb-3'>
