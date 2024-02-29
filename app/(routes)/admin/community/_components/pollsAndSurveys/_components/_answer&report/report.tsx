@@ -14,13 +14,7 @@ function Report() {
   return (
     <Dialog /*open={open} onOpenChange={setOpen}*/>
       <DialogTrigger asChild>
-        <Button
-          size="sm"
-          fontFamily="font.body"
-          colorScheme="green"
-          px="2rem"
-          m="1rem"
-        >
+        <Button size="sm" fontFamily="font.body" colorScheme="green">
           View Report
         </Button>
       </DialogTrigger>

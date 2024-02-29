@@ -25,14 +25,14 @@ function Post() {
     { category: "Other", color: "teal.200" },
   ];
 
-  const [postStatus, setPostStatus] = useState("Closed");
+  const [postStatus, setPostStatus] = useState("Open");
 
   const datePosted = new Date(2024, 2, 1);
   const dateDistance = formatDistanceToNowStrict(datePosted);
 
   return (
     <Flex p="10px">
-      <Flex
+      <Box
         w="100%"
         h="100%"
         border="1px"
@@ -40,22 +40,33 @@ function Post() {
         borderRadius="10px"
         mb="1%"
       >
+        {/* Survey Status */}
+        <Box
+          fontSize="xs"
+          w="6%"
+          textAlign="center"
+          ml="20px"
+          fontWeight="bold"
+          bgColor={postStatus === "Open" ? "green.200" : "red.200"}
+        >
+          {postStatus}
+        </Box>
         <Box p="20px">
-          <HStack spacing={1}>
+          <HStack>
             {/* Survey Title */}
             <Heading size="md" fontFamily="font.heading" mb="1%">
               Title
             </Heading>
-
-            {/* Survey Status */}
-            <Text
-              as="sup"
-              fontWeight="bold"
-              color={postStatus === "Open" ? "green.500" : "red.500"}
-            >
-              ({postStatus})
-            </Text>
             <Spacer />
+            {/* Survey Button */}
+            {postStatus === "Open" ? (
+              <HStack>
+                <Answer />
+                <CloseForm />
+              </HStack>
+            ) : (
+              <Report />
+            )}
           </HStack>
 
           {/* Survey Categories */}
@@ -121,16 +132,7 @@ function Post() {
             Posted {dateDistance} ago
           </Text>
         </Box>
-        {/* Survey Button */}
-        {postStatus === "Open" ? (
-          <Stack p="1rem">
-            <CloseForm />
-            <Answer />
-          </Stack>
-        ) : (
-          <Report />
-        )}
-      </Flex>
+      </Box>
     </Flex>
   );
 }
