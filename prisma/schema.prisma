@@ -56,8 +56,8 @@ model Property {
   address      String?
   lotNumber    String?
   lotSize      String?
-  latitude     Int?
-  longitude    Int?
+  latitude     Float?
+  longitude    Float?
   purchaseDate DateTime?
   documents    PropertyDocument[]
 }

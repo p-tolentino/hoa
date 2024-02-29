@@ -39,6 +39,7 @@ import { Separator } from "@/components/ui/separator";
 
 import { FaHouseUser as HouseMember } from "react-icons/fa6";
 import Link from "next/link";
+import GMapView from "./gmap";
 
 interface MapViewInfoProps {
   properties: Property[];
@@ -128,7 +129,11 @@ export const MapViewInfo: React.FC<MapViewInfoProps> = ({
         minChildWidth={{ md: "50vh", lg: "20vh" }}
       >
         <Center bg="lightgrey" minHeight={"200px"} className="rounded-xl">
-          Insert Google Map here
+          <GMapView
+            properties={properties}
+            selectedProperty={form.watch("address")}
+            users={users}
+          />
         </Center>
         <Box fontFamily={"font.body"}>
           <Form {...form}>
@@ -252,10 +257,12 @@ export const MapViewInfo: React.FC<MapViewInfoProps> = ({
                       </Link>
                     );
                   })
-                ) : (
+                ) : form.watch("address") ? (
                   <span className="text-gray-400">
                     No existing documents uploaded.
                   </span>
+                ) : (
+                  <span className="text-gray-400">-</span>
                 )}
               </div>
             </Box>

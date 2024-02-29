@@ -83,6 +83,12 @@ export const PropertySchema = z.object({
   purchaseDate: z.string({
     required_error: "Please specify when the property was bought.",
   }),
+  latitude: z.string({
+    required_error: "Please specify latitude value of address.",
+  }),
+  longitude: z.string({
+    required_error: "Please specify longitude value of address.",
+  }),
 });
 
 export const SettingsSchema = z

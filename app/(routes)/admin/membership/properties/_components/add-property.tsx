@@ -49,6 +49,8 @@ export const AddProperty = () => {
       lotNumber: undefined,
       lotSize: undefined,
       purchaseDate: undefined,
+      latitude: undefined,
+      longitude: undefined,
     },
   });
 
@@ -102,7 +104,7 @@ export const AddProperty = () => {
                 name="address"
                 render={({ field }) => (
                   <FormItem className="mb-5">
-                    <FormDescription>Complete Property Address</FormDescription>
+                    <FormLabel>Complete Property Address</FormLabel>
                     <FormControl>
                       <Input
                         disabled={isPending}
@@ -121,7 +123,7 @@ export const AddProperty = () => {
                 name="lotNumber"
                 render={({ field }) => (
                   <FormItem className="mb-5">
-                    <FormDescription>Lot Number</FormDescription>
+                    <FormLabel>Lot Number</FormLabel>
                     <FormControl>
                       <Input
                         disabled={isPending}
@@ -139,9 +141,7 @@ export const AddProperty = () => {
                 name="lotSize"
                 render={({ field }) => (
                   <FormItem className="mb-5">
-                    <FormDescription>
-                      Lot Size (in square meters)
-                    </FormDescription>
+                    <FormLabel>Lot Size (in square meters)</FormLabel>
                     <FormControl>
                       <Input
                         disabled={isPending}
@@ -166,6 +166,42 @@ export const AddProperty = () => {
                         disabled={isPending}
                         {...field}
                         required
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="latitude"
+                render={({ field }) => (
+                  <FormItem className="mb-5">
+                    <FormLabel>Latitude</FormLabel>
+                    <FormControl>
+                      <Input
+                        disabled={isPending}
+                        placeholder="0.00000000"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="longitude"
+                render={({ field }) => (
+                  <FormItem className="mb-5">
+                    <FormLabel>Longitude</FormLabel>
+                    <FormControl>
+                      <Input
+                        disabled={isPending}
+                        placeholder="0.00000000"
+                        {...field}
                       />
                     </FormControl>
                     <FormMessage />

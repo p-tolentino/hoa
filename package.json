@@ -29,7 +29,7 @@
     "@radix-ui/react-separator": "^1.0.3",
     "@radix-ui/react-slot": "^1.0.2",
     "@radix-ui/react-switch": "^1.0.3",
-    "@react-google-maps/api": "^2.19.2",
+    "@react-google-maps/api": "^2.19.3",
     "@tanstack/react-table": "^8.11.8",
     "@uploadthing/react": "^6.2.4",
     "bcryptjs": "^2.4.3",
