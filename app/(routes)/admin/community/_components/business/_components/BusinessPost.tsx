@@ -21,7 +21,7 @@ function BusinessPost () {
     { nature: 'Clothing ', color: 'pink.200' },
     { nature: 'Household Items', color: 'blue.200' },
     { nature: 'Home Services', color: 'orange.200' },
-    { nature: 'New Nature', color: 'teal.200' }
+    { nature: 'Other', color: 'teal.200' }
   ]
 
   const datePosted = new Date(2024, 2, 1)

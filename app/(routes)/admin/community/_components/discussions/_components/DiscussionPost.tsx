@@ -21,7 +21,7 @@ function DiscussionPost () {
     { category: 'Election', color: 'pink.200' },
     { category: 'Inquiry', color: 'blue.200' },
     { category: 'Event', color: 'orange.200' },
-    { category: 'New Category', color: 'teal.200' }
+    { category: 'Other', color: 'teal.200' }
   ]
 
   const datePosted = new Date(2024, 2, 1)

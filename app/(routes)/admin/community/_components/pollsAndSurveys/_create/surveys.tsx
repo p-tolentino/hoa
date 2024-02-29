@@ -1,4 +1,4 @@
-"use client";
+'use client'
 
 import {
   Dialog,
@@ -7,8 +7,8 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+  DialogTrigger
+} from '@/components/ui/dialog'
 import {
   Input,
   Stack,
@@ -22,51 +22,43 @@ import {
   FormControl,
   FormLabel,
   Textarea,
-  FormHelperText,
-} from "@chakra-ui/react";
-import { AddIcon } from "@chakra-ui/icons";
-import { useState } from "react";
+  FormHelperText
+} from '@chakra-ui/react'
+import { AddIcon } from '@chakra-ui/icons'
+import { useState } from 'react'
 
-function createSurveys() {
-  let [surveyDescription, setSurveyDescription] = useState("");
-  let [options, setOptions] = useState([""]);
-  let [questions, setQuestions] = useState([{ question: "", options: [""] }]);
+function createSurveys () {
+  let [surveyDescription, setSurveyDescription] = useState('')
+  let [options, setOptions] = useState([''])
+  let [questions, setQuestions] = useState([{ question: '', options: [''] }])
 
   let handleSurveyDescriptionChange = (
     e: React.ChangeEvent<HTMLTextAreaElement>
   ) => {
-    let inputSurveyDescription = e.target.value;
-    setSurveyDescription(inputSurveyDescription);
-  };
-
-  let [isNewCategorySelected, setIsNewCategorySelected] = useState(false);
-  let [newCategory, setNewCategory] = useState("");
-
-  let handleCheckboxChange = () => {
-    setIsNewCategorySelected(!isNewCategorySelected);
-    setNewCategory(""); // Clear the input field when toggling the checkbox
-  };
+    let inputSurveyDescription = e.target.value
+    setSurveyDescription(inputSurveyDescription)
+  }
 
   let addOption = (questionIndex: number) => {
-    const newQuestions = [...questions];
-    newQuestions[questionIndex].options.push("");
-    setQuestions(newQuestions);
-  };
+    const newQuestions = [...questions]
+    newQuestions[questionIndex].options.push('')
+    setQuestions(newQuestions)
+  }
 
   let addQuestion = () => {
-    setQuestions([...questions, { question: "", options: [""] }]);
-  };
+    setQuestions([...questions, { question: '', options: [''] }])
+  }
 
   return (
     <Dialog /*open={open} onOpenChange={setOpen}*/>
       <DialogTrigger asChild>
-        <Button size="sm" colorScheme="yellow">
-          <AddIcon boxSize={3} mr="10px" />
+        <Button size='sm' colorScheme='yellow'>
+          <AddIcon boxSize={3} mr='10px' />
           Create Survey
         </Button>
       </DialogTrigger>
-      <DialogContent className="lg:min-w-[800px]">
-        <form action="">
+      <DialogContent className='lg:min-w-[800px]'>
+        <form action=''>
           <DialogHeader>
             <DialogTitle>Create a Survey</DialogTitle>
             <DialogDescription>
@@ -75,27 +67,27 @@ function createSurveys() {
           </DialogHeader>
 
           {/* Form Content */}
-          <Stack spacing="15px" my="2rem">
+          <Stack spacing='15px' my='2rem'>
             <FormControl isRequired>
-              <FormLabel fontSize="sm" fontWeight="semibold">
+              <FormLabel fontSize='sm' fontWeight='semibold'>
                 Survey Title:
               </FormLabel>
               <Input
-                size="md"
-                fontWeight="semibold"
-                type="string"
-                placeholder="Enter a Survey Title"
+                size='md'
+                fontWeight='semibold'
+                type='string'
+                placeholder='Enter a Survey Title'
               />
             </FormControl>
             <FormControl isRequired>
-              <FormLabel fontSize="sm" fontWeight="semibold">
+              <FormLabel fontSize='sm' fontWeight='semibold'>
                 Description:
               </FormLabel>
               <Textarea
-                placeholder="Write something..."
-                id="surveyDescription"
-                fontSize="xs"
-                maxH="300px"
+                placeholder='Write something...'
+                id='surveyDescription'
+                fontSize='xs'
+                maxH='300px'
                 value={surveyDescription}
                 onChange={handleSurveyDescriptionChange}
               />
@@ -103,33 +95,19 @@ function createSurveys() {
 
             {/* Select Category */}
             <FormControl isRequired>
-              <FormLabel fontSize="sm" fontWeight="semibold">
+              <FormLabel fontSize='sm' fontWeight='semibold'>
                 Category:
               </FormLabel>
-              <CheckboxGroup size="sm" colorScheme="yellow">
-                <Stack spacing={5} direction="row" fontFamily="font.body">
+              <CheckboxGroup size='sm' colorScheme='yellow'>
+                <Stack spacing={5} direction='row' fontFamily='font.body'>
                   <Checkbox>Meeting</Checkbox>
                   <Checkbox>Election</Checkbox>
                   <Checkbox>Inquiry</Checkbox>
                   <Checkbox>Event</Checkbox>
-                  <Checkbox onChange={handleCheckboxChange}>
-                    New Category
-                  </Checkbox>
+                  <Checkbox>Other</Checkbox>
                 </Stack>
-                {/* New Category selected */}
-                {isNewCategorySelected && (
-                  <Input
-                    size="xs"
-                    type="string"
-                    placeholder="Enter New Category"
-                    p="1rem"
-                    mt="0.5rem"
-                    value={newCategory}
-                    onChange={(e) => setNewCategory(e.target.value)}
-                  />
-                )}
               </CheckboxGroup>
-              <FormHelperText fontSize="xs" m="1">
+              <FormHelperText fontSize='xs' m='1'>
                 Select the categories that apply to your post for members to
                 easily find it.
               </FormHelperText>
@@ -137,19 +115,19 @@ function createSurveys() {
             <Divider />
 
             {/* Survey Question */}
-            <Box p="10px" maxH="300px" overflowY="auto">
-              <Stack spacing="15px">
+            <Box p='10px' maxH='300px' overflowY='auto'>
+              <Stack spacing='15px'>
                 {questions.map((question, index) => (
-                  <FormControl key={index} isRequired mb="3%">
+                  <FormControl key={index} isRequired mb='3%'>
                     <HStack>
-                      <FormLabel fontSize="sm" fontWeight="semibold">
+                      <FormLabel fontSize='sm' fontWeight='semibold'>
                         Survey Question:
                       </FormLabel>
                       <Spacer />
-                      <Box alignSelf="center" ml="2%">
+                      <Box alignSelf='center' ml='2%'>
                         <Button
-                          size="xs"
-                          colorScheme="yellow"
+                          size='xs'
+                          colorScheme='yellow'
                           onClick={addQuestion}
                         >
                           Add Question
@@ -157,39 +135,39 @@ function createSurveys() {
                       </Box>
                     </HStack>
                     <Input
-                      size="sm"
-                      type="string"
-                      placeholder="Enter a Survey Question"
+                      size='sm'
+                      type='string'
+                      placeholder='Enter a Survey Question'
                       value={question.question}
-                      onChange={(e) => {
-                        const newQuestions = [...questions];
-                        newQuestions[index].question = e.target.value;
-                        setQuestions(newQuestions);
+                      onChange={e => {
+                        const newQuestions = [...questions]
+                        newQuestions[index].question = e.target.value
+                        setQuestions(newQuestions)
                       }}
                     />
                     <FormControl isRequired>
-                      <FormLabel fontSize="sm" fontWeight="semibold">
+                      <FormLabel fontSize='sm' fontWeight='semibold'>
                         Options:
                       </FormLabel>
                       {question.options.map((option, optionIndex) => (
-                        <HStack key={optionIndex} mt="0.5rem">
+                        <HStack key={optionIndex} mt='0.5rem'>
                           <Input
-                            size="sm"
-                            type="string"
+                            size='sm'
+                            type='string'
                             placeholder={`Option ${optionIndex + 1}`}
                             value={option}
-                            onChange={(e) => {
-                              const newQuestions = [...questions];
+                            onChange={e => {
+                              const newQuestions = [...questions]
                               newQuestions[index].options[optionIndex] =
-                                e.target.value;
-                              setQuestions(newQuestions);
+                                e.target.value
+                              setQuestions(newQuestions)
                             }}
                           />
                           {optionIndex === question.options.length - 1 && (
-                            <Box alignSelf="center" ml="2%">
+                            <Box alignSelf='center' ml='2%'>
                               <Button
-                                size="xs"
-                                w="20px"
+                                size='xs'
+                                w='20px'
                                 onClick={() => addOption(index)}
                               >
                                 <AddIcon />
@@ -207,10 +185,10 @@ function createSurveys() {
 
           <DialogFooter>
             <Button
-              w="full"
-              size="sm"
-              colorScheme="yellow"
-              type="submit"
+              w='full'
+              size='sm'
+              colorScheme='yellow'
+              type='submit'
               // onClick={() => onSubmit()}
             >
               Publish
@@ -219,6 +197,6 @@ function createSurveys() {
         </form>
       </DialogContent>
     </Dialog>
-  );
+  )
 }
-export default createSurveys;
+export default createSurveys

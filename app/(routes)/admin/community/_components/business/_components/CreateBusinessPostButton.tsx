@@ -83,17 +83,6 @@ function CreateBusinessPostButton () {
                   <Radio value='homeServices'>Home Services</Radio>
                   <Radio value='other'>Other</Radio>
                 </Stack>
-
-                {/* New Nature selected */}
-                {nature === 'other' && (
-                  <Input
-                    size='xs'
-                    type='string'
-                    placeholder='Enter Nature of Business'
-                    p='1rem'
-                    mt='0.5rem'
-                  />
-                )}
               </RadioGroup>
             </FormControl>
             <Divider />

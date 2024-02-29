@@ -35,14 +35,6 @@ function CreateDiscussionPostButton () {
     setPostContent(inputPostContent)
   }
 
-  let [isNewCategorySelected, setIsNewCategorySelected] = useState(false)
-  let [newCategory, setNewCategory] = useState('')
-
-  let handleCheckboxChange = () => {
-    setIsNewCategorySelected(!isNewCategorySelected)
-    setNewCategory('') // Clear the input field when toggling the checkbox
-  }
-
   return (
     <Dialog /*open={open} onOpenChange={setOpen}*/>
       <DialogTrigger asChild>
@@ -83,20 +75,8 @@ function CreateDiscussionPostButton () {
                   <Checkbox>Election</Checkbox>
                   <Checkbox>Inquiry</Checkbox>
                   <Checkbox>Event</Checkbox>
-                  <Checkbox onChange={handleCheckboxChange}>Other</Checkbox>
+                  <Checkbox>Other</Checkbox>
                 </Stack>
-                {/* New Category selected */}
-                {isNewCategorySelected && (
-                  <Input
-                    size='xs'
-                    type='string'
-                    placeholder='Enter New Category'
-                    p='1rem'
-                    mt='0.5rem'
-                    value={newCategory}
-                    onChange={e => setNewCategory(e.target.value)}
-                  />
-                )}
               </CheckboxGroup>
               <FormHelperText fontSize='xs' m='1'>
                 Select the categories that apply to your post for members to
