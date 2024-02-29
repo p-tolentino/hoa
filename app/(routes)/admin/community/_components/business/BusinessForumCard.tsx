@@ -64,7 +64,7 @@ export default function BusinessForumCard () {
                     Household Items
                   </SelectItem>
                   <SelectItem value='homeServices'>HomeServices</SelectItem>
-                  <SelectItem value='addedCategory'>Added Category</SelectItem>
+                  <SelectItem value='other'>Other</SelectItem>
                 </SelectGroup>
               </SelectContent>
             </Select>
