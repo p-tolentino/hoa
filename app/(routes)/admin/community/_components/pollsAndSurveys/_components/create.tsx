@@ -24,7 +24,7 @@ import {
   Textarea,
   FormHelperText,
 } from "@chakra-ui/react";
-import { AddIcon } from "@chakra-ui/icons";
+import { AddIcon, DeleteIcon } from "@chakra-ui/icons";
 import { useState } from "react";
 
 function Create() {
@@ -37,14 +37,26 @@ function Create() {
     setDescription(inputDescription);
   };
 
+  let addQuestion = () => {
+    setQuestions([...questions, { question: "", options: [""] }]);
+  };
+
+  let removeQuestion = (questionIndex: number) => {
+    const newQuestions = [...questions];
+    newQuestions.splice(questionIndex, 1);
+    setQuestions(newQuestions);
+  };
+
   let addOption = (questionIndex: number) => {
     const newQuestions = [...questions];
     newQuestions[questionIndex].options.push("");
     setQuestions(newQuestions);
   };
 
-  let addQuestion = () => {
-    setQuestions([...questions, { question: "", options: [""] }]);
+  let removeOption = (questionIndex: number, optionIndex: number) => {
+    const newQuestions = [...questions];
+    newQuestions[questionIndex].options.splice(optionIndex, 1);
+    setQuestions(newQuestions);
   };
 
   return (
@@ -121,13 +133,25 @@ function Create() {
                       </FormLabel>
                       <Spacer />
                       <Box alignSelf="center" ml="2%">
-                        <Button
-                          size="xs"
-                          colorScheme="yellow"
-                          onClick={addQuestion}
-                        >
-                          Add Question
-                        </Button>
+                        {index === questions.length - 1 && (
+                          <Button
+                            size="xs"
+                            colorScheme="yellow"
+                            onClick={addQuestion}
+                          >
+                            Add Question
+                          </Button>
+                        )}
+                        {questions.length > 1 && (
+                          <Button
+                            size="xs"
+                            colorScheme="red"
+                            onClick={() => removeQuestion(index)}
+                            ml="2"
+                          >
+                            Remove
+                          </Button>
+                        )}
                       </Box>
                     </HStack>
                     <Input
@@ -142,13 +166,14 @@ function Create() {
                       }}
                     />
                     <FormControl isRequired mt="1%">
-                      <FormLabel fontSize="sm" fontWeight="semibold">
+                      <FormLabel fontSize="sm" fontWeight="semibold" mb="0%">
                         Options:
                       </FormLabel>
                       {question.options.map((option, optionIndex) => (
                         <HStack key={optionIndex}>
                           <Input
                             size="sm"
+                            mt="1%"
                             type="string"
                             placeholder={`Option ${optionIndex + 1}`}
                             value={option}
@@ -159,6 +184,18 @@ function Create() {
                               setQuestions(newQuestions);
                             }}
                           />
+                          {optionIndex > 0 && (
+                            <Box alignSelf="center" ml="1%">
+                              <Button
+                                size="xs"
+                                w="20px"
+                                colorScheme="red"
+                                onClick={() => removeOption(index, optionIndex)}
+                              >
+                                <DeleteIcon />
+                              </Button>
+                            </Box>
+                          )}
                           {optionIndex === question.options.length - 1 && (
                             <Box alignSelf="center" ml="1%">
                               <Button
