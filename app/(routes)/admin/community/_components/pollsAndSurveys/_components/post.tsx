@@ -112,7 +112,7 @@ function Post() {
           </HStack>
           <Text
             id="description"
-            ml="6%"
+            ml="5.5%"
             fontSize="sm"
             p="5px"
             fontFamily="font.body"
@@ -126,7 +126,7 @@ function Post() {
             fontFamily="font.body"
             color="grey"
             fontSize="xs"
-            ml="6%"
+            ml="5.5%"
             p="5px"
           >
             Posted {dateDistance} ago

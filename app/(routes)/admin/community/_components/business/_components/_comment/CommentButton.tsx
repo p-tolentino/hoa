@@ -29,34 +29,15 @@ function commentButton() {
   const dateDistance = formatDistanceToNowStrict(datePosted);
 
   const [likeCount, setLikeCount] = useState(0);
-  const [dislikeCount, setDislikeCount] = useState(0);
   const [liked, setLiked] = useState(false);
-  const [disliked, setDisliked] = useState(false);
 
   const handleLike = () => {
     if (!liked) {
       setLikeCount(likeCount + 1);
-      if (disliked) {
-        setDislikeCount(dislikeCount - 1);
-        setDisliked(false);
-      }
     } else {
       setLikeCount(likeCount - 1);
     }
     setLiked(!liked);
-  };
-
-  const handleDislike = () => {
-    if (!disliked) {
-      setDislikeCount(dislikeCount + 1);
-      if (liked) {
-        setLikeCount(likeCount - 1);
-        setLiked(false);
-      }
-    } else {
-      setDislikeCount(dislikeCount - 1);
-    }
-    setDisliked(!disliked);
   };
 
   return (
@@ -121,7 +102,7 @@ function commentButton() {
                 Posted {dateDistance} ago
               </Text>
 
-              {/* Discussion Post Actions */}
+              {/* Business Post Actions */}
               <ButtonGroup size="xs" mt="1rem" ml="7%">
                 <Button
                   colorScheme="yellow"
@@ -130,15 +111,6 @@ function commentButton() {
                   onClick={handleLike}
                 >
                   <PiThumbsUpFill /> Like ({likeCount})
-                </Button>
-                <Button
-                  colorScheme="yellow"
-                  variant={disliked ? "solid" : "outline"}
-                  gap="5px"
-                  onClick={handleDislike}
-                >
-                  <PiThumbsDownFill />
-                  Dislike ({dislikeCount})
                 </Button>
               </ButtonGroup>
             </Box>
@@ -186,7 +158,7 @@ function commentButton() {
                 Posted {dateDistance} ago
               </Text>
 
-              {/* Discussion Post Actions */}
+              {/* Business Post Actions */}
               <ButtonGroup size="xs" mt="1rem" ml="7%">
                 <Button
                   colorScheme="yellow"
@@ -195,15 +167,6 @@ function commentButton() {
                   onClick={handleLike}
                 >
                   <PiThumbsUpFill /> Like ({likeCount})
-                </Button>
-                <Button
-                  colorScheme="yellow"
-                  variant={disliked ? "solid" : "outline"}
-                  gap="5px"
-                  onClick={handleDislike}
-                >
-                  <PiThumbsDownFill />
-                  Dislike ({dislikeCount})
                 </Button>
               </ButtonGroup>
             </Box>
@@ -251,7 +214,7 @@ function commentButton() {
                 Posted {dateDistance} ago
               </Text>
 
-              {/* Discussion Post Actions */}
+              {/* Business Post Actions */}
               <ButtonGroup size="xs" mt="1rem" ml="7%">
                 <Button
                   colorScheme="yellow"
@@ -260,15 +223,6 @@ function commentButton() {
                   onClick={handleLike}
                 >
                   <PiThumbsUpFill /> Like ({likeCount})
-                </Button>
-                <Button
-                  colorScheme="yellow"
-                  variant={disliked ? "solid" : "outline"}
-                  gap="5px"
-                  onClick={handleDislike}
-                >
-                  <PiThumbsDownFill />
-                  Dislike ({dislikeCount})
                 </Button>
               </ButtonGroup>
             </Box>
