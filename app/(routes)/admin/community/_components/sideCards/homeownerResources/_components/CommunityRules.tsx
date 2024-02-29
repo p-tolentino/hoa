@@ -48,7 +48,7 @@ export function CommunityRules () {
   const description =
     "To continue, please read the following Community Rules carefully. Understanding and agreeing to these rules will contribute to a healthy community engagement platform within the Homeowners' Association."
   return (
-    <>
+    <div>
       <AlertDialog defaultOpen>
         <AlertDialogTrigger>
           <Link fontSize='sm'>Community Rules</Link>
@@ -94,6 +94,6 @@ export function CommunityRules () {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-    </>
+    </div>
   )
 }
