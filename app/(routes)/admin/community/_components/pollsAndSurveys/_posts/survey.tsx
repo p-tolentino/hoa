@@ -15,6 +15,7 @@ import AnswerSurvey from './_answer/survey'
 import SurveyResult from './_result/survey'
 import { formatDistanceToNowStrict } from 'date-fns'
 import { useState } from 'react'
+import { CloseForm } from '../_components/CloseForm'
 
 function surveyPosts () {
   const pollCategories = [
@@ -124,9 +125,7 @@ function surveyPosts () {
         {/* Survey Button */}
         {postStatus === 'Open' ? (
           <Stack p='1rem'>
-            <Button size='sm' fontFamily='font.body' colorScheme='red'>
-              Close Form
-            </Button>{' '}
+            <CloseForm />
             <AnswerSurvey />
           </Stack>
         ) : (
