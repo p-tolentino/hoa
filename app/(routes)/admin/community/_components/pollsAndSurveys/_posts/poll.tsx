@@ -8,7 +8,8 @@ import {
   Heading,
   Avatar,
   HStack,
-  Spacer
+  Spacer,
+  Button
 } from '@chakra-ui/react'
 import AnswerPoll from './_answer/poll'
 import PollResult from './_result/poll'
@@ -23,14 +24,14 @@ function pollPosts () {
     { category: 'Event', color: 'orange.200' }
   ]
 
-  const [postStatus, setPostStatus] = useState('Closed')
+  const [postStatus, setPostStatus] = useState('Open')
 
   const datePosted = new Date(2024, 2, 1)
   const dateDistance = formatDistanceToNowStrict(datePosted)
 
   return (
     <Flex p='10px'>
-      <Box
+      <Flex
         w='100%'
         h='100%'
         border='1px'
@@ -55,9 +56,6 @@ function pollPosts () {
             </Text>
 
             <Spacer />
-
-            {/* Survey Button */}
-            {postStatus === 'Open' ? <AnswerPoll /> : <PollResult />}
           </HStack>
 
           {/* Poll Categories */}
@@ -124,7 +122,18 @@ function pollPosts () {
             Posted {dateDistance} ago
           </Text>
         </Box>
-      </Box>
+        {/* Survey Button */}
+        {postStatus === 'Open' ? (
+          <Stack p='1rem'>
+            <Button size='sm' fontFamily='font.body' colorScheme='red'>
+              End Form
+            </Button>{' '}
+            <AnswerPoll />
+          </Stack>
+        ) : (
+          <PollResult />
+        )}
+      </Flex>
     </Flex>
   )
 }

@@ -8,7 +8,8 @@ import {
   Heading,
   Avatar,
   HStack,
-  Spacer
+  Spacer,
+  Button
 } from '@chakra-ui/react'
 import AnswerSurvey from './_answer/survey'
 import SurveyResult from './_result/survey'
@@ -24,14 +25,14 @@ function surveyPosts () {
     { category: 'New Category', color: 'teal.200' }
   ]
 
-  const [postStatus, setPostStatus] = useState('Open')
+  const [postStatus, setPostStatus] = useState('Closed')
 
   const datePosted = new Date(2024, 2, 1)
   const dateDistance = formatDistanceToNowStrict(datePosted)
 
   return (
     <Flex p='10px'>
-      <Box
+      <Flex
         w='100%'
         h='100%'
         border='1px'
@@ -55,9 +56,6 @@ function surveyPosts () {
               ({postStatus})
             </Text>
             <Spacer />
-
-            {/* Survey Button */}
-            {postStatus === 'Open' ? <AnswerSurvey /> : <SurveyResult />}
           </HStack>
 
           {/* Survey Categories */}
@@ -123,7 +121,18 @@ function surveyPosts () {
             Posted {dateDistance} ago
           </Text>
         </Box>
-      </Box>
+        {/* Survey Button */}
+        {postStatus === 'Open' ? (
+          <Stack p='1rem'>
+            <Button size='sm' fontFamily='font.body' colorScheme='red'>
+              End Form
+            </Button>{' '}
+            <AnswerSurvey />
+          </Stack>
+        ) : (
+          <SurveyResult />
+        )}
+      </Flex>
     </Flex>
   )
 }
