@@ -1,4 +1,5 @@
-'use client'
+"use client";
+
 import {
   Button,
   Drawer,
@@ -17,133 +18,101 @@ import {
   Tbody,
   Tr,
   Td,
-  Link
-} from '@chakra-ui/react'
+  Link,
+  Thead,
+  Th,
+  TableContainer,
+} from "@chakra-ui/react";
 
-function LGUHotlines () {
-  const { isOpen, onOpen, onClose } = useDisclosure()
+function LGUHotlines() {
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <div>
       <Button
-        variant='link'
-        fontFamily='font.body'
-        fontWeight='light'
+        variant="link"
+        fontFamily="font.body"
+        fontWeight="light"
         onClick={() => onOpen()}
-        key='LGUHotlines'
-        color='black'
-        size='sm'
+        key="LGUHotlines"
+        color="black"
+        size="sm"
       >
-        LGU Hotlines
+        Emergency Hotline Numbers
       </Button>
 
-      <Drawer isOpen={isOpen} onClose={onClose} placement='right' size='lg'>
+      <Drawer isOpen={isOpen} onClose={onClose} placement="right" size="xl">
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
-          <DrawerHeader mt='10px'>
-            <Heading size='md' fontFamily='font.heading'>
-              LGU Hotlines
+          <DrawerHeader mt="10px">
+            <Heading size="md" fontFamily="font.heading">
+              Emergency Hotline Numbers
             </Heading>
+            <Text fontSize="xs">
+              View the list of emergency hotline numbers.
+            </Text>
           </DrawerHeader>
           <DrawerBody>
-            <Stack spacing={5} paddingRight='20px' pb='2rem'>
-              <Box w='100%' h='100%' p='20px'>
-                <HStack>
-                  <Box ml='10px'>
-                    <Heading
-                      size='lg'
-                      fontFamily='font.heading'
-                      className='capitalize'
-                    >
-                      asd
-                    </Heading>
-                    <Box fontFamily='font.body'>
-                      <Text fontSize='24px'>asd</Text>
-                      <Text fontSize='sm' lineHeight='0.5' mt='1rem'>
-                        Status:
-                      </Text>
-                    </Box>
-                  </Box>
-                </HStack>
-              </Box>
-
-              <Box w='100%' h='100%' px='10px'>
-                <Box w='100%' h='100%' p='5'>
-                  <Heading size='md' fontFamily={'font.heading'} mb={'1rem'}>
-                    Biography
-                  </Heading>
-                  <Text fontFamily='font.body' textAlign='justify'>
-                    asd
-                  </Text>
-                </Box>
-
-                <Box w='100%' h='100%' p='5'>
-                  <Heading size='md' fontFamily={'font.heading'} mb={'1rem'}>
-                    Personal Information
-                  </Heading>
-                  <Text>
-                    <Table>
-                      <Tbody>
-                        <Tr fontFamily='font.body'>
-                          <Td
-                            px={3}
-                            py={1}
-                            fontFamily='font.body'
-                            style={{ fontWeight: 'bold' }}
-                          >
-                            House No. & Street:
-                          </Td>
-                          <Td px={0} py={1} fontFamily='font.body'>
-                            asd
-                          </Td>
-                        </Tr>
-                        <Tr fontFamily='font.body'>
-                          <Td
-                            px={3}
-                            py={1}
-                            fontFamily='font.body'
-                            style={{ fontWeight: 'bold' }}
-                          >
-                            Contact Number
-                          </Td>
-                          <Td px={0} py={1} fontFamily='font.body'>
-                            asd
-                          </Td>
-                        </Tr>
-                        <Tr fontFamily='font.body'>
-                          <Td
-                            px={3}
-                            py={1}
-                            fontFamily='font.body'
-                            style={{ fontWeight: 'bold' }}
-                          >
-                            Email Address
-                          </Td>
-                          <Td px={0} py={1} fontFamily='font.body'>
-                            asd
-                          </Td>
-                        </Tr>
-                      </Tbody>
-                    </Table>
-                  </Text>
-                </Box>
-                <Box w='100%' h='100%' p='5'>
-                  <Heading size={'md'} fontFamily={'font.heading'}>
-                    Other Household Members
-                  </Heading>
-                  <Text
-                    fontSize={'lg'}
-                    fontFamily={'font.body'}
-                    lineHeight={2}
-                  ></Text>
-                </Box>
+            <Stack spacing={5} paddingRight="20px" pb="2rem">
+              <Box w="100%" h="100%" p="5">
+                <TableContainer>
+                  <Table colorScheme="blue">
+                    <Thead>
+                      <Th fontFamily="font.heading">Agency</Th>
+                      <Th fontFamily="font.heading">Hotline</Th>
+                      <Th fontFamily="font.heading">Direct Line</Th>
+                      <Th fontFamily="font.heading">Area</Th>
+                    </Thead>
+                    <Tbody>
+                      <Tr fontFamily="font.body">
+                        <Td>
+                          Emergency 911
+                          <br /> National Office
+                        </Td>
+                        <Td>911</Td>
+                        <Td>
+                          (02) 925-9111 <br />
+                          (02) 928-7281 [telefax] <br />
+                          +63966-5000-299 [Globe] <br />
+                          +63932-318-0440 [Smart]
+                        </Td>
+                        <Td>NCR</Td>
+                      </Tr>
+                      <Tr fontFamily="font.body">
+                        <Td>
+                          Bureau of <br />
+                          Fire Protection
+                        </Td>
+                        <Td>911</Td>
+                        <Td>
+                          (02) 426-0219 <br />
+                          (02) 426-3812 <br />
+                          (02)426-0246
+                        </Td>
+                        <Td>NCR</Td>
+                      </Tr>
+                      <Tr fontFamily="font.body">
+                        <Td>
+                          Philippine National <br />
+                          Police
+                        </Td>
+                        <Td>911</Td>
+                        <Td>
+                          (2) 722-0650 <br />
+                          +63917-847-5757
+                        </Td>
+                        <Td>NCR</Td>
+                      </Tr>
+                    </Tbody>
+                  </Table>
+                </TableContainer>
               </Box>
             </Stack>
           </DrawerBody>
         </DrawerContent>
       </Drawer>
     </div>
-  )
+  );
 }
-export default LGUHotlines
+export default LGUHotlines;
