@@ -1,5 +1,6 @@
 "use client";
 
+import { EditIcon } from "@chakra-ui/icons";
 import {
   Button,
   Drawer,
@@ -22,9 +23,36 @@ import {
   Thead,
   Th,
   TableContainer,
+  Spacer,
 } from "@chakra-ui/react";
 
 function LGUHotlines() {
+  const title = "Emergency Hotline Numbers";
+  const description = "Edit the list of emergency hotline numbers.";
+
+  const data = [
+    {
+      agency: "Emergency 911 National Office",
+      hotline: "911",
+      directline:
+        "(02) 925-9111 (02) 928-7281 [telefax] +63966-5000-299 [Globe] +63932-318-0440 [Smart]",
+      area: "NCR",
+    },
+    {
+      agency: "Emergency 911 National Office",
+      hotline: "911",
+      directline:
+        "(02) 925-9111 (02) 928-7281 [telefax] +63966-5000-299 [Globe] +63932-318-0440 [Smart]",
+      area: "NCR",
+    },
+    {
+      agency: "Emergency 911 National Office",
+      hotline: "911",
+      directline:
+        "(02) 925-9111 (02) 928-7281 [telefax] +63966-5000-299 [Globe] +63932-318-0440 [Smart]",
+      area: "NCR",
+    },
+  ];
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
@@ -46,12 +74,18 @@ function LGUHotlines() {
         <DrawerContent>
           <DrawerCloseButton />
           <DrawerHeader mt="10px">
-            <Heading size="md" fontFamily="font.heading">
-              Emergency Hotline Numbers
-            </Heading>
-            <Text fontSize="xs">
-              View the list of emergency hotline numbers.
-            </Text>
+            <HStack>
+              <Stack spacing="-5%">
+                <Heading size="md" fontFamily="font.heading">
+                  {title}
+                </Heading>
+                <Text fontSize="xs">{description}</Text>
+              </Stack>
+              <Spacer />
+              <Button variant="outline" size="sm" mr="5%">
+                <EditIcon />
+              </Button>
+            </HStack>
           </DrawerHeader>
           <DrawerBody>
             <Stack spacing={5} paddingRight="20px" pb="2rem">
@@ -65,26 +99,17 @@ function LGUHotlines() {
                       <Th fontFamily="font.heading">Area</Th>
                     </Thead>
                     <Tbody>
-                      <Tr fontFamily="font.body">
-                        <Td>
-                          Emergency 911
-                          <br /> National Office
-                        </Td>
-                        <Td>911</Td>
-                        <Td>
-                          (02) 925-9111 <br />
-                          (02) 928-7281 [telefax] <br />
-                          +63966-5000-299 [Globe] <br />
-                          +63932-318-0440 [Smart]
-                        </Td>
-                        <Td>NCR</Td>
-                      </Tr>
-                      <Tr fontFamily="font.body">
-                        <Td>
-                          Bureau of <br />
-                          Fire Protection
-                        </Td>
-                        <Td>911</Td>
+                      {data.map((data) => (
+                        <Tr fontFamily="font.body" fontSize="xs">
+                          <Td>{data.agency}</Td>
+                          <Td>{data.hotline}</Td>
+                          <Td>{data.directline}</Td>
+                          <Td>{data.area}</Td>
+                        </Tr>
+                      ))}
+                      <Tr fontFamily="font.body" fontSize="xs">
+                        <Td>Bureau of Fire Protection</Td>
+                        <Td></Td>
                         <Td>
                           (02) 426-0219 <br />
                           (02) 426-3812 <br />
@@ -92,11 +117,26 @@ function LGUHotlines() {
                         </Td>
                         <Td>NCR</Td>
                       </Tr>
-                      <Tr fontFamily="font.body">
+                      <Tr fontFamily="font.body" fontSize="xs">
+                        <Td>Philippine National Police</Td>
+                        <Td></Td>
                         <Td>
-                          Philippine National <br />
-                          Police
+                          (2) 722-0650 <br />
+                          +63917-847-5757
                         </Td>
+                        <Td>NCR</Td>
+                      </Tr>
+                      <Tr fontFamily="font.body" fontSize="xs">
+                        <Td>Red Cross</Td>
+                        <Td>911</Td>
+                        <Td>
+                          (2) 722-0650 <br />
+                          +63917-847-5757
+                        </Td>
+                        <Td>NCR</Td>
+                      </Tr>
+                      <Tr fontFamily="font.body" fontSize="xs">
+                        <Td>Philippine National Police</Td>
                         <Td>911</Td>
                         <Td>
                           (2) 722-0650 <br />
