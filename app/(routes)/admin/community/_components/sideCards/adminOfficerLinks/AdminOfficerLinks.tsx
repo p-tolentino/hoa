@@ -2,6 +2,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Link, ListItem, UnorderedList } from '@chakra-ui/react'
+import { UpdateBylaws } from './_components/UpdateBylaws'
 
 export default function AdminOfficerLinks () {
   return (
@@ -18,9 +19,7 @@ export default function AdminOfficerLinks () {
               </Link>
             </ListItem>
             <ListItem>
-              <Link isExternal fontSize='sm'>
-                Set Community Rules
-              </Link>
+              <UpdateBylaws />
             </ListItem>
           </UnorderedList>
         </CardContent>

@@ -6,6 +6,7 @@ import { CommunityRules } from './_components/CommunityRules'
 import LGUHotlines from './_components/LGUHotlines'
 import DisasterPreparedness from './_components/DisasterPreparedness'
 import CovidGuidelines from './_components/CovidGuidelines'
+import Bylaws from './_components/Bylaws'
 
 export default function HomeownerResources () {
   return (
@@ -18,6 +19,9 @@ export default function HomeownerResources () {
           <UnorderedList fontFamily={'font.body'}>
             <ListItem>
               <CommunityRules />
+            </ListItem>
+            <ListItem>
+              <Bylaws />
             </ListItem>
             <ListItem>
               <LGUHotlines />
