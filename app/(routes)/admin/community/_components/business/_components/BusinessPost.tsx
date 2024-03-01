@@ -9,6 +9,7 @@ import {
   HStack,
   ButtonGroup,
   Button,
+  Spacer,
 } from "@chakra-ui/react";
 import { PiThumbsUpFill } from "react-icons/pi";
 import { formatDistanceToNowStrict } from "date-fns";
@@ -30,6 +31,8 @@ function BusinessPost() {
   const [likeCount, setLikeCount] = useState(0);
   const [liked, setLiked] = useState(false);
 
+  const [isDeleteClicked, setIsDeleteClicked] = useState(false);
+
   const handleLike = () => {
     if (!liked) {
       setLikeCount(likeCount + 1);
@@ -37,6 +40,11 @@ function BusinessPost() {
       setLikeCount(likeCount - 1);
     }
     setLiked(!liked);
+  };
+
+  const handleDeletePost = () => {
+    // add logic to delete the business post here
+    console.log("Post Deleted");
   };
 
   return (
@@ -52,9 +60,15 @@ function BusinessPost() {
             borderRadius="10px"
             mb="1%"
           >
-            <Heading size="md" fontFamily="font.heading" mb="1%">
-              Business Title
-            </Heading>
+            <HStack>
+              <Heading size="md" fontFamily="font.heading" mb="1%">
+                Business Title
+              </Heading>
+              <Spacer />
+              <Button colorScheme="red" size="xs" onClick={handleDeletePost}>
+                Delete
+              </Button>
+            </HStack>
             {/* Post Nature of Business */}
             <HStack mb="2%">
               <Box
