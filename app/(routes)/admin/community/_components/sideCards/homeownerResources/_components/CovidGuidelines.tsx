@@ -6,7 +6,7 @@ const covidGuidelinesUrl =
 
 function CovidGuidelines () {
   const handleButtonClick = () => {
-    window.location.href = covidGuidelinesUrl // Redirect on click
+    window.open(covidGuidelinesUrl, '_blank') // Open in a new tab
   }
 
   return (
