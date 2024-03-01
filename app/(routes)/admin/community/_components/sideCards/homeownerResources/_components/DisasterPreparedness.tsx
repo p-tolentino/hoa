@@ -1,4 +1,5 @@
-'use client'
+"use client";
+
 import {
   Button,
   Drawer,
@@ -9,141 +10,49 @@ import {
   DrawerCloseButton,
   useDisclosure,
   Heading,
-  Box,
   Text,
-  Stack,
-  HStack,
-  Table,
-  Tbody,
-  Tr,
-  Td,
-  Link
-} from '@chakra-ui/react'
+} from "@chakra-ui/react";
 
-function DisasterPreparedness () {
-  const { isOpen, onOpen, onClose } = useDisclosure()
+export default function Bylaws() {
+  const title = "Disaster Preparedness Guidelines";
+  const description = "View the Disaster Preparedness & First Aid Handbook.";
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <div>
       <Button
-        variant='link'
-        fontFamily='font.body'
-        fontWeight='light'
+        variant="link"
+        fontFamily="font.body"
+        fontWeight="light"
         onClick={() => onOpen()}
-        key='DisasterPreparedness'
-        color='black'
-        size='sm'
+        key="DisasterPreparedness"
+        color="black"
+        size="sm"
       >
-        Disaster Preparedness
+        {title}
       </Button>
 
-      <Drawer isOpen={isOpen} onClose={onClose} placement='right' size='lg'>
+      <Drawer isOpen={isOpen} onClose={onClose} placement="right" size="full">
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
-          <DrawerHeader mt='10px'>
-            <Heading size='md' fontFamily='font.heading'>
-              Disaster Preparedness
+          <DrawerHeader mt="10px">
+            <Heading size="md" fontFamily="font.heading">
+              {title}
             </Heading>
+            <Text fontSize="xs">{description}</Text>
           </DrawerHeader>
           <DrawerBody>
-            <Stack spacing={5} paddingRight='20px' pb='2rem'>
-              <Box w='100%' h='100%' p='20px'>
-                <HStack>
-                  <Box ml='10px'>
-                    <Heading
-                      size='lg'
-                      fontFamily='font.heading'
-                      className='capitalize'
-                    >
-                      asd
-                    </Heading>
-                    <Box fontFamily='font.body'>
-                      <Text fontSize='24px'>asd</Text>
-                      <Text fontSize='sm' lineHeight='0.5' mt='1rem'>
-                        Status:
-                      </Text>
-                    </Box>
-                  </Box>
-                </HStack>
-              </Box>
-
-              <Box w='100%' h='100%' px='10px'>
-                <Box w='100%' h='100%' p='5'>
-                  <Heading size='md' fontFamily={'font.heading'} mb={'1rem'}>
-                    Biography
-                  </Heading>
-                  <Text fontFamily='font.body' textAlign='justify'>
-                    asd
-                  </Text>
-                </Box>
-
-                <Box w='100%' h='100%' p='5'>
-                  <Heading size='md' fontFamily={'font.heading'} mb={'1rem'}>
-                    Personal Information
-                  </Heading>
-                  <Text>
-                    <Table>
-                      <Tbody>
-                        <Tr fontFamily='font.body'>
-                          <Td
-                            px={3}
-                            py={1}
-                            fontFamily='font.body'
-                            style={{ fontWeight: 'bold' }}
-                          >
-                            House No. & Street:
-                          </Td>
-                          <Td px={0} py={1} fontFamily='font.body'>
-                            asd
-                          </Td>
-                        </Tr>
-                        <Tr fontFamily='font.body'>
-                          <Td
-                            px={3}
-                            py={1}
-                            fontFamily='font.body'
-                            style={{ fontWeight: 'bold' }}
-                          >
-                            Contact Number
-                          </Td>
-                          <Td px={0} py={1} fontFamily='font.body'>
-                            asd
-                          </Td>
-                        </Tr>
-                        <Tr fontFamily='font.body'>
-                          <Td
-                            px={3}
-                            py={1}
-                            fontFamily='font.body'
-                            style={{ fontWeight: 'bold' }}
-                          >
-                            Email Address
-                          </Td>
-                          <Td px={0} py={1} fontFamily='font.body'>
-                            asd
-                          </Td>
-                        </Tr>
-                      </Tbody>
-                    </Table>
-                  </Text>
-                </Box>
-                <Box w='100%' h='100%' p='5'>
-                  <Heading size={'md'} fontFamily={'font.heading'}>
-                    Other Household Members
-                  </Heading>
-                  <Text
-                    fontSize={'lg'}
-                    fontFamily={'font.body'}
-                    lineHeight={2}
-                  ></Text>
-                </Box>
-              </Box>
-            </Stack>
+            <object
+              data="/documents/Disaster-Preparedness-Handbook.pdf"
+              type="application/pdf"
+              width="100%"
+              height="900px"
+            ></object>
           </DrawerBody>
         </DrawerContent>
       </Drawer>
     </div>
-  )
+  );
 }
-export default DisasterPreparedness
