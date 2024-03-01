@@ -199,7 +199,7 @@ export const ViewInfo: React.FC<ViewInfoProps> = ({ data }) => {
                           houseMembers?.map(
                             (member) =>
                               member.userId !== data.id && (
-                                <>
+                                <div key={member.id}>
                                   <div className="flex justify-between">
                                     <div key={member.id} className="flex">
                                       <HouseMember className="mt-2 mr-2" />{" "}
@@ -208,7 +208,7 @@ export const ViewInfo: React.FC<ViewInfoProps> = ({ data }) => {
                                     <div className="capitalize">{`${member?.relation?.toLowerCase()}`}</div>
                                   </div>
                                   <Separator className="my-2" />
-                                </>
+                                </div>
                               )
                           )
                         ) : (

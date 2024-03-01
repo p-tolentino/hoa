@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo } from "react";
 import { Heading } from "@/components/ui/heading";
 import { Separator } from "@/components/ui/separator";
 
@@ -23,14 +23,16 @@ interface PaymentHistoryClientProps {
 export const PaymentHistoryClient: React.FC<PaymentHistoryClientProps> = ({
   data,
 }) => {
-
-  const [selectedCategoryFilter, setSelectedCategoryFilter] = useState('showAll');
+  const [selectedCategoryFilter, setSelectedCategoryFilter] =
+    useState("showAll");
   const filteredData = useMemo(() => {
-    return data.filter(item => {
+    return data.filter((item) => {
       // Check status filter
 
       // Check category filter
-      const categoryMatch = selectedCategoryFilter === 'showAll' || item.purpose === selectedCategoryFilter; // Assuming 'category' is the correct field
+      const categoryMatch =
+        selectedCategoryFilter === "showAll" ||
+        item.purpose === selectedCategoryFilter; // Assuming 'category' is the correct field
 
       return categoryMatch;
     });
@@ -48,7 +50,10 @@ export const PaymentHistoryClient: React.FC<PaymentHistoryClientProps> = ({
 
       <HStack>
         {/* Select category to show */}
-        <Select value={selectedCategoryFilter} onValueChange={(value) => setSelectedCategoryFilter(value)}>
+        <Select
+          value={selectedCategoryFilter}
+          onValueChange={(value) => setSelectedCategoryFilter(value)}
+        >
           <SelectTrigger className="w-[250px]">
             <SelectValue placeholder="Show All" />
           </SelectTrigger>
@@ -57,13 +62,15 @@ export const PaymentHistoryClient: React.FC<PaymentHistoryClientProps> = ({
               <SelectItem value="showAll" className="font-semibold">
                 Show All
               </SelectItem>
-              <SelectItem value="assocDues">Association Dues</SelectItem>
-              <SelectItem value="dispute">Dispute Fines</SelectItem>
-              <SelectItem value="violation">Violation Fines</SelectItem>
-              <SelectItem value="facility">
+              <SelectItem value="Association Dues">Association Dues</SelectItem>
+              <SelectItem value="Dispute Fees">Dispute Fees</SelectItem>
+              <SelectItem value="Violation Fines">Violation Fines</SelectItem>
+              <SelectItem value="Facility Rentals">
                 Facility Reservation Fees
               </SelectItem>
-              <SelectItem value="maintenance">Maintenance Fees</SelectItem>
+              <SelectItem value="Repair and Maintenance">
+                Maintenance Fees
+              </SelectItem>
             </SelectGroup>
           </SelectContent>
         </Select>

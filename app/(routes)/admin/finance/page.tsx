@@ -1,5 +1,3 @@
-"use client";
-
 import { Box, Flex } from "@chakra-ui/react";
 import ModuleMenuCard from "@/components/system/ModuleMenuCard";
 import { Heading } from "@/components/ui/heading";
@@ -22,7 +20,7 @@ export default function FinanceManagementMenu() {
     {
       category: "Fund Management",
       category_users: "the Association Treasurer",
-      category_buttons: ["Income & Expense Management", "Budget Planning"],
+      category_buttons: ["Revenue & Expense Management", "Budget Planning"],
       category_hrefs: [
         "/admin/finance/income-and-expense",
         "/admin/finance/budget-planning",

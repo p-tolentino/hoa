@@ -79,7 +79,7 @@ export const updateUserStatus = async (id: string) => {
   }
 
   await db.user.update({
-    where: { id: id },
+    where: { id },
     data: {
       status: Status.ACTIVE,
     },

@@ -32,7 +32,7 @@ export const createAssocDue = async () => {
   await db.userTransaction.create({
     data: {
       addressId: dbUser?.info?.address!!,
-      purpose: "assocDues",
+      purpose: "Association Dues",
       description: "Monthly Dues",
       amount: hoa.fixedDue!!,
     },

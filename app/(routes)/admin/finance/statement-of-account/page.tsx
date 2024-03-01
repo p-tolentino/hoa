@@ -31,7 +31,7 @@ const StatementOfAccount = async () => {
 
   const existingAssocDuesBill = transactions.find((transaction) => {
     return (
-      transaction.purpose === "assocDues" &&
+      transaction.purpose === "Association Dues" &&
       transaction.createdAt.getMonth() + 1 === new Date().getMonth() + 1
     );
   });
@@ -53,11 +53,32 @@ const StatementOfAccount = async () => {
     }
   });
 
+  const updatedTransactions = await getTransactionByAddress(
+    user?.info?.address
+  );
+
+  if (!updatedTransactions) {
+    return null;
+  }
+
+  const monthlyUnpaidTransactions = updatedTransactions.filter(
+    (transaction) => {
+      if (
+        transaction.createdAt.getMonth() >= new Date().getMonth() - 1 ||
+        transaction.status !== PaymentStatus.PAID
+      ) {
+        return transaction;
+      }
+    }
+  );
+
   const allUsers = await getAllUsers();
 
   if (!allUsers) {
     return null;
   }
+
+  await Promise.all(monthlyUnpaidTransactions);
 
   return (
     <div className="flex">
@@ -65,7 +86,7 @@ const StatementOfAccount = async () => {
         <SoaInfo
           user={user}
           property={property}
-          transactions={transactions}
+          transactions={monthlyUnpaidTransactions}
           allUsers={allUsers}
         />
       </div>

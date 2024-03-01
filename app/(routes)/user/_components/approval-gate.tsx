@@ -24,7 +24,7 @@ const ApprovalGate = () => {
           <div className="flex items-center justify-center">
             <Link href="/">
               <Button className="text-black bg-yellow-400 hover:bg-yellow-500 focus:bg-yellow-600">
-                Return to home →
+                Return to homepage →
               </Button>
             </Link>
           </div>

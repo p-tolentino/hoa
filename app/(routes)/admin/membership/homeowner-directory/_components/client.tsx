@@ -42,9 +42,7 @@ export const HomeownersClient: React.FC<HomeownersClientProps> = ({
   properties,
 }) => {
   const { update } = useSession();
-  const [occupants, setOccupants] = useState<HomeownerColumn[] | undefined>(
-    data
-  );
+  const [occupants, setOccupants] = useState<HomeownerColumn[]>(data);
 
   const form = useForm<z.infer<typeof SelectSchema>>({
     defaultValues: {
@@ -53,22 +51,24 @@ export const HomeownersClient: React.FC<HomeownersClientProps> = ({
   });
 
   useEffect(() => {
-    const address = form.getValues("address");
-    properties.filter((property) => {
-      if (property.id === address) {
-        const houseMembers = data.filter((data) => {
-          return property.id === data?.address;
-        });
+    console.log("triggered");
+    const address = form.watch("address");
+    if (address) {
+      properties.filter((property) => {
+        if (property.id === address) {
+          const houseMembers = data.filter((data) => {
+            return property.id === data?.address;
+          });
 
-        if (houseMembers) {
-          setOccupants(houseMembers);
-        } else {
-          setOccupants(data);
+          if (houseMembers) {
+            setOccupants(houseMembers);
+          } else {
+            setOccupants(data);
+          }
         }
-      }
-    });
-    form.reset();
-  }, [form.watch("address")]);
+      });
+    }
+  }, [form.watch("address"), data]);
 
   return (
     <>
@@ -124,7 +124,11 @@ export const HomeownersClient: React.FC<HomeownersClientProps> = ({
           />
         </form>
       </Form>
-      <DataTable columns={columns} data={occupants || data} searchKey="email" />
+      <DataTable
+        columns={columns}
+        data={form.watch("address") !== "" ? occupants : data}
+        searchKey="email"
+      />
     </>
   );
 };

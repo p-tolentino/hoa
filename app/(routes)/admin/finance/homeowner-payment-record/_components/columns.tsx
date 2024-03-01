@@ -10,6 +10,13 @@ import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { PaymentStatus } from "@prisma/client";
 
+const formatNumber = (value: number) => {
+  return value.toLocaleString("en-US", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+};
+
 export type PaymentRecordColumn = {
   id: string;
   address: string;
@@ -86,7 +93,11 @@ export const columns: ColumnDef<PaymentRecordColumn>[] = [
         </Button>
       );
     },
-    cell: ({ row }) => row.getValue("amount"),
+    cell: ({ row }) => (
+      <span className="flex justify-end pr-6">
+        ₱ {formatNumber(parseFloat(`${row.getValue("amount")}`))}
+      </span>
+    ),
   },
   {
     accessorKey: "purpose",
@@ -102,7 +113,13 @@ export const columns: ColumnDef<PaymentRecordColumn>[] = [
         </Button>
       );
     },
-    cell: ({ row }) => row.getValue("purpose"),
+    cell: ({ row }) => (
+      <div className="capitalize">
+        {row.getValue("purpose") !== "assocDues"
+          ? `${row.getValue("purpose")}`
+          : "Association Dues"}
+      </div>
+    ),
   },
   {
     accessorKey: "description",
@@ -168,8 +185,8 @@ export const columns: ColumnDef<PaymentRecordColumn>[] = [
     },
     cell: ({ row }) => row.getValue("paidBy"),
   },
-  {
-    id: "actions",
-    cell: ({ row }) => <CellAction data={row.original} />,
-  },
+  // {
+  //   id: "actions",
+  //   cell: ({ row }) => <CellAction data={row.original} />,
+  // },
 ];

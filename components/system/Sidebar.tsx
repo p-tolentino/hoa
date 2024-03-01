@@ -189,12 +189,12 @@ export function Sidebar () {
 
             return (
               <Box
-                key={route.label}
-                mt={'1.4rem'}
-                w='100%'
-                alignItems={sidebarSize === 'small' ? 'center' : 'left'}
-                fontSize={'sm'}
-                fontFamily={'font.body'}
+                mt={"1.4rem"}
+                w="100%"
+                alignItems={sidebarSize === "small" ? "center" : "left"}
+                fontSize={"sm"}
+                fontFamily={"font.body"}
+                key={route.href}
               >
                 <Menu placement='right' key={route.label}>
                   <Link
@@ -230,12 +230,12 @@ export function Sidebar () {
           } else {
             return (
               <Box
-                key={route.label}
-                mt={'1.4rem'}
-                w='100%'
-                alignItems={sidebarSize === 'small' ? 'center' : 'left'}
-                fontSize={'sm'}
-                fontFamily={'font.body'}
+                mt={"1.4rem"}
+                w="100%"
+                alignItems={sidebarSize === "small" ? "center" : "left"}
+                fontSize={"sm"}
+                fontFamily={"font.body"}
+                key={route.href}
               >
                 <Menu placement='right' key={route.label}>
                   <Link

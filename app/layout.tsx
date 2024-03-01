@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import "./globals.css";
+import "@uploadthing/react/styles.css";
 
 import { auth } from "@/auth";
 import { SessionProvider } from "next-auth/react";
 import { Providers } from "./providers";
+import { Toaster } from "@/components/ui/sonner";
 
 const montserrat = Montserrat({ subsets: ["latin"] });
 
@@ -24,7 +26,10 @@ export default async function RootLayout({
     <SessionProvider session={session}>
       <html lang="en">
         <body className={montserrat.className}>
-          <Providers>{children}</Providers>
+          <Providers>
+            {children}
+            <Toaster />
+          </Providers>
         </body>
       </html>
     </SessionProvider>

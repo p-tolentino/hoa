@@ -83,6 +83,12 @@ export const PropertySchema = z.object({
   purchaseDate: z.string({
     required_error: "Please specify when the property was bought.",
   }),
+  latitude: z.string({
+    required_error: "Please specify latitude value of address.",
+  }),
+  longitude: z.string({
+    required_error: "Please specify longitude value of address.",
+  }),
 });
 
 export const SettingsSchema = z
@@ -132,14 +138,39 @@ export const NewPasswordSchema = z.object({
 });
 
 export const NewTransactionSchema = z.object({
-  dateIssued: z.string()
-  .refine(date => new Date(date) <= new Date(), {
+  dateIssued: z.string().refine((date) => new Date(date) <= new Date(), {
     message: "Date issued cannot be in the future",
   }),
-  type: z.enum(["INCOME", "EXPENSE"], {
-    required_error: "Please specify if it is an income or expense.",
+  type: z.enum(["REVENUE", "EXPENSE"], {
+    required_error: "Please specify if it is an revenue or expense.",
   }),
   purpose: z.string(),
   amount: z.string(),
   description: z.string(),
+});
+
+export const NewBudgetPlanSchema = z.object({
+  title: z.string(),
+  forYear: z.number(),
+  cybAssocDues: z.number(),
+  cybToll: z.number(),
+  cybFacility: z.number(),
+  cybConstruction: z.number(),
+  cybCarSticker: z.number(),
+  cybOtherRev: z.number(),
+
+  cybSalariesBenefits: z.number(),
+  cybUtilities: z.number(),
+  cybOfficeSupplies: z.number(),
+  cybRepairMaintenance: z.number(),
+  cybDonations: z.number(),
+  cybFurnituresFixtures: z.number(),
+  cybRepresentation: z.number(),
+  cybLegalProfessionalFees: z.number(),
+  cybAdministrativeCosts: z.number(),
+  cybOtherExp: z.number(),
+
+  cybTotalYearlyRev: z.number(),
+  cybTotalYearlyExp: z.number(),
+  cybTotalYearlySurplus: z.number(),
 });
