@@ -1,3 +1,5 @@
+"use client";
+
 import { Button, Flex } from "@chakra-ui/react";
 import {
   AlertDialog,
@@ -14,19 +16,18 @@ import {
 export default function RowActions() {
   return (
     <Flex gap={2}>
-      {/* Approve Button */}
+      {/* Resolve Button */}
       <AlertDialog>
         <AlertDialogTrigger asChild>
           <Button size="sm" colorScheme="green">
-            Approve
+            Resolve
           </Button>
         </AlertDialogTrigger>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Approve Request to Post</AlertDialogTitle>
+            <AlertDialogTitle>Resolve Complaint</AlertDialogTitle>
             <AlertDialogDescription>
-              This action allows the post to reflect in the Community Engagement
-              module.
+              This action resolves the complaint submitted by the homeowner.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
@@ -38,12 +39,10 @@ export default function RowActions() {
         </AlertDialogContent>
       </AlertDialog>
 
-      {/* Decline Button */}
+      {/* Decline Button
       <AlertDialog>
         <AlertDialogTrigger asChild>
-          <Button size="sm" colorScheme="red">
-            Decline
-          </Button>
+          <Button colorScheme="red">Decline</Button>
         </AlertDialogTrigger>
         <AlertDialogContent>
           <AlertDialogHeader>
@@ -58,7 +57,7 @@ export default function RowActions() {
             <AlertDialogAction className="bg-[red]">Continue</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
-      </AlertDialog>
+      </AlertDialog> */}
     </Flex>
   );
 }
