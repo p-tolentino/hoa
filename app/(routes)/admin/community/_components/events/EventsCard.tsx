@@ -1,40 +1,38 @@
-"use client";
+'use client'
 
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Text, VStack } from "@chakra-ui/react";
-import { Calendar } from "@/components/ui/calendar";
-import React from "react";
+  CardTitle
+} from '@/components/ui/card'
+import { Box, Button, Flex } from '@chakra-ui/react'
+import React from 'react'
+import { MonthlyEventList } from './_components/MonthlyEventList'
+import CreateEventButton from './_components/CreateEventButton'
+import EventDetails from './_components/EventDetails'
 
-export default function EventsCard() {
-  const [date, setDate] = React.useState<Date | undefined>(new Date());
-
+export default function EventsCard () {
   return (
-    <>
-      <Card className="h-[75vh]">
+    <div>
+      <Card className='h-[75vh]'>
         <CardHeader>
-          <CardTitle>Events</CardTitle>
-          <CardDescription>
-            Create and view events within the HOA.
-          </CardDescription>
+          <Flex justify='space-between'>
+            <Box>
+              <CardTitle>Events</CardTitle>
+              <CardDescription>
+                Create and view events within the HOA.
+              </CardDescription>
+            </Box>
+            <CreateEventButton />
+          </Flex>
         </CardHeader>
-        <CardContent className="space-y-2">
-          <VStack h="500px" mt="3rem">
-            <Text fontWeight="bold">Google Calendar API here</Text>
-            <Calendar
-              mode="single"
-              selected={date}
-              onSelect={setDate}
-              className="rounded-md border shadow"
-            />
-          </VStack>
+        <CardContent className='space-y-2'>
+          <MonthlyEventList />
+          <EventDetails />
         </CardContent>
       </Card>
-    </>
-  );
+    </div>
+  )
 }
