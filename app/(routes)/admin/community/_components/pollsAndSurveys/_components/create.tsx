@@ -22,15 +22,30 @@ import {
   FormControl,
   FormLabel,
   Textarea,
-  FormHelperText
+  FormHelperText,
+  Icon
 } from '@chakra-ui/react'
 import { AddIcon, DeleteIcon } from '@chakra-ui/icons'
+import { CalendarIcon } from 'lucide-react'
 import { useState } from 'react'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger
+} from '@/components/ui/popover'
+import { Calendar } from '@/components/ui/calendar'
+import { format, addDays } from 'date-fns'
+import { DateRange } from 'react-day-picker'
 
 function Create () {
   let [description, setDescription] = useState('')
   let [options, setOptions] = useState([''])
   let [questions, setQuestions] = useState([{ question: '', options: [''] }])
+
+  const [date, setDate] = useState<DateRange | undefined>({
+    from: new Date(),
+    to: addDays(new Date(), 20)
+  })
 
   let handleDescriptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     let inputDescription = e.target.value
@@ -87,6 +102,48 @@ function Create () {
                 placeholder='Enter a Title'
               />
             </FormControl>
+
+            {/* Duration */}
+            <FormControl isRequired>
+              <FormLabel fontSize='sm' fontWeight='semibold'>
+                Duration:
+              </FormLabel>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant='outline'
+                    size='sm'
+                    fontWeight='normal'
+                    w='50%'
+                  >
+                    <Icon as={CalendarIcon} boxSize={4} mr={2} />
+                    {date?.from ? (
+                      date.to ? (
+                        <>
+                          {format(date.from, 'LLL dd, y')} -{' '}
+                          {format(date.to, 'LLL dd, y')}
+                        </>
+                      ) : (
+                        format(date.from, 'LLL dd, y')
+                      )
+                    ) : (
+                      <span>Pick a date</span>
+                    )}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className='w-auto p-0' align='start'>
+                  <Calendar
+                    initialFocus
+                    mode='range'
+                    defaultMonth={date?.from}
+                    selected={date}
+                    onSelect={setDate}
+                    numberOfMonths={2}
+                  />
+                </PopoverContent>
+              </Popover>
+            </FormControl>
+
             <FormControl isRequired>
               <FormLabel fontSize='sm' fontWeight='semibold'>
                 Description:

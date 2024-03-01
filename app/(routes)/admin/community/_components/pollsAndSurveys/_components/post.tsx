@@ -12,9 +12,10 @@ import {
 } from '@chakra-ui/react'
 import Answer from './_answer&report/answer'
 import Report from './_answer&report/report'
-import { formatDistanceToNowStrict } from 'date-fns'
+import { format, addDays, formatDistanceToNowStrict } from 'date-fns'
 import { useState } from 'react'
 import { Close } from './close'
+import { DateRange } from 'react-day-picker'
 
 function Post () {
   const postCategories = [
@@ -28,6 +29,10 @@ function Post () {
   const [postStatus, setPostStatus] = useState('Open')
 
   const datePosted = new Date(2024, 2, 1)
+  const [duration, setDuration] = useState<DateRange | undefined>({
+    from: datePosted,
+    to: addDays(datePosted, 20)
+  })
   const dateDistance = formatDistanceToNowStrict(datePosted)
 
   return (
@@ -52,11 +57,34 @@ function Post () {
           {postStatus}
         </Box>
         <Box p='20px'>
-          <HStack>
-            {/* Survey Title */}
-            <Heading size='md' fontFamily='font.heading' mb='1%'>
-              Title
-            </Heading>
+          <HStack mb='0.5rem'>
+            <Stack spacing={0}>
+              {/* Survey Title */}
+              <Heading size='md' fontFamily='font.heading' mb='1%'>
+                Title
+              </Heading>
+              {/* Survey Duration */}
+              {duration?.from ? (
+                duration.to ? (
+                  <>
+                    <Text fontSize='xs' fontWeight='semibold'>
+                      {postStatus === 'Open' ? 'Available from' : 'Duration:'}{' '}
+                      {format(duration.from, 'LLL dd, y')}{' '}
+                      {postStatus === 'Open' ? 'to' : '-'}{' '}
+                      {format(duration.to, 'LLL dd, y')}
+                    </Text>
+                  </>
+                ) : (
+                  <>
+                    <Text fontSize='xs'>
+                      Available from {format(duration.from, 'LLL dd, y')}
+                    </Text>
+                  </>
+                )
+              ) : (
+                <span>Available until owner closes it.</span>
+              )}
+            </Stack>
             <Spacer />
             {/* Survey Button */}
             {postStatus === 'Open' ? (
