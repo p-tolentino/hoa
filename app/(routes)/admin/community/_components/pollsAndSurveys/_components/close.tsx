@@ -9,14 +9,20 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger
 } from '@/components/ui/alert-dialog'
+import { LockIcon } from '@chakra-ui/icons'
 import { Button } from '@chakra-ui/react'
 
-export function CloseForm () {
+export function Close () {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button size='sm' fontFamily='font.body' colorScheme='red'>
-          Close Form
+        <Button
+          size='sm'
+          fontFamily='font.body'
+          colorScheme='red'
+          leftIcon={<LockIcon />}
+        >
+          Close
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
