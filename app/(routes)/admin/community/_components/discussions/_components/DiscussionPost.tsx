@@ -15,7 +15,7 @@ import { PiThumbsUpFill } from 'react-icons/pi'
 import { formatDistanceToNowStrict } from 'date-fns'
 import { useState } from 'react'
 import CommentButton from './_comment/CommentButton'
-import { DeleteIcon } from '@chakra-ui/icons'
+import { DeleteButton } from './DeleteButton'
 
 function DiscussionPost () {
   const postCategories = [
@@ -31,8 +31,6 @@ function DiscussionPost () {
 
   const [likeCount, setLikeCount] = useState(0)
   const [liked, setLiked] = useState(false)
-
-  const [isDeleteClicked, setIsDeleteClicked] = useState(false)
 
   const handleLike = () => {
     if (!liked) {
@@ -65,15 +63,7 @@ function DiscussionPost () {
           </Heading>
           <Spacer />
           {/* Delete Button */}
-          <Button
-            size='sm'
-            fontFamily='font.body'
-            colorScheme='red'
-            leftIcon={<DeleteIcon />}
-            onClick={handleDeletePost}
-          >
-            Delete
-          </Button>
+          <DeleteButton />
         </HStack>
 
         {/* Post Categories */}

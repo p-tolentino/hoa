@@ -35,6 +35,7 @@ import {
 import { AddIcon } from '@chakra-ui/icons'
 import { useState } from 'react'
 import { CalendarIcon } from 'lucide-react'
+import { PostEventButton } from './PostEventButton'
 
 export default function CreateEventButton () {
   const action = 'Create Event'
@@ -170,15 +171,7 @@ export default function CreateEventButton () {
             </Box>
           </Stack>
           <DialogFooter>
-            {/* Post Event Button */}
-            <Button
-              size='sm'
-              colorScheme='yellow'
-              type='submit'
-              // onClick={() => onSubmit()}
-            >
-              Post Event
-            </Button>
+            <PostEventButton />
           </DialogFooter>
         </form>
       </DialogContent>
