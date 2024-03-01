@@ -38,10 +38,10 @@ model PersonalInfo {
   phoneNumber String?
   birthDay    DateTime?
   address     String?
+  relation    HomeRelation?
   bio         String?
   type        String?
   position    String?       @default("Member")
-  relation    HomeRelation?
   user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
@@ -56,8 +56,8 @@ model Property {
   address      String?
   lotNumber    String?
   lotSize      String?
-  latitude     Int?
-  longitude    Int?
+  latitude     Float?
+  longitude    Float?
   purchaseDate DateTime?
   documents    PropertyDocument[]
 }
@@ -101,30 +101,86 @@ model HoaTransaction {
   userId      String
 }
 
-model Inflow {
-  id     String     @id @unique @default(cuid())
-  planId String
-  title  String
-  amount Int
-  plan   BudgetPlan @relation(fields: [planId], references: [id], onDelete: Cascade)
-}
-
-model Outflow {
-  id     String     @id @unique @default(cuid())
-  planId String
-  title  String
-  amount Int
-  plan   BudgetPlan @relation(fields: [planId], references: [id], onDelete: Cascade)
-}
-
 model BudgetPlan {
-  id           String    @id @unique @default(cuid())
-  title        String
-  totalInflow  Int
-  totalOutflow Int
-  total        Int
-  inflow       Inflow[]
-  outflow      Outflow[]
+  id                        String @id @unique @default(cuid())
+  title                     String
+  forYear                   Int
+  cybAssocDues              Int
+  cybToll                   Int
+  cybFacility               Int
+  cybConstruction           Int
+  cybCarSticker             Int
+  cybOtherRev               Int
+  ytdaAssocDues             Int?
+  ytdaToll                  Int?
+  ytdaFacility              Int?
+  ytdaConstruction          Int?
+  ytdaCarSticker            Int?
+  ytdaOtherRev              Int?
+  pybAssocDues              Int?
+  pybToll                   Int?
+  pybFacility               Int?
+  pybConstruction           Int?
+  pybCarSticker             Int?
+  pybOtherRev               Int?
+  pyaAssocDues              Int?
+  pyaToll                   Int?
+  pyaFacility               Int?
+  pyaConstruction           Int?
+  pyaCarSticker             Int?
+  pyaOtherRev               Int?
+  cybSalariesBenefits       Int
+  cybUtilities              Int
+  cybOfficeSupplies         Int
+  cybRepairMaintenance      Int
+  cybDonations              Int
+  cybFurnituresFixtures     Int
+  cybRepresentation         Int
+  cybLegalProfessionalFees  Int
+  cybAdministrativeCosts    Int
+  cybOtherExp               Int
+  ytdaSalariesBenefits      Int?
+  ytdaUtilities             Int?
+  ytdaOfficeSupplies        Int?
+  ytdaRepairMaintenance     Int?
+  ytdaDonations             Int?
+  ytdaFurnituresFixtures    Int?
+  ytdaRepresentation        Int?
+  ytdaLegalProfessionalFees Int?
+  ytdaAdministrativeCosts   Int?
+  ytdaOtherExp              Int?
+  pybSalariesBenefits       Int?
+  pybUtilities              Int?
+  pybOfficeSupplies         Int?
+  pybRepairMaintenance      Int?
+  pybDonations              Int?
+  pybFurnituresFixtures     Int?
+  pybRepresentation         Int?
+  pybLegalProfessionalFees  Int?
+  pybAdministrativeCosts    Int?
+  pybOtherExp               Int?
+  pyaSalariesBenefits       Int?
+  pyaUtilities              Int?
+  pyaOfficeSupplies         Int?
+  pyaRepairMaintenance      Int?
+  pyaDonations              Int?
+  pyaFurnituresFixtures     Int?
+  pyaRepresentation         Int?
+  pyaLegalProfessionalFees  Int?
+  pyaAdministrativeCosts    Int?
+  pyaOtherExp               Int?
+  cybTotalYearlyExp         Int
+  cybTotalYearlyRev         Int
+  cybTotalYearlySurplus     Int
+  pyaTotalYearlyExp         Int?
+  pyaTotalYearlyRev         Int?
+  pyaTotalYearlySurplus     Int?
+  pybTotalYearlyExp         Int?
+  pybTotalYearlyRev         Int?
+  pybTotalYearlySurplus     Int?
+  ytdaTotalYearlyExp        Int?
+  ytdaTotalYearlyRev        Int?
+  ytdaTotalYearlySurplus    Int?
 }
 
 model Account {
@@ -154,6 +210,90 @@ model ResetPasswordToken {
   @@unique([email, token])
 }
 
+model Post {
+  id          String             @id @unique @default(cuid())
+  userId      String
+  category    CategoryType      
+  type        PostType
+  title       String
+  description String
+  status      Status             @default(PENDING)
+  amount      Int
+  createdAt   DateTime           @default(now())
+  likes       Like[] 
+  comments    Comment[]
+}
+
+model Like {
+  id          String             @id @unique @default(cuid())
+  userId      String
+  postId      String
+  createdAt   DateTime           @default(now())
+  post   Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+}
+
+model Comment {
+  id          String             @id @unique @default(cuid())
+  userId      String
+  postId      String
+  text        String
+  createdAt   DateTime           @default(now())
+  post   Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+}
+
+model Polls {
+  id          String             @id @unique @default(cuid())
+  userId      String   
+  title       String
+  description String
+  category    CategoryType   
+  endDate     DateTime
+  status      Status             @default(INACTIVE)
+  createdAt   DateTime           @default(now())
+  questions   Question[] 
+}
+
+model Question {
+  id          String             @id @unique @default(cuid())
+  pollId      String
+  text        String 
+  options     Option[]  
+  polls   Polls @relation(fields: [pollId], references: [id], onDelete: Cascade)
+}
+
+model Option {
+  id          String             @id @unique @default(cuid())
+  questionId  String
+  text        String
+  question  Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+}
+
+model Events {
+  id          String             @id @unique @default(cuid())
+  title       String
+  description String
+  date        DateTime
+  venue       String
+  userId      String
+}
+
+enum CategoryType {
+  MEETING
+  ELECTION
+  INQUIRY
+  EVENT
+  FOODANDDRINK
+  CLOTHING
+  HOUSEHOLDITEMS
+  HOMESERVICES
+  OTHER
+}
+
+enum PostType {
+  DISCUSSION
+  BUSINESS
+}
+
 enum UserRole {
   ADMIN
   USER
@@ -178,6 +318,28 @@ enum PaymentStatus {
 }
 
 enum HoaTransactionType {
-  INCOME
+  REVENUE
   EXPENSE
+}
+
+enum RevenueCategory {
+  AssociationDues
+  Toll
+  Facility
+  Construction
+  CarSticker
+  Other
+}
+
+enum ExpenseCategory {
+  SalariesBenefits
+  Utilities
+  OfficeSupplies
+  RepairMaintenance
+  Donations
+  FurnituresFixtures
+  Representation
+  LegalProfessionalFees
+  AdministrativeCosts
+  Other
 }
