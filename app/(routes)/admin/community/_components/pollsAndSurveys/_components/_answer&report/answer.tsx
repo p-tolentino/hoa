@@ -1,4 +1,4 @@
-"use client";
+'use client'
 
 import {
   Dialog,
@@ -7,8 +7,9 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+  DialogTrigger
+} from '@/components/ui/dialog'
+import { EditIcon } from '@chakra-ui/icons'
 import {
   Stack,
   Text,
@@ -16,79 +17,84 @@ import {
   Divider,
   Radio,
   RadioGroup,
-  Button,
-} from "@chakra-ui/react";
+  Button
+} from '@chakra-ui/react'
 
-function Answer() {
+function Answer () {
   return (
     <Dialog /*open={open} onOpenChange={setOpen}*/>
       <DialogTrigger asChild>
-        <Button size="sm" fontFamily="font.body">
+        <Button
+          size='sm'
+          fontFamily='font.body'
+          variant='outline'
+          leftIcon={<EditIcon />}
+        >
           Answer
         </Button>
       </DialogTrigger>
-      <DialogContent className="lg:min-w-[800px]">
+      <DialogContent className='lg:min-w-[800px]'>
         <DialogHeader>
           <DialogTitle>Answer</DialogTitle>
           <DialogDescription>Enter your answers.</DialogDescription>
         </DialogHeader>
 
         {/* Form Content */}
-        <Stack spacing="15px">
-          <Text fontSize="sm" fontWeight="semibold">
+        <Stack spacing='15px'>
+          <Text fontSize='sm' fontWeight='semibold'>
             Title:
           </Text>
-          <Text fontSize="sm" fontFamily="font.body">
+          <Text fontSize='sm' fontFamily='font.body'>
             Display Title Here
           </Text>
-          <Text fontSize="sm" fontWeight="semibold">
+          <Text fontSize='sm' fontWeight='semibold'>
             Description:
           </Text>
-          <Text fontSize="sm" fontFamily="font.body">
+          <Text fontSize='sm' fontFamily='font.body'>
             Display Description Here
           </Text>
           <Divider />
 
           {/* Poll Question */}
-          <Box p="10px" maxH="300px" overflowY="auto">
-            <Stack spacing="15px">
-              <Text fontSize="sm" fontWeight="semibold">
+          <Box p='10px' maxH='300px' overflowY='auto'>
+            <Stack spacing='15px'>
+              <Text fontSize='sm' fontWeight='semibold'>
                 Question 1:
               </Text>
-              <Text fontSize="sm" fontFamily="font.body">
+              <Text fontSize='sm' fontFamily='font.body'>
                 Display Question Here
               </Text>
-              <RadioGroup size="sm" fontFamily="font.body">
+              <RadioGroup size='sm' fontFamily='font.body'>
                 <Stack spacing={2}>
-                  <Radio value="1">Option 1</Radio>
-                  <Radio value="2">Option 2</Radio>
-                  <Radio value="3">Option 3</Radio>
+                  <Radio value='1'>Option 1</Radio>
+                  <Radio value='2'>Option 2</Radio>
+                  <Radio value='3'>Option 3</Radio>
                 </Stack>
               </RadioGroup>
-              <Text fontSize="sm" fontWeight="semibold">
+              <Text fontSize='sm' fontWeight='semibold'>
                 Question 2:
               </Text>
-              <Text fontSize="sm" fontFamily="font.body">
+              <Text fontSize='sm' fontFamily='font.body'>
                 Display Question Here
               </Text>
-              <RadioGroup size="sm" fontFamily="font.body">
+              <RadioGroup size='sm' fontFamily='font.body'>
                 <Stack spacing={2}>
-                  <Radio value="1">Option 1</Radio>
-                  <Radio value="2">Option 2</Radio>
-                  <Radio value="3">Option 3</Radio>
+                  <Radio value='1'>Option 1</Radio>
+                  <Radio value='2'>Option 2</Radio>
+                  <Radio value='3'>Option 3</Radio>
                 </Stack>
               </RadioGroup>
-              <Text fontSize="sm" fontWeight="semibold">
+              <Text fontSize='sm' fontWeight='semibold'>
                 Question 3:
               </Text>
-              <Text fontSize="sm" fontFamily="font.body">
+              <Text fontSize='sm' fontFamily='font.body'>
                 Display Question Here
               </Text>
-              <RadioGroup size="sm" fontFamily="font.body">
+              <RadioGroup size='sm' fontFamily='font.body'>
                 <Stack spacing={2}>
-                  <Radio value="1">Option 1</Radio>
-                  <Radio value="2">Option 2</Radio>
-                  <Radio value="3">Option 3</Radio>
+                  <Radio value='1'>Option 1</Radio>
+                  <Radio value='2'>Option 2</Radio>
+                  <Radio value='3'>Option 3</Radio>
                 </Stack>
               </RadioGroup>
             </Stack>
@@ -97,10 +103,10 @@ function Answer() {
 
         <DialogFooter>
           <Button
-            w="full"
-            size="sm"
-            colorScheme="yellow"
-            type="submit"
+            w='full'
+            size='sm'
+            colorScheme='yellow'
+            type='submit'
             // onClick={() => onSubmit()}
           >
             Submit
@@ -108,6 +114,6 @@ function Answer() {
         </DialogFooter>
       </DialogContent>
     </Dialog>
-  );
+  )
 }
-export default Answer;
+export default Answer
