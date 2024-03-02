@@ -26,7 +26,7 @@ function Post () {
     { category: 'Other', color: 'teal.200' }
   ]
 
-  const [postStatus, setPostStatus] = useState('Open')
+  const [postStatus, setPostStatus] = useState('Closed')
 
   const datePosted = new Date(2024, 2, 1)
   const [duration, setDuration] = useState<DateRange | undefined>({

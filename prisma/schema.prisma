@@ -169,7 +169,6 @@ model Post {
   title       String
   description String
   status      Status             @default(PENDING)
-  amount      Int
   createdAt   DateTime           @default(now())
   likes       Like[] 
   comments    Comment[]

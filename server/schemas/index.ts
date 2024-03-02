@@ -149,6 +149,25 @@ export const NewTransactionSchema = z.object({
   description: z.string(),
 });
 
+export const NewPostSchema = z.object({
+  type: z.enum(["DISCUSSION", "BUSINESS"], {
+    required_error: "Please specify if it is an revenue or expense.",
+  }),
+  title: z.string(),
+  category: z.enum([ "MEETING",
+    "ELECTION",
+    "INQUIRY",
+    "EVENT",
+    "FOODANDDRINK",
+    "CLOTHING",
+    "HOUSEHOLDITEMS",
+    "HOMESERVICES",
+    "OTHER"], {
+    required_error: "Please specify the category",
+  }),
+  description: z.string(),
+});
+
 export const NewBudgetPlanSchema = z.object({
   title: z.string(),
   forYear: z.number(),

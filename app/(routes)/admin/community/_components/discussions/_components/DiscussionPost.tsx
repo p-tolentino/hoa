@@ -1,5 +1,7 @@
 'use client'
 
+import { db } from "@/lib/db";
+
 import {
   Flex,
   Box,
@@ -13,40 +15,85 @@ import {
 } from '@chakra-ui/react'
 import { PiThumbsUpFill } from 'react-icons/pi'
 import { formatDistanceToNowStrict } from 'date-fns'
-import { useState } from 'react'
 import CommentButton from './_comment/CommentButton'
 import { DeleteButton } from './DeleteButton'
+import { Post } from "@prisma/client"
+import { PersonalInfo } from "@prisma/client"
+import { getUserById } from "@/server/data/user";
+import { getPersonalInfo } from "@/server/data/user-info";
+import {createLike, getLikeCount, checkUserLiked} from "@/server/actions/post";
 
-function DiscussionPost () {
-  const postCategories = [
-    { category: 'Meeting', color: 'purple.200' },
-    { category: 'Election', color: 'pink.200' },
-    { category: 'Inquiry', color: 'blue.200' },
-    { category: 'Event', color: 'orange.200' },
-    { category: 'Other', color: 'teal.200' }
-  ]
 
-  const datePosted = new Date(2024, 2, 1)
-  const dateDistance = formatDistanceToNowStrict(datePosted)
+import React, { useEffect, useState } from 'react';
 
-  const [likeCount, setLikeCount] = useState(0)
-  const [liked, setLiked] = useState(false)
+interface PostProps {
+  posts: Post[];
+  user: string
+}
 
-  const handleLike = () => {
-    if (!liked) {
-      setLikeCount(likeCount + 1)
-    } else {
-      setLikeCount(likeCount - 1)
-    }
-    setLiked(!liked)
-  }
+interface UserInfo {
+  fullname: string;
+  position: string | null;
+}
 
-  const handleDeletePost = () => {
-    // add logic to delete the discussion post here
-    console.log('Post Deleted')
+interface UserInfos {
+  [userId: string]: UserInfo;
+}
+
+const DiscussionPost: React.FC<PostProps> = ({ posts, user }) => {
+
+  const categoryColors = {
+    MEETING: 'purple.200',
+    ELECTION: 'pink.200',
+    INQUIRY: 'blue.200',
+    EVENT: 'orange.200',
+    FOODANDDRINK:'purple.200',
+    CLOTHING:'pink.200',
+    HOUSEHOLDITEMS:'blue.200',
+    HOMESERVICES:'orange.200',
+    OTHER: 'teal.200',
+  };
+
+  const [usersInfo, setUsersInfo] = useState<UserInfos>({}); // Stores users' data
+  const [likeCounts, setLikeCounts] = useState({});
+  const [likedByUser, setLikedByUser] = useState({});
+  
+useEffect(() => {
+  const fetchUserInfo = async () => {
+    const userInfoPromises = posts.map(async (post) => {
+      try {
+        // Make sure getPersonalInfo is awaited
+        return await getPersonalInfo(post.userId);
+      } catch (error) {
+        return null; // Return null or a fallback object for errors
+      }
+    });
+    const usersDetails = await Promise.all(userInfoPromises);
+    const newUsersInfo: UserInfos = {};
+    usersDetails.forEach((userInfo, index) => {
+      if (userInfo) { // Check if userInfo is not null
+        const userId = posts[index].userId;
+        newUsersInfo[userId] = {
+          fullname: `${userInfo.firstName} ${userInfo.lastName}`,
+          position: userInfo.position,
+        };
+      }
+    });
+    // Update state with the fetched and processed user info
+    setUsersInfo(newUsersInfo);
+  };
+
+  fetchUserInfo();
+}, [posts]); // Re-fetch user info when posts change
+
+
+
+  const handleLike = async () => {
   }
 
   return (
+    <>
+    {posts.map((post) => (
     <Flex p='10px'>
       <Box
         w='100%'
@@ -59,19 +106,17 @@ function DiscussionPost () {
       >
         <HStack>
           <Heading size='md' fontFamily='font.heading' mb='1%'>
-            Discussion Title
+            {post.title}
           </Heading>
           <Spacer />
           {/* Delete Button */}
-          <DeleteButton />
+          {post.userId === user && <DeleteButton postId={post.id} />}
         </HStack>
 
         {/* Post Categories */}
         <HStack mb='2%'>
-          {postCategories.map((postCategory, index) => (
             <Box
-              key={index}
-              bg={postCategory.color}
+              bg={categoryColors[post.category]}
               fontFamily='font.heading'
               fontSize='xs'
               fontWeight='semibold'
@@ -80,9 +125,8 @@ function DiscussionPost () {
               textAlign='center'
               rounded='md'
             >
-              {postCategory.category}
+              {post.category}
             </Box>
-          ))}
         </HStack>
 
         {/* Discussion Post Details */}
@@ -91,19 +135,19 @@ function DiscussionPost () {
           <Box>
             <Text
               id='name'
-              fontSize='sm'
+              fontSize='xl'
               fontWeight='bold'
               fontFamily='font.body'
             >
-              Name
+              {usersInfo[post.userId]?.fullname || 'Unknown User'}
             </Text>
             <Text
               id='position'
-              fontSize='sm'
+              fontSize='lg'
               fontWeight='bold'
               fontFamily='font.body'
             >
-              Position (Homeowner or Officer)
+              {usersInfo[post.userId]?.position || 'No Position Available'}
             </Text>
             <Text
               id='description'
@@ -111,26 +155,21 @@ function DiscussionPost () {
               py='10px'
               fontFamily='font.body'
             >
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis,
-              ratione quia! Hic atque nostrum tempore consectetur dolores
-              mollitia corporis aliquam labore eligendi, possimus sequi quidem
-              fuga commodi dolorum nemo non magni earum consequuntur quod
-              aliquid repellendus ad? Reprehenderit beatae praesentium eaque,
-              quis fugit dignissimos, inventore omnis eveniet alias nemo quasi.
+              {post.description}
             </Text>
             {/* Date distance */}
             <Text fontFamily='font.body' color='grey' fontSize='xs'>
-              Posted {dateDistance} ago
+              Posted {formatDistanceToNowStrict(new Date(post.createdAt))} ago
             </Text>
             {/* Discussion Post Actions */}
             <ButtonGroup size='xs' mt='1.5rem'>
               <Button
                 colorScheme='yellow'
-                variant={liked ? 'solid' : 'outline'}
+                // variant={liked ? 'solid' : 'outline'}
                 gap='5px'
                 onClick={handleLike}
               >
-                <PiThumbsUpFill /> Like ({likeCount})
+                <PiThumbsUpFill /> Like ()
               </Button>
               <CommentButton />
             </ButtonGroup>
@@ -138,6 +177,8 @@ function DiscussionPost () {
         </Flex>
       </Box>
     </Flex>
+  ))}
+  </>
   )
 }
 export default DiscussionPost

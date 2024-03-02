@@ -2,6 +2,8 @@ import { Heading } from '@/components/ui/heading'
 import { Separator } from '@/components/ui/separator'
 import { Flex } from '@chakra-ui/react'
 
+import { currentUser } from "@/lib/auth";
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import DiscussionsCard from './_components/discussions/DiscussionsCard'
 import AnnouncementBoard from './_components/sideCards/announcements/AnnouncementBoard'
@@ -10,8 +12,22 @@ import AdminOfficerLinks from './_components/sideCards/adminOfficerLinks/AdminOf
 import BusinessForumCard from './_components/business/BusinessForumCard'
 import PollsAndSurveysCard from './_components/pollsAndSurveys/PollsAndSurveysCard'
 import EventsCard from './_components/events/EventsCard'
+import { getPosts } from "@/server/data/posts";
 
-const Community = () => {
+const Community = async () => {
+
+  const posts = await getPosts();
+  if (!posts) {
+    return null;
+  }
+  console.log(posts)
+  
+  const user = await currentUser();
+
+  if (!user) {
+    return null;
+  }
+
   return (
     <>
       <Heading
@@ -29,7 +45,7 @@ const Community = () => {
             <TabsTrigger value='events'>Events</TabsTrigger>
           </TabsList>
           <TabsContent value='discussions'>
-            <DiscussionsCard />
+            <DiscussionsCard posts={posts} user={user.id}/>
           </TabsContent>
           <TabsContent value='business'>
             <BusinessForumCard />
