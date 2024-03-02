@@ -21,7 +21,7 @@ import { Post } from "@prisma/client"
 import { PersonalInfo } from "@prisma/client"
 import { getUserById } from "@/server/data/user";
 import { getPersonalInfo } from "@/server/data/user-info";
-import {createLike, getLikeCount, checkUserLiked} from "@/server/actions/post";
+import {createLike, deleteLike, getLikeCount, checkUserLiked} from "@/server/actions/post";
 
 
 import React, { useEffect, useState } from 'react';
@@ -54,42 +54,72 @@ const DiscussionPost: React.FC<PostProps> = ({ posts, user }) => {
     OTHER: 'teal.200',
   };
 
-  const [usersInfo, setUsersInfo] = useState<UserInfos>({}); // Stores users' data
-  const [likeCounts, setLikeCounts] = useState({});
-  const [likedByUser, setLikedByUser] = useState({});
-  
-useEffect(() => {
-  const fetchUserInfo = async () => {
-    const userInfoPromises = posts.map(async (post) => {
+  const [usersInfo, setUsersInfo] = useState<UserInfos>({});
+  const [likeCounts, setLikeCounts] = useState<{ [postId: string]: number }>({});
+  const [likedByUser, setLikedByUser] = useState<{ [postId: string]: boolean }>({});
+
+  useEffect(() => {
+    const fetchUserInfoAndLikes = async () => {
+      const userInfoPromises = posts.map(post => getPersonalInfo(post.userId));
+      const likeCountPromises = posts.map(post => getLikeCount(post.id));
+      const likedByUserPromises = posts.map(post => checkUserLiked(user, post.id));
+
       try {
-        // Make sure getPersonalInfo is awaited
-        return await getPersonalInfo(post.userId);
+        const usersDetails = await Promise.all(userInfoPromises);
+        const likesDetails: number[] = await Promise.all(likeCountPromises);
+        const likedDetails: boolean[] = await Promise.all(likedByUserPromises);
+
+        const newUsersInfo: UserInfos = {};
+        const newLikeCounts: { [postId: string]: number } = {};
+        const newLikedByUser: { [postId: string]: boolean } = {};
+
+        usersDetails.forEach((userInfo, index) => {
+          if (userInfo) {
+            const userId = posts[index].userId;
+            newUsersInfo[userId] = {
+              fullname: `${userInfo.firstName} ${userInfo.lastName}`,
+              position: userInfo.position,
+            };
+          }
+        });
+
+        posts.forEach((post, index) => {
+          newLikeCounts[post.id] = likesDetails[index];
+          newLikedByUser[post.id] = likedDetails[index];
+        });
+
+        setUsersInfo(newUsersInfo);
+        setLikeCounts(newLikeCounts);
+        setLikedByUser(newLikedByUser);
       } catch (error) {
-        return null; // Return null or a fallback object for errors
+        console.error("Failed to fetch data:", error);
       }
-    });
-    const usersDetails = await Promise.all(userInfoPromises);
-    const newUsersInfo: UserInfos = {};
-    usersDetails.forEach((userInfo, index) => {
-      if (userInfo) { // Check if userInfo is not null
-        const userId = posts[index].userId;
-        newUsersInfo[userId] = {
-          fullname: `${userInfo.firstName} ${userInfo.lastName}`,
-          position: userInfo.position,
-        };
+    };
+
+    fetchUserInfoAndLikes();
+  }, [posts, user]);
+
+
+  const handleLike = async (postId: string) => {
+    const currentlyLiked = likedByUser[postId];
+  
+    try {
+      if (currentlyLiked) {
+        // Call your function to delete the like
+        await deleteLike(user, postId);
+        setLikeCounts(prev => ({ ...prev, [postId]: prev[postId] - 1 }));
+        setLikedByUser(prev => ({ ...prev, [postId]: false }));
+      } else {
+        // Call your function to create the like
+        await createLike(user, postId);
+        setLikeCounts(prev => ({ ...prev, [postId]: (prev[postId] || 0) + 1 }));
+        setLikedByUser(prev => ({ ...prev, [postId]: true }));
       }
-    });
-    // Update state with the fetched and processed user info
-    setUsersInfo(newUsersInfo);
+    } catch (error) {
+      console.error("Failed to toggle like:", error);
+      // Optionally, show an error message to the user
+    }
   };
-
-  fetchUserInfo();
-}, [posts]); // Re-fetch user info when posts change
-
-
-
-  const handleLike = async () => {
-  }
 
   return (
     <>
@@ -163,13 +193,13 @@ useEffect(() => {
             </Text>
             {/* Discussion Post Actions */}
             <ButtonGroup size='xs' mt='1.5rem'>
-              <Button
+                <Button
                 colorScheme='yellow'
-                // variant={liked ? 'solid' : 'outline'}
+                variant={likedByUser[post.id] ? 'solid' : 'outline'}
                 gap='5px'
-                onClick={handleLike}
+                onClick={() => handleLike(post.id)} // Pass the post.id to handleLike
               >
-                <PiThumbsUpFill /> Like ()
+                <PiThumbsUpFill /> Like ({likeCounts[post.id] || 0})
               </Button>
               <CommentButton />
             </ButtonGroup>

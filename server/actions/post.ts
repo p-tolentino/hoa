@@ -40,39 +40,81 @@ export const deletePost = async(value: string) => {
     return { success: "Post successfully Deleted" };
 }
 
-export const createLike = async(userId: string, postId: string) => {
+export const createLike = async (userId: string, postId: string) => {
+    // Assuming currentUser() fetches the currently logged-in user
     const user = await currentUser();
-
+  
     // No Current User
     if (!user) {
       return { error: "Unauthorized" };
     }
-
-    await db.like.create({
-        data: {
-            userId: userId,
-            postId: postId,
-        }
-    })
-    return { success: "Liked post successfully "};
-}
-
-export const  getLikeCount = async (postId: string) => {
-    const count = await db.like.count({
+  
+    // Check if the like already exists
+    const existingLike = await db.like.findFirst({
       where: {
-        id: postId,
+        userId: userId,
+        postId: postId,
       },
     });
   
+    // If a like already exists, return a message (or handle as needed)
+    if (existingLike) {
+      return { error: "Post already liked by this user" };
+    }
+  
+    // If no like exists, create a new like
+    try {
+      await db.like.create({
+        data: {
+          userId: userId,
+          postId: postId,
+        },
+      });
+      return { success: "Liked post successfully" };
+    } catch (error) {
+      console.error("Failed to create like:", error);
+      return { error: "Failed to create like" };
+    }
+  };
+
+  export const deleteLike = async (userId: string, postId: string) => {
+    // Assuming currentUser() correctly identifies the currently logged-in user
+    const user = await currentUser();
+
+    // No Current User
+    if (!user) {
+        return { error: "Unauthorized" };
+    }
+
+    try {
+        await db.like.deleteMany({
+            where: {
+                userId: userId, // User who created the like
+                postId: postId, // Post that was liked
+            },
+        });
+        return { success: "Like deleted successfully" };
+    } catch (error) {
+        console.error("Failed to delete like:", error);
+        return { error: "Failed to delete like" };
+    }
+};
+
+// Assuming this is the structure of your getLikeCount function
+export const getLikeCount = async (postId: string): Promise<number> => {
+    // Replace with the actual query to count likes for the postId
+    const count = await db.like.count({
+      where: { postId },
+    });
     return count;
-  }
+  };
 
 export const checkUserLiked = async (userId: string, postId: string) => {
     const like = await db.like.findFirst({
       where: {
         AND: [
           { userId: userId },
-          { id: postId },
+          { postId: postId },
         ],
       },
     });
