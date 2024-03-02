@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import { db } from "@/lib/db";
 
@@ -11,24 +11,28 @@ import {
   HStack,
   ButtonGroup,
   Button,
-  Spacer
-} from '@chakra-ui/react'
-import { PiThumbsUpFill } from 'react-icons/pi'
-import { formatDistanceToNowStrict } from 'date-fns'
-import CommentButton from './_comment/CommentButton'
-import { DeleteButton } from './DeleteButton'
-import { Post } from "@prisma/client"
-import { PersonalInfo } from "@prisma/client"
+  Spacer,
+} from "@chakra-ui/react";
+import { PiThumbsUpFill } from "react-icons/pi";
+import { formatDistanceToNowStrict } from "date-fns";
+import CommentButton from "./_comment/CommentButton";
+import { DeleteButton } from "./DeleteButton";
+import { Post } from "@prisma/client";
+import { PersonalInfo } from "@prisma/client";
 import { getUserById } from "@/server/data/user";
 import { getPersonalInfo } from "@/server/data/user-info";
-import {createLike, deleteLike, getLikeCount, checkUserLiked} from "@/server/actions/post";
+import {
+  createLike,
+  deleteLike,
+  getLikeCount,
+  checkUserLiked,
+} from "@/server/actions/post";
 
-
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 
 interface PostProps {
   posts: Post[];
-  user: string
+  user: string;
 }
 
 interface UserInfo {
@@ -41,28 +45,35 @@ interface UserInfos {
 }
 
 const DiscussionPost: React.FC<PostProps> = ({ posts, user }) => {
-
   const categoryColors = {
-    MEETING: 'purple.200',
-    ELECTION: 'pink.200',
-    INQUIRY: 'blue.200',
-    EVENT: 'orange.200',
-    FOODANDDRINK:'purple.200',
-    CLOTHING:'pink.200',
-    HOUSEHOLDITEMS:'blue.200',
-    HOMESERVICES:'orange.200',
-    OTHER: 'teal.200',
+    MEETING: "purple.200",
+    ELECTION: "pink.200",
+    INQUIRY: "blue.200",
+    EVENT: "orange.200",
+    FOODANDDRINK: "purple.200",
+    CLOTHING: "pink.200",
+    HOUSEHOLDITEMS: "blue.200",
+    HOMESERVICES: "orange.200",
+    OTHER: "teal.200",
   };
 
   const [usersInfo, setUsersInfo] = useState<UserInfos>({});
-  const [likeCounts, setLikeCounts] = useState<{ [postId: string]: number }>({});
-  const [likedByUser, setLikedByUser] = useState<{ [postId: string]: boolean }>({});
+  const [likeCounts, setLikeCounts] = useState<{ [postId: string]: number }>(
+    {}
+  );
+  const [likedByUser, setLikedByUser] = useState<{ [postId: string]: boolean }>(
+    {}
+  );
 
   useEffect(() => {
     const fetchUserInfoAndLikes = async () => {
-      const userInfoPromises = posts.map(post => getPersonalInfo(post.userId));
-      const likeCountPromises = posts.map(post => getLikeCount(post.id));
-      const likedByUserPromises = posts.map(post => checkUserLiked(user, post.id));
+      const userInfoPromises = posts.map((post) =>
+        getPersonalInfo(post.userId)
+      );
+      const likeCountPromises = posts.map((post) => getLikeCount(post.id));
+      const likedByUserPromises = posts.map((post) =>
+        checkUserLiked(user, post.id)
+      );
 
       try {
         const usersDetails = await Promise.all(userInfoPromises);
@@ -99,21 +110,23 @@ const DiscussionPost: React.FC<PostProps> = ({ posts, user }) => {
     fetchUserInfoAndLikes();
   }, [posts, user]);
 
-
   const handleLike = async (postId: string) => {
     const currentlyLiked = likedByUser[postId];
-  
+
     try {
       if (currentlyLiked) {
         // Call your function to delete the like
         await deleteLike(user, postId);
-        setLikeCounts(prev => ({ ...prev, [postId]: prev[postId] - 1 }));
-        setLikedByUser(prev => ({ ...prev, [postId]: false }));
+        setLikeCounts((prev) => ({ ...prev, [postId]: prev[postId] - 1 }));
+        setLikedByUser((prev) => ({ ...prev, [postId]: false }));
       } else {
         // Call your function to create the like
         await createLike(user, postId);
-        setLikeCounts(prev => ({ ...prev, [postId]: (prev[postId] || 0) + 1 }));
-        setLikedByUser(prev => ({ ...prev, [postId]: true }));
+        setLikeCounts((prev) => ({
+          ...prev,
+          [postId]: (prev[postId] || 0) + 1,
+        }));
+        setLikedByUser((prev) => ({ ...prev, [postId]: true }));
       }
     } catch (error) {
       console.error("Failed to toggle like:", error);
@@ -123,93 +136,94 @@ const DiscussionPost: React.FC<PostProps> = ({ posts, user }) => {
 
   return (
     <>
-    {posts.map((post) => (
-    <Flex p='10px'>
-      <Box
-        w='100%'
-        h='100%'
-        p='20px'
-        border='1px'
-        borderColor='gray.200'
-        borderRadius='10px'
-        mb='1%'
-      >
-        <HStack>
-          <Heading size='md' fontFamily='font.heading' mb='1%'>
-            {post.title}
-          </Heading>
-          <Spacer />
-          {/* Delete Button */}
-          {post.userId === user && <DeleteButton postId={post.id} />}
-        </HStack>
+      {posts.map((post) => (
+        <Flex p="10px">
+          <Box
+            w="100%"
+            h="100%"
+            p="20px"
+            border="1px"
+            borderColor="gray.200"
+            borderRadius="10px"
+            mb="1%"
+          >
+            <HStack>
+              <Heading size="md" fontFamily="font.heading" mb="1%">
+                {post.title}
+              </Heading>
+              <Spacer />
+              {/* Delete Button */}
+              {post.userId === user && <DeleteButton postId={post.id} />}
+            </HStack>
 
-        {/* Post Categories */}
-        <HStack mb='2%'>
-            <Box
-              bg={categoryColors[post.category]}
-              fontFamily='font.heading'
-              fontSize='xs'
-              fontWeight='semibold'
-              w='10%'
-              p='3px'
-              textAlign='center'
-              rounded='md'
-            >
-              {post.category}
-            </Box>
-        </HStack>
-
-        {/* Discussion Post Details */}
-
-        <Flex gap='0.5rem'>
-          <Avatar /> {/*default size is medium*/}
-          <Box>
-            <Text
-              id='name'
-              fontSize='xl'
-              fontWeight='bold'
-              fontFamily='font.body'
-            >
-              {usersInfo[post.userId]?.fullname || 'Unknown User'}
-            </Text>
-            <Text
-              id='position'
-              fontSize='lg'
-              fontWeight='bold'
-              fontFamily='font.body'
-            >
-              {usersInfo[post.userId]?.position || 'No Position Available'}
-            </Text>
-            <Text
-              id='description'
-              fontSize='sm'
-              py='10px'
-              fontFamily='font.body'
-            >
-              {post.description}
-            </Text>
-            {/* Date distance */}
-            <Text fontFamily='font.body' color='grey' fontSize='xs'>
-              Posted {formatDistanceToNowStrict(new Date(post.createdAt))} ago
-            </Text>
-            {/* Discussion Post Actions */}
-            <ButtonGroup size='xs' mt='1.5rem'>
-                <Button
-                colorScheme='yellow'
-                variant={likedByUser[post.id] ? 'solid' : 'outline'}
-                gap='5px'
-                onClick={() => handleLike(post.id)} // Pass the post.id to handleLike
+            {/* Post Categories */}
+            <HStack mb="2%">
+              <Box
+                bg={categoryColors[post.category]}
+                fontFamily="font.heading"
+                fontSize="xs"
+                fontWeight="semibold"
+                w="10%"
+                p="3px"
+                textAlign="center"
+                rounded="md"
               >
-                <PiThumbsUpFill /> Like ({likeCounts[post.id] || 0})
-              </Button>
-              <CommentButton post={post.id} user={user}/>
-            </ButtonGroup>
+                {post.category}
+              </Box>
+            </HStack>
+
+            {/* Discussion Post Details */}
+
+            <Flex gap="0.5rem">
+              <Avatar /> {/*default size is medium*/}
+              <Box>
+                <Text
+                  id="name"
+                  fontSize="sm"
+                  fontWeight="bold"
+                  fontFamily="font.body"
+                >
+                  {usersInfo[post.userId]?.fullname || "Unknown User"}
+                </Text>
+                <Text
+                  id="position"
+                  fontSize="sm"
+                  fontWeight="bold"
+                  fontFamily="font.body"
+                >
+                  {usersInfo[post.userId]?.position || "No Position Available"}
+                </Text>
+                <Text
+                  id="description"
+                  fontSize="sm"
+                  py="10px"
+                  fontFamily="font.body"
+                >
+                  {post.description}
+                </Text>
+                {/* Date distance */}
+                <Text fontFamily="font.body" color="grey" fontSize="xs">
+                  Posted {formatDistanceToNowStrict(new Date(post.createdAt))}{" "}
+                  ago
+                </Text>
+                {/* Discussion Post Actions */}
+                <ButtonGroup size="xs" mt="1.5rem">
+                  <Button
+                    colorScheme="yellow"
+                    variant={likedByUser[post.id] ? "solid" : "outline"}
+                    gap="5px"
+                    onClick={() => handleLike(post.id)} // Pass the post.id to handleLike
+                  >
+                    <PiThumbsUpFill /> Like ({likeCounts[post.id] || 0})
+                  </Button>
+                  <CommentButton post={post.id} user={user} />
+                </ButtonGroup>
+              </Box>
+            </Flex>
           </Box>
         </Flex>
-      </Box>
-    </Flex>
-  ))}
-  </>
-  )
-}
-export default DiscussionPost
+      ))}
+    </>
+  );
+};
+export default DiscussionPost;
