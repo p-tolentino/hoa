@@ -64,7 +64,7 @@ const StatementOfAccount = async () => {
   const monthlyUnpaidTransactions = updatedTransactions.filter(
     (transaction) => {
       if (
-        transaction.createdAt.getMonth() >= new Date().getMonth() - 1 ||
+        transaction.createdAt.getMonth() >= new Date().getMonth() - 1 &&
         transaction.status !== PaymentStatus.PAID
       ) {
         return transaction;

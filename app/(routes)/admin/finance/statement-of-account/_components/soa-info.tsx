@@ -114,34 +114,34 @@ export const SoaInfo: React.FC<SoaInfoProps> = ({
         return unpaidSum;
       })(),
     },
-    {
-      purpose: "Dispute Fees",
-      debit: (() => {
-        let paidSum = 0;
+    // {
+    //   purpose: "Dispute Fees",
+    //   debit: (() => {
+    //     let paidSum = 0;
 
-        disputeFees.forEach((fee) => {
-          if (fee.status === PaymentStatus.PAID) {
-            paidSum += parseFloat(fee.amount.toString().replace(/,/g, ""));
-          }
-        });
+    //     disputeFees.forEach((fee) => {
+    //       if (fee.status === PaymentStatus.PAID) {
+    //         paidSum += parseFloat(fee.amount.toString().replace(/,/g, ""));
+    //       }
+    //     });
 
-        return paidSum;
-      })(),
-      credit: (() => {
-        let unpaidSum = 0;
+    //     return paidSum;
+    //   })(),
+    //   credit: (() => {
+    //     let unpaidSum = 0;
 
-        disputeFees.forEach((fee) => {
-          if (
-            fee.status === PaymentStatus.UNPAID ||
-            fee.status === PaymentStatus.OVERDUE
-          ) {
-            unpaidSum += parseFloat(fee.amount.toString().replace(/,/g, ""));
-          }
-        });
+    //     disputeFees.forEach((fee) => {
+    //       if (
+    //         fee.status === PaymentStatus.UNPAID ||
+    //         fee.status === PaymentStatus.OVERDUE
+    //       ) {
+    //         unpaidSum += parseFloat(fee.amount.toString().replace(/,/g, ""));
+    //       }
+    //     });
 
-        return unpaidSum;
-      })(),
-    },
+    //     return unpaidSum;
+    //   })(),
+    // },
     {
       purpose: "Violation Fees",
       debit: (() => {
