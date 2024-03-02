@@ -28,7 +28,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-import { Property, PropertyDocument } from "@prisma/client";
+import { Property } from "@prisma/client";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
@@ -43,7 +43,6 @@ import GMapView from "./gmap";
 
 interface MapViewInfoProps {
   properties: Property[];
-  documents: PropertyDocument[];
   users: ExtendedUser[];
 }
 
@@ -77,14 +76,10 @@ const requiredDocs = [
 
 export const MapViewInfo: React.FC<MapViewInfoProps> = ({
   properties,
-  documents,
   users,
 }) => {
   const { update } = useSession();
   const [occupants, setOccupants] = useState<ExtendedUser[] | undefined>();
-  const [propertyDocuments, setDocuments] = useState<
-    PropertyDocument[] | undefined
-  >();
 
   const form = useForm<z.infer<typeof SelectSchema>>({
     defaultValues: {
@@ -107,16 +102,6 @@ export const MapViewInfo: React.FC<MapViewInfoProps> = ({
         }
       }
     });
-
-    const docus = documents.filter((propDoc) => {
-      return propDoc.propertyId === address;
-    });
-
-    if (docus) {
-      setDocuments(docus);
-    } else {
-      setDocuments([]);
-    }
   }, [form.watch("address")]);
 
   return (
@@ -188,13 +173,19 @@ export const MapViewInfo: React.FC<MapViewInfoProps> = ({
                   <div className="p-4">
                     {occupants?.length !== 0 ? (
                       occupants?.map((occupant) => (
-                        <>
-                          <div key={occupant.id} className="flex">
-                            <HouseMember className="mt-2 mr-2" />{" "}
-                            {`${occupant?.info?.firstName} ${occupant?.info?.lastName}`}
+                        <div key={occupant.id}>
+                          <div className="flex justify-between">
+                            <div key={occupant.id} className="flex">
+                              <HouseMember className="mt-2 mr-2" />{" "}
+                              {`${occupant?.info?.firstName} ${occupant?.info?.lastName}`}
+                            </div>
+                            <div className="capitalize">
+                              {`${occupant?.info?.relation.toLowerCase()}`} (
+                              {`${occupant?.info?.type}`})
+                            </div>
                           </div>
                           <Separator className="my-2" />
-                        </>
+                        </div>
                       ))
                     ) : (
                       <span className="text-gray-400">
@@ -205,66 +196,31 @@ export const MapViewInfo: React.FC<MapViewInfoProps> = ({
                 </ScrollArea>
               </Text>
             </Box>
-            <Box>
-              <Heading size={"md"} fontFamily={"font.heading"}>
-                Occupancy Status
-              </Heading>
-              <Text
-                fontSize={"lg"}
-                fontFamily={"font.body"}
-                lineHeight={2}
-                fontWeight="800"
-                className={cn(
-                  occupants && occupants?.length > 0
-                    ? "text-green-700"
+            <Box className="flex justify-between">
+              <Box>
+                <Heading size={"md"} fontFamily={"font.heading"}>
+                  Occupancy Status
+                </Heading>
+                <Text
+                  fontSize={"lg"}
+                  fontFamily={"font.body"}
+                  lineHeight={2}
+                  fontWeight="800"
+                  className={cn(
+                    occupants && occupants?.length > 0
+                      ? "text-orange-500"
+                      : occupants?.length === 0
+                      ? "text-green-700"
+                      : "text-gray-500"
+                  )}
+                >
+                  {occupants && occupants?.length > 0
+                    ? "Occupied"
                     : occupants?.length === 0
-                    ? "text-orange-500"
-                    : "text-black"
-                )}
-              >
-                {occupants && occupants?.length > 0
-                  ? "Occupied"
-                  : occupants?.length === 0
-                  ? "Vacant"
-                  : "-"}
-              </Text>
-            </Box>
-            <Box>
-              <Heading size={"md"} fontFamily={"font.heading"} mb={"1rem"}>
-                Property Documents
-              </Heading>
-              <div className="flex flex-col gap-2">
-                {propertyDocuments?.length !== 0 ? (
-                  requiredDocs.map((doc) => {
-                    const propDoc = propertyDocuments?.find((item) => {
-                      return item.fileName === doc.title;
-                    });
-
-                    return (
-                      <Link
-                        key={doc.title}
-                        rel="noopener noreferrer"
-                        target="_blank"
-                        href={propDoc?.imageUrl || "#"}
-                        className={cn(
-                          "flex items-center w-[45%] gap-x-1 hover:underline hover:underline-offset-4",
-                          !propDoc?.imageUrl &&
-                            "pointer-events-none text-gray-300"
-                        )}
-                      >
-                        • {doc.title}
-                        <ExternalLinkIcon mx={"2px"} />
-                      </Link>
-                    );
-                  })
-                ) : form.watch("address") ? (
-                  <span className="text-gray-400">
-                    No existing documents uploaded.
-                  </span>
-                ) : (
-                  <span className="text-gray-400">-</span>
-                )}
-              </div>
+                    ? "Vacant"
+                    : "-"}
+                </Text>
+              </Box>
             </Box>
           </VStack>
         </Box>

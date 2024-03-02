@@ -2,6 +2,7 @@
 
 import { UploadDropzone } from "@/lib/utils";
 import { updateDocument } from "@/server/actions/property-document";
+import { updateGovtId } from "@/server/actions/user-info";
 import { Property } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
@@ -19,14 +20,8 @@ const Upload: React.FC<UploadProps> = ({ title, property }) => {
   const [isPending, startTransition] = useTransition();
 
   const onSubmit = async (imageUrl: string) => {
-    const values = {
-      propertyId: property.id,
-      fileName: title,
-      imageUrl: imageUrl,
-    };
-
     startTransition(() => {
-      updateDocument(values, "")
+      updateGovtId(imageUrl)
         .then((data) => {
           if (data.error) {
             console.log(data.error);

@@ -9,11 +9,12 @@ datasource db {
 }
 
 model Hoa {
-  id         String @id @default(cuid())
-  name       String
-  funds      Int
-  fixedDue   Int?
-  lotSizeDue Int?
+  id            String @id @default(cuid())
+  name          String
+  startingFunds Int
+  funds         Int
+  fixedDue      Int?
+  lotSizeDue    Int?
 }
 
 model User {
@@ -42,6 +43,7 @@ model PersonalInfo {
   bio         String?
   type        String?
   position    String?       @default("Member")
+  govtId      String?
   user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
@@ -59,21 +61,6 @@ model Property {
   latitude     Float?
   longitude    Float?
   purchaseDate DateTime?
-  documents    PropertyDocument[]
-}
-
-model PropertyDocument {
-  id         String   @id @unique @default(cuid())
-  propertyId String
-  fileName   String?
-  imageUrl   String?
-  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
-}
-
-model UserPaymentInfo {
-  id         String @id @unique @default(cuid())
-  userId     String
-  cardNumber String
 }
 
 model UserTransaction {

@@ -19,9 +19,6 @@ export const getPropertyById = async (id: string) => {
   try {
     const property = await db.property.findFirst({
       where: { id: user?.info?.address || "" },
-      include: {
-        documents: true,
-      },
     });
 
     return property;

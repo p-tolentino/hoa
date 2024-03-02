@@ -114,7 +114,7 @@ const GMapView: React.FC<GMapViewProps> = ({
             <Marker
               key={property.id}
               position={propCenter}
-              icon={isOccupied.length ? pinOccupiedIcon : pinVacantIcon}
+              icon={isOccupied.length ? pinVacantIcon : pinOccupiedIcon}
             />
           );
         }

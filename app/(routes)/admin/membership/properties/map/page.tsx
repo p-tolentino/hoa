@@ -10,9 +10,8 @@ const Settings = async () => {
   const user = await currentUser();
   const properties = await getAllProperties();
   const allUsers = await getAllUsers();
-  const documents = await getAllPropertyDocuments();
 
-  if (!user || !properties || !allUsers || !documents) {
+  if (!user || !properties || !allUsers) {
     return null;
   }
 
@@ -24,11 +23,7 @@ const Settings = async () => {
       />
       <Separator className="mt-2" />
       <div className="space-y-4">
-        <MapViewInfo
-          properties={properties}
-          documents={documents}
-          users={allUsers}
-        />
+        <MapViewInfo properties={properties} users={allUsers} />
       </div>
     </div>
   );
