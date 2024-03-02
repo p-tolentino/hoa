@@ -47,16 +47,12 @@ export const ViewRevenueTable = ({
               {plan?.ytdaAssocDues ? `${formatNumber(plan?.ytdaAssocDues)}` : 0}
             </Td>
             <Td px="2rem" textAlign="right">
-              {plan?.pybAssocDues
-                ? `${formatNumber(plan?.pybAssocDues)}`
-                : previous?.cybAssocDues
+              {previous?.cybAssocDues
                 ? `${formatNumber(previous?.cybAssocDues)}`
                 : "No record"}
             </Td>
             <Td px="2rem" textAlign="right">
-              {plan?.pyaAssocDues
-                ? `${formatNumber(plan?.pyaAssocDues)}`
-                : previous?.ytdaAssocDues
+              {previous?.ytdaAssocDues
                 ? `${formatNumber(previous?.ytdaAssocDues)}`
                 : "No record"}
             </Td>
@@ -71,16 +67,12 @@ export const ViewRevenueTable = ({
               {plan?.ytdaToll ? `${formatNumber(plan?.ytdaToll)}` : 0}
             </Td>
             <Td px="2rem" textAlign="right">
-              {plan?.pybToll
-                ? `${formatNumber(plan?.pybToll)}`
-                : previous?.cybToll
+              {previous?.cybToll
                 ? `${formatNumber(previous?.cybToll)}`
                 : "No record"}
             </Td>
             <Td px="2rem" textAlign="right">
-              {plan?.pyaToll
-                ? `${formatNumber(plan?.pyaToll)}`
-                : previous?.ytdaToll
+              {previous?.ytdaToll
                 ? `${formatNumber(previous?.ytdaToll)}`
                 : "No record"}
             </Td>
@@ -95,16 +87,12 @@ export const ViewRevenueTable = ({
               {plan?.ytdaFacility ? `${formatNumber(plan?.ytdaFacility)}` : 0}
             </Td>
             <Td px="2rem" textAlign="right">
-              {plan?.pybFacility
-                ? `${formatNumber(plan?.pybFacility)}`
-                : previous?.cybFacility
+              {previous?.cybFacility
                 ? `${formatNumber(previous?.cybFacility)}`
                 : "No record"}
             </Td>
             <Td px="2rem" textAlign="right">
-              {plan?.pyaFacility
-                ? `${formatNumber(plan?.pyaFacility)}`
-                : previous?.ytdaFacility
+              {previous?.ytdaFacility
                 ? `${formatNumber(previous?.ytdaFacility)}`
                 : "No record"}
             </Td>
@@ -123,16 +111,12 @@ export const ViewRevenueTable = ({
                 : 0}
             </Td>
             <Td px="2rem" textAlign="right">
-              {plan?.pybConstruction
-                ? `${formatNumber(plan?.pybConstruction)}`
-                : previous?.cybConstruction
+              {previous?.cybConstruction
                 ? `${formatNumber(previous?.cybConstruction)}`
                 : "No record"}
             </Td>
             <Td px="2rem" textAlign="right">
-              {plan?.pyaConstruction
-                ? `${formatNumber(plan?.pyaConstruction)}`
-                : previous?.ytdaConstruction
+              {previous?.ytdaConstruction
                 ? `${formatNumber(previous?.ytdaConstruction)}`
                 : "No record"}
             </Td>
@@ -149,16 +133,12 @@ export const ViewRevenueTable = ({
                 : 0}
             </Td>
             <Td px="2rem" textAlign="right">
-              {plan?.pybCarSticker
-                ? `${formatNumber(plan?.pybCarSticker)}`
-                : previous?.cybCarSticker
+              {previous?.cybCarSticker
                 ? `${formatNumber(previous?.cybCarSticker)}`
                 : "No record"}
             </Td>
             <Td px="2rem" textAlign="right">
-              {plan?.pyaCarSticker
-                ? `${formatNumber(plan?.pyaCarSticker)}`
-                : previous?.ytdaCarSticker
+              {previous?.ytdaCarSticker
                 ? `${formatNumber(previous?.ytdaCarSticker)}`
                 : "No record"}
             </Td>
@@ -173,16 +153,12 @@ export const ViewRevenueTable = ({
               {plan?.ytdaOtherRev ? `${formatNumber(plan?.ytdaOtherRev)}` : 0}
             </Td>
             <Td px="2rem" textAlign="right">
-              {plan?.pybOtherRev
-                ? `${formatNumber(plan?.pybOtherRev)}`
-                : previous?.cybOtherRev
+              {previous?.cybOtherRev
                 ? `${formatNumber(previous?.cybOtherRev)}`
                 : "No record"}
             </Td>
             <Td px="2rem" textAlign="right">
-              {plan?.pyaOtherRev
-                ? `${formatNumber(plan?.pyaOtherRev)}`
-                : previous?.ytdaOtherRev
+              {previous?.ytdaOtherRev
                 ? `${formatNumber(previous?.ytdaOtherRev)}`
                 : "No record"}
             </Td>
@@ -201,16 +177,12 @@ export const ViewRevenueTable = ({
                 : 0}
             </Td>
             <Td px="2rem" textAlign="right" fontSize="md" fontWeight="bold">
-              {plan?.pybTotalYearlyRev
-                ? `${formatNumber(plan?.pybTotalYearlyRev)}`
-                : previous?.cybTotalYearlyRev
+              {previous?.cybTotalYearlyRev
                 ? `${formatNumber(previous?.cybTotalYearlyRev)}`
                 : "No record"}
             </Td>
             <Td px="2rem" textAlign="right" fontSize="md" fontWeight="bold">
-              {plan?.pyaTotalYearlyRev
-                ? `${formatNumber(plan?.pyaTotalYearlyRev)}`
-                : previous?.ytdaTotalYearlyRev
+              {previous?.ytdaTotalYearlyRev
                 ? `${formatNumber(previous?.ytdaTotalYearlyRev)}`
                 : "No record"}
             </Td>

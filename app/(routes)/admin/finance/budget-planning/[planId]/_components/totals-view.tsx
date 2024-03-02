@@ -48,16 +48,12 @@ export const ViewTotalTable = ({
               : 0}
           </Td>
           <Td p="0.5rem" textAlign="right">
-            {plan?.pybTotalYearlyRev
-              ? `${formatNumber(plan?.pybTotalYearlyRev)}`
-              : previous?.cybTotalYearlyRev
+            {previous?.cybTotalYearlyRev
               ? `${formatNumber(previous?.cybTotalYearlyRev)}`
               : "No record"}
           </Td>
           <Td p="0.5rem" textAlign="right">
-            {plan?.pyaTotalYearlyRev
-              ? `${formatNumber(plan?.pyaTotalYearlyRev)}`
-              : previous?.ytdaTotalYearlyRev
+            {previous?.ytdaTotalYearlyRev
               ? `${formatNumber(previous?.ytdaTotalYearlyRev)}`
               : "No record"}
           </Td>
@@ -75,16 +71,12 @@ export const ViewTotalTable = ({
               : 0}
           </Td>
           <Td p="0.5rem" textAlign="right">
-            {plan?.pybTotalYearlyExp
-              ? `${formatNumber(plan?.pybTotalYearlyExp)}`
-              : previous?.cybTotalYearlyExp
+            {previous?.cybTotalYearlyExp
               ? `${formatNumber(previous?.cybTotalYearlyExp)}`
               : "No record"}
           </Td>
           <Td p="0.5rem" textAlign="right">
-            {plan?.pyaTotalYearlyExp
-              ? `${formatNumber(plan?.pyaTotalYearlyExp)}`
-              : previous?.ytdaTotalYearlyExp
+            {previous?.ytdaTotalYearlyExp
               ? `${formatNumber(previous?.ytdaTotalYearlyExp)}`
               : "No record"}
           </Td>
@@ -102,16 +94,12 @@ export const ViewTotalTable = ({
               : 0}
           </Td>
           <Td p="0.5rem" textAlign="right">
-            {plan?.pybTotalYearlySurplus
-              ? `${formatNumber(plan?.pybTotalYearlySurplus)}`
-              : previous?.cybTotalYearlySurplus
+            {previous?.cybTotalYearlySurplus
               ? `${formatNumber(previous?.cybTotalYearlySurplus)}`
               : "No record"}
           </Td>
           <Td p="0.5rem" textAlign="right">
-            {plan?.pyaTotalYearlySurplus
-              ? `${formatNumber(plan?.pyaTotalYearlySurplus)}`
-              : previous?.ytdaTotalYearlySurplus
+            {previous?.ytdaTotalYearlySurplus
               ? `${formatNumber(previous?.ytdaTotalYearlySurplus)}`
               : "No record"}
           </Td>

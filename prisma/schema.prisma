@@ -104,18 +104,7 @@ model BudgetPlan {
   ytdaConstruction          Int?
   ytdaCarSticker            Int?
   ytdaOtherRev              Int?
-  pybAssocDues              Int?
-  pybToll                   Int?
-  pybFacility               Int?
-  pybConstruction           Int?
-  pybCarSticker             Int?
-  pybOtherRev               Int?
-  pyaAssocDues              Int?
-  pyaToll                   Int?
-  pyaFacility               Int?
-  pyaConstruction           Int?
-  pyaCarSticker             Int?
-  pyaOtherRev               Int?
+  
   cybSalariesBenefits       Int
   cybUtilities              Int
   cybOfficeSupplies         Int
@@ -136,35 +125,10 @@ model BudgetPlan {
   ytdaLegalProfessionalFees Int?
   ytdaAdministrativeCosts   Int?
   ytdaOtherExp              Int?
-  pybSalariesBenefits       Int?
-  pybUtilities              Int?
-  pybOfficeSupplies         Int?
-  pybRepairMaintenance      Int?
-  pybDonations              Int?
-  pybFurnituresFixtures     Int?
-  pybRepresentation         Int?
-  pybLegalProfessionalFees  Int?
-  pybAdministrativeCosts    Int?
-  pybOtherExp               Int?
-  pyaSalariesBenefits       Int?
-  pyaUtilities              Int?
-  pyaOfficeSupplies         Int?
-  pyaRepairMaintenance      Int?
-  pyaDonations              Int?
-  pyaFurnituresFixtures     Int?
-  pyaRepresentation         Int?
-  pyaLegalProfessionalFees  Int?
-  pyaAdministrativeCosts    Int?
-  pyaOtherExp               Int?
+  
   cybTotalYearlyExp         Int
   cybTotalYearlyRev         Int
   cybTotalYearlySurplus     Int
-  pyaTotalYearlyExp         Int?
-  pyaTotalYearlyRev         Int?
-  pyaTotalYearlySurplus     Int?
-  pybTotalYearlyExp         Int?
-  pybTotalYearlyRev         Int?
-  pybTotalYearlySurplus     Int?
   ytdaTotalYearlyExp        Int?
   ytdaTotalYearlyRev        Int?
   ytdaTotalYearlySurplus    Int?
