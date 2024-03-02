@@ -43,8 +43,8 @@ export default function ViolationMonitoringMenu() {
   return (
     <>
       <Heading
-        title="Dispute Resolution"
-        description="Navigate through the Dispute Resolution module"
+        title="Violation Monitoring"
+        description="Navigate through the Violation Monitoring module"
       />
       <Separator className="mt-4 mb-6" />
       <Flex className="gap-10">
