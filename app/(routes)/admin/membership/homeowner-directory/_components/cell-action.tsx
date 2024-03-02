@@ -104,14 +104,23 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-          {data.status !== Status.ACTIVE && data.status !== Status.INACTIVE && (
+          {data.status === Status.PENDING && (
             <>
               <DropdownMenuItem
-                disabled={!data.address}
+                disabled={!data.govtId || !data.address}
                 onClick={() => onApprove(data.id)}
               >
-                <Check className="w-4 h-4 mr-2" />
-                Approve Membership
+                {" "}
+                {!data.address ? (
+                  "(User has not set up account yet)"
+                ) : !data.govtId ? (
+                  "(No Government ID Uploaded Yet)"
+                ) : (
+                  <>
+                    <Check className="w-4 h-4 mr-2" />
+                    Approve Membership
+                  </>
+                )}
               </DropdownMenuItem>
               <Separator />
             </>

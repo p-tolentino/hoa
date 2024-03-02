@@ -42,6 +42,7 @@ const Homeowners = async () => {
         )
       : "",
     address: item.info?.address || "",
+    govtId: item.info?.govtId || "",
     role: item.role || "",
     bio: item.info?.bio || "",
     image: item.image || "",
