@@ -160,6 +160,7 @@ const DiscussionPost: React.FC<PostProps> = ({ posts, user }) => {
         </HStack>
 
         {/* Discussion Post Details */}
+
         <Flex gap='0.5rem'>
           <Avatar /> {/*default size is medium*/}
           <Box>
@@ -201,7 +202,7 @@ const DiscussionPost: React.FC<PostProps> = ({ posts, user }) => {
               >
                 <PiThumbsUpFill /> Like ({likeCounts[post.id] || 0})
               </Button>
-              <CommentButton />
+              <CommentButton post={post.id} user={user}/>
             </ButtonGroup>
           </Box>
         </Flex>

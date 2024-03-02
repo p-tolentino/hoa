@@ -121,3 +121,29 @@ export const checkUserLiked = async (userId: string, postId: string) => {
   
     return like !== null; // Returns true if the user has liked the post, false otherwise
   }
+
+export const createComment = async (postId: string, content: string) => {
+    const user = await currentUser();
+  
+    // No Current User
+    if (!user) {
+      return { error: "Unauthorized" };
+    }
+
+    await db.comment.create({
+        data: {
+            userId: user.id,
+            postId: postId,
+            text: content
+        }
+    })
+    return { success: "Create successfully Created" };
+}
+
+export const getComments = async(postId: string) => {
+    const comments = await db.comment.findMany({
+        where: { postId }
+    })
+
+    return comments
+}

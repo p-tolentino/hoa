@@ -22,26 +22,75 @@ import {
 } from "@chakra-ui/react";
 import { PiThumbsUpFill } from "react-icons/pi";
 import { formatDistanceToNowStrict } from "date-fns";
-import { useState } from "react";
+import React, { useState, useEffect, FormEvent } from 'react';
 
-function commentButton() {
-  const datePosted = new Date(2024, 2, 1);
-  const dateDistance = formatDistanceToNowStrict(datePosted);
+import { Comment, PersonalInfo } from "@prisma/client"
+import { getPersonalInfo } from "@/server/data/user-info";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { createComment, getComments } from "@/server/actions/post";
 
-  const [likeCount, setLikeCount] = useState(0);
-  const [liked, setLiked] = useState(false);
 
-  const handleLike = () => {
-    if (!liked) {
-      setLikeCount(likeCount + 1);
-    } else {
-      setLikeCount(likeCount - 1);
+interface CommentProps {
+  post: string;
+  user: string
+}
+
+interface CombinedComment {
+  id: string;
+  text: string;
+  createdAt: Date;
+  user: PersonalInfo | null; // Combine the comment with user's personal info
+}
+
+const CommentButton: React.FC<CommentProps> = ({ post, user }) => {
+  const router = useRouter();
+  const [personalInfo, setPersonalInfo] = useState<PersonalInfo>();
+  const [commentText, setCommentText] = useState('');
+  const [comments, setComments] = useState<Comment[]>([]);
+  const [combinedComments, setCombinedComments] = useState<CombinedComment[]>([]);
+
+
+  useEffect(() => {
+    const fetchCommentsAndUsers = async () => {
+      const comments: Comment[] = await getComments(post);
+      const commentsWithUserInfoPromises = comments.map(async (comment) => {
+        const userInfo = await getPersonalInfo(comment.userId);
+        return { ...comment, user: userInfo }; // Combine the comment with the fetched user info
+      });
+      const combinedComments = await Promise.all(commentsWithUserInfoPromises);
+      setCombinedComments(combinedComments);
+    };
+
+    fetchCommentsAndUsers();
+  }, [post]);
+  console.log("the compilation of comments:", comments);
+
+  const onSubmit = async (event: FormEvent) => {
+    event.preventDefault(); // Prevent the form from submitting in the traditional way
+    try {
+      await createComment(post, commentText); // Assume createComment is an async operation
+      setCommentText(''); // Clear the comment text area
+      // Fetch comments again to include the new comment
+      const fetchCommentsAndUsers = async () => {
+        const fetchedComments: Comment[] = await getComments(post);
+        const commentsWithUserInfo = await Promise.all(fetchedComments.map(async (comment) => {
+          const userInfo = await getPersonalInfo(comment.userId);
+          return { ...comment, user: userInfo }; // Combine the comment with fetched user info
+        }));
+        setCombinedComments(commentsWithUserInfo);
+      };
+      fetchCommentsAndUsers();
+    } catch (error) {
+      console.error("Failed to create comment:", error);
+      // Handle error state here, if needed
     }
-    setLiked(!liked);
   };
+  
+  //const dateDistance = formatDistanceToNowStrict(datePosted);
 
   return (
-    <Dialog /*open={open} onOpenChange={setOpen}*/>
+    <Dialog>
       <DialogTrigger asChild>
         <Button size="xs" colorScheme="yellow" variant="outline">
           Comment
@@ -50,235 +99,58 @@ function commentButton() {
       <DialogContent className="lg:min-w-[800px]">
         <DialogHeader>
           <DialogTitle>Discussion Post Comments</DialogTitle>
-          <DialogDescription>
-            Add a comment to the discussion post.
-          </DialogDescription>
+          <DialogDescription>Add a comment to the discussion post.</DialogDescription>
         </DialogHeader>
 
-        {/* List of Comments */}
+        {/* Example comment list (Replace with actual comments from your application's data) */}
         <Box p="10px" maxH="400px" overflowY="auto">
-          <Stack spacing="15px">
-            <Box
-              border="1px"
-              borderColor="gray.200"
-              borderRadius="10px"
-              p="10px"
-            >
-              <HStack>
-                <Avatar />
-                <Stack spacing="0.5px">
-                  <Text
-                    id="name"
-                    fontSize="sm"
-                    fontWeight="bold"
-                    fontFamily="font.body"
-                  >
-                    Name
-                  </Text>
-                  <Text
-                    id="position"
-                    fontSize="sm"
-                    fontWeight="bold"
-                    fontFamily="font.body"
-                  >
-                    Position (Homeowner or Officer)
-                  </Text>
-                </Stack>
-              </HStack>
-              <Text
-                id="description"
-                ml="7.5%"
-                fontSize="sm"
-                p="5px"
-                fontFamily="font.body"
-              >
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Officiis, ratione quia! Hic atque nostrum tempore consectetur
-                dolores mollitia corporis aliquam labore eligendi, possimus
-              </Text>
+  {combinedComments.map((combinedComment) => (
+    <Box key={combinedComment.id} border="1px" borderColor="gray.200" borderRadius="10px" p="10px">
+      <HStack>
+        <Avatar /> {/* Ideally, you would fetch and display the user's avatar based on combinedComment.user data */}
+        <Stack spacing="0.5px">
+          {/* Display user's name if available, otherwise show a placeholder */}
+          <Text fontSize="sm" fontWeight="bold">
+            {combinedComment.user ? `${combinedComment.user.firstName} ${combinedComment.user.lastName}` : "Unknown User"}
+          </Text>
+          {/* Display user's position if available, otherwise show a placeholder */}
+          <Text fontSize="sm" fontWeight="bold">
+            {combinedComment.user ? combinedComment.user.position : "Unknown Position"}
+          </Text>
+        </Stack>
+      </HStack>
+      {/* Display the comment content */}
+      <Text ml="7.5%" fontSize="sm" p="5px">
+        {combinedComment.text}
+      </Text>
+      {/* Format and display the comment's posting date */}
+      <Text ml="8%" color="grey" fontSize="xs">
+        Posted {formatDistanceToNowStrict(new Date(combinedComment.createdAt))} ago
+      </Text>
+    </Box>
+  ))}
+</Box>
 
-              {/* Date distance */}
-              <Text ml="8%" fontFamily="font.body" color="grey" fontSize="xs">
-                Posted {dateDistance} ago
-              </Text>
-
-              {/* Discussion Post Actions */}
-              <ButtonGroup size="xs" mt="1rem" ml="7.5%">
-                <Button
-                  colorScheme="yellow"
-                  variant={liked ? "solid" : "outline"}
-                  gap="5px"
-                  onClick={handleLike}
-                >
-                  <PiThumbsUpFill /> Like ({likeCount})
-                </Button>
-              </ButtonGroup>
-            </Box>
-            <Box
-              border="1px"
-              borderColor="gray.200"
-              borderRadius="10px"
-              p="10px"
-            >
-              <HStack>
-                <Avatar />
-                <Stack spacing="0.5px">
-                  <Text
-                    id="name"
-                    fontSize="sm"
-                    fontWeight="bold"
-                    fontFamily="font.body"
-                  >
-                    Name
-                  </Text>
-                  <Text
-                    id="position"
-                    fontSize="sm"
-                    fontWeight="bold"
-                    fontFamily="font.body"
-                  >
-                    Position (Homeowner or Officer)
-                  </Text>
-                </Stack>
-              </HStack>
-              <Text
-                id="description"
-                ml="7.5%"
-                fontSize="sm"
-                p="5px"
-                fontFamily="font.body"
-              >
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Officiis, ratione quia! Hic atque nostrum tempore consectetur
-                dolores mollitia corporis aliquam labore eligendi, possimus
-              </Text>
-
-              {/* Date distance */}
-              <Text ml="8%" fontFamily="font.body" color="grey" fontSize="xs">
-                Posted {dateDistance} ago
-              </Text>
-
-              {/* Discussion Post Actions */}
-              <ButtonGroup size="xs" mt="1rem" ml="7.5%">
-                <Button
-                  colorScheme="yellow"
-                  variant={liked ? "solid" : "outline"}
-                  gap="5px"
-                  onClick={handleLike}
-                >
-                  <PiThumbsUpFill /> Like ({likeCount})
-                </Button>
-              </ButtonGroup>
-            </Box>
-            <Box
-              border="1px"
-              borderColor="gray.200"
-              borderRadius="10px"
-              p="10px"
-            >
-              <HStack>
-                <Avatar />
-                <Stack spacing="0.5px">
-                  <Text
-                    id="name"
-                    fontSize="sm"
-                    fontWeight="bold"
-                    fontFamily="font.body"
-                  >
-                    Name
-                  </Text>
-                  <Text
-                    id="position"
-                    fontSize="sm"
-                    fontWeight="bold"
-                    fontFamily="font.body"
-                  >
-                    Position (Homeowner or Officer)
-                  </Text>
-                </Stack>
-              </HStack>
-              <Text
-                id="description"
-                ml="7.5%"
-                fontSize="sm"
-                p="5px"
-                fontFamily="font.body"
-              >
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Officiis, ratione quia! Hic atque nostrum tempore consectetur
-                dolores mollitia corporis aliquam labore eligendi, possimus
-              </Text>
-
-              {/* Date distance */}
-              <Text ml="8%" fontFamily="font.body" color="grey" fontSize="xs">
-                Posted {dateDistance} ago
-              </Text>
-
-              {/* Discussion Post Actions */}
-              <ButtonGroup size="xs" mt="1rem" ml="7.5%">
-                <Button
-                  colorScheme="yellow"
-                  variant={liked ? "solid" : "outline"}
-                  gap="5px"
-                  onClick={handleLike}
-                >
-                  <PiThumbsUpFill /> Like ({likeCount})
-                </Button>
-              </ButtonGroup>
-            </Box>
-          </Stack>
-        </Box>
         <Divider />
 
-        {/* Add a Comment */}
-        <Box border="1px" borderColor="gray.200" borderRadius="10px" p="10px">
-          <HStack>
-            <Avatar />
-            <Stack spacing="0.5px">
-              <Text
-                id="name"
-                fontSize="sm"
-                fontWeight="bold"
-                fontFamily="font.body"
-              >
-                Name
-              </Text>
-              <Text
-                id="position"
-                fontSize="sm"
-                fontWeight="bold"
-                fontFamily="font.body"
-              >
-                Position (Homeowner or Officer)
-              </Text>
-            </Stack>
-          </HStack>
-          <Textarea
-            id="comment"
-            w="90%"
-            ml="7%"
-            mt="2%"
-            fontSize="sm"
-            p="5px"
-            size="sm"
-            fontFamily="font.body"
-            placeholder="Write something..."
-          ></Textarea>
-        </Box>
-
-        <DialogFooter>
-          <Button
-            w="full"
-            size="sm"
-            colorScheme="yellow"
-            type="submit"
-            // onClick={() => onSubmit()}
-          >
-            Comment
-          </Button>
-        </DialogFooter>
+        {/* Comment submission form */}
+        <form onSubmit={onSubmit}>
+          <Box border="1px" borderColor="gray.200" borderRadius="10px" p="10px">
+            <Textarea
+              value={commentText}
+              onChange={(e) => setCommentText(e.target.value)}
+              placeholder="Write something..."
+            />
+          </Box>
+          <DialogFooter>
+            <Button w="full" size="sm" colorScheme="yellow" type="submit">
+              Comment
+            </Button>
+          </DialogFooter>
+        </form>
       </DialogContent>
     </Dialog>
   );
-}
-export default commentButton;
+};
+
+export default CommentButton;
