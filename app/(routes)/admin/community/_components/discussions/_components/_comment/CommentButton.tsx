@@ -22,18 +22,17 @@ import {
 } from "@chakra-ui/react";
 import { PiThumbsUpFill } from "react-icons/pi";
 import { formatDistanceToNowStrict } from "date-fns";
-import React, { useState, useEffect, FormEvent } from 'react';
+import React, { useState, useEffect, FormEvent } from "react";
 
-import { Comment, PersonalInfo } from "@prisma/client"
+import { Comment, PersonalInfo } from "@prisma/client";
 import { getPersonalInfo } from "@/server/data/user-info";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { createComment, getComments } from "@/server/actions/post";
 
-
 interface CommentProps {
   post: string;
-  user: string
+  user: string;
 }
 
 interface CombinedComment {
@@ -46,10 +45,11 @@ interface CombinedComment {
 const CommentButton: React.FC<CommentProps> = ({ post, user }) => {
   const router = useRouter();
   const [personalInfo, setPersonalInfo] = useState<PersonalInfo>();
-  const [commentText, setCommentText] = useState('');
+  const [commentText, setCommentText] = useState("");
   const [comments, setComments] = useState<Comment[]>([]);
-  const [combinedComments, setCombinedComments] = useState<CombinedComment[]>([]);
-
+  const [combinedComments, setCombinedComments] = useState<CombinedComment[]>(
+    []
+  );
 
   useEffect(() => {
     const fetchCommentsAndUsers = async () => {
@@ -70,14 +70,16 @@ const CommentButton: React.FC<CommentProps> = ({ post, user }) => {
     event.preventDefault(); // Prevent the form from submitting in the traditional way
     try {
       await createComment(post, commentText); // Assume createComment is an async operation
-      setCommentText(''); // Clear the comment text area
+      setCommentText(""); // Clear the comment text area
       // Fetch comments again to include the new comment
       const fetchCommentsAndUsers = async () => {
         const fetchedComments: Comment[] = await getComments(post);
-        const commentsWithUserInfo = await Promise.all(fetchedComments.map(async (comment) => {
-          const userInfo = await getPersonalInfo(comment.userId);
-          return { ...comment, user: userInfo }; // Combine the comment with fetched user info
-        }));
+        const commentsWithUserInfo = await Promise.all(
+          fetchedComments.map(async (comment) => {
+            const userInfo = await getPersonalInfo(comment.userId);
+            return { ...comment, user: userInfo }; // Combine the comment with fetched user info
+          })
+        );
         setCombinedComments(commentsWithUserInfo);
       };
       fetchCommentsAndUsers();
@@ -86,7 +88,7 @@ const CommentButton: React.FC<CommentProps> = ({ post, user }) => {
       // Handle error state here, if needed
     }
   };
-  
+
   //const dateDistance = formatDistanceToNowStrict(datePosted);
 
   return (
@@ -99,37 +101,53 @@ const CommentButton: React.FC<CommentProps> = ({ post, user }) => {
       <DialogContent className="lg:min-w-[800px]">
         <DialogHeader>
           <DialogTitle>Discussion Post Comments</DialogTitle>
-          <DialogDescription>Add a comment to the discussion post.</DialogDescription>
+          <DialogDescription>
+            Add a comment to the discussion post.
+          </DialogDescription>
         </DialogHeader>
 
         {/* Example comment list (Replace with actual comments from your application's data) */}
         <Box p="10px" maxH="400px" overflowY="auto">
-  {combinedComments.map((combinedComment) => (
-    <Box key={combinedComment.id} border="1px" borderColor="gray.200" borderRadius="10px" p="10px">
-      <HStack>
-        <Avatar /> {/* Ideally, you would fetch and display the user's avatar based on combinedComment.user data */}
-        <Stack spacing="0.5px">
-          {/* Display user's name if available, otherwise show a placeholder */}
-          <Text fontSize="sm" fontWeight="bold">
-            {combinedComment.user ? `${combinedComment.user.firstName} ${combinedComment.user.lastName}` : "Unknown User"}
-          </Text>
-          {/* Display user's position if available, otherwise show a placeholder */}
-          <Text fontSize="sm" fontWeight="bold">
-            {combinedComment.user ? combinedComment.user.position : "Unknown Position"}
-          </Text>
-        </Stack>
-      </HStack>
-      {/* Display the comment content */}
-      <Text ml="7.5%" fontSize="sm" p="5px">
-        {combinedComment.text}
-      </Text>
-      {/* Format and display the comment's posting date */}
-      <Text ml="8%" color="grey" fontSize="xs">
-        Posted {formatDistanceToNowStrict(new Date(combinedComment.createdAt))} ago
-      </Text>
-    </Box>
-  ))}
-</Box>
+          {combinedComments.map((combinedComment) => (
+            <Box
+              key={combinedComment.id}
+              border="1px"
+              borderColor="gray.200"
+              borderRadius="10px"
+              p="10px"
+              mb="1%"
+            >
+              <HStack>
+                <Avatar />{" "}
+                {/* Ideally, you would fetch and display the user's avatar based on combinedComment.user data */}
+                <Stack spacing="0.5px">
+                  {/* Display user's name if available, otherwise show a placeholder */}
+                  <Text fontSize="sm" fontWeight="bold" fontFamily="font.body">
+                    {combinedComment.user
+                      ? `${combinedComment.user.firstName} ${combinedComment.user.lastName}`
+                      : "Unknown User"}
+                  </Text>
+                  {/* Display user's position if available, otherwise show a placeholder */}
+                  <Text fontSize="sm" fontWeight="bold" fontFamily="font.body">
+                    {combinedComment.user
+                      ? combinedComment.user.position
+                      : "Unknown Position"}
+                  </Text>
+                </Stack>
+              </HStack>
+              {/* Display the comment content */}
+              <Text ml="7.5%" fontSize="sm" p="5px" fontFamily="font.body">
+                {combinedComment.text}
+              </Text>
+              {/* Format and display the comment's posting date */}
+              <Text ml="8%" color="grey" fontSize="xs" fontFamily="font.body">
+                Posted{" "}
+                {formatDistanceToNowStrict(new Date(combinedComment.createdAt))}{" "}
+                ago
+              </Text>
+            </Box>
+          ))}
+        </Box>
 
         <Divider />
 
@@ -140,10 +158,18 @@ const CommentButton: React.FC<CommentProps> = ({ post, user }) => {
               value={commentText}
               onChange={(e) => setCommentText(e.target.value)}
               placeholder="Write something..."
+              fontSize="sm"
+              fontFamily="font.body"
             />
           </Box>
           <DialogFooter>
-            <Button w="full" size="sm" colorScheme="yellow" type="submit">
+            <Button
+              w="full"
+              size="sm"
+              colorScheme="yellow"
+              type="submit"
+              mt="2%"
+            >
               Comment
             </Button>
           </DialogFooter>
