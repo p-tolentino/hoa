@@ -27,7 +27,10 @@ export const ViewTotalTable = ({
             Year to Date Actuals (YTD-A)
           </Th>
           <Th p="1rem" fontFamily="font.heading" w="300px" textAlign="right">
-            Difference
+            Previous Year Budget (PYB)
+          </Th>
+          <Th p="1rem" fontFamily="font.heading" w="300px" textAlign="right">
+            Previous Year Actuals (PYA)
           </Th>
         </Tr>
       </Thead>
@@ -45,11 +48,14 @@ export const ViewTotalTable = ({
               : 0}
           </Td>
           <Td p="0.5rem" textAlign="right">
-            {plan?.ytdaTotalYearlyRev
-              ? `${formatNumber(
-                  plan?.cybTotalYearlyRev - plan?.ytdaTotalYearlyRev
-                )}`
-              : `${formatNumber(plan?.cybTotalYearlyRev!!)}`}
+            {previous?.cybTotalYearlyRev
+              ? `${formatNumber(previous?.cybTotalYearlyRev)}`
+              : "No record"}
+          </Td>
+          <Td p="0.5rem" textAlign="right">
+            {previous?.ytdaTotalYearlyRev
+              ? `${formatNumber(previous?.ytdaTotalYearlyRev)}`
+              : "No record"}
           </Td>
         </Tr>
         <Tr fontFamily="font.body" fontSize="md">
@@ -65,11 +71,14 @@ export const ViewTotalTable = ({
               : 0}
           </Td>
           <Td p="0.5rem" textAlign="right">
-            {plan?.ytdaTotalYearlyExp
-              ? `${formatNumber(
-                  plan?.cybTotalYearlyExp - plan?.ytdaTotalYearlyExp
-                )}`
-              : `${formatNumber(plan?.cybTotalYearlyExp!!)}`}
+            {previous?.cybTotalYearlyExp
+              ? `${formatNumber(previous?.cybTotalYearlyExp)}`
+              : "No record"}
+          </Td>
+          <Td p="0.5rem" textAlign="right">
+            {previous?.ytdaTotalYearlyExp
+              ? `${formatNumber(previous?.ytdaTotalYearlyExp)}`
+              : "No record"}
           </Td>
         </Tr>
         <Tr fontFamily="font.body" fontSize="md">
@@ -85,11 +94,14 @@ export const ViewTotalTable = ({
               : 0}
           </Td>
           <Td p="0.5rem" textAlign="right">
-            {plan?.ytdaTotalYearlySurplus
-              ? `${formatNumber(
-                  plan?.cybTotalYearlySurplus - plan?.ytdaTotalYearlySurplus
-                )}`
-              : `${formatNumber(plan?.cybTotalYearlySurplus!!)}`}
+            {previous?.cybTotalYearlySurplus
+              ? `${formatNumber(previous?.cybTotalYearlySurplus)}`
+              : "No record"}
+          </Td>
+          <Td p="0.5rem" textAlign="right">
+            {previous?.ytdaTotalYearlySurplus
+              ? `${formatNumber(previous?.ytdaTotalYearlySurplus)}`
+              : "No record"}
           </Td>
         </Tr>
       </Tbody>

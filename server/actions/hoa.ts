@@ -4,7 +4,7 @@ import { db } from "@/lib/db";
 import { currentUser } from "@/lib/auth";
 import { getUserById } from "@/server/data/user";
 
-export const updateDocument = async (values: any, id?: string) => {
+export const generateHoa = async () => {
   const user = await currentUser();
 
   // No Current User
@@ -19,15 +19,15 @@ export const updateDocument = async (values: any, id?: string) => {
     return { error: "Unauthorized" };
   }
 
-  await db.propertyDocument.upsert({
-    where: { id },
-    update: {
-      ...values,
-    },
-    create: {
-      ...values,
+  await db.hoa.create({
+    data: {
+      name: "Sample HOA",
+      startingFunds: 10000,
+      funds: 10000,
+      fixedDue: 500,
+      lotSizeDue: 600,
     },
   });
 
-  return { success: "Updated property document successfully" };
+  return { success: "Generated sample HOA successfully" };
 };

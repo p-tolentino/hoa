@@ -143,7 +143,7 @@ export default function CreateBudgetPlan() {
                 fontFamily="font.heading"
                 fontWeight="semibold"
               >
-                Budget Plan Duration:
+                Budget Plan Coverage:
               </Text>
               <Popover>
                 <PopoverTrigger asChild>

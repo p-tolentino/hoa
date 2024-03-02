@@ -30,7 +30,10 @@ export const ViewExpenseTable = ({
               Year to Date Actuals (YTD-A)
             </Th>
             <Th p="1rem" fontFamily="font.heading" w="300px" textAlign="right">
-              Difference
+              Previous Year Budget (PYB)
+            </Th>
+            <Th p="1rem" fontFamily="font.heading" w="300px" textAlign="right">
+              Previous Year Actuals (PYA)
             </Th>
           </Tr>
         </Thead>
@@ -48,11 +51,14 @@ export const ViewExpenseTable = ({
                 : 0}
             </Td>
             <Td px="2rem" textAlign="right">
-              {plan?.ytdaSalariesBenefits
-                ? `${formatNumber(
-                    plan?.cybSalariesBenefits - plan?.ytdaSalariesBenefits
-                  )}`
-                : `${formatNumber(plan?.cybSalariesBenefits!!)}`}
+              {previous?.cybSalariesBenefits
+                ? `${formatNumber(previous?.cybSalariesBenefits)}`
+                : "No record"}
+            </Td>
+            <Td px="2rem" textAlign="right">
+              {previous?.ytdaSalariesBenefits
+                ? `${formatNumber(previous?.ytdaSalariesBenefits)}`
+                : "No record"}
             </Td>
           </Tr>
 
@@ -65,9 +71,14 @@ export const ViewExpenseTable = ({
               {plan?.ytdaUtilities ? `${formatNumber(plan?.ytdaUtilities)}` : 0}
             </Td>
             <Td px="2rem" textAlign="right">
-              {plan?.ytdaUtilities
-                ? `${formatNumber(plan?.cybUtilities - plan?.ytdaUtilities)}`
-                : `${formatNumber(plan?.cybUtilities!!)}`}
+              {previous?.cybUtilities
+                ? `${formatNumber(previous?.cybUtilities)}`
+                : "No record"}
+            </Td>
+            <Td px="2rem" textAlign="right">
+              {previous?.ytdaUtilities
+                ? `${formatNumber(previous?.ytdaUtilities)}`
+                : "No record"}
             </Td>
           </Tr>
 
@@ -84,11 +95,14 @@ export const ViewExpenseTable = ({
                 : 0}
             </Td>
             <Td px="2rem" textAlign="right">
-              {plan?.ytdaOfficeSupplies
-                ? `${formatNumber(
-                    plan?.cybOfficeSupplies - plan?.ytdaOfficeSupplies
-                  )}`
-                : `${formatNumber(plan?.cybOfficeSupplies!!)}`}
+              {previous?.cybOfficeSupplies
+                ? `${formatNumber(previous?.cybOfficeSupplies)}`
+                : "No record"}
+            </Td>
+            <Td px="2rem" textAlign="right">
+              {previous?.ytdaOfficeSupplies
+                ? `${formatNumber(previous?.ytdaOfficeSupplies)}`
+                : "No record"}
             </Td>
           </Tr>
 
@@ -105,11 +119,14 @@ export const ViewExpenseTable = ({
                 : 0}
             </Td>
             <Td px="2rem" textAlign="right">
-              {plan?.ytdaRepairMaintenance
-                ? `${formatNumber(
-                    plan?.cybRepairMaintenance - plan?.ytdaRepairMaintenance
-                  )}`
-                : `${formatNumber(plan?.cybRepairMaintenance!!)}`}
+              {previous?.cybRepairMaintenance
+                ? `${formatNumber(previous?.cybRepairMaintenance)}`
+                : "No record"}
+            </Td>
+            <Td px="2rem" textAlign="right">
+              {previous?.ytdaRepairMaintenance
+                ? `${formatNumber(previous?.ytdaRepairMaintenance)}`
+                : "No record"}
             </Td>
           </Tr>
 
@@ -122,9 +139,14 @@ export const ViewExpenseTable = ({
               {plan?.ytdaDonations ? `${formatNumber(plan?.ytdaDonations)}` : 0}
             </Td>
             <Td px="2rem" textAlign="right">
-              {plan?.ytdaDonations
-                ? `${formatNumber(plan?.cybDonations - plan?.ytdaDonations)}`
-                : `${formatNumber(plan?.cybDonations!!)}`}
+              {previous?.cybDonations
+                ? `${formatNumber(previous?.cybDonations)}`
+                : "No record"}
+            </Td>
+            <Td px="2rem" textAlign="right">
+              {previous?.ytdaDonations
+                ? `${formatNumber(previous?.ytdaDonations)}`
+                : "No record"}
             </Td>
           </Tr>
 
@@ -141,11 +163,14 @@ export const ViewExpenseTable = ({
                 : 0}
             </Td>
             <Td px="2rem" textAlign="right">
-              {plan?.ytdaFurnituresFixtures
-                ? `${formatNumber(
-                    plan?.cybFurnituresFixtures - plan?.ytdaFurnituresFixtures
-                  )}`
-                : `${formatNumber(plan?.cybFurnituresFixtures!!)}`}
+              {previous?.cybFurnituresFixtures
+                ? `${formatNumber(previous?.cybFurnituresFixtures)}`
+                : "No record"}
+            </Td>
+            <Td px="2rem" textAlign="right">
+              {previous?.ytdaFurnituresFixtures
+                ? `${formatNumber(previous?.ytdaFurnituresFixtures)}`
+                : "No record"}
             </Td>
           </Tr>
 
@@ -162,11 +187,14 @@ export const ViewExpenseTable = ({
                 : 0}
             </Td>
             <Td px="2rem" textAlign="right">
-              {plan?.ytdaRepresentation
-                ? `${formatNumber(
-                    plan?.cybRepresentation - plan?.ytdaRepresentation
-                  )}`
-                : `${formatNumber(plan?.cybRepresentation!!)}`}
+              {previous?.cybRepresentation
+                ? `${formatNumber(previous?.cybRepresentation)}`
+                : "No record"}
+            </Td>
+            <Td px="2rem" textAlign="right">
+              {previous?.ytdaRepresentation
+                ? `${formatNumber(previous?.ytdaRepresentation)}`
+                : "No record"}
             </Td>
           </Tr>
 
@@ -183,12 +211,14 @@ export const ViewExpenseTable = ({
                 : 0}
             </Td>
             <Td px="2rem" textAlign="right">
-              {plan?.ytdaLegalProfessionalFees
-                ? `${formatNumber(
-                    plan?.cybLegalProfessionalFees -
-                      plan?.ytdaLegalProfessionalFees
-                  )}`
-                : `${formatNumber(plan?.cybLegalProfessionalFees!!)}`}
+              {previous?.cybLegalProfessionalFees
+                ? `${formatNumber(previous?.cybLegalProfessionalFees)}`
+                : "No record"}
+            </Td>
+            <Td px="2rem" textAlign="right">
+              {previous?.ytdaLegalProfessionalFees
+                ? `${formatNumber(previous?.ytdaLegalProfessionalFees)}`
+                : "No record"}
             </Td>
           </Tr>
 
@@ -205,11 +235,14 @@ export const ViewExpenseTable = ({
                 : 0}
             </Td>
             <Td px="2rem" textAlign="right">
-              {plan?.ytdaAdministrativeCosts
-                ? `${formatNumber(
-                    plan?.cybAdministrativeCosts - plan?.ytdaAdministrativeCosts
-                  )}`
-                : `${formatNumber(plan?.cybAdministrativeCosts!!)}`}
+              {previous?.cybAdministrativeCosts
+                ? `${formatNumber(previous?.cybAdministrativeCosts)}`
+                : "No record"}
+            </Td>
+            <Td px="2rem" textAlign="right">
+              {previous?.ytdaAdministrativeCosts
+                ? `${formatNumber(previous?.ytdaAdministrativeCosts)}`
+                : "No record"}
             </Td>
           </Tr>
 
@@ -222,9 +255,14 @@ export const ViewExpenseTable = ({
               {plan?.ytdaOtherExp ? `${formatNumber(plan?.ytdaOtherExp)}` : 0}
             </Td>
             <Td px="2rem" textAlign="right">
-              {plan?.ytdaOtherExp
-                ? `${formatNumber(plan?.cybOtherExp - plan?.ytdaOtherExp)}`
-                : `${formatNumber(plan?.cybOtherExp!!)}`}
+              {previous?.cybOtherExp
+                ? `${formatNumber(previous?.cybOtherExp)}`
+                : "No record"}
+            </Td>
+            <Td px="2rem" textAlign="right">
+              {previous?.ytdaOtherExp
+                ? `${formatNumber(previous?.ytdaOtherExp)}`
+                : "No record"}
             </Td>
           </Tr>
 
@@ -241,11 +279,14 @@ export const ViewExpenseTable = ({
                 : 0}
             </Td>
             <Td px="2rem" textAlign="right" fontSize="md" fontWeight="bold">
-              {plan?.ytdaTotalYearlyExp
-                ? `${formatNumber(
-                    plan?.cybTotalYearlyExp - plan?.ytdaTotalYearlyExp
-                  )}`
-                : `${formatNumber(plan?.cybTotalYearlyExp!!)}`}
+              {previous?.cybTotalYearlyExp
+                ? `${formatNumber(previous?.cybTotalYearlyExp)}`
+                : "No record"}
+            </Td>
+            <Td px="2rem" textAlign="right" fontSize="md" fontWeight="bold">
+              {previous?.ytdaTotalYearlyExp
+                ? `${formatNumber(previous?.ytdaTotalYearlyExp)}`
+                : "No record"}
             </Td>
           </Tr>
         </Tbody>
