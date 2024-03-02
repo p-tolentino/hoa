@@ -9,8 +9,10 @@ import {
   DialogTitle,
   DialogTrigger
 } from '@/components/ui/dialog'
+import { ScrollArea } from '@/components/ui/scroll-area'
 import {
   Avatar,
+  Box,
   Flex,
   Link,
   ListItem,
@@ -83,13 +85,57 @@ export default function AnnouncementBoard () {
               <Dialog>
                 {/* Announcement 1 */}
                 <DialogTrigger asChild>
-                  <Link fontSize='sm'>Announcement 1</Link>
+                  <Link fontSize='sm'>Upcoming Event 1</Link>
                 </DialogTrigger>
-                <DialogContent className='sm:max-w-[425px]'>
+                <DialogContent className='lg:min-w-[800px]'>
                   <DialogHeader>
-                    <DialogTitle>Announcement 1</DialogTitle>
+                    <DialogTitle>Upcoming Event 1</DialogTitle>
                     <DialogDescription></DialogDescription>
                   </DialogHeader>
+                  <Box h='full'>
+                    <Text as='span' fontSize='xl' fontWeight='bold'>
+                      Event Title
+                    </Text>
+                    <ScrollArea className='h-[450px] rounded-md'>
+                      <Stack spacing={3} p={4}>
+                        <Flex gap={20}>
+                          <Box>
+                            <Text as='span' fontWeight='semibold'>
+                              Date:{' '}
+                            </Text>
+                            <Text as='span'>MM/DD/YYYY</Text>
+                          </Box>
+                          <Box>
+                            <Text as='span' fontWeight='semibold'>
+                              Venue:{' '}
+                            </Text>
+                            <Text as='span'>Lorem ipsum</Text>
+                          </Box>
+                        </Flex>
+                        <Box pr='2rem'>
+                          <Text fontWeight='semibold'>Event Description:</Text>
+                          <Text>
+                            Lorem, ipsum dolor sit amet consectetur adipisicing
+                            elit. Praesentium atque aliquid harum, quo sapiente
+                            nihil cupiditate doloremque reprehenderit iste
+                            laboriosam minus voluptatum et. Tenetur, dolorum
+                            cupiditate dicta asperiores architecto eveniet
+                            magnam provident similique hic sed sequi impedit
+                            quisquam error, a incidunt consectetur nihil vitae
+                            porro ullam voluptatem ipsum! Natus voluptas, non
+                            dignissimos perferendis aspernatur eveniet sapiente
+                            minima ea ipsa deserunt iure assumenda architecto
+                            quas impedit nostrum? Et inventore nemo, id veniam
+                            cum obcaecati autem. Dolor, eius doloribus error
+                            repellat non, eligendi voluptatem, repellendus eaque
+                            quisquam exercitationem rerum aliquam aperiam?
+                            Placeat quaerat cupiditate alias optio laboriosam
+                            suscipit voluptatum eligendi nobis saepe.
+                          </Text>
+                        </Box>
+                      </Stack>
+                    </ScrollArea>
+                  </Box>
                 </DialogContent>
               </Dialog>
             </ListItem>
@@ -97,13 +143,57 @@ export default function AnnouncementBoard () {
               <Dialog>
                 {/* Announcement 2 */}
                 <DialogTrigger asChild>
-                  <Link fontSize='sm'>Announcement 2</Link>
+                  <Link fontSize='sm'>Upcoming Event 2</Link>
                 </DialogTrigger>
-                <DialogContent className='sm:max-w-[425px]'>
+                <DialogContent className='lg:min-w-[800px]'>
                   <DialogHeader>
-                    <DialogTitle>Annoucnement 2</DialogTitle>
+                    <DialogTitle>Upcoming Event 2</DialogTitle>
                     <DialogDescription></DialogDescription>
                   </DialogHeader>
+                  <Box h='full'>
+                    <Text as='span' fontSize='xl' fontWeight='bold'>
+                      Event Title
+                    </Text>
+                    <ScrollArea className='h-[450px] rounded-md'>
+                      <Stack spacing={3} p={4}>
+                        <Flex gap={20}>
+                          <Box>
+                            <Text as='span' fontWeight='semibold'>
+                              Date:{' '}
+                            </Text>
+                            <Text as='span'>MM/DD/YYYY</Text>
+                          </Box>
+                          <Box>
+                            <Text as='span' fontWeight='semibold'>
+                              Venue:{' '}
+                            </Text>
+                            <Text as='span'>Lorem ipsum</Text>
+                          </Box>
+                        </Flex>
+                        <Box pr='2rem'>
+                          <Text fontWeight='semibold'>Event Description:</Text>
+                          <Text>
+                            Lorem, ipsum dolor sit amet consectetur adipisicing
+                            elit. Praesentium atque aliquid harum, quo sapiente
+                            nihil cupiditate doloremque reprehenderit iste
+                            laboriosam minus voluptatum et. Tenetur, dolorum
+                            cupiditate dicta asperiores architecto eveniet
+                            magnam provident similique hic sed sequi impedit
+                            quisquam error, a incidunt consectetur nihil vitae
+                            porro ullam voluptatem ipsum! Natus voluptas, non
+                            dignissimos perferendis aspernatur eveniet sapiente
+                            minima ea ipsa deserunt iure assumenda architecto
+                            quas impedit nostrum? Et inventore nemo, id veniam
+                            cum obcaecati autem. Dolor, eius doloribus error
+                            repellat non, eligendi voluptatem, repellendus eaque
+                            quisquam exercitationem rerum aliquam aperiam?
+                            Placeat quaerat cupiditate alias optio laboriosam
+                            suscipit voluptatum eligendi nobis saepe.
+                          </Text>
+                        </Box>
+                      </Stack>
+                    </ScrollArea>
+                  </Box>
                 </DialogContent>
               </Dialog>
             </ListItem>
