@@ -1,20 +1,12 @@
 "use client";
 
 import { UploadDropzone } from "@/lib/utils";
-import { updateDocument } from "@/server/actions/property-document";
 import { updateGovtId } from "@/server/actions/user-info";
-import { Property } from "@prisma/client";
 import { useSession } from "next-auth/react";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { startTransition, useState, useTransition } from "react";
+import { useTransition } from "react";
 
-interface UploadProps {
-  title: string;
-  property: Property;
-}
-
-const Upload: React.FC<UploadProps> = ({ title, property }) => {
+export const Upload = () => {
   const router = useRouter();
   const { update } = useSession();
   const [isPending, startTransition] = useTransition();

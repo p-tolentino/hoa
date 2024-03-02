@@ -4,7 +4,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -12,25 +11,20 @@ import {
 import { Label } from "@/components/ui/label";
 
 import Upload from "./image-upload";
-import { Property, PropertyDocument } from "@prisma/client";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { ViewDocument } from "./view-document";
 import { useState } from "react";
 
 interface UploadCardProps {
   title: string;
   description: string;
-  property: Property;
-  document: PropertyDocument | null;
+  idUrl: string;
 }
 
 const UploadCard: React.FC<UploadCardProps> = ({
   title,
   description,
-  property,
-  document,
+  idUrl,
 }) => {
   const [open, setOpen] = useState(false);
 
@@ -40,7 +34,7 @@ const UploadCard: React.FC<UploadCardProps> = ({
         title={title}
         description={description}
         isOpen={open}
-        imageUrl={document?.imageUrl || ""}
+        imageUrl={idUrl || ""}
         onClose={() => setOpen(false)}
       />
       <Card className="w-full h-full border-gray-300 shadow-md">
@@ -50,16 +44,16 @@ const UploadCard: React.FC<UploadCardProps> = ({
         </CardHeader>
         <CardContent>
           <Label htmlFor="name">Document:</Label>
-          <Upload title={title} property={property} />
+          <Upload />
 
           <div className="flex justify-center mt-5">
             <Button
               className="text-black bg-yellow-400 hover:bg-yellow-500"
-              disabled={!document}
+              disabled={!idUrl}
               onClick={() => setOpen(true)}
             >
               {`${
-                document ? "View Current Document" : "No uploaded document yet"
+                idUrl ? "View Current Document" : "No uploaded document yet"
               }`}
             </Button>
           </div>

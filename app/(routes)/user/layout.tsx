@@ -14,7 +14,7 @@ const UserLayout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
 
   const isAdmin = user?.role === UserRole.ADMIN;
-  const existingUserInfo = user?.info;
+  const existingUserInfo = user?.info && user?.info?.govtId;
   const isMemberInfoPath = pathname === "/user/settings"; // TODO: change to whatever new route for member info
   const isApproved = user?.status === Status.ACTIVE;
 
