@@ -20,8 +20,9 @@ const Community = async () => {
   if (!posts) {
     return null;
   }
-  console.log(posts)
-  
+
+  const filteredPosts =posts.filter(post => post.status==="ACTIVE")
+
   const user = await currentUser();
 
   if (!user) {
@@ -45,7 +46,7 @@ const Community = async () => {
             <TabsTrigger value='events'>Events</TabsTrigger>
           </TabsList>
           <TabsContent value='discussions'>
-            <DiscussionsCard posts={posts} user={user.id}/>
+            <DiscussionsCard posts={filteredPosts} user={user.id}/>
           </TabsContent>
           <TabsContent value='business'>
             <BusinessForumCard />

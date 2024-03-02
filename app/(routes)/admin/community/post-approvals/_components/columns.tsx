@@ -8,7 +8,8 @@ export type PendingPostColumn = {
   dateSubmitted: string
   submittedBy: string
   title: string
-  viewPost: string
+  category: string
+  description: string
 }
 
 export const columns: ColumnDef<PendingPostColumn>[] = [
@@ -25,13 +26,17 @@ export const columns: ColumnDef<PendingPostColumn>[] = [
     header: 'Title'
   },
   {
-    accessorKey: 'viewPost',
-    header: 'View Post'
+    accessorKey: 'category',
+    header: 'Category'
+  },
+  {
+    accessorKey: 'description',
+    header: 'Description'
   },
   {
     id: 'actions',
-    cell: row => {
-      return <RowActions />
+    cell: ({row}) => {
+      return <RowActions data={row.original}/>
     }
   }
 ]

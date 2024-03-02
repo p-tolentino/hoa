@@ -40,6 +40,26 @@ export const deletePost = async(value: string) => {
     return { success: "Post successfully Deleted" };
 }
 
+export const updatePostStatus = async (postId: string) => {
+    const user = await currentUser();
+
+    // No Current User
+    if (!user) {
+      return { error: "Unauthorized" };
+    }
+
+    try {
+        await db.post.update({
+            where: { id: postId },
+            data: { status: 'ACTIVE' } // Assuming 'ACTIVE' is a valid status in your schema
+        });
+        return { success: "Post status updated successfully." };
+    } catch (error) {
+        console.error("Failed to update post status:", error);
+        return { error: "Failed to update post status." };
+    }
+};
+
 export const createLike = async (userId: string, postId: string) => {
     // Assuming currentUser() fetches the currently logged-in user
     const user = await currentUser();
