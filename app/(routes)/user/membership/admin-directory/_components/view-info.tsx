@@ -20,14 +20,14 @@ import {
   Tr,
   Td,
 } from "@chakra-ui/react";
-import { HomeownerColumn } from "./columns";
+import { AdminColumn } from "./columns";
 import { Status } from "@prisma/client";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { FaUser as User } from "react-icons/fa";
 
 interface ViewInfoProps {
-  data: HomeownerColumn;
+  data: AdminColumn;
 }
 
 export const ViewInfo: React.FC<ViewInfoProps> = ({ data }) => {
