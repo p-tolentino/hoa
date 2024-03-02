@@ -15,6 +15,18 @@ export const getInfoById = async (id: string) => {
   }
 };
 
+export const getPersonalInfo = async (id: string) => {
+  try {
+    const info = await db.personalInfo.findFirst({
+      where: { userId: id },
+    });
+
+    return info;
+  } catch {
+    return null;
+  }
+};
+
 export const getPropertyById = async (id: string) => {
   const user = await getUserById(id);
 
