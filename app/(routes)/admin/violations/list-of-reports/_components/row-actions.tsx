@@ -1,6 +1,15 @@
-"use client";
+'use client'
 
-import { Button, Flex } from "@chakra-ui/react";
+import { Button, FormControl, FormLabel, Input, Text } from '@chakra-ui/react'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger
+} from '@/components/ui/dialog'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -10,55 +19,73 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+  AlertDialogTrigger
+} from '@/components/ui/alert-dialog'
+import { ListOfReportsColumn } from './columns'
 
-export default function RowActions() {
+interface RowActionProps {
+  data: ListOfReportsColumn
+}
+
+export const RowActions: React.FC<RowActionProps> = ({ data }) => {
   return (
-    <Flex gap={2}>
-      {/* Resolve Button */}
-      <AlertDialog>
-        <AlertDialogTrigger asChild>
-          <Button size="sm" colorScheme="green">
-            Resolve
-          </Button>
-        </AlertDialogTrigger>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Resolve Violation</AlertDialogTitle>
-            <AlertDialogDescription>
-              This action resolves the violation report submitted by the
-              homeowner.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction className="bg-[green]">
-              Continue
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+    <div>
+      {/* Status: PENDING = Button: Assign Officer */}
+      {data.status === 'Pending' && (
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button size='sm'>Assign Officer-in-Charge</Button>
+          </DialogTrigger>
+          <DialogContent className='sm:max-w-[425px]'>
+            <DialogHeader>
+              <DialogTitle>Assign Officer-in-Charge</DialogTitle>
+              <DialogDescription>
+                Assign the officer-in-charge for handling this violation report.
+              </DialogDescription>
+            </DialogHeader>
+            <form>
+              <FormControl isRequired>
+                <Input
+                  type='string'
+                  size='sm'
+                  placeholder="Enter an officer's name..."
+                />
+              </FormControl>
+            </form>
+            <DialogFooter>
+              <Button type='submit' size='sm' colorScheme='yellow'>
+                Save changes
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      )}
 
-      {/* Decline Button
-      <AlertDialog>
-        <AlertDialogTrigger asChild>
-          <Button colorScheme="red">Decline</Button>
-        </AlertDialogTrigger>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Decline Request to Post</AlertDialogTitle>
-            <AlertDialogDescription>
-              This action will delete this post from the list of pending posts
-              and will not appear in the Community Engagement module.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction className="bg-[red]">Continue</AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog> */}
-    </Flex>
-  );
+      {/* Status: INPROCESS = Button: Mark as Resolved */}
+      {data.status === 'In Process' && (
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <Button size='sm' colorScheme='green'>
+              Mark as Resolved
+            </Button>
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Resolve Violation Report</AlertDialogTitle>
+              <AlertDialogDescription>
+                This action resolves the violation report submitted by the
+                homeowner.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction className='bg-[green]'>
+                Continue
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      )}
+    </div>
+  )
 }

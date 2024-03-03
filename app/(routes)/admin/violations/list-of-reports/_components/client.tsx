@@ -1,34 +1,34 @@
-"use client";
+'use client'
 
-import { Heading } from "@/components/ui/heading";
-import { Separator } from "@/components/ui/separator";
+import { Heading } from '@/components/ui/heading'
+import { Separator } from '@/components/ui/separator'
 
-import { ListOfReportsColumn, columns } from "./columns";
-import { DataTable } from "@/components/ui/data-table";
+import { ListOfReportsColumn, columns } from './columns'
+import { DataTable } from '@/components/ui/data-table'
 
-import { Flex, Button } from "@chakra-ui/react";
-import Link from "next/link";
+import { Flex, Button } from '@chakra-ui/react'
+import Link from 'next/link'
 
 interface ListOfReportsClientProps {
-  data: ListOfReportsColumn[];
+  data: ListOfReportsColumn[]
 }
 
 export const ListOfReportsClient: React.FC<ListOfReportsClientProps> = ({
-  data,
+  data
 }) => {
   return (
     <>
-      <Flex justify="space-between">
+      <Flex justify='space-between'>
         <Heading
-          title="List of Violation Reports"
-          description="Manage the submitted violation reports of Homeowners."
+          title='List of Violations'
+          description='Manage the submitted violation reports of Homeowners.'
         />
-        <Button size="sm" colorScheme="gray" as={Link} href="/admin/violations">
+        <Button size='sm' colorScheme='gray' as={Link} href='/admin/disputes'>
           Go Back
         </Button>
       </Flex>
       <Separator />
-      <DataTable columns={columns} data={data} searchKey="title" />
+      <DataTable columns={columns} data={data} searchKey='title' />
     </>
-  );
-};
+  )
+}
