@@ -1,4 +1,4 @@
-"use client";
+'use client'
 
 import {
   FormControl,
@@ -9,123 +9,123 @@ import {
   Textarea,
   Box,
   Stack,
-  Heading,
-  Text,
-  HStack,
   RadioGroup,
-  Radio,
-} from "@chakra-ui/react";
-import { useState } from "react";
-import { Separator } from "@/components/ui/separator";
+  Radio
+} from '@chakra-ui/react'
+import { useState } from 'react'
+import { Separator } from '@/components/ui/separator'
+import { Heading } from '@/components/ui/heading'
+import { AddIcon } from '@chakra-ui/icons'
 
-export default function ReportViolation() {
-  const title = "Report a Violation";
-  const description = "Fill up the Violation Form.";
+export default function ReportViolation () {
+  const title = 'Report a Violation'
+  const description =
+    "Fill out the Violation Form to formally request a violation review from the Homeowners' Association."
 
-  const [category, setCategory] = useState("");
-  const [complaint, setComplaint] = useState("");
+  const [type, setType] = useState('')
+  const [personsInvolved, setPersonsInvolved] = useState([''])
 
-  const handleComplaintChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const inputComplaint = e.target.value;
-    setComplaint(inputComplaint);
-  };
+  const addPersonInput = () => {
+    setPersonsInvolved([...personsInvolved, ''])
+  }
+
+  const handlePersonInputChange = (index: number, value: string) => {
+    const updatedPersonsInvolved = [...personsInvolved]
+    updatedPersonsInvolved[index] = value
+    setPersonsInvolved(updatedPersonsInvolved)
+  }
 
   return (
     <>
-      <Box mb="1%">
-        <Stack>
-          <Heading size="lg" fontFamily="font.heading">
-            {title}
-          </Heading>
-          <Text fontSize="md" fontFamily="font.body" mt="-0.5%">
-            {description}
-          </Text>
-        </Stack>
-      </Box>
-      <Separator />
+      <Heading title={title} description={description} />
+      <Separator className='mt-4 mb-6' />
 
       <Box
-        w="80%"
-        h="80%"
-        border="1px"
-        borderColor="gray.200"
-        borderRadius="10px"
-        mt="2%"
-        p="20px"
-        mb="1%"
+        w='60%'
+        border='1px'
+        borderColor='gray.200'
+        borderRadius='10px'
+        mt='2%'
+        p='20px'
       >
-        <FormControl isRequired>
-          <Stack spacing="15px">
-            <FormLabel fontSize="md" fontFamily="font.body">
-              Title
+        <Stack spacing={5}>
+          {/* Violation Title */}
+          <FormControl isRequired>
+            <FormLabel fontSize='md' fontFamily='font.body'>
+              Title of Violation
             </FormLabel>
-            <Input
-              w="50%"
-              size="sm"
-              type="string"
-              placeholder="Enter a Title"
-              mt="-0.5%"
+            <Input w='50%' size='sm' type='string' fontWeight='semibold' />
+          </FormControl>
+
+          {/* Violation Type */}
+          <FormControl isRequired>
+            <FormLabel fontSize='sm' fontWeight='semibold'>
+              Violation Type
+            </FormLabel>
+            <RadioGroup
+              size='sm'
+              colorScheme='yellow'
+              onChange={setType}
+              value={type}
+            >
+              <Stack spacing={5} direction='row' fontFamily='font.body'>
+                <Radio value='parking'>Parking</Radio>
+                <Radio value='noise'>Noise and Nuisance</Radio>
+                <Radio value='garbage'>Garbage Disposal</Radio>
+                <Radio value='smoking'>Smoking</Radio>
+                <Radio value='landscape'>Landscaping Issues</Radio>
+                <Radio value='other'>Other</Radio>
+              </Stack>
+            </RadioGroup>
+
+            {/* Violation */}
+          </FormControl>
+          <FormControl isRequired>
+            <FormLabel fontSize='md' fontFamily='font.body'>
+              Violation
+            </FormLabel>
+            <Textarea
+              size='sm'
+              placeholder='Tell us what happened...'
+              h='200px'
+              resize={'none'}
             />
-            <FormHelperText fontSize="xs" mt="-0.5%">
-              This will be the title of your complaint.
-            </FormHelperText>
-            <FormControl isRequired>
-              <FormLabel fontSize="sm" fontWeight="semibold">
-                Category of Violations:
-              </FormLabel>
-              <RadioGroup
-                size="sm"
-                colorScheme="yellow"
-                onChange={setCategory}
-                value={category}
-              >
-                <Stack spacing={5} direction="row" fontFamily="font.body">
-                  <Radio value="parking">Parking</Radio>
-                  <Radio value="noise">Noise</Radio>
-                  <Radio value="garbage">Garbage</Radio>
-                  <Radio value="smoking">Smoking</Radio>
-                  <Radio value="other">Other</Radio>
-                </Stack>
-              </RadioGroup>
-            </FormControl>
-            <FormLabel fontSize="md" fontFamily="font.body">
-              Explanation
+          </FormControl>
+
+          {/* Person/s Involved */}
+          <FormControl isRequired>
+            <FormLabel fontSize='md' fontFamily='font.body'>
+              Person/s Involved
             </FormLabel>
-            <Textarea size="sm" placeholder="Write something..." mt="-0.5%" />
-            <FormHelperText fontSize="xs" mt="-0.5%">
-              Write your explanation here.
-            </FormHelperText>
-            <FormLabel fontSize="md" fontFamily="font.body">
-              Person Involved
-            </FormLabel>
-            <Input
-              size="sm"
-              type="string"
-              placeholder="Enter a Name"
-              mt="-0.5%"
-            />
-            <FormHelperText fontSize="xs" mt="-0.5%">
-              This will allow us to contact the person responsible for the
+            {personsInvolved.map((person, index) => (
+              <Input
+                key={index}
+                size='sm'
+                type='string'
+                mb={2}
+                value={person}
+                onChange={e => handlePersonInputChange(index, e.target.value)}
+              />
+            ))}
+            <Button size='xs' leftIcon={<AddIcon />} onClick={addPersonInput}>
+              Add Person
+            </Button>
+            <FormHelperText fontSize='xs'>
+              This will allow us to contact the individuals involved in the
               violation.
             </FormHelperText>
-            <HStack>
-              <FormLabel fontSize="md" fontFamily="font.body" w="20%">
-                Date Submitted:
-              </FormLabel>
-              <Input
-                w="30%"
-                size="sm"
-                type="date"
-                placeholder="Enter a Title"
-                mt="-0.5%"
-              />
-            </HStack>
-          </Stack>
-        </FormControl>
-        <Button size="sm" type="submit" colorScheme="yellow" mt="2%">
-          Submit
-        </Button>
+          </FormControl>
+
+          {/* Submit Button */}
+          <Box textAlign='center'>
+            <FormControl>
+              <Button size='sm' type='submit' colorScheme='yellow' my='20px'>
+                Submit Violation
+              </Button>
+            </FormControl>
+          </Box>
+        </Stack>
       </Box>
     </>
-  );
+  )
 }
