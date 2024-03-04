@@ -29,6 +29,7 @@ import {
 import AddDisputeButton from './_components/AddDisputeButton'
 import EditDisputeButton from './_components/EditDisputeButton'
 import { DeleteIcon } from '@chakra-ui/icons'
+import { useState } from 'react'
 
 export default function ListOfDisputes () {
   const title = "List of Homeowners' Association Disputes"
@@ -152,6 +153,15 @@ export default function ListOfDisputes () {
     }
   ]
 
+  const [disputes, setDisputes] = useState([...commonDisputes])
+
+  const removeDispute = (titleToRemove: string) => {
+    const updatedDisputes = disputes.filter(
+      dispute => dispute.title !== titleToRemove
+    )
+    setDisputes(updatedDisputes)
+  }
+
   return (
     <>
       <Flex justifyContent='space-between'>
@@ -160,7 +170,7 @@ export default function ListOfDisputes () {
       </Flex>
       <Separator className='mt-4 mb-6' />
       <SimpleGrid columns={3} spacing={5} px={2}>
-        {commonDisputes.map(dispute => (
+        {disputes.map(dispute => (
           <div>
             <Card key={dispute.title} pb={3}>
               <Stack>
@@ -179,7 +189,12 @@ export default function ListOfDisputes () {
                       />
 
                       {/* Delete Dispute Button */}
-                      <Button size='sm' mr='10px' colorScheme='red'>
+                      <Button
+                        size='sm'
+                        mr='10px'
+                        colorScheme='red'
+                        onClick={() => removeDispute(dispute.title)}
+                      >
                         <DeleteIcon />
                       </Button>
                     </ButtonGroup>
