@@ -22,6 +22,29 @@ export default function FileComplaint () {
   const description =
     "Fill out the Complaint Form to formally request for a dispute resolution from the Homeowners' Association."
 
+  const disputeTypes = [
+    {
+      value: 'neighbor',
+      name: 'Neighbor-to-Neighbor Disputes'
+    },
+    {
+      value: 'lease',
+      name: 'Lease Restrictions'
+    },
+    {
+      value: 'maintenance',
+      name: 'Common Area Maintenance Issues'
+    },
+    {
+      value: 'rules',
+      name: 'Rule Enforcement and Fines'
+    },
+    {
+      value: 'board',
+      name: 'Board Decisions and Elections'
+    }
+  ]
+
   const [type, setType] = useState('')
   const [personsInvolved, setPersonsInvolved] = useState([''])
 
@@ -41,7 +64,7 @@ export default function FileComplaint () {
       <Separator className='mt-4 mb-6' />
 
       <Box
-        w='60%'
+        w='80%'
         border='1px'
         borderColor='gray.200'
         borderRadius='10px'
@@ -69,10 +92,11 @@ export default function FileComplaint () {
               value={type}
             >
               <Stack spacing={5} direction='row' fontFamily='font.body'>
-                <Radio value='parking'>Parking</Radio>
-                <Radio value='noise'>Noise and Nuisance</Radio>
-                <Radio value='behavior'>Behavioral Issues</Radio>
-                <Radio value='pet'>Pet-related Issues</Radio>
+                {disputeTypes.map((dispute, index) => (
+                  <Radio key={index} value={dispute.value}>
+                    {dispute.name}
+                  </Radio>
+                ))}
                 <Radio value='other'>Other</Radio>
               </Stack>
             </RadioGroup>

@@ -24,24 +24,29 @@ export default function ListOfDisputes () {
     'View the list of common disputes occurence in a homeowners association.'
   const commonDisputes = [
     {
-      title: 'Parking Disputes',
+      title: 'Neighbor-to-Neighbor Conflicts',
       description:
-        'Common parking disputes include issues with unauthorized vehicles, improper use of designated parking spaces, or disputes over the number of vehicles a homeowner is allowed to park within the community.'
+        'Issues that arise between neighbors, such as boundary disputes, property damage, or personal disagreements that escalate to involve the homeowner association.'
     },
     {
-      title: 'Noise and Nuisance',
+      title: 'Lease Restrictions',
       description:
-        'Issues related to excessive noise, disruptive behavior, or activities that create a nuisance can lead to disputes. This may involve conflicts between neighbors or enforcement of community rules to maintain a peaceful living environment.'
+        'Conflicts involving the rental of properties in the HOA, including issues related to short-term rentals, tenant behavior, or restrictions on leasing properties.'
     },
     {
-      title: 'Behavioral Issues',
+      title: 'Common Area Maintenance Issues',
       description:
-        'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Totam alias sequi suscipit voluptas, corporis nemo.'
+        'Disputes over the upkeep, repair, or use of common areas within the community. Homeowners may disagree with how these areas are maintained or how funds are allocated for their maintenance.'
     },
     {
-      title: 'Pet-related Issues',
+      title: 'Rule Enforcement and Fines',
       description:
-        "Conflicts may arise over pet ownership, noise from pets, failure to adhere to leash rules, or violations of pet-related guidelines outlined in the HOA's governing documents."
+        'Disagreements over the enforcement of HOA rules and the imposition of fines. Homeowners might contest the fairness or consistency of rule enforcement.'
+    },
+    {
+      title: 'Board Decisions and Elections',
+      description:
+        'Disputes related to the actions or decisions of the HOA board, including disagreements over election processes or the behavior of board members.'
     }
   ]
 
