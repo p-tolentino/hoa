@@ -15,11 +15,9 @@ import {
   Button,
   FormControl,
   FormLabel,
-  Textarea,
-  FormHelperText
+  Textarea
 } from '@chakra-ui/react'
 import { AddIcon } from '@chakra-ui/icons'
-import { useState } from 'react'
 
 export default function AddDispute () {
   return (
@@ -27,21 +25,25 @@ export default function AddDispute () {
       <DialogTrigger asChild>
         <Button size='sm' colorScheme='yellow'>
           <AddIcon boxSize={3} mr='10px' />
-          Add a Common Dispute
+          Add Dispute
         </Button>
       </DialogTrigger>
       <DialogContent className='lg:min-w-[800px]'>
         <form action=''>
           <DialogHeader>
-            <DialogTitle>Add a Common Dispute</DialogTitle>
-            <DialogDescription>Fill up the following fields.</DialogDescription>
+            <DialogTitle>Add a Dispute</DialogTitle>
+            <DialogDescription>
+              Fill up the following fields to add a dispute in the list of
+              disputes.
+            </DialogDescription>
           </DialogHeader>
 
           {/* Form Content */}
           <Stack spacing='15px' my='2rem'>
+            {/* Dispute Title */}
             <FormControl isRequired>
               <FormLabel fontSize='sm' fontWeight='semibold'>
-                Title:
+                Dispute Title:
               </FormLabel>
               <Input
                 size='md'
@@ -49,24 +51,18 @@ export default function AddDispute () {
                 type='string'
                 placeholder='Enter a Title'
               />
-              <FormHelperText fontFamily='font.body'>
-                Input a title for the common dispute.
-              </FormHelperText>
             </FormControl>
 
+            {/* Dispute Description */}
             <FormControl isRequired>
               <FormLabel fontSize='sm' fontWeight='semibold'>
                 Description:
               </FormLabel>
               <Textarea
                 placeholder='Write something...'
-                id='description'
-                fontSize='xs'
-                maxH='300px'
+                fontSize='sm'
+                resize='none'
               />
-              <FormHelperText fontFamily='font.body'>
-                Input a description for the common dispute.
-              </FormHelperText>
             </FormControl>
           </Stack>
 

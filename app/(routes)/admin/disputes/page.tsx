@@ -32,7 +32,7 @@ export default function DisputeResolutionMenu () {
       ],
       category_descriptions: [
         'Read more about the dispute resolution process.',
-        "View the list of disputes that can be reported within the Homeowners' Association."
+        "View the list of disputes that can be reported with the homeowners' association. Possible fees are included for each dispute type."
       ]
     }
   ]

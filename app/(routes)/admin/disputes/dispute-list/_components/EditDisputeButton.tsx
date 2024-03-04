@@ -15,11 +15,9 @@ import {
   Button,
   FormControl,
   FormLabel,
-  Textarea,
-  FormHelperText
+  Textarea
 } from '@chakra-ui/react'
 import { EditIcon } from '@chakra-ui/icons'
-import { useState } from 'react'
 
 export default function EditDispute ({
   title,
@@ -28,12 +26,6 @@ export default function EditDispute ({
   title: string
   description: string
 }) {
-  // let [description, setDescription] = useState("");
-
-  // let handleDescriptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-  //   let inputDescription = e.target.value;
-  //   setDescription(inputDescription);
-  // };
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -44,12 +36,15 @@ export default function EditDispute ({
       <DialogContent className='lg:min-w-[800px]'>
         <form action=''>
           <DialogHeader>
-            <DialogTitle>Edit {title} </DialogTitle>
-            <DialogDescription>Fill up the following fields.</DialogDescription>
+            <DialogTitle>Update a Dispute </DialogTitle>
+            <DialogDescription>
+              You may update the description of your selected dispute.
+            </DialogDescription>
           </DialogHeader>
 
           {/* Form Content */}
           <Stack spacing='15px' my='2rem'>
+            {/* Dispute Title */}
             <FormControl isRequired>
               <FormLabel fontSize='sm' fontWeight='semibold'>
                 Title:
@@ -59,31 +54,27 @@ export default function EditDispute ({
                 fontWeight='semibold'
                 type='string'
                 value={title}
+                disabled
               />
             </FormControl>
 
+            {/* Dispute Description */}
             <FormControl isRequired>
               <FormLabel fontSize='sm' fontWeight='semibold'>
                 Description:
               </FormLabel>
               <Textarea
                 placeholder='Write something...'
-                id='description'
-                fontSize='xs'
+                fontSize='sm'
                 maxH='300px'
                 value={description}
-                // onChange={handleDescriptionChange}
+                resize='none'
               />
             </FormControl>
           </Stack>
 
           <DialogFooter>
-            <Button
-              size='sm'
-              colorScheme='yellow'
-              type='submit'
-              // onClick={() => onSubmit()}
-            >
+            <Button size='sm' colorScheme='yellow' type='submit'>
               Save Changes
             </Button>
           </DialogFooter>
