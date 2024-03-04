@@ -10,12 +10,13 @@ import {
   Box,
   Stack,
   RadioGroup,
-  Radio
+  Radio,
+  HStack
 } from '@chakra-ui/react'
 import { useState } from 'react'
 import { Separator } from '@/components/ui/separator'
 import { Heading } from '@/components/ui/heading'
-import { AddIcon } from '@chakra-ui/icons'
+import { AddIcon, DeleteIcon } from '@chakra-ui/icons'
 
 export default function FileComplaint () {
   const title = 'File a Complaint'
@@ -52,6 +53,12 @@ export default function FileComplaint () {
     setPersonsInvolved([...personsInvolved, ''])
   }
 
+  const removePersonInput = (index: number) => {
+    const updatedPersonsInvolved = [...personsInvolved]
+    updatedPersonsInvolved.splice(index, 1)
+    setPersonsInvolved(updatedPersonsInvolved)
+  }
+
   const handlePersonInputChange = (index: number, value: string) => {
     const updatedPersonsInvolved = [...personsInvolved]
     updatedPersonsInvolved[index] = value
@@ -77,7 +84,13 @@ export default function FileComplaint () {
             <FormLabel fontSize='md' fontFamily='font.body'>
               Title of Complaint
             </FormLabel>
-            <Input w='50%' size='sm' type='string' fontWeight='semibold' />
+            <Input
+              w='50%'
+              size='sm'
+              type='string'
+              fontWeight='semibold'
+              placeholder='Enter a Title'
+            />
           </FormControl>
 
           {/* Complaint Type */}
@@ -111,28 +124,49 @@ export default function FileComplaint () {
               size='sm'
               placeholder='Tell us what happened...'
               h='200px'
+              fontFamily='font.body'
               resize={'none'}
             />
           </FormControl>
 
           {/* Person/s Involved */}
           <FormControl isRequired>
-            <FormLabel fontSize='md' fontFamily='font.body'>
-              Person/s Involved
-            </FormLabel>
+            <HStack justifyContent='space-between'>
+              <FormLabel fontSize='md' fontFamily='font.body'>
+                Person/s Involved
+              </FormLabel>
+              <Button
+                size='xs'
+                mt='-1'
+                leftIcon={<AddIcon />}
+                onClick={addPersonInput}
+              >
+                Add Person
+              </Button>
+            </HStack>
             {personsInvolved.map((person, index) => (
-              <Input
-                key={index}
-                size='sm'
-                type='string'
-                mb={2}
-                value={person}
-                onChange={e => handlePersonInputChange(index, e.target.value)}
-              />
+              <Box key={index} display='flex' alignItems='center'>
+                <Input
+                  key={index}
+                  size='sm'
+                  type='string'
+                  placeholder='Enter a Name'
+                  mb={2}
+                  value={person}
+                  onChange={e => handlePersonInputChange(index, e.target.value)}
+                />
+                {personsInvolved.length > 1 && index !== 0 && (
+                  <Button
+                    size='xs'
+                    colorScheme='red'
+                    ml={2}
+                    onClick={() => removePersonInput(index)}
+                  >
+                    Remove
+                  </Button>
+                )}
+              </Box>
             ))}
-            <Button size='xs' leftIcon={<AddIcon />} onClick={addPersonInput}>
-              Add Person
-            </Button>
             <FormHelperText fontSize='xs'>
               This will allow us to contact the individuals involved in the
               complaint.
