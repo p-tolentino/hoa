@@ -190,6 +190,7 @@ export default function ListOfDisputes () {
 
                       {/* Delete Dispute Button */}
                       <Button
+                        key={dispute.title}
                         size='sm'
                         mr='10px'
                         colorScheme='red'
