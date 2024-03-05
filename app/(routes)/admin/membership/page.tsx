@@ -1,4 +1,4 @@
-import { Box, Flex } from '@chakra-ui/react'
+import { SimpleGrid } from '@chakra-ui/react'
 import ModuleMenuCard from '@/components/system/ModuleMenuCard'
 import { currentUser } from '@/lib/auth'
 import { Heading } from '@/components/ui/heading'
@@ -10,15 +10,20 @@ const Membership = async () => {
   const userManagement = [
     {
       category: 'User Management',
-      category_buttons: ['Homeowners Directory', 'Admin & Officers Directory'],
       category_users: 'Admins, Officers, and Board of Directors',
-      category_hrefs: [
-        `/admin/membership/homeowner-directory`,
-        `/${user?.role.toLowerCase()}/membership/admin-directory`
-      ],
-      category_descriptions: [
-        "View the list of all Homeowners' Association-registered homeowners.",
-        "View the list of all admins and officers within the Homeowners' Association."
+      category_buttons: [
+        {
+          text: 'Homeowners Directory',
+          href: `/admin/membership/homeowner-directory`,
+          description:
+            "View the list of all Homeowners' Association-registered homeowners."
+        },
+        {
+          text: 'Admin & Officers Directory',
+          href: `/${user?.role.toLowerCase()}/membership/admin-directory`,
+          description:
+            "View the list of all admins and officers within the Homeowners' Association."
+        }
       ]
     }
   ]
@@ -27,14 +32,19 @@ const Membership = async () => {
     {
       category: 'Property Management',
       category_users: 'Admins, Officers, and Board of Directors',
-      category_buttons: ['Browse Properties (Maps)', 'Property Information'],
-      category_hrefs: [
-        `/admin/membership/properties/map`,
-        `/admin/membership/properties`
-      ],
-      category_descriptions: [
-        "View property information and browse through properties owned by the Homeowners' Association.",
-        "All homeowners are required to complete the property information form before gaining access to the system's functionalities."
+      category_buttons: [
+        {
+          text: 'Browse Properties (Maps)',
+          href: `/admin/membership/properties/map`,
+          description:
+            "View property information and browse through properties owned by the Homeowners' Association."
+        },
+        {
+          text: 'Property Information',
+          href: `/admin/membership/properties`,
+          description:
+            "All homeowners are required to complete the property information form before gaining access to the system's functionalities."
+        }
       ]
     }
   ]
@@ -46,15 +56,22 @@ const Membership = async () => {
         description='Navigate through the Membership module'
       />
       <Separator className='mt-4 mb-6' />
-      <Flex className='gap-10'>
-        {userManagement.map((categoryData, index) => (
-          <ModuleMenuCard key={index} data={categoryData}></ModuleMenuCard>
+      <SimpleGrid spacing={10} columns={3}>
+        {/* User Management */}
+        {userManagement.map(categoryData => (
+          <ModuleMenuCard
+            key={categoryData.category}
+            data={categoryData}
+          ></ModuleMenuCard>
         ))}
-
-        {propertyManagement.map((categoryData, index) => (
-          <ModuleMenuCard key={index} data={categoryData}></ModuleMenuCard>
+        {/* Property Management */}
+        {propertyManagement.map(categoryData => (
+          <ModuleMenuCard
+            key={categoryData.category}
+            data={categoryData}
+          ></ModuleMenuCard>
         ))}
-      </Flex>
+      </SimpleGrid>
     </>
   )
 }

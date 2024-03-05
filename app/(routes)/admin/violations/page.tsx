@@ -1,66 +1,91 @@
-"use client";
+'use client'
 
-import { Flex } from "@chakra-ui/react";
-import ModuleMenuCard from "@/components/system/ModuleMenuCard";
-import { Heading } from "@/components/ui/heading";
-import { Separator } from "@/components/ui/separator";
+import { SimpleGrid } from '@chakra-ui/react'
+import ModuleMenuCard from '@/components/system/ModuleMenuCard'
+import { Heading } from '@/components/ui/heading'
+import { Separator } from '@/components/ui/separator'
 
-export default function ViolationMonitoringMenu() {
+export default function ViolationMonitoringMenu () {
   const violationManagementMenuCard = [
     {
-      category: "Violation Management",
-      category_users: "Admin, Association Officers, and Board of Directors",
-      category_buttons: ["List of Violations"],
-      category_hrefs: ["/admin/violations/list-of-reports"],
-      category_descriptions: [
-        "Manage and view the list of violations filed by the Homeowners.",
-      ],
-    },
-  ];
+      category: 'Violation Management',
+      category_users: 'Admin, Association Officers, and Board of Directors',
+      category_buttons: [
+        {
+          text: "Homeowners' Association Violation Record",
+          href: '/admin/violations/list-of-reports',
+          description:
+            "Manage and view the violation record within the Homeowners' Association."
+        }
+      ]
+    }
+  ]
 
   const knowledgeBaseMenuCard = [
     {
-      category: "Knowledge Base for Violations",
-      category_users: "ALL Homeowners",
-      category_buttons: ["List of Common Association Violations"],
-      category_hrefs: ["/admin/violations/list-of-violations"],
-      category_descriptions: [
-        "View the list of common violations in a homeowners association.",
-      ],
-    },
-  ];
+      category: 'Violations Knowledge Base',
+      category_users: 'ALL Homeowners',
+      category_buttons: [
+        {
+          text: 'Violation Review Process',
+          href: '',
+          description: 'Read more about the violation review process.'
+        },
+        {
+          text: "List of Homeowners' Association Violations",
+          href: '/admin/violations/list-of-violations',
+          description:
+            "View the list of violations that can be reported within the Homeowners' Association."
+        }
+      ]
+    }
+  ]
 
   const violationReportingMenuCard = [
     {
-      category: "Report Violation",
-      category_users: "ALL Homeowners",
-      category_buttons: ["Report a Violation"],
-      category_hrefs: ["/admin/violations/report-violations"],
-      category_descriptions: ["Fill up the Violation Form."],
-    },
-  ];
+      category: 'Report Violation',
+      category_users: 'ALL Homeowners',
+      category_buttons: [
+        {
+          text: 'Report a Violation',
+          href: '/admin/violations/report-violations',
+          description:
+            "Fill out the Violation Form to formally request a violation review from the Homeowners' Association."
+        }
+      ]
+    }
+  ]
 
   return (
     <>
       <Heading
-        title="Dispute Resolution"
-        description="Navigate through the Dispute Resolution module"
+        title='Dispute Resolution'
+        description='Navigate through the Dispute Resolution module'
       />
-      <Separator className="mt-4 mb-6" />
-      <Flex className="gap-10">
-        {/* Dispute Management Button */}
-        {violationManagementMenuCard.map((categoryData, index) => (
-          <ModuleMenuCard key={index} data={categoryData}></ModuleMenuCard>
+      <Separator className='mt-4 mb-6' />
+      <SimpleGrid spacing={10} columns={3}>
+        {/* Violation Management */}
+        {violationManagementMenuCard.map(categoryData => (
+          <ModuleMenuCard
+            key={categoryData.category}
+            data={categoryData}
+          ></ModuleMenuCard>
         ))}
-        {/* Knowledge Base Button */}
-        {knowledgeBaseMenuCard.map((categoryData, index) => (
-          <ModuleMenuCard key={index} data={categoryData}></ModuleMenuCard>
+        {/* Violation Knowledge Base */}
+        {knowledgeBaseMenuCard.map(categoryData => (
+          <ModuleMenuCard
+            key={categoryData.category}
+            data={categoryData}
+          ></ModuleMenuCard>
         ))}
-        {/* Dispute Reporting Button */}
-        {violationReportingMenuCard.map((categoryData, index) => (
-          <ModuleMenuCard key={index} data={categoryData}></ModuleMenuCard>
+        {/* Violation Reporting  */}
+        {violationReportingMenuCard.map(categoryData => (
+          <ModuleMenuCard
+            key={categoryData.category}
+            data={categoryData}
+          ></ModuleMenuCard>
         ))}
-      </Flex>
+      </SimpleGrid>
     </>
-  );
+  )
 }
