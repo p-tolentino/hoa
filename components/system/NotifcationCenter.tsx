@@ -34,6 +34,14 @@ export default function NotificationCenter () {
   const initialData = [
     {
       isNew: true,
+      title: 'Urgent: Dispute Resolution Meeting Notice 📅',
+      description:
+        'The meeting is scheduled for 1 March 2024, 3:00PM at the HOA Admin Office. Your presence is crucial for resolving this matter.',
+      date: '1 day ago',
+      href: '/admin/disputes/notices'
+    },
+    {
+      isNew: true,
       title: 'Notification 1',
       description:
         'Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorem, quasi.',
@@ -62,21 +70,17 @@ export default function NotificationCenter () {
   const [unreadCount, setUnreadCount] = useState(
     notifications.filter(notification => notification.isNew).length
   )
-  const [popoverOpened, setPopoverOpened] = useState(false)
 
-  // Set all isNew values to false when the popover is closed after the first time
-  // Set popoverOpened to true after the popover has been opened once
-  const handlePopoverClose = () => {
-    if (popoverOpened) {
-      setUnreadCount(0)
+  // Function to handle closing the popover and updating isNew value
+  const handlePopoverClose = (clickedIndex: number) => {
+    setUnreadCount(unreadCount - 1)
 
-      const updatedNotifications = notifications.map(notification => ({
-        ...notification,
-        isNew: false
-      }))
-      setNotifications(updatedNotifications)
-    }
-    setPopoverOpened(true)
+    const updatedNotifications = notifications.map((notification, index) => ({
+      ...notification,
+      isNew: index === clickedIndex ? false : notification.isNew
+    }))
+
+    setNotifications(updatedNotifications)
   }
 
   return (
@@ -118,14 +122,11 @@ export default function NotificationCenter () {
             aria-label={'Notifications'}
             background='none'
             _hover={{ background: 'none', transform: 'scale(1.2)' }}
-            onClick={() => {
-              handlePopoverClose()
-            }}
           />
         </PopoverTrigger>
         <PopoverContent my='10px' bg='#FBFBFD' borderColor='grey'>
           <PopoverArrow />
-          <PopoverCloseButton onClick={handlePopoverClose} />
+          <PopoverCloseButton />
           <PopoverHeader
             color='black'
             fontFamily='font.heading'
@@ -144,7 +145,9 @@ export default function NotificationCenter () {
                     _hover={{ transform: 'scale(1.02)' }}
                     as={Link}
                     href={notification.href}
-                    onClick={() => handlePopoverClose()}
+                    onClick={() => {
+                      handlePopoverClose(index)
+                    }}
                     size='sm'
                     textAlign='left'
                   >
