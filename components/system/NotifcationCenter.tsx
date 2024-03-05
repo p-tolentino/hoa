@@ -140,7 +140,7 @@ export default function NotificationCenter () {
                 {notifications.map((notification, index) => (
                   <Card
                     key={index}
-                    bg={notification.isNew === true ? 'brand.400' : 'white'}
+                    variant='elevated'
                     _hover={{ transform: 'scale(1.02)' }}
                     as={Link}
                     href={notification.href}
@@ -149,7 +149,19 @@ export default function NotificationCenter () {
                     textAlign='left'
                   >
                     <CardHeader p='15px 15px 0px 15px'>
-                      <Text fontSize='sm' fontWeight='bold'>
+                      <Text
+                        as='span'
+                        fontSize='sm'
+                        fontWeight='bold'
+                        display='flex'
+                        alignItems='top'
+                      >
+                        {notification.isNew === true && (
+                          <span
+                            className='flex h-2 w-2 translate-y-1 rounded-full bg-red-500 mr-1'
+                            style={{ minWidth: '8px' }}
+                          />
+                        )}
                         {notification.title}
                       </Text>
                     </CardHeader>
