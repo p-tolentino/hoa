@@ -6,37 +6,35 @@ import {
   Heading,
   Button,
   ButtonGroup,
-  Box,
   Text,
   Stack,
   CardHeader
 } from '@chakra-ui/react'
 import Link from 'next/link'
 
-const ModuleMenuCard = ({
-  data: {
-    category,
-    category_users,
-    category_buttons,
-    category_hrefs,
-    category_descriptions
-  }
-}: {
-  data: {
-    category: string
-    category_users: string
-    category_buttons: string[]
-    category_hrefs: string[]
-    category_descriptions: string[]
-  }
-}) => {
+interface CategoryButton {
+  text: string
+  href: string
+  description: string
+}
+
+interface CategoryData {
+  category: string
+  category_users: string
+  category_buttons: CategoryButton[]
+}
+
+const ModuleMenuCard: React.FC<{ data: CategoryData }> = ({ data }) => {
+  const { category, category_users, category_buttons } = data
   return (
     <>
-      <Card h='max-content' shadow='lg' w='25vw' p='5px'>
+      <Card h='max-content' shadow='lg' w='full' p='5px'>
         <CardHeader pb={category_users !== '' ? '0' : '1'}>
+          {/* Category Name */}
           <Heading size='md' color={'brand.500'} fontFamily='font.heading'>
             {category}
           </Heading>
+          {/* Category Users */}
           {category_users !== '' && (
             <Text fontSize='sm' fontFamily='font.body'>
               For {category_users}
@@ -51,10 +49,11 @@ const ModuleMenuCard = ({
             fontFamily='font.body'
           >
             <Stack>
-              {category_buttons.map((button, index) => (
-                <>
+              {/* Category Buttons */}
+              {category_buttons.map(cButton => (
+                <div key={cButton.text}>
                   <Button
-                    key={index}
+                    w='full'
                     fontSize={'md'}
                     fontWeight='400'
                     bgColor='brand.300'
@@ -65,16 +64,16 @@ const ModuleMenuCard = ({
                     }}
                     mb={category_users !== '' ? '0' : '10px'}
                     as={Link}
-                    href={category_hrefs[index]}
+                    href={cButton.href}
                   >
-                    {button}
+                    {cButton.text}
                   </Button>
-                  {category_descriptions[index] !== '' && (
-                    <Text key={index} mb='2rem' ml='1rem' fontSize='sm'>
-                      {category_descriptions[index]}
+                  {cButton.description !== '' && (
+                    <Text mb='2rem' mt='5px' fontSize='sm' textAlign='justify'>
+                      {cButton.description}
                     </Text>
                   )}
-                </>
+                </div>
               ))}
             </Stack>
           </ButtonGroup>

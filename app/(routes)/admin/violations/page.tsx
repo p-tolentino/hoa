@@ -1,6 +1,6 @@
 'use client'
 
-import { Flex } from '@chakra-ui/react'
+import { SimpleGrid } from '@chakra-ui/react'
 import ModuleMenuCard from '@/components/system/ModuleMenuCard'
 import { Heading } from '@/components/ui/heading'
 import { Separator } from '@/components/ui/separator'
@@ -10,10 +10,13 @@ export default function ViolationMonitoringMenu () {
     {
       category: 'Violation Management',
       category_users: 'Admin, Association Officers, and Board of Directors',
-      category_buttons: ["Homeowners' Association Violation Record"],
-      category_hrefs: ['/admin/violations/list-of-reports'],
-      category_descriptions: [
-        "Manage and view the the violation record within the Homeowners' Association."
+      category_buttons: [
+        {
+          text: "Homeowners' Association Violation Record",
+          href: '/admin/violations/list-of-reports',
+          description:
+            "Manage and view the violation record within the Homeowners' Association."
+        }
       ]
     }
   ]
@@ -23,13 +26,17 @@ export default function ViolationMonitoringMenu () {
       category: 'Violations Knowledge Base',
       category_users: 'ALL Homeowners',
       category_buttons: [
-        'Violation Review Process',
-        "List of Homeowners' Association Violations"
-      ],
-      category_hrefs: ['', '/admin/violations/list-of-violations'],
-      category_descriptions: [
-        'Read more about the violation review process.',
-        "View the list of violations that can be reported within the Homeowners' Association."
+        {
+          text: 'Violation Review Process',
+          href: '',
+          description: 'Read more about the violation review process.'
+        },
+        {
+          text: "List of Homeowners' Association Violations",
+          href: '/admin/violations/list-of-violations',
+          description:
+            "View the list of violations that can be reported within the Homeowners' Association."
+        }
       ]
     }
   ]
@@ -38,10 +45,13 @@ export default function ViolationMonitoringMenu () {
     {
       category: 'Report Violation',
       category_users: 'ALL Homeowners',
-      category_buttons: ['Report a Violation'],
-      category_hrefs: ['/admin/violations/report-violations'],
-      category_descriptions: [
-        "Fill out the Violation Form to formally request a violation review from the Homeowners' Association."
+      category_buttons: [
+        {
+          text: 'Report a Violation',
+          href: '/admin/violations/report-violations',
+          description:
+            "Fill out the Violation Form to formally request a violation review from the Homeowners' Association."
+        }
       ]
     }
   ]
@@ -53,29 +63,29 @@ export default function ViolationMonitoringMenu () {
         description='Navigate through the Violation Monitoring module'
       />
       <Separator className='mt-4 mb-6' />
-      <Flex className='gap-10'>
-        {/* Dispute Management Button */}
+      <SimpleGrid spacing={10} columns={3}>
+        {/* Violation Management */}
         {violationManagementMenuCard.map(categoryData => (
           <ModuleMenuCard
             key={categoryData.category}
             data={categoryData}
           ></ModuleMenuCard>
         ))}
-        {/* Knowledge Base Button */}
+        {/* Violation Knowledge Base */}
         {knowledgeBaseMenuCard.map(categoryData => (
           <ModuleMenuCard
             key={categoryData.category}
             data={categoryData}
           ></ModuleMenuCard>
         ))}
-        {/* Dispute Reporting Button */}
+        {/* Violation Reporting  */}
         {violationReportingMenuCard.map(categoryData => (
           <ModuleMenuCard
             key={categoryData.category}
             data={categoryData}
           ></ModuleMenuCard>
         ))}
-      </Flex>
+      </SimpleGrid>
     </>
   )
 }

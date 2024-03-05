@@ -50,7 +50,7 @@ export default function AnnouncementBoard () {
         </CardHeader>
         <CardContent className='space-y-2'>
           <UnorderedList fontFamily='font.body'>
-            <ListItem>
+            <ListItem key={'BirthdayCelebrants'}>
               {/* Homeowner Birthday Celebrants */}
               <Dialog>
                 <DialogTrigger asChild>
@@ -67,8 +67,8 @@ export default function AnnouncementBoard () {
                     <DialogDescription></DialogDescription>
                   </DialogHeader>
                   <Stack>
-                    {monthCelebrants.map(celebrant => (
-                      <Flex align='center' gap='1rem'>
+                    {monthCelebrants.map((celebrant, index) => (
+                      <Flex key={index} align='center' gap='1rem'>
                         <Avatar name={celebrant.name} src={celebrant.avatar} />
                         <Link fontSize='sm' href={celebrant.profileLink}>
                           {celebrant.name}
@@ -79,7 +79,7 @@ export default function AnnouncementBoard () {
                 </DialogContent>
               </Dialog>
             </ListItem>
-            <ListItem>
+            <ListItem key={'Announcement1'}>
               <Dialog>
                 {/* Announcement 1 */}
                 <DialogTrigger asChild>
@@ -93,7 +93,7 @@ export default function AnnouncementBoard () {
                 </DialogContent>
               </Dialog>
             </ListItem>
-            <ListItem>
+            <ListItem key={'Announcement2'}>
               <Dialog>
                 {/* Announcement 2 */}
                 <DialogTrigger asChild>
