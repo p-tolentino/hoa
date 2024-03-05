@@ -18,6 +18,15 @@ import {
 import { useState } from 'react'
 import { PiBellFill, PiBellRingingFill } from 'react-icons/pi'
 import { ScrollArea } from '../ui/scroll-area'
+import Link from 'next/link'
+
+interface NotificationCenter {
+  isNew: boolean
+  title: string
+  description: string
+  date: string
+  onClick: () => void
+}
 
 export default function NotificationCenter () {
   const title = 'Notification Center'
@@ -27,19 +36,25 @@ export default function NotificationCenter () {
       isNew: true,
       title: 'Notification 1',
       description:
-        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorem, quasi.'
+        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorem, quasi.',
+      date: '2 days ago',
+      href: ''
     },
     {
       isNew: false,
       title: 'Notification 2',
       description:
-        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorem, quasi.'
+        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorem, quasi.',
+      date: '3 days ago',
+      href: ''
     },
     {
       isNew: false,
       title: 'Notification 3',
       description:
-        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorem, quasi.'
+        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorem, quasi.',
+      date: '4 days ago',
+      href: ''
     }
   ]
 
@@ -61,7 +76,6 @@ export default function NotificationCenter () {
       }))
       setNotifications(updatedNotifications)
     }
-
     setPopoverOpened(true)
   }
 
@@ -128,8 +142,11 @@ export default function NotificationCenter () {
                     key={index}
                     bg={notification.isNew === true ? 'brand.400' : 'white'}
                     _hover={{ transform: 'scale(1.02)' }}
-                    as='button'
+                    as={Link}
+                    href={notification.href}
+                    onClick={() => handlePopoverClose()}
                     size='sm'
+                    textAlign='left'
                   >
                     <CardHeader p='15px 15px 0px 15px'>
                       <Text fontSize='sm' fontWeight='bold'>
@@ -139,9 +156,12 @@ export default function NotificationCenter () {
                     <CardBody
                       p='5px 15px 20px 15px'
                       fontSize='xs'
-                      textAlign='justify'
+                      textAlign='left'
                     >
-                      {notification.description}
+                      <Stack spacing={2}>
+                        <Text>{notification.description}</Text>
+                        <Text color='grey'>{notification.date}</Text>
+                      </Stack>
                     </CardBody>
                   </Card>
                 ))}
