@@ -1,7 +1,6 @@
 'use client'
 
 import { cn } from '@/lib/utils'
-import { Button } from '@/components/ui/button'
 
 import {
   FiBriefcase,
@@ -9,8 +8,7 @@ import {
   FiDollarSign,
   FiUserCheck,
   FiUsers,
-  FiMenu,
-  FiHome
+  FiMenu
 } from 'react-icons/fi'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -21,7 +19,6 @@ import { RxGear as Gear, RxExit as Exit } from 'react-icons/rx'
 import { LuContact2 as Contact } from 'react-icons/lu'
 import { BsNewspaper } from 'react-icons/bs'
 import { useCurrentUser } from '@/hooks/use-current-user'
-import { Separator } from '../ui/separator'
 import { LogoutButton } from '../auth/logout-button'
 import { UserRole } from '@prisma/client'
 
@@ -39,6 +36,7 @@ import {
   Box
 } from '@chakra-ui/react'
 import { UserButton } from '../auth/user-button'
+import NotificationCenter from './NotifcationCenter'
 
 export function Sidebar () {
   const user = useCurrentUser()
@@ -168,18 +166,21 @@ export function Sidebar () {
         alignItems={sidebarSize === 'small' ? 'center' : 'flex-start'}
         as='nav'
       >
-        <IconButton
-          background='none'
-          color={'white'}
-          _hover={{ background: 'none' }}
-          icon={<FiMenu />}
-          onClick={() => {
-            if (sidebarSize === 'small') changeSidebarSize('large')
-            else changeSidebarSize('small')
-          }}
-          aria-label={''}
-          alignSelf={'flex-start'}
-        />
+        <Flex justify='space-between' w='100%'>
+          <IconButton
+            background='none'
+            color={'white'}
+            _hover={{ background: 'none' }}
+            icon={<FiMenu />}
+            onClick={() => {
+              if (sidebarSize === 'small') changeSidebarSize('large')
+              else changeSidebarSize('small')
+            }}
+            aria-label={''}
+            alignSelf={'flex-start'}
+          />
+          <NotificationCenter />
+        </Flex>
 
         {sidebarRoutes.map(route => {
           if (route.label === 'Membership' && user?.role === UserRole.USER) {
