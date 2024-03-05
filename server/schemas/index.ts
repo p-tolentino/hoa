@@ -193,3 +193,46 @@ export const NewBudgetPlanSchema = z.object({
   cybTotalYearlyExp: z.number(),
   cybTotalYearlySurplus: z.number(),
 });
+
+export const OptionSchema = z.object({
+  text: z.string(),
+});
+
+export const QuestionSchema = z.object({
+  text: z.string(),
+  options: z.array(OptionSchema),
+});
+
+export const PollSchema = z.object({
+  title: z.string(),
+  description: z.string(),
+  category: z.enum([ "MEETING",
+  "ELECTION",
+  "INQUIRY",
+  "EVENT",
+  "OTHER"], {
+    required_error: "Please specify the category",
+  }),
+  startDate: z.string(),
+  endDate: z.string(),
+  status: z.enum(["ACTIVE", "INACTIVE"]), // Assuming Status is an enum with values ACTIVE and INACTIVE
+  questions: z.array(QuestionSchema),
+}).refine((data) => {
+  // Ensure endDate is not in the past
+  const now = new Date();
+  const endDate = data.endDate ? new Date(data.endDate) : null;
+  if (endDate && endDate < now) {
+    return false;
+  }
+
+  // Ensure startDate is not after endDate
+  const startDate = data.startDate ? new Date(data.startDate) : null;
+  if (startDate && endDate && startDate > endDate) {
+    return false;
+  }
+
+  return true;
+}, {
+  // Custom error message
+  message: "End date cannot be in the past, and start date must be before end date.",
+});;

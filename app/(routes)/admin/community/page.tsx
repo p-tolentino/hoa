@@ -13,6 +13,7 @@ import BusinessForumCard from './_components/business/BusinessForumCard'
 import PollsAndSurveysCard from './_components/pollsAndSurveys/PollsAndSurveysCard'
 import EventsCard from './_components/events/EventsCard'
 import { getPosts, getDiscussionPosts, getBusinessPosts } from "@/server/data/posts";
+import { getPolls } from "@/server/data/polls";
 
 const Community = async () => {
 
@@ -29,6 +30,12 @@ const Community = async () => {
   const filteredPosts1 =discussion.filter(post => post.status==="ACTIVE")
   const filteredPosts2 =business.filter(post => post.status==="ACTIVE")
 
+  
+  const polls = await getPolls();
+  if (!polls) {
+    return null;
+  }
+  
   const user = await currentUser();
 
   if (!user) {
@@ -57,7 +64,7 @@ const Community = async () => {
             <BusinessForumCard posts={filteredPosts2} user={user.id}/>
           </TabsContent>
           <TabsContent value='pollsAndSurveys'>
-            <PollsAndSurveysCard />
+            <PollsAndSurveysCard polls={polls} user={user.id}/>
           </TabsContent>
           <TabsContent value='events'>
             <EventsCard />

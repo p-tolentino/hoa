@@ -21,8 +21,26 @@ import { ScrollArea } from '@radix-ui/react-scroll-area'
 
 import Post from './_components/post'
 import Create from './_components/create'
+import { useState } from 'react';
 
-export default function PollsAndSurveysCard () {
+import { Polls, User } from "@prisma/client";
+
+interface PollProps {
+  polls: Polls[];
+  user: string;
+}
+
+export default function PollsAndSurveysCard ({polls, user}: PollProps) {
+
+  const [selectedCategory, setSelectedCategory] = useState('showAll');
+  const [selectedStatus, setSelectedStatus] = useState('All');
+  const [searchInput, setSearchInput] = useState('');
+
+  const filteredPolls = polls
+  .filter(poll => selectedCategory === 'showAll' || poll.category === selectedCategory)
+  .filter(poll => poll.title.toLowerCase().includes(searchInput.toLowerCase()))
+  .filter(poll=> selectedStatus ==="All" || poll.status === selectedStatus);
+
   return (
     <>
       <Card className='h-[70vh]'>
@@ -45,10 +63,27 @@ export default function PollsAndSurveysCard () {
               w='30%'
               type='string'
               placeholder='Search by Poll or Survey Title'
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
             />
             <Spacer />
+            <Select value={selectedStatus} onValueChange={setSelectedStatus}
+            >
+              <SelectTrigger className='w-[250px]'>
+                <SelectValue placeholder='Status' />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectItem value='All' className='font-semibold'>
+                    Status
+                  </SelectItem>
+                  <SelectItem value='ACTIVE'>Active</SelectItem>
+                  <SelectItem value='INACTIVE'>Inactive</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
             {/* Select category to show */}
-            <Select /*value={selectedCategoryFilter} onValueChange={(value) => setSelectedCategoryFilter(value)}*/
+            <Select value={selectedCategory} onValueChange={setSelectedCategory}
             >
               <SelectTrigger className='w-[250px]'>
                 <SelectValue placeholder='Show All' />
@@ -58,11 +93,11 @@ export default function PollsAndSurveysCard () {
                   <SelectItem value='showAll' className='font-semibold'>
                     Show All
                   </SelectItem>
-                  <SelectItem value='meeting'>Meeting</SelectItem>
-                  <SelectItem value='election'>Election</SelectItem>
-                  <SelectItem value='inquiry'>Inquiry</SelectItem>
-                  <SelectItem value='event'>Event</SelectItem>
-                  <SelectItem value='other'>Other</SelectItem>
+                  <SelectItem value='MEETING'>Meeting</SelectItem>
+                  <SelectItem value='ELECTION'>Election</SelectItem>
+                  <SelectItem value='INQUIRY'>Inquiry</SelectItem>
+                  <SelectItem value='EVENT'>Event</SelectItem>
+                  <SelectItem value='OTHER'>Other</SelectItem>
                 </SelectGroup>
               </SelectContent>
             </Select>
@@ -72,10 +107,7 @@ export default function PollsAndSurveysCard () {
           <ScrollArea
             style={{ maxHeight: 'calc(70vh - 180px)', overflowY: 'auto' }}
           >
-            <Post />
-            <Post />
-            <Post />
-            <Post />
+            <Post polls={filteredPolls} user={user}/>
           </ScrollArea>
         </CardContent>
       </Card>

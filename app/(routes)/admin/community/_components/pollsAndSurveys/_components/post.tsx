@@ -16,26 +16,92 @@ import { format, addDays, formatDistanceToNowStrict } from 'date-fns'
 import { useState } from 'react'
 import { Close } from './close'
 import { DateRange } from 'react-day-picker'
+import { getPersonalInfo } from "@/server/data/user-info";
+import { updateStatus } from "@/server/actions/poll";
 
-function Post () {
-  const postCategories = [
-    { category: 'Meeting', color: 'purple.200' },
-    { category: 'Election', color: 'pink.200' },
-    { category: 'Inquiry', color: 'blue.200' },
-    { category: 'Event', color: 'orange.200' },
-    { category: 'Other', color: 'teal.200' }
-  ]
+import { Polls, User } from "@prisma/client";
 
-  const [postStatus, setPostStatus] = useState('Closed')
+import React, { useEffect } from "react";
 
-  const datePosted = new Date(2024, 2, 1)
-  const [duration, setDuration] = useState<DateRange | undefined>({
-    from: datePosted,
-    to: addDays(datePosted, 20)
-  })
-  const dateDistance = formatDistanceToNowStrict(datePosted)
+interface PollProps {
+  polls: Polls[];
+  user: string;
+}
+
+interface UserInfo {
+  lastName: string | null,
+  firstName: string | null,
+  position: string | null;
+}
+
+interface UserInfos {
+  [userId: string]: UserInfo | null;
+}
+
+
+const Post: React.FC<PollProps> = ({ polls, user }) => {
+  const categoryColors = {
+    MEETING: "purple.200",
+    ELECTION: "pink.200",
+    INQUIRY: "blue.200",
+    EVENT: "orange.200",
+    FOODANDDRINK: "purple.200",
+    CLOTHING: "pink.200",
+    HOUSEHOLDITEMS: "blue.200",
+    HOMESERVICES: "orange.200",
+    OTHER: "teal.200",
+  };
+
+  const [usersInfo, setUsersInfo] = useState<UserInfos>({});
+  const [postStatus, setPostStatus] = useState('Open')
+
+  useEffect(() => {
+    polls.forEach(async (poll) => {
+        const startDate = new Date(poll.startDate);
+        const endDate = new Date(poll.endDate);
+        const now = new Date();
+
+        let newStatus: 'ACTIVE' | 'INACTIVE' = 'INACTIVE';
+        if (now >= startDate && now <= endDate) {
+            newStatus = 'ACTIVE';
+        }
+
+        if (poll.status !== newStatus) {
+            await updateStatus(poll.id, newStatus);
+            // Optionally: Set state here to re-render the component or refetch the polls to reflect the update.
+            // This will depend on how you manage state in your component.
+        }
+    });
+}, [polls]);
+
+  useEffect(() => {
+    const fetchUserInfos = async () => {
+      // Extract unique userIds from polls to avoid redundant fetches
+      const uniqueUserIds = Array.from(new Set(polls.map(poll => poll.userId)));
+  
+      // Fetch user info for each unique userId
+      const userInfoPromises = uniqueUserIds.map(async userId => {
+        const userInfo = await getPersonalInfo(userId);
+        return { userId, userInfo };
+      });
+  
+      // Resolve all promises and update state
+      const userInfosArray = await Promise.all(userInfoPromises);
+      const userInfosObj = userInfosArray.reduce<UserInfos>((acc, { userId, userInfo }) => {
+        acc[userId] = userInfo;
+        return acc;
+      }, {});
+  
+      setUsersInfo(userInfosObj);
+    };
+  
+    fetchUserInfos();
+  }, [polls]);
+  
 
   return (
+    <>
+    {polls.map((poll) => (
     <Flex p='10px'>
       <Box
         w='100%'
@@ -52,45 +118,27 @@ function Post () {
           textAlign='center'
           ml='20px'
           fontWeight='bold'
-          bgColor={postStatus === 'Open' ? 'green.200' : 'red.200'}
+          bgColor={poll.status == 'ACTIVE' ? 'green.200' : 'red.200'}
         >
-          {postStatus}
+          {poll.status}
         </Box>
         <Box p='20px'>
           <HStack mb='0.5rem'>
             <Stack spacing={0}>
               {/* Survey Title */}
               <Heading size='md' fontFamily='font.heading' mb='1%'>
-                Title
+                {poll.title}
               </Heading>
               {/* Survey Duration */}
-              {duration?.from ? (
-                duration.to ? (
-                  <>
-                    <Text fontSize='xs' fontWeight='semibold'>
-                      {postStatus === 'Open' ? 'Available from' : 'Duration:'}{' '}
-                      {format(duration.from, 'LLL dd, y')}{' '}
-                      {postStatus === 'Open' ? 'to' : '-'}{' '}
-                      {format(duration.to, 'LLL dd, y')}
-                    </Text>
-                  </>
-                ) : (
-                  <>
-                    <Text fontSize='xs'>
-                      Available from {format(duration.from, 'LLL dd, y')}
-                    </Text>
-                  </>
-                )
-              ) : (
-                <span>Available until owner closes it.</span>
-              )}
+              <Text fontSize='lg' fontWeight='semibold'>
+                Duration: {poll.startDate.toLocaleString()} to {poll.endDate.toLocaleString()}
+              </Text>
             </Stack>
             <Spacer />
             {/* Survey Button */}
-            {postStatus === 'Open' ? (
+            {poll.status == 'ACTIVE' ? (
               <HStack>
                 <Answer />
-                <Close />
               </HStack>
             ) : (
               <Report />
@@ -99,10 +147,8 @@ function Post () {
 
           {/* Survey Categories */}
           <HStack mb='2%'>
-            {postCategories.map((postCategory, index) => (
               <Box
-                key={index}
-                bg={postCategory.color}
+                bg={categoryColors[poll.category]}
                 fontFamily='font.heading'
                 fontSize='xs'
                 fontWeight='semibold'
@@ -111,9 +157,8 @@ function Post () {
                 textAlign='center'
                 rounded='md'
               >
-                {postCategory.category}
+                {poll.category}
               </Box>
-            ))}
           </HStack>
 
           {/* Survey Details */}
@@ -126,7 +171,7 @@ function Post () {
                 fontWeight='bold'
                 fontFamily='font.body'
               >
-                Name
+                 {usersInfo[poll.userId]?.firstName || 'Loading...'} {usersInfo[poll.userId]?.lastName}
               </Text>
               <Text
                 id='position'
@@ -134,7 +179,7 @@ function Post () {
                 fontWeight='bold'
                 fontFamily='font.body'
               >
-                Position (Homeowner or Officer)
+                 {usersInfo[poll.userId]?.position || 'Loading...'}
               </Text>
             </Stack>
           </HStack>
@@ -145,9 +190,7 @@ function Post () {
             p='5px'
             fontFamily='font.body'
           >
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis,
-            ratione quia! Hic atque nostrum tempore consectetur dolores mollitia
-            corporis aliquam labore eligendi, possimus sequi quidem fuga commodi
+            {poll.description}
           </Text>
           {/* Date distance */}
           <Text
@@ -157,11 +200,13 @@ function Post () {
             ml='5.5%'
             p='5px'
           >
-            Posted {dateDistance} ago
+           Posted {formatDistanceToNowStrict(new Date(poll.createdAt))}{" "}ago
           </Text>
         </Box>
       </Box>
     </Flex>
+          ))}
+          </>
   )
 }
 export default Post

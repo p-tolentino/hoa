@@ -197,6 +197,7 @@ model Polls {
   title       String
   description String
   category    CategoryType   
+  startDate   DateTime  
   endDate     DateTime
   status      Status             @default(INACTIVE)
   createdAt   DateTime           @default(now())
@@ -218,6 +219,15 @@ model Option {
   question  Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
 }
 
+model Response {
+  id          String             @id @unique @default(cuid())
+  userId      String
+  pollId      String
+  questionId  String
+  optionId    String            
+  createdAt   DateTime           @default(now())
+}
+
 model Events {
   id          String             @id @unique @default(cuid())
   title       String
@@ -226,6 +236,8 @@ model Events {
   venue       String
   userId      String
 }
+
+
 
 enum CategoryType {
   MEETING
