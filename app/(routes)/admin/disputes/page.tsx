@@ -27,8 +27,8 @@ export default function DisputeResolutionMenu () {
       category_users: 'ALL Homeowners',
       category_buttons: [
         {
-          text: 'Dispute Resolution Process',
-          href: '/admin/disputes/dispute-resolution-process',
+          text: 'Dispute Resolution Process Guide',
+          href: '/admin/disputes/process-guide',
           description: 'Read more about the dispute resolution process.'
         },
         {
