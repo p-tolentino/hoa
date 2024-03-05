@@ -8,4 +8,32 @@ export const getPosts = async () => {
   } catch {
     return null;
   }
-};
+}
+
+  export const getDiscussionPosts = async () => {
+    const postType = "DISCUSSION"
+
+    try {
+      const posts = await db.post.findMany({
+        where: { type: postType },
+      });
+  
+      return posts;
+    } catch {
+      return null;
+    }
+  };
+
+    export const getBusinessPosts = async () => {
+      const postType = "BUSINESS"
+
+      try {
+        const posts = await db.post.findMany({
+          where: { type: postType },
+        });
+    
+        return posts;
+      } catch {
+        return null;
+      }
+    };

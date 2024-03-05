@@ -12,16 +12,22 @@ import AdminOfficerLinks from './_components/sideCards/adminOfficerLinks/AdminOf
 import BusinessForumCard from './_components/business/BusinessForumCard'
 import PollsAndSurveysCard from './_components/pollsAndSurveys/PollsAndSurveysCard'
 import EventsCard from './_components/events/EventsCard'
-import { getPosts } from "@/server/data/posts";
+import { getPosts, getDiscussionPosts, getBusinessPosts } from "@/server/data/posts";
 
 const Community = async () => {
 
-  const posts = await getPosts();
-  if (!posts) {
+  const discussion = await getDiscussionPosts();
+  if (!discussion) {
     return null;
   }
 
-  const filteredPosts =posts.filter(post => post.status==="ACTIVE")
+  const business = await getBusinessPosts();
+  if (!business) {
+    return null;
+  }
+
+  const filteredPosts1 =discussion.filter(post => post.status==="ACTIVE")
+  const filteredPosts2 =business.filter(post => post.status==="ACTIVE")
 
   const user = await currentUser();
 
@@ -45,10 +51,10 @@ const Community = async () => {
             <TabsTrigger value='events'>Events</TabsTrigger>
           </TabsList>
           <TabsContent value='discussions'>
-            <DiscussionsCard posts={filteredPosts} user={user.id}/>
+            <DiscussionsCard posts={filteredPosts1} user={user.id}/>
           </TabsContent>
           <TabsContent value='business'>
-            <BusinessForumCard />
+            <BusinessForumCard posts={filteredPosts2} user={user.id}/>
           </TabsContent>
           <TabsContent value='pollsAndSurveys'>
             <PollsAndSurveysCard />

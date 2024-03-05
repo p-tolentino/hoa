@@ -13,43 +13,125 @@ import {
 } from '@chakra-ui/react'
 import { PiThumbsUpFill } from 'react-icons/pi'
 import { formatDistanceToNowStrict } from 'date-fns'
-import { useState } from 'react'
 import CommentButton from './_comment/CommentButton'
 import { DeleteButton } from './DeleteButton'
+import { Post } from "@prisma/client";
+import { getPersonalInfo } from "@/server/data/user-info";
+import {
+  createLike,
+  deleteLike,
+  getLikeCount,
+  checkUserLiked,
+} from "@/server/actions/post";
+import React, { useEffect, useState } from "react";
 
-function BusinessPost () {
-  const postNature = [
-    { nature: 'Food and Drink', color: 'purple.200' },
-    { nature: 'Clothing ', color: 'pink.200' },
-    { nature: 'Household Items', color: 'blue.200' },
-    { nature: 'Home Services', color: 'orange.200' },
-    { nature: 'Other', color: 'teal.200' }
-  ]
+interface PostProps {
+  posts: Post[];
+  user: string;
+}
 
-  const datePosted = new Date(2024, 2, 1)
-  const dateDistance = formatDistanceToNowStrict(datePosted)
+interface UserInfo {
+  fullname: string;
+  position: string | null;
+}
 
-  const [likeCount, setLikeCount] = useState(0)
-  const [liked, setLiked] = useState(false)
+interface UserInfos {
+  [userId: string]: UserInfo;
+}
 
-  const handleLike = () => {
-    if (!liked) {
-      setLikeCount(likeCount + 1)
-    } else {
-      setLikeCount(likeCount - 1)
+const BusinessPost: React.FC<PostProps> = ({ posts, user }) => {
+  const categoryColors = {
+    MEETING: "purple.200",
+    ELECTION: "pink.200",
+    INQUIRY: "blue.200",
+    EVENT: "orange.200",
+    FOODANDDRINK: "purple.200",
+    CLOTHING: "pink.200",
+    HOUSEHOLDITEMS: "blue.200",
+    HOMESERVICES: "orange.200",
+    OTHER: "teal.200",
+  };
+
+  const [usersInfo, setUsersInfo] = useState<UserInfos>({});
+  const [likeCounts, setLikeCounts] = useState<{ [postId: string]: number }>(
+    {}
+  );
+  const [likedByUser, setLikedByUser] = useState<{ [postId: string]: boolean }>(
+    {}
+  );
+
+  useEffect(() => {
+    const fetchUserInfoAndLikes = async () => {
+      const userInfoPromises = posts.map((post) =>
+        getPersonalInfo(post.userId)
+      );
+      const likeCountPromises = posts.map((post) => getLikeCount(post.id));
+      const likedByUserPromises = posts.map((post) =>
+        checkUserLiked(user, post.id)
+      );
+
+      try {
+        const usersDetails = await Promise.all(userInfoPromises);
+        const likesDetails: number[] = await Promise.all(likeCountPromises);
+        const likedDetails: boolean[] = await Promise.all(likedByUserPromises);
+
+        const newUsersInfo: UserInfos = {};
+        const newLikeCounts: { [postId: string]: number } = {};
+        const newLikedByUser: { [postId: string]: boolean } = {};
+
+        usersDetails.forEach((userInfo, index) => {
+          if (userInfo) {
+            const userId = posts[index].userId;
+            newUsersInfo[userId] = {
+              fullname: `${userInfo.firstName} ${userInfo.lastName}`,
+              position: userInfo.position,
+            };
+          }
+        });
+
+        posts.forEach((post, index) => {
+          newLikeCounts[post.id] = likesDetails[index];
+          newLikedByUser[post.id] = likedDetails[index];
+        });
+
+        setUsersInfo(newUsersInfo);
+        setLikeCounts(newLikeCounts);
+        setLikedByUser(newLikedByUser);
+      } catch (error) {
+        console.error("Failed to fetch data:", error);
+      }
+    };
+
+    fetchUserInfoAndLikes();
+  }, [posts, user]);
+
+  const handleLike = async (postId: string) => {
+    const currentlyLiked = likedByUser[postId];
+
+    try {
+      if (currentlyLiked) {
+        // Call your function to delete the like
+        await deleteLike(user, postId);
+        setLikeCounts((prev) => ({ ...prev, [postId]: prev[postId] - 1 }));
+        setLikedByUser((prev) => ({ ...prev, [postId]: false }));
+      } else {
+        // Call your function to create the like
+        await createLike(user, postId);
+        setLikeCounts((prev) => ({
+          ...prev,
+          [postId]: (prev[postId] || 0) + 1,
+        }));
+        setLikedByUser((prev) => ({ ...prev, [postId]: true }));
+      }
+    } catch (error) {
+      console.error("Failed to toggle like:", error);
+      // Optionally, show an error message to the user
     }
-    setLiked(!liked)
-  }
-
-  const handleDeletePost = () => {
-    // add logic to delete the business post here
-    console.log('Post Deleted')
-  }
-
+  };
   return (
     <>
-      {postNature.map((postNature, index) => (
-        <Flex key={index} p='10px'>
+        {posts.map((post) => (
+        <Flex p='10px'>
           <Box
             w='100%'
             h='100%'
@@ -61,17 +143,17 @@ function BusinessPost () {
           >
             <HStack>
               <Heading size='md' fontFamily='font.heading' mb='1%'>
-                Business Title
+              {post.title}
               </Heading>
               <Spacer />
               {/* Delete Button */}
-              <DeleteButton />
+              {post.userId === user && <DeleteButton postId={post.id} />}
             </HStack>
 
             {/* Post Nature of Business */}
             <HStack mb='2%'>
               <Box
-                bg={postNature.color}
+                bg={categoryColors[post.category]}
                 fontFamily='font.heading'
                 fontSize='xs'
                 fontWeight='semibold'
@@ -82,7 +164,7 @@ function BusinessPost () {
                 textAlign='center'
                 rounded='md'
               >
-                {postNature.nature}
+               {post.category}
               </Box>
             </HStack>
 
@@ -96,7 +178,7 @@ function BusinessPost () {
                   fontWeight='bold'
                   fontFamily='font.body'
                 >
-                  Name
+                  {usersInfo[post.userId]?.fullname || "Unknown User"}
                 </Text>
                 <Text
                   id='position'
@@ -104,7 +186,7 @@ function BusinessPost () {
                   fontWeight='bold'
                   fontFamily='font.body'
                 >
-                  Position (Homeowner or Officer)
+                  {usersInfo[post.userId]?.position || "No Position Available"}
                 </Text>
                 <Text
                   id='description'
@@ -112,29 +194,24 @@ function BusinessPost () {
                   py='10px'
                   fontFamily='font.body'
                 >
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Officiis, ratione quia! Hic atque nostrum tempore consectetur
-                  dolores mollitia corporis aliquam labore eligendi, possimus
-                  sequi quidem fuga commodi dolorum nemo non magni earum
-                  consequuntur quod aliquid repellendus ad? Reprehenderit beatae
-                  praesentium eaque, quis fugit dignissimos, inventore omnis
-                  eveniet alias nemo quasi.
+{post.description}
                 </Text>
                 {/* Date distance */}
                 <Text fontFamily='font.body' color='grey' fontSize='xs'>
-                  Posted {dateDistance} ago
+                Posted {formatDistanceToNowStrict(new Date(post.createdAt))}{" "}
+                  ago
                 </Text>
                 {/* Business Post Actions */}
                 <ButtonGroup size='xs' mt='1.5rem'>
                   <Button
                     colorScheme='yellow'
-                    variant={liked ? 'solid' : 'outline'}
+                    variant={likedByUser[post.id] ? "solid" : "outline"}
                     gap='5px'
-                    onClick={handleLike}
+                    onClick={() => handleLike(post.id)} // Pas
                   >
-                    <PiThumbsUpFill /> Like ({likeCount})
+                    <PiThumbsUpFill /> Like ({likeCounts[post.id] || 0})
                   </Button>
-                  <CommentButton />
+                  <CommentButton post={post.id} user={user}/>
                 </ButtonGroup>
               </Box>
             </Flex>
@@ -144,4 +221,4 @@ function BusinessPost () {
     </>
   )
 }
-export default BusinessPost
+export default BusinessPost;
