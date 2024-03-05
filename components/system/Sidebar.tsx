@@ -1,7 +1,6 @@
-"use client";
+'use client'
 
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
+import { cn } from '@/lib/utils'
 
 import {
   FiBriefcase,
@@ -9,23 +8,21 @@ import {
   FiDollarSign,
   FiUserCheck,
   FiUsers,
-  FiMenu,
-  FiHome,
-} from "react-icons/fi";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { PiBinocularsBold, PiBroomFill } from "react-icons/pi";
-import { TfiDashboard as Dashboard } from "react-icons/tfi";
-import { FaUser as User } from "react-icons/fa";
-import { RxGear as Gear, RxExit as Exit } from "react-icons/rx";
-import { LuContact2 as Contact } from "react-icons/lu";
-import { BsNewspaper } from "react-icons/bs";
-import { useCurrentUser } from "@/hooks/use-current-user";
-import { Separator } from "../ui/separator";
-import { LogoutButton } from "../auth/logout-button";
-import { UserRole } from "@prisma/client";
+  FiMenu
+} from 'react-icons/fi'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import { PiBinocularsBold, PiBroomFill } from 'react-icons/pi'
+import { TfiDashboard as Dashboard } from 'react-icons/tfi'
+import { FaUser as User } from 'react-icons/fa'
+import { RxGear as Gear, RxExit as Exit } from 'react-icons/rx'
+import { LuContact2 as Contact } from 'react-icons/lu'
+import { BsNewspaper } from 'react-icons/bs'
+import { useCurrentUser } from '@/hooks/use-current-user'
+import { LogoutButton } from '../auth/logout-button'
+import { UserRole } from '@prisma/client'
 
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react'
 import {
   Flex,
   Text,
@@ -36,183 +33,187 @@ import {
   Icon,
   Menu,
   MenuButton,
-  Box,
-} from "@chakra-ui/react";
-import { UserButton } from "../auth/user-button";
+  Box
+} from '@chakra-ui/react'
+import { UserButton } from '../auth/user-button'
+import NotificationCenter from './NotifcationCenter'
 
-export function Sidebar() {
-  const user = useCurrentUser();
-  const pathname = usePathname();
+export function Sidebar () {
+  const user = useCurrentUser()
+  const pathname = usePathname()
 
   const sidebarRoutes = [
     {
-      label: "Dashboard",
+      label: 'Dashboard',
       href: `/${user?.role.toLowerCase()}`,
       icon: Dashboard,
-      active: pathname === `/${user?.role.toLowerCase()}`,
+      active: pathname === `/${user?.role.toLowerCase()}`
     },
     {
-      label: "Membership",
+      label: 'Membership',
       href: `/${user?.role.toLowerCase()}/membership`,
       icon: FiUserCheck,
-      active: pathname.startsWith(`/${user?.role.toLowerCase()}/membership`),
+      active: pathname.startsWith(`/${user?.role.toLowerCase()}/membership`)
     },
     {
-      label: "Finance Management",
+      label: 'Finance Management',
       href: `/${user?.role.toLowerCase()}/finance`,
       icon: FiDollarSign,
-      active: pathname.startsWith(`/${user?.role.toLowerCase()}/finance`),
+      active: pathname.startsWith(`/${user?.role.toLowerCase()}/finance`)
     },
     {
-      label: "Community Engagement",
+      label: 'Community Engagement',
       href: `/${user?.role.toLowerCase()}/community`,
       icon: FiUsers,
-      active: pathname.startsWith(`/${user?.role.toLowerCase()}/community`),
+      active: pathname.startsWith(`/${user?.role.toLowerCase()}/community`)
     },
     {
-      label: "Dispute Resolution",
+      label: 'Dispute Resolution',
       href: `/${user?.role.toLowerCase()}/disputes`,
       icon: FiBriefcase,
-      active: pathname.startsWith(`/${user?.role.toLowerCase()}/disputes`),
+      active: pathname.startsWith(`/${user?.role.toLowerCase()}/disputes`)
     },
     {
-      label: "Violation Monitoring",
+      label: 'Violation Monitoring',
       href: `/${user?.role.toLowerCase()}/violations`,
       icon: PiBinocularsBold,
-      active: pathname.startsWith(`/${user?.role.toLowerCase()}/violations`),
+      active: pathname.startsWith(`/${user?.role.toLowerCase()}/violations`)
     },
     {
-      label: "Facility Reservation",
+      label: 'Facility Reservation',
       href: `/${user?.role.toLowerCase()}/facility`,
       icon: FiCalendar,
-      active: pathname.startsWith(`/${user?.role.toLowerCase()}/facility`),
+      active: pathname.startsWith(`/${user?.role.toLowerCase()}/facility`)
     },
     {
-      label: "Maintenance Handling",
+      label: 'Maintenance Handling',
       href: `/${user?.role.toLowerCase()}/maintenance`,
       icon: PiBroomFill,
-      active: pathname.startsWith(`/${user?.role.toLowerCase()}/maintenance`),
+      active: pathname.startsWith(`/${user?.role.toLowerCase()}/maintenance`)
     },
     {
-      label: "Election Management",
+      label: 'Election Management',
       href: `/${user?.role.toLowerCase()}/election`,
       icon: BsNewspaper,
-      active: pathname.startsWith(`/${user?.role.toLowerCase()}/election`),
-    },
-  ];
+      active: pathname.startsWith(`/${user?.role.toLowerCase()}/election`)
+    }
+  ]
 
-  const membershipRoutes = [];
+  const membershipRoutes = []
 
-  const financeRoutes = [];
+  const financeRoutes = []
 
-  const communityRoutes = [];
+  const communityRoutes = []
 
-  const disputeRoutes = [];
+  const disputeRoutes = []
 
-  const violationRoutes = [];
+  const violationRoutes = []
 
-  const facilityRoutes = [];
+  const facilityRoutes = []
 
-  const maintenanceRoutes = [];
+  const maintenanceRoutes = []
 
-  const electionRoutes = [];
+  const electionRoutes = []
 
   const profileRoutes = [
     {
-      label: "My Profile",
+      label: 'My Profile',
       href: `/${user?.role.toLowerCase()}/profile`,
       icon: User,
-      active: pathname === `/${user?.role.toLowerCase()}/profile`,
+      active: pathname === `/${user?.role.toLowerCase()}/profile`
     },
     {
-      label: "Settings",
+      label: 'Settings',
       href: `/${user?.role.toLowerCase()}/settings`,
       icon: Gear,
-      active: pathname === `/${user?.role.toLowerCase()}/settings`,
-    },
-  ];
+      active: pathname === `/${user?.role.toLowerCase()}/settings`
+    }
+  ]
 
   // For responsiveness when window is resized
-  const [sidebarSize, changeSidebarSize] = useState("large");
+  const [sidebarSize, changeSidebarSize] = useState('large')
   useEffect(() => {
     const handleResize = () => {
-      const isSmallScreen = window.innerWidth <= 768; // You can adjust the breakpoint (768) as needed
-      changeSidebarSize(isSmallScreen ? "small" : "large");
-    };
+      const isSmallScreen = window.innerWidth <= 768 // You can adjust the breakpoint (768) as needed
+      changeSidebarSize(isSmallScreen ? 'small' : 'large')
+    }
     // Initial check on mount
-    handleResize();
+    handleResize()
     // Event listener for window resize
-    window.addEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize)
     // Cleanup the event listener on component unmount
     return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [])
 
   return (
     <Flex
-      pos="sticky"
+      pos='sticky'
       top={0}
-      h="100vh"
-      minW={sidebarSize === "small" ? "75px" : "280px"}
-      flexDir="column"
-      justifyContent="space-between"
-      bgColor={"brand.500"}
-      color={"white"}
+      h='100vh'
+      minW={sidebarSize === 'small' ? '75px' : '280px'}
+      flexDir='column'
+      justifyContent='space-between'
+      bgColor={'brand.500'}
+      color={'white'}
       zIndex={3}
     >
       <Flex
-        p={sidebarSize === "small" ? "17%" : "5%"}
-        flexDir="column"
-        w="100%"
-        alignItems={sidebarSize === "small" ? "center" : "flex-start"}
-        as="nav"
+        p={sidebarSize === 'small' ? '17%' : '5%'}
+        flexDir='column'
+        w='100%'
+        alignItems={sidebarSize === 'small' ? 'center' : 'flex-start'}
+        as='nav'
       >
-        <IconButton
-          background="none"
-          color={"white"}
-          _hover={{ background: "none" }}
-          icon={<FiMenu />}
-          onClick={() => {
-            if (sidebarSize === "small") changeSidebarSize("large");
-            else changeSidebarSize("small");
-          }}
-          aria-label={""}
-          alignSelf={"flex-start"}
-        />
+        <Flex justify='space-between' w='100%'>
+          <IconButton
+            background='none'
+            color={'white'}
+            _hover={{ background: 'none' }}
+            icon={<FiMenu />}
+            onClick={() => {
+              if (sidebarSize === 'small') changeSidebarSize('large')
+              else changeSidebarSize('small')
+            }}
+            aria-label={''}
+            alignSelf={'flex-start'}
+          />
+          <NotificationCenter />
+        </Flex>
 
-        {sidebarRoutes.map((route) => {
+        {sidebarRoutes.map(route => {
           return (
             <Box
-              mt={"1.4rem"}
-              w="100%"
-              alignItems={sidebarSize === "small" ? "center" : "left"}
-              fontSize={"sm"}
-              fontFamily={"font.body"}
+              mt={'1.4rem'}
+              w='100%'
+              alignItems={sidebarSize === 'small' ? 'center' : 'left'}
+              fontSize={'sm'}
+              fontFamily={'font.body'}
               key={route.href}
             >
-              <Menu placement="right" key={route.label}>
+              <Menu placement='right' key={route.label}>
                 <Link
                   href={route.href}
                   className={cn(
-                    "p-3 rounded-lg no-underline hover:bg-[#688f6e] hover:text-white transition",
-                    route.active ? "bg-[#F0CB5B]" : "bg-transparent"
+                    'p-3 rounded-lg no-underline hover:bg-[#688f6e] hover:text-white transition',
+                    route.active ? 'bg-[#F0CB5B]' : 'bg-transparent'
                   )}
                 >
-                  <MenuButton w="100%">
+                  <MenuButton w='100%'>
                     <Flex>
                       <Icon
                         as={route.icon}
-                        fontSize="xl"
-                        color={route.active ? "black" : "white"}
-                        className="w-5 h-5"
+                        fontSize='xl'
+                        color={route.active ? 'black' : 'white'}
+                        className='w-5 h-5'
                       />
                       <Text
-                        textAlign={"left"}
+                        textAlign={'left'}
                         ml={5}
-                        display={sidebarSize === "small" ? "none" : "flex"}
-                        color={route.active ? "black" : "white"}
-                        fontWeight={route.active ? "bold" : "normal"}
+                        display={sidebarSize === 'small' ? 'none' : 'flex'}
+                        color={route.active ? 'black' : 'white'}
+                        fontWeight={route.active ? 'bold' : 'normal'}
                       >
                         {route.label}
                       </Text>
@@ -221,42 +222,42 @@ export function Sidebar() {
                 </Link>
               </Menu>
             </Box>
-          );
+          )
         })}
       </Flex>
 
       <Flex
-        p="1rem"
-        flexDir="column"
-        w="100%"
-        alignItems={sidebarSize === "small" ? "center" : "flex-start"}
+        p='1rem'
+        flexDir='column'
+        w='100%'
+        alignItems={sidebarSize === 'small' ? 'center' : 'flex-start'}
         mb={4}
       >
         <Divider
-          display={sidebarSize === "small" ? "none" : "flex"}
-          mt={"1rem"}
+          display={sidebarSize === 'small' ? 'none' : 'flex'}
+          mt={'1rem'}
         />
         <Flex
           mt={4}
-          align="center"
-          display={sidebarSize === "small" ? "none" : "flex"}
+          align='center'
+          display={sidebarSize === 'small' ? 'none' : 'flex'}
         >
           <Avatar
-            size="sm"
-            src={user?.image || ""}
-            bg="yellow.500"
-            icon={<User className="w-4 h-4" />}
+            size='sm'
+            src={user?.image || ''}
+            bg='yellow.500'
+            icon={<User className='w-4 h-4' />}
           />
-          <Flex flexDir="column" ml={4}>
+          <Flex flexDir='column' ml={4}>
             <Heading
-              as="h3"
-              size="sm"
-              fontFamily="font.heading"
-              className="capitalize"
+              as='h3'
+              size='sm'
+              fontFamily='font.heading'
+              className='capitalize'
             >
-              {`${user?.info?.firstName || "-"} ${user?.info?.lastName || ""}`}
+              {`${user?.info?.firstName || '-'} ${user?.info?.lastName || ''}`}
             </Heading>
-            <Text color="brand.300" fontFamily="font.body">
+            <Text color='brand.300' fontFamily='font.body'>
               {user?.role}
             </Text>
           </Flex>
@@ -264,51 +265,51 @@ export function Sidebar() {
 
         <Flex
           mt={3}
-          fontSize={"sm"}
-          display={sidebarSize === "small" ? "none" : "flex"}
+          fontSize={'sm'}
+          display={sidebarSize === 'small' ? 'none' : 'flex'}
         >
-          <Text as={Link} href={`/user/profile`} fontFamily="font.body">
+          <Text as={Link} href={`/user/profile`} fontFamily='font.body'>
             My Profile
           </Text>
         </Flex>
         <Flex
           mt={2}
-          fontSize={"sm"}
-          display={sidebarSize === "small" ? "none" : "flex"}
+          fontSize={'sm'}
+          display={sidebarSize === 'small' ? 'none' : 'flex'}
         >
           <Text
             as={Link}
             href={`/${user?.role.toLowerCase()}/settings`}
-            fontFamily="font.body"
+            fontFamily='font.body'
           >
             Settings
           </Text>
         </Flex>
         <Flex
           mt={2}
-          fontSize={"sm"}
-          display={sidebarSize === "small" ? "none" : "flex"}
+          fontSize={'sm'}
+          display={sidebarSize === 'small' ? 'none' : 'flex'}
         >
           <LogoutButton>
-            <Text fontFamily="font.body">Logout</Text>
+            <Text fontFamily='font.body'>Logout</Text>
           </LogoutButton>
         </Flex>
       </Flex>
 
       <Flex
-        p="1rem"
-        flexDir="column"
-        w="100%"
-        alignItems={sidebarSize === "small" ? "center" : "flex-start"}
+        p='1rem'
+        flexDir='column'
+        w='100%'
+        alignItems={sidebarSize === 'small' ? 'center' : 'flex-start'}
         mb={4}
         mt={4}
-        align="center"
-        display={sidebarSize === "small" ? "flex" : "none"}
+        align='center'
+        display={sidebarSize === 'small' ? 'flex' : 'none'}
       >
         <UserButton />
       </Flex>
     </Flex>
-  );
+  )
 }
 
 /* V2 */
