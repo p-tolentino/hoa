@@ -7,11 +7,11 @@ export default function EventDetails () {
   return (
     <div className='px-10'>
       <Separator className='mt-8 mb-5' />
-      <Box h='200px'>
+      <Box>
         <Text as='span' fontSize='xl' fontWeight='bold'>
           Event Title
         </Text>
-        <ScrollArea className='h-[150px] rounded-md'>
+        <ScrollArea className='h-[120px] rounded-md'>
           <Stack spacing={3} p={4}>
             <Flex gap={20}>
               <Box>

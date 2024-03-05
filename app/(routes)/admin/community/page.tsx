@@ -36,8 +36,7 @@ const Community = async () => {
         description='Navigate through the Community Engagement module'
       />
       <Separator className='mt-4 mb-6' />
-      <Flex className='gap-10'></Flex>
-      <Flex gap='2rem' w='80vw'>
+      <Flex gap='2rem' w='78vw'>
         <Tabs defaultValue='discussions' className='w-[70vw]'>
           <TabsList className='grid w-full grid-cols-4'>
             <TabsTrigger value='discussions'>Discussions</TabsTrigger>
@@ -58,7 +57,7 @@ const Community = async () => {
             <EventsCard />
           </TabsContent>
         </Tabs>
-        <Flex flexDir='column' w='20vw' gap='2rem'>
+        <Flex flexDir='column' gap='2rem'>
           <AnnouncementBoard />
           <HomeownerResources />
           <AdminOfficerLinks />
