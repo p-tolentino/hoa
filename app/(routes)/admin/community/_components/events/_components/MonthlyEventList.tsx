@@ -79,12 +79,12 @@ const handleMonthEvents = (index: number) => {
 export function MonthlyEventList () {
   return (
     <div className='px-10'>
-      <Carousel className='w-[1000px]'>
+      <Carousel>
         <CarouselContent className='-mx-1'>
           {Array.from({ length: 12 }).map((_, index) => (
             <CarouselItem key={index} className='pl-1 basis-1/3'>
               <div className='p-1'>
-                <Card className='h-[320px]'>
+                <Card className='h-[250px]'>
                   {/* Monthly Events */}
                   <CardContent className='p-6'>
                     {/* Month and Year */}
@@ -96,7 +96,7 @@ export function MonthlyEventList () {
                     {handleMonthEvents(index + 1).some(
                       event => event.date && event.title
                     ) ? (
-                      <ScrollArea className='h-[230px] rounded-md border'>
+                      <ScrollArea className='h-[160px] rounded-md border'>
                         <Table size='sm' variant='striped'>
                           <Tbody>
                             {handleMonthEvents(index + 1).map(event => (
@@ -114,7 +114,7 @@ export function MonthlyEventList () {
                       </ScrollArea>
                     ) : (
                       // Scenario: No events to show for the month
-                      <Center h='230px' color='grey'>
+                      <Center h='100px' color='grey'>
                         No events to show.
                       </Center>
                     )}

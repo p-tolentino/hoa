@@ -25,7 +25,7 @@ import CreateDiscussionPostButton from './_components/CreateDiscussionPostButton
 export default function DiscussionsCard () {
   return (
     <>
-      <Card className='h-[75vh]'>
+      <Card className='h-[70vh]'>
         <Flex justifyContent='space-between'>
           <CardHeader>
             <CardTitle>Discussions</CardTitle>
@@ -70,7 +70,7 @@ export default function DiscussionsCard () {
 
           {/* Wrap the PollPosts and SurveyPosts inside ScrollArea */}
           <ScrollArea
-            style={{ maxHeight: 'calc(70vh - 120px)', overflowY: 'auto' }}
+            style={{ maxHeight: 'calc(70vh - 180px)', overflowY: 'auto' }}
           >
             <DiscussionPost />
             <DiscussionPost />

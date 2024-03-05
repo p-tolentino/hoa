@@ -25,7 +25,7 @@ import CreateBusinessPostButton from './_components/CreateBusinessPostButton'
 export default function BusinessForumCard () {
   return (
     <>
-      <Card className='h-[75vh]'>
+      <Card className='h-[70vh]'>
         <Flex justifyContent='space-between'>
           <CardHeader>
             <CardTitle>Business Forum</CardTitle>
@@ -72,7 +72,7 @@ export default function BusinessForumCard () {
 
           {/* Wrap the PollPosts and SurveyPosts inside ScrollArea */}
           <ScrollArea
-            style={{ maxHeight: 'calc(70vh - 120px)', overflowY: 'auto' }}
+            style={{ maxHeight: 'calc(70vh - 180px)', overflowY: 'auto' }}
           >
             <BusinessPosts />
             {/* Like and Dislike buttons in all posts reflect the same action since a map function is used to reflect a post for each nature of business  */}
