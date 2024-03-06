@@ -10,9 +10,12 @@ import {
 } from "@/components/ui/dialog";
 import { Stack, Text, Box, Divider, Progress, Button } from "@chakra-ui/react";
 
-import React, { useEffect, useState } from 'react';
-import { getQuestionsAndOptionsByPollId, getOptionResponseCount } from '@/server/data/polls'
-import { Polls, User } from '@prisma/client'
+import React, { useEffect, useState } from "react";
+import {
+  getQuestionsAndOptionsByPollId,
+  getOptionResponseCount,
+} from "@/server/data/polls";
+import { Polls, User } from "@prisma/client";
 
 interface PollProps {
   poll: Polls;
@@ -38,8 +41,7 @@ interface PollDetails {
   questions: Question[];
 }
 
-export default function Answer ({poll, user}: PollProps) {
-
+export default function Answer({ poll, user }: PollProps) {
   const [pollDetails, setPollDetails] = useState<Question[] | null>(null);
   const [isLoading, setIsLoading] = useState(true); // State to track loading
 
@@ -72,7 +74,6 @@ export default function Answer ({poll, user}: PollProps) {
     fetchPollDetailsAndCounts();
   }, [poll.id]);
 
-
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -89,13 +90,13 @@ export default function Answer ({poll, user}: PollProps) {
               <DialogTitle>Report</DialogTitle>
               <DialogDescription>View the results.</DialogDescription>
             </DialogHeader>
-  
+
             {/* Form Content */}
             <Stack spacing="15px">
               <Text fontSize="sm" fontWeight="semibold">
                 Title:
               </Text>
-              <Text fontSize="sm" fontFamily="font.body">
+              <Text fontSize="md" fontWeight="semibold" fontFamily="font.body">
                 {poll.title}
               </Text>
               <Text fontSize="sm" fontWeight="semibold">
@@ -105,34 +106,46 @@ export default function Answer ({poll, user}: PollProps) {
                 {poll.description}
               </Text>
               <Divider />
-  
+
               {/* Poll Result */}
               <Box p="10px" maxH="300px" overflowY="auto">
                 <Stack spacing="15px">
-                  {pollDetails && pollDetails.map((question, questionIndex) => (
-                    <React.Fragment key={question.id}>
-                      <Text fontSize="sm" fontWeight="semibold">
-                        Question {questionIndex + 1}:
-                      </Text>
-                      <Text fontSize="sm" fontFamily="font.body">
-                        {question.text}
-                      </Text>
-                      {question.options.map((option, optionIndex) => {
-                        // Calculate the total count for the question to use for percentage calculation
-                        const totalCountForQuestion = question.options.reduce((acc, curr) => acc + curr.count, 0);
-                        const percentage = totalCountForQuestion > 0 ? (option.count / totalCountForQuestion) * 100 : 0;
-  
-                        return (
-                          <Box key={option.id}>
-                            <Text fontSize="sm" fontFamily="font.body">
-                              Option {optionIndex + 1}: {option.text} - Votes: {option.count}
-                            </Text>
-                            <Progress colorScheme="yellow" size="sm" value={percentage} /> 
-                          </Box>
-                        );
-                      })}
-                    </React.Fragment>
-                  ))}
+                  {pollDetails &&
+                    pollDetails.map((question, questionIndex) => (
+                      <React.Fragment key={question.id}>
+                        <Text fontSize="sm" fontWeight="semibold">
+                          Question {questionIndex + 1}:
+                        </Text>
+                        <Text fontSize="sm" fontFamily="font.body">
+                          {question.text}
+                        </Text>
+                        {question.options.map((option, optionIndex) => {
+                          // Calculate the total count for the question to use for percentage calculation
+                          const totalCountForQuestion = question.options.reduce(
+                            (acc, curr) => acc + curr.count,
+                            0
+                          );
+                          const percentage =
+                            totalCountForQuestion > 0
+                              ? (option.count / totalCountForQuestion) * 100
+                              : 0;
+
+                          return (
+                            <Box key={option.id}>
+                              <Text fontSize="sm" fontFamily="font.body">
+                                Option {optionIndex + 1}: {option.text} - Votes:{" "}
+                                {option.count}
+                              </Text>
+                              <Progress
+                                colorScheme="yellow"
+                                size="sm"
+                                value={percentage}
+                              />
+                            </Box>
+                          );
+                        })}
+                      </React.Fragment>
+                    ))}
                 </Stack>
               </Box>
             </Stack>
