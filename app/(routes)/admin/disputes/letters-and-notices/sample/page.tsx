@@ -1,4 +1,5 @@
 import { Box, Text, Button, Center, Stack, Flex } from '@chakra-ui/react'
+import Link from 'next/link'
 
 export default function MeetingNotice () {
   const name = 'Juan Dela Cruz'
@@ -8,6 +9,11 @@ export default function MeetingNotice () {
 
   return (
     <div>
+      <Box textAlign='right'>
+        <Button as={Link} href='/admin/disputes/letters-and-notices'>
+          Go Back
+        </Button>
+      </Box>
       <Center flexDir='column'>
         <Text
           my='10px'
