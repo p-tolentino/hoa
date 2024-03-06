@@ -1,7 +1,6 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
 
 import {
   FiBriefcase,
@@ -9,7 +8,6 @@ import {
   FiUserCheck,
   FiUsers,
   FiMenu,
-  FiHome,
 } from "react-icons/fi";
 import Link from "next/link";
 import { TbCurrencyPeso } from "react-icons/tb";
@@ -39,6 +37,7 @@ import {
   Box,
 } from "@chakra-ui/react";
 import { UserButton } from "../auth/user-button";
+import NotificationCenter from "./NotifcationCenter";
 
 export function Sidebar() {
   const user = useCurrentUser();
@@ -168,18 +167,21 @@ export function Sidebar() {
         alignItems={sidebarSize === "small" ? "center" : "flex-start"}
         as="nav"
       >
-        <IconButton
-          background="none"
-          color={"white"}
-          _hover={{ background: "none" }}
-          icon={<FiMenu />}
-          onClick={() => {
-            if (sidebarSize === "small") changeSidebarSize("large");
-            else changeSidebarSize("small");
-          }}
-          aria-label={""}
-          alignSelf={"flex-start"}
-        />
+        <Flex justify="space-between" w="100%">
+          <IconButton
+            background="none"
+            color={"white"}
+            _hover={{ background: "none" }}
+            icon={<FiMenu />}
+            onClick={() => {
+              if (sidebarSize === "small") changeSidebarSize("large");
+              else changeSidebarSize("small");
+            }}
+            aria-label={""}
+            alignSelf={"flex-start"}
+          />
+          <NotificationCenter />
+        </Flex>
 
         {sidebarRoutes.map((route) => {
           if (route.label === "Membership" && user?.role === UserRole.USER) {
