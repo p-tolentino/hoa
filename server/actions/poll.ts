@@ -64,3 +64,28 @@ export const updateStatus = async(pollId:string, status: string) => {
   return { error: "Failed to create poll" };
 }
 };
+
+export const createResponse = async (pollId: string, questionId: string, optionId: string ) => {
+  const user = await currentUser();
+
+  // No Current User
+  if (!user) {
+    return { error: "Unauthorized" };
+  }
+
+  try {
+    const response = await db.response.create({
+      data: {
+        userId: user.id,
+        pollId:pollId,
+        questionId: questionId,
+        optionId: optionId,
+      },
+    });
+    return response;
+  } catch (error) {
+    console.error('Failed to create response:', error);
+    // Depending on your error handling strategy, you might want to throw the error, return null, or handle it differently
+    throw new Error('Failed to create response');
+  }
+}

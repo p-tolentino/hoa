@@ -138,10 +138,10 @@ const Post: React.FC<PollProps> = ({ polls, user }) => {
                 {/* Survey Button */}
                 {poll.status == 'ACTIVE' ? (
                   <HStack>
-                    <Answer />
+                    <Answer poll={poll} user={user}/>
                   </HStack>
                 ) : (
-                  <Report />
+                  <Report poll={poll} user={user}/>
                 )}
               </HStack>
 
