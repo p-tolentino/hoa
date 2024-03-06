@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import { Button, Flex, useToast } from "@chakra-ui/react";
 import {
   AlertDialog,
@@ -11,7 +11,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { PendingPostColumn } from './columns'; // Assuming this is the correct import path
+import { PendingPostColumn } from "./columns"; // Assuming this is the correct import path
 import { updatePostStatus } from "@/server/actions/post";
 import { useRouter } from "next/navigation";
 
@@ -26,19 +26,19 @@ const RowActions: React.FC<RowActionProps> = ({ data }) => {
   const handleApprove = async () => {
     try {
       const response = await updatePostStatus(data.id); // Assuming updatePostStatus now also takes a status argument
-      if(response.error) {
+      if (response.error) {
         toast({
-          title: 'Error',
+          title: "Error",
           description: response.error,
-          status: 'error',
+          status: "error",
           duration: 5000,
           isClosable: true,
         });
       } else {
         toast({
-          title: 'Post Approved',
-          description: 'The post has been successfully approved.',
-          status: 'success',
+          title: "Post Approved",
+          description: "The post has been successfully approved.",
+          status: "success",
           duration: 5000,
           isClosable: true,
         });
@@ -46,38 +46,42 @@ const RowActions: React.FC<RowActionProps> = ({ data }) => {
         // Optionally, refresh the data or navigate as needed
       }
     } catch (error) {
-      console.error('Failed to approve post:', error);
+      console.error("Failed to approve post:", error);
       // Handle error appropriately
     }
   };
- return (
-  <Flex gap={2}>
-  {/* Approve Button */}
-  <AlertDialog>
-    <AlertDialogTrigger asChild>
-      <Button size="sm" colorScheme="green">
-        Approve
-      </Button>
-    </AlertDialogTrigger>
-    <AlertDialogContent>
-      <AlertDialogHeader>
-        <AlertDialogTitle>Approve Request to Post</AlertDialogTitle>
-      </AlertDialogHeader>
-      <AlertDialogDescription>
-        Are you sure you want to approve the post submitted by {data.submittedBy}? This action allows the post to reflect in the Community Engagement module.
-      </AlertDialogDescription>
-      <AlertDialogFooter>
-        <AlertDialogCancel>Cancel</AlertDialogCancel>
-        <AlertDialogAction className="bg-green-500" onClick={handleApprove}>Continue</AlertDialogAction>
-      </AlertDialogFooter>
-    </AlertDialogContent>
-  </AlertDialog>
+  return (
+    <Flex gap={2}>
+      {/* Approve Button */}
+      <AlertDialog>
+        <AlertDialogTrigger asChild>
+          <Button size="sm" colorScheme="green" fontFamily="font.body">
+            Approve
+          </Button>
+        </AlertDialogTrigger>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Approve Request to Post</AlertDialogTitle>
+          </AlertDialogHeader>
+          <AlertDialogDescription className="text-justify">
+            Are you sure you want to approve the post submitted by{" "}
+            {data.submittedBy}? This action allows the post to reflect in the
+            Community Engagement module.
+          </AlertDialogDescription>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction className="bg-green-500" onClick={handleApprove}>
+              Continue
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
-  {/* Decline Button and other parts of the component remain unchanged */}
+      {/* Decline Button and other parts of the component remain unchanged */}
       {/* Decline Button */}
       <AlertDialog>
         <AlertDialogTrigger asChild>
-          <Button size="sm" colorScheme="red">
+          <Button size="sm" colorScheme="red" fontFamily="font.body">
             Decline
           </Button>
         </AlertDialogTrigger>
@@ -85,12 +89,16 @@ const RowActions: React.FC<RowActionProps> = ({ data }) => {
           <AlertDialogHeader>
             <AlertDialogTitle>Decline Request to Post</AlertDialogTitle>
           </AlertDialogHeader>
-          <AlertDialogDescription>
-            Are you sure you want to decline the post submitted by on  This action will delete this post from the list of pending posts and will not appear in the Community Engagement module.
+          <AlertDialogDescription className="text-justify">
+            Are you sure you want to decline the post submitted by on This
+            action will delete this post from the list of pending posts and will
+            not appear in the Community Engagement module.
           </AlertDialogDescription>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction className="bg-red-500">Continue</AlertDialogAction>
+            <AlertDialogAction className="bg-red-500">
+              Continue
+            </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
