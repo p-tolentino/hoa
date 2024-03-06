@@ -92,7 +92,16 @@ export function MonthlyEventList ({events, user}:EventProps) {
         <CarouselPrevious />
         <CarouselNext />
       </Carousel>
-      <Modal isOpen={isOpen} onClose={onClose}>
+      
+      {selectedEvent && (
+            <EventDetails
+              title={selectedEvent.title}
+              date={format(new Date(selectedEvent.date), 'PPP')}
+              venue={selectedEvent.venue}
+              description={selectedEvent.description}
+            />
+          )}
+      {/* <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
           {selectedEvent && (
@@ -104,7 +113,8 @@ export function MonthlyEventList ({events, user}:EventProps) {
             />
           )}
         </ModalContent>
-      </Modal>
+      </Modal> */}
+
     </div>
   );
 };
