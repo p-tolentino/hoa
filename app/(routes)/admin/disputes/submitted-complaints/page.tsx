@@ -7,7 +7,7 @@ export default function SubmittedComplaints () {
       id: '12345',
       status: 'Pending',
       dateSubmitted: '02/14/24',
-      officerInCharge: 'Officer 1',
+      officerInCharge: 'G&A Officer 1',
       title: 'ABCD',
       viewComplaint: 'Sample Link to Complaint 1'
     },
@@ -15,7 +15,7 @@ export default function SubmittedComplaints () {
       id: '67890',
       status: 'In Process',
       dateSubmitted: '02/20/24',
-      officerInCharge: 'Officer 2',
+      officerInCharge: 'G&A Officer 2',
       title: 'EFGH',
       viewComplaint: 'Sample Link to Complaint 2'
     },
@@ -23,7 +23,7 @@ export default function SubmittedComplaints () {
       id: '54321',
       status: 'Resolved',
       dateSubmitted: '02/27/24',
-      officerInCharge: 'Offocer 3',
+      officerInCharge: 'G&A Offocer 3',
       title: 'WSYZ',
       viewComplaint: 'Sample Link to Complaint 3'
     }

@@ -79,28 +79,6 @@ export const RowActions: React.FC<RowActionProps> = ({ data }) => {
                         G&A Committee Member 3
                       </SelectItem>
                     </SelectGroup>
-                    {/* HOA Officers */}
-                    <SelectGroup>
-                      <SelectLabel>HOA Officers</SelectLabel>
-                      <SelectItem value='hoaPresident'>
-                        HOA President
-                      </SelectItem>
-                      <SelectItem value='hoaVicePresident'>
-                        HOA Vice President
-                      </SelectItem>
-                      <SelectItem value='hoaTreasurer'>
-                        HOA Treasurer
-                      </SelectItem>
-                      <SelectItem value='hoaAdmin'>HOA Admin</SelectItem>
-                    </SelectGroup>
-                    {/* HOA Board of Directors */}
-                    <SelectGroup>
-                      <SelectLabel>HOA Board of Directors</SelectLabel>
-                      <SelectItem value='bod1'>BOD 1</SelectItem>
-                      <SelectItem value='bod2'>BOD 2</SelectItem>
-                      <SelectItem value='bod3'>BOD 3</SelectItem>
-                      <SelectItem value='bod3'>BOD 4</SelectItem>
-                    </SelectGroup>
                   </SelectContent>
                 </Select>
               </FormControl>
@@ -142,10 +120,9 @@ export const RowActions: React.FC<RowActionProps> = ({ data }) => {
             </AlertDialogTrigger>
             <AlertDialogContent>
               <AlertDialogHeader>
-                <AlertDialogTitle>Resolve Violation Report</AlertDialogTitle>
+                <AlertDialogTitle>Resolve Complaint</AlertDialogTitle>
                 <AlertDialogDescription>
-                  This action resolves the violation report submitted by the
-                  homeowner.
+                  This action resolves the complaint submitted by the homeowner.
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
