@@ -14,6 +14,7 @@ import PollsAndSurveysCard from './_components/pollsAndSurveys/PollsAndSurveysCa
 import EventsCard from './_components/events/EventsCard'
 import { getPosts, getDiscussionPosts, getBusinessPosts } from "@/server/data/posts";
 import { getPolls } from "@/server/data/polls";
+import { getEvents } from "@/server/data/events";
 
 const Community = async () => {
 
@@ -33,6 +34,11 @@ const Community = async () => {
   
   const polls = await getPolls();
   if (!polls) {
+    return null;
+  }
+
+  const events = await getEvents();
+  if (!events) {
     return null;
   }
   
@@ -67,7 +73,7 @@ const Community = async () => {
             <PollsAndSurveysCard polls={polls} user={user.id}/>
           </TabsContent>
           <TabsContent value='events'>
-            <EventsCard />
+            <EventsCard events={events} user={user.id}/>
           </TabsContent>
         </Tabs>
         <Flex flexDir='column' gap='2rem'>

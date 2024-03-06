@@ -12,26 +12,33 @@ import React from 'react'
 import { MonthlyEventList } from './_components/MonthlyEventList'
 import CreateEventButton from './_components/CreateEventButton'
 import EventDetails from './_components/EventDetails'
+import { Events, User } from '@prisma/client'
 
-export default function EventsCard () {
+interface EventProps {
+  events: Events[];
+  user: string;
+}
+
+
+export default function EventsCard ({events, user}:EventProps) {
   return (
     <div>
       <Card className='h-[70vh]'>
         <Flex justifyContent='space-between'>
           <CardHeader>
-            <CardTitle>Business Forum</CardTitle>
+            <CardTitle>Events</CardTitle>
             <CardDescription>
-              Promote your business and view the businesses of Homeowners.
+              View Community Calendar
             </CardDescription>
           </CardHeader>
           <HStack p='20px'>
             {/* Create Event Button*/}
-            <CreateEventButton />
+            <CreateEventButton user={user}/>
           </HStack>
         </Flex>
         <CardContent className='space-y-2 w-[58vw]'>
-          <MonthlyEventList />
-          <EventDetails />
+          <MonthlyEventList events={events} user={user}/>
+          {/* <EventDetails /> */}
         </CardContent>
       </Card>
     </div>

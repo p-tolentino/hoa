@@ -235,4 +235,11 @@ export const PollSchema = z.object({
 }, {
   // Custom error message
   message: "End date cannot be in the past, and start date must be before end date.",
-});;
+});
+
+export const newEventSchema = z.object({
+  title: z.string(),
+  date: z.string(),
+  venue: z.string(),
+  description: z.string(),
+})
