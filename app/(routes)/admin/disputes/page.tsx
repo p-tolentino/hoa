@@ -57,6 +57,12 @@ export default function DisputeResolutionMenu () {
           href: '/admin/disputes/submitted-complaints',
           description:
             "View your submitted complaints to the Homeowners' Association and monitor its progress."
+        },
+        {
+          text: 'Dispute Letters and Notices',
+          href: '/admin/disputes/letters-and-notices',
+          description:
+            "View received dispute letters and notices from the Homeowners' Association."
         }
       ]
     }
