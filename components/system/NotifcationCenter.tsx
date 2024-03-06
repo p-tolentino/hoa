@@ -38,7 +38,7 @@ export default function NotificationCenter () {
       description:
         'The meeting is scheduled for 1 March 2024, 3:00PM at the HOA Admin Office. Your presence is crucial for resolving this matter.',
       date: '1 day ago',
-      href: '/admin/disputes/notices'
+      href: '/admin/disputes/letters-and-notices/sample'
     },
     {
       isNew: true,
