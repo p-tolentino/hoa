@@ -1,6 +1,6 @@
 'use client'
 
-import { Button, FormControl, Input, Text } from '@chakra-ui/react'
+import { Button, FormControl, useToast } from '@chakra-ui/react'
 import {
   Dialog,
   DialogContent,
@@ -21,6 +21,16 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger
 } from '@/components/ui/alert-dialog'
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue
+} from '@/components/ui/select'
+
 import { ListOfComplaintsColumn } from './columns'
 
 interface RowActionProps {
@@ -28,63 +38,137 @@ interface RowActionProps {
 }
 
 export const RowActions: React.FC<RowActionProps> = ({ data }) => {
+  const toast = useToast()
+
   return (
     <div>
       {/* Status: PENDING = Button: Assign Officer */}
       {data.status === 'Pending' && (
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button size='sm'>Assign Officer-in-Charge</Button>
-          </DialogTrigger>
-          <DialogContent className='sm:max-w-[425px]'>
-            <DialogHeader>
-              <DialogTitle>Assign Officer-in-Charge</DialogTitle>
-              <DialogDescription>
-                Assign the officer-in-charge for handling this violation report.
-              </DialogDescription>
-            </DialogHeader>
-            <form>
+        <form>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button size='sm'>Assign Officer-in-Charge</Button>
+            </DialogTrigger>
+            <DialogContent className='sm:max-w-[425px]'>
+              <DialogHeader>
+                <DialogTitle>Assign Officer-in-Charge</DialogTitle>
+                <DialogDescription>
+                  Assign the officer-in-charge for handling this violation
+                  report.
+                </DialogDescription>
+              </DialogHeader>
+
               <FormControl isRequired>
-                <Input
-                  type='string'
-                  size='sm'
-                  placeholder="Enter an officer's name..."
-                />
+                <Select>
+                  <SelectTrigger>
+                    <SelectValue placeholder='Select an officer-in-charge' />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {/* Grievance and Adjudication Committee */}
+                    <SelectGroup>
+                      <SelectLabel>
+                        Grievance and Adjudication Committee
+                      </SelectLabel>
+                      <SelectItem value='g&a1'>
+                        G&A Committee Member 1
+                      </SelectItem>
+                      <SelectItem value='g&a2'>
+                        G&A Committee Member 2
+                      </SelectItem>
+                      <SelectItem value='g&a3'>
+                        G&A Committee Member 3
+                      </SelectItem>
+                    </SelectGroup>
+                    {/* HOA Officers */}
+                    <SelectGroup>
+                      <SelectLabel>HOA Officers</SelectLabel>
+                      <SelectItem value='hoaPresident'>
+                        HOA President
+                      </SelectItem>
+                      <SelectItem value='hoaVicePresident'>
+                        HOA Vice President
+                      </SelectItem>
+                      <SelectItem value='hoaTreasurer'>
+                        HOA Treasurer
+                      </SelectItem>
+                      <SelectItem value='hoaAdmin'>HOA Admin</SelectItem>
+                    </SelectGroup>
+                    {/* HOA Board of Directors */}
+                    <SelectGroup>
+                      <SelectLabel>HOA Board of Directors</SelectLabel>
+                      <SelectItem value='bod1'>BOD 1</SelectItem>
+                      <SelectItem value='bod2'>BOD 2</SelectItem>
+                      <SelectItem value='bod3'>BOD 3</SelectItem>
+                      <SelectItem value='bod3'>BOD 4</SelectItem>
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
               </FormControl>
-            </form>
-            <DialogFooter>
-              <Button type='submit' size='sm' colorScheme='yellow'>
-                Save changes
-              </Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
+
+              <DialogFooter className='text-right'>
+                <FormControl>
+                  <Button
+                    type='submit'
+                    size='sm'
+                    colorScheme='yellow'
+                    onClick={() =>
+                      toast({
+                        title: `Successfully assigned an officer-in-charge for the complaint: ${data.title}.`,
+                        description:
+                          'Thank you for offering your services to your homeowners.',
+                        status: 'success',
+                        position: 'bottom-right',
+                        isClosable: true
+                      })
+                    }
+                  >
+                    Save changes
+                  </Button>
+                </FormControl>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+        </form>
       )}
 
       {/* Status: INPROCESS = Button: Mark as Resolved */}
       {data.status === 'In Process' && (
-        <AlertDialog>
-          <AlertDialogTrigger asChild>
-            <Button size='sm' colorScheme='green'>
-              Mark as Resolved
-            </Button>
-          </AlertDialogTrigger>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>Resolve Violation Report</AlertDialogTitle>
-              <AlertDialogDescription>
-                This action resolves the violation report submitted by the
-                homeowner.
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction className='bg-[green]'>
-                Continue
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
+        <div>
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button size='sm' colorScheme='green'>
+                Mark as Resolved
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Resolve Violation Report</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This action resolves the violation report submitted by the
+                  homeowner.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction
+                  className='bg-[green]'
+                  onClick={() =>
+                    toast({
+                      title: `Successfully marked the complaint: ${data.title} as resolved.`,
+                      description:
+                        'Thank you for offering your services to your homeowners.',
+                      status: 'success',
+                      position: 'bottom-right',
+                      isClosable: true
+                    })
+                  }
+                >
+                  Continue
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        </div>
       )}
     </div>
   )
