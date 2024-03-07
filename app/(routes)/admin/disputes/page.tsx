@@ -35,7 +35,7 @@ export default function DisputeResolutionMenu () {
           text: "List of Homeowners' Association Disputes",
           href: '/admin/disputes/dispute-list',
           description:
-            "View the list of disputes that can be reported with the homeowners' association. Possible services fees that may be requested from the association is included."
+            "View the list of disputes that can be reported with the homeowners' association. A list of the HOA services available to you is included."
         }
       ]
     }
