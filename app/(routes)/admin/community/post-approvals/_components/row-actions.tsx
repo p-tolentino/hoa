@@ -1,5 +1,5 @@
-import React from "react";
-import { Button, Flex, useToast } from "@chakra-ui/react";
+import React from 'react'
+import { Button, Flex, Stack, useToast } from '@chakra-ui/react'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -9,53 +9,53 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import { PendingPostColumn } from "./columns"; // Assuming this is the correct import path
-import { updatePostStatus } from "@/server/actions/post";
-import { useRouter } from "next/navigation";
+  AlertDialogTrigger
+} from '@/components/ui/alert-dialog'
+import { PendingPostColumn } from './columns' // Assuming this is the correct import path
+import { updatePostStatus } from '@/server/actions/post'
+import { useRouter } from 'next/navigation'
 
 interface RowActionProps {
-  data: PendingPostColumn;
+  data: PendingPostColumn
 }
 
 const RowActions: React.FC<RowActionProps> = ({ data }) => {
   // Example usage of data within the component. Adjust according to your needs.
-  const toast = useToast(); // Using Chakra UI's useToast for feedback
-  const router = useRouter();
+  const toast = useToast() // Using Chakra UI's useToast for feedback
+  const router = useRouter()
   const handleApprove = async () => {
     try {
-      const response = await updatePostStatus(data.id); // Assuming updatePostStatus now also takes a status argument
+      const response = await updatePostStatus(data.id) // Assuming updatePostStatus now also takes a status argument
       if (response.error) {
         toast({
-          title: "Error",
+          title: 'Error',
           description: response.error,
-          status: "error",
+          status: 'error',
           duration: 5000,
-          isClosable: true,
-        });
+          isClosable: true
+        })
       } else {
         toast({
-          title: "Post Approved",
-          description: "The post has been successfully approved.",
-          status: "success",
+          title: 'Post Approved',
+          description: 'The post has been successfully approved.',
+          status: 'success',
           duration: 5000,
-          isClosable: true,
-        });
-        router.refresh();
+          isClosable: true
+        })
+        router.refresh()
         // Optionally, refresh the data or navigate as needed
       }
     } catch (error) {
-      console.error("Failed to approve post:", error);
+      console.error('Failed to approve post:', error)
       // Handle error appropriately
     }
-  };
+  }
   return (
     <Flex gap={2}>
       {/* Approve Button */}
       <AlertDialog>
         <AlertDialogTrigger asChild>
-          <Button size="sm" colorScheme="green" fontFamily="font.body">
+          <Button size='sm' colorScheme='green' fontFamily='font.body'>
             Approve
           </Button>
         </AlertDialogTrigger>
@@ -63,14 +63,19 @@ const RowActions: React.FC<RowActionProps> = ({ data }) => {
           <AlertDialogHeader>
             <AlertDialogTitle>Approve Request to Post</AlertDialogTitle>
           </AlertDialogHeader>
-          <AlertDialogDescription className="text-justify">
-            Are you sure you want to approve the post submitted by{" "}
+          <AlertDialogDescription className='text-justify'>
+            Are you sure you want to approve the post submitted by{' '}
             {data.submittedBy}? This action allows the post to reflect in the
             Community Engagement module.
           </AlertDialogDescription>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction className="bg-green-500" onClick={handleApprove}>
+            <AlertDialogCancel className='mt-0 hover:bg-gray-100'>
+              Cancel
+            </AlertDialogCancel>
+            <AlertDialogAction
+              className='bg-green-500 hover:bg-green-600'
+              onClick={handleApprove}
+            >
               Continue
             </AlertDialogAction>
           </AlertDialogFooter>
@@ -81,7 +86,7 @@ const RowActions: React.FC<RowActionProps> = ({ data }) => {
       {/* Decline Button */}
       <AlertDialog>
         <AlertDialogTrigger asChild>
-          <Button size="sm" colorScheme="red" fontFamily="font.body">
+          <Button size='sm' colorScheme='red' fontFamily='font.body'>
             Decline
           </Button>
         </AlertDialogTrigger>
@@ -89,21 +94,23 @@ const RowActions: React.FC<RowActionProps> = ({ data }) => {
           <AlertDialogHeader>
             <AlertDialogTitle>Decline Request to Post</AlertDialogTitle>
           </AlertDialogHeader>
-          <AlertDialogDescription className="text-justify">
+          <AlertDialogDescription className='text-justify'>
             Are you sure you want to decline the post submitted by on This
             action will delete this post from the list of pending posts and will
             not appear in the Community Engagement module.
           </AlertDialogDescription>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction className="bg-red-500">
+            <AlertDialogCancel className='mt-0 hover:bg-gray-100'>
+              Cancel
+            </AlertDialogCancel>
+            <AlertDialogAction className='bg-red-500 hover:bg-red-600'>
               Continue
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
     </Flex>
-  );
-};
+  )
+}
 
-export default RowActions;
+export default RowActions
