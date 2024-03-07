@@ -21,7 +21,7 @@ import { ScrollArea } from '../ui/scroll-area'
 import Link from 'next/link'
 
 interface NotificationCenter {
-  isNew: boolean
+  isRead: boolean
   title: string
   description: string
   date: string
@@ -33,7 +33,7 @@ export default function NotificationCenter () {
 
   const initialData = [
     {
-      isNew: true,
+      isRead: false,
       title: 'Urgent: Dispute Resolution Meeting Notice 📅',
       description:
         'The meeting is scheduled for 1 March 2024, 3:00PM at the HOA Admin Office. Your presence is crucial for resolving this matter.',
@@ -41,7 +41,7 @@ export default function NotificationCenter () {
       href: '/admin/disputes/letters-and-notices/sample'
     },
     {
-      isNew: true,
+      isRead: false,
       title: 'Notification 1',
       description:
         'Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorem, quasi.',
@@ -49,7 +49,7 @@ export default function NotificationCenter () {
       href: ''
     },
     {
-      isNew: false,
+      isRead: true,
       title: 'Notification 2',
       description:
         'Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorem, quasi.',
@@ -57,7 +57,7 @@ export default function NotificationCenter () {
       href: ''
     },
     {
-      isNew: false,
+      isRead: true,
       title: 'Notification 3',
       description:
         'Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorem, quasi.',
@@ -68,16 +68,16 @@ export default function NotificationCenter () {
 
   const [notifications, setNotifications] = useState(initialData)
   const [unreadCount, setUnreadCount] = useState(
-    notifications.filter(notification => notification.isNew).length
+    notifications.filter(notification => notification.isRead).length
   )
 
-  // Function to handle closing the popover and updating isNew value
+  // Function to handle closing the popover and updating isRead value
   const handlePopoverClose = (clickedIndex: number) => {
     setUnreadCount(unreadCount - 1)
 
     const updatedNotifications = notifications.map((notification, index) => ({
       ...notification,
-      isNew: index === clickedIndex ? false : notification.isNew
+      isRead: index === clickedIndex ? true : notification.isRead
     }))
 
     setNotifications(updatedNotifications)
@@ -159,7 +159,7 @@ export default function NotificationCenter () {
                         display='flex'
                         alignItems='top'
                       >
-                        {notification.isNew === true && (
+                        {notification.isRead === false && (
                           <span
                             className='flex h-2 w-2 translate-y-1 rounded-full bg-red-500 mr-1'
                             style={{ minWidth: '8px' }}
