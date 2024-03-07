@@ -59,7 +59,10 @@ export const columns: ColumnDef<ListOfDisputesColumn>[] = [
     accessorKey: "viewDisputeForm",
     header: "View Dispute Form",
     cell: ({ row }) => (
-      <a href={"/admin/disputes/view-progress"} className="hover:underline">
+      <a
+        href={"/admin/disputes/dispute-record/view-progress"}
+        className="hover:underline"
+      >
         {row.original.viewDisputeForm}
       </a>
     ),
