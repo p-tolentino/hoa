@@ -19,10 +19,10 @@ import { Separator } from '@/components/ui/separator'
 import { Heading } from '@/components/ui/heading'
 import { AddIcon } from '@chakra-ui/icons'
 
-export default function FileComplaint () {
-  const title = 'File a Complaint'
+export default function DisputeForm () {
+  const title = 'File a Dispute'
   const description =
-    "Fill out the Complaint Form to formally request for a dispute resolution from the Homeowners' Association."
+    "Fill out the Dispute Form to formally request for a dispute resolution from the Homeowners' Association."
 
   const disputeTypes = [
     {
@@ -78,7 +78,6 @@ export default function FileComplaint () {
 
       <Box
         w='80%'
-        h='75vh'
         border='1px'
         borderColor='gray.200'
         borderRadius='10px'
@@ -88,26 +87,13 @@ export default function FileComplaint () {
       >
         <form>
           <Stack spacing={5}>
-            {/* Complaint Title */}
+            {/* Dispute Type */}
             <FormControl isRequired>
               <FormLabel fontSize='md' fontFamily='font.body'>
-                Title of Complaint
-              </FormLabel>
-              <Input
-                w='50%'
-                size='sm'
-                type='string'
-                fontWeight='semibold'
-                placeholder='Enter a Title'
-              />
-            </FormControl>
-            {/* Complaint Type */}
-            <FormControl isRequired>
-              <FormLabel fontSize='md' fontFamily='font.body'>
-                Complaint Type
+                Dispute Type
               </FormLabel>
               <Select
-                // placeholder='Select Complaint Type'
+                // placeholder='Select Dispute Type'
                 size='sm'
                 fontFamily='font.body'
                 onChange={event => setType(event.target.value)}
@@ -123,11 +109,11 @@ export default function FileComplaint () {
                 ))}
                 <option value='other'> Other </option>
               </Select>
-              {/* Complaint */}
+              {/* Dispute */}
             </FormControl>
             <FormControl isRequired>
               <FormLabel fontSize='md' fontFamily='font.body'>
-                Complaint
+                Description:
               </FormLabel>
               <Textarea
                 size='sm'
@@ -187,7 +173,7 @@ export default function FileComplaint () {
             <Box textAlign='center'>
               <FormControl>
                 <Button size='sm' type='submit' colorScheme='yellow' my='20px'>
-                  Submit Complaint
+                  Submit Dispute
                 </Button>
               </FormControl>
             </Box>

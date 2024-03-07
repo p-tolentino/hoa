@@ -1,6 +1,6 @@
 'use client'
 
-import { Button, FormControl, useToast } from '@chakra-ui/react'
+import { Button, FormControl, Text, useToast } from '@chakra-ui/react'
 import {
   Dialog,
   DialogContent,
@@ -31,10 +31,10 @@ import {
   SelectValue
 } from '@/components/ui/select'
 
-import { ListOfComplaintsColumn } from './columns'
+import { ListOfDisputesColumn } from './columns'
 
 interface RowActionProps {
-  data: ListOfComplaintsColumn
+  data: ListOfDisputesColumn
 }
 
 export const RowActions: React.FC<RowActionProps> = ({ data }) => {
@@ -53,8 +53,15 @@ export const RowActions: React.FC<RowActionProps> = ({ data }) => {
               <DialogHeader>
                 <DialogTitle>Assign Officer-in-Charge</DialogTitle>
                 <DialogDescription>
-                  Assign the officer-in-charge for handling this violation
-                  report.
+                  Assign the officer-in-charge to handle the dispute resolution
+                  process for the dispute:
+                  <Text mt='1rem'>
+                    Submitted by:{' '}
+                    <span className='font-semibold'>{data.submittedBy}</span>{' '}
+                    <br />
+                    Submitted on:{' '}
+                    <span className='font-semibold'>{data.dateSubmitted}</span>
+                  </Text>
                 </DialogDescription>
               </DialogHeader>
 
@@ -91,7 +98,7 @@ export const RowActions: React.FC<RowActionProps> = ({ data }) => {
                     colorScheme='yellow'
                     onClick={() =>
                       toast({
-                        title: `Successfully assigned an officer-in-charge for the complaint: ${data.title}.`,
+                        title: `Successfully assigned an officer-in-charge for the dispute submitted by ${data.submittedBy} on ${data.dateSubmitted}.`,
                         description:
                           'Thank you for offering your services to your homeowners.',
                         status: 'success',
@@ -120,9 +127,16 @@ export const RowActions: React.FC<RowActionProps> = ({ data }) => {
             </AlertDialogTrigger>
             <AlertDialogContent>
               <AlertDialogHeader>
-                <AlertDialogTitle>Resolve Complaint</AlertDialogTitle>
+                <AlertDialogTitle>Resolve Dispute</AlertDialogTitle>
                 <AlertDialogDescription>
-                  This action resolves the complaint submitted by the homeowner.
+                  Are you sure that the dispute below has been resolved?
+                  <Text mt='1rem'>
+                    Submitted by:{' '}
+                    <span className='font-semibold'>{data.submittedBy}</span>{' '}
+                    <br />
+                    Submitted on:{' '}
+                    <span className='font-semibold'>{data.dateSubmitted}</span>
+                  </Text>
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
@@ -131,7 +145,7 @@ export const RowActions: React.FC<RowActionProps> = ({ data }) => {
                   className='bg-[green]'
                   onClick={() =>
                     toast({
-                      title: `Successfully marked the complaint: ${data.title} as resolved.`,
+                      title: `Successfully marked the dispute submitted by ${data.submittedBy} on ${data.dateSubmitted} as resolved.`,
                       description:
                         'Thank you for offering your services to your homeowners.',
                       status: 'success',

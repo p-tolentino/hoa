@@ -1,7 +1,7 @@
 import React from 'react'
-import { SubmittedComplaintsClient } from './_components/client'
+import { SubmittedDisputesClient } from './_components/client'
 
-export default function SubmittedComplaints () {
+export default function SubmittedDisputes () {
   const data = [
     {
       id: '12345',
@@ -9,7 +9,7 @@ export default function SubmittedComplaints () {
       dateSubmitted: '02/14/24',
       officerInCharge: 'G&A Officer 1',
       title: 'ABCD',
-      viewComplaint: 'Sample Link to Complaint 1'
+      viewDisputeForm: 'Sample Link to Dispute Form 1'
     },
     {
       id: '67890',
@@ -17,7 +17,7 @@ export default function SubmittedComplaints () {
       dateSubmitted: '02/20/24',
       officerInCharge: 'G&A Officer 2',
       title: 'EFGH',
-      viewComplaint: 'Sample Link to Complaint 2'
+      viewDisputeForm: 'Sample Link to Dispute Form 2'
     },
     {
       id: '54321',
@@ -25,14 +25,14 @@ export default function SubmittedComplaints () {
       dateSubmitted: '02/27/24',
       officerInCharge: 'G&A Offocer 3',
       title: 'WSYZ',
-      viewComplaint: 'Sample Link to Complaint 3'
+      viewDisputeForm: 'Sample Link to Dispute Form 3'
     }
   ]
 
   return (
     <div>
       <div className='flex-1 space-y-4'>
-        <SubmittedComplaintsClient data={data} />
+        <SubmittedDisputesClient data={data} />
       </div>
     </div>
   )

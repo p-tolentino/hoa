@@ -47,16 +47,16 @@ export default function DisputeResolutionMenu () {
       category_users: 'ALL Homeowners',
       category_buttons: [
         {
-          text: 'File a Complaint',
-          href: '/admin/disputes/complaint-form',
+          text: 'File a Dispute',
+          href: '/admin/disputes/dispute-form',
           description:
-            "Fill out the Complaint Form to formally request for a dispute resolution from the Homeowners' Association."
+            "Fill out the Dispute Form to formally request for a dispute resolution from the Homeowners' Association."
         },
         {
-          text: 'Submitted Complaints',
-          href: '/admin/disputes/submitted-complaints',
+          text: 'Submitted Dispute Forms',
+          href: '/admin/disputes/submitted-disputes',
           description:
-            "View your submitted complaints to the Homeowners' Association and monitor its progress."
+            "View your submitted dispute forms to the Homeowners' Association and monitor its progress."
         },
         {
           text: 'Dispute Letters and Notices',
