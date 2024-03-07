@@ -18,30 +18,34 @@ import {
 } from '@/components/ui/select'
 import React from 'react'
 import { ScrollArea } from '@radix-ui/react-scroll-area'
-import { useState } from 'react';
+import { useState } from 'react'
 
 import DiscussionPost from './_components/DiscussionPost'
 import CreateDiscussionPostButton from './_components/CreateDiscussionPostButton'
-import { getPosts } from "@/server/data/posts";
-import { Post, User } from "@prisma/client";
+import { getPosts } from '@/server/data/posts'
+import { Post, User } from '@prisma/client'
 
 interface PostProps {
-  posts: Post[];
-  user: string;
+  posts: Post[]
+  user: string
 }
 
-export default function DiscussionsCard({ posts, user }: PostProps) {
-
-  const [selectedCategory, setSelectedCategory] = useState('showAll');
-  const [searchInput, setSearchInput] = useState('');
+export default function DiscussionsCard ({ posts, user }: PostProps) {
+  const [selectedCategory, setSelectedCategory] = useState('showAll')
+  const [searchInput, setSearchInput] = useState('')
 
   const filteredPosts = posts
-  .filter(post => selectedCategory === 'showAll' || post.category === selectedCategory)
-  .filter(post => post.title.toLowerCase().includes(searchInput.toLowerCase()));
+    .filter(
+      post =>
+        selectedCategory === 'showAll' || post.category === selectedCategory
+    )
+    .filter(post =>
+      post.title.toLowerCase().includes(searchInput.toLowerCase())
+    )
 
   return (
     <>
-      <Card className='h-[70vh]'>
+      <Card className='h-[75vh]'>
         <Flex justifyContent='space-between'>
           <CardHeader>
             <CardTitle>Discussions</CardTitle>
@@ -62,11 +66,13 @@ export default function DiscussionsCard({ posts, user }: PostProps) {
               type='string'
               placeholder='Search by Discussion Title'
               value={searchInput}
-              onChange={(e) => setSearchInput(e.target.value)}
+              onChange={e => setSearchInput(e.target.value)}
             />
             <Spacer />
             {/* Select category to show */}
-            <Select value={selectedCategory} onValueChange={setSelectedCategory}
+            <Select
+              value={selectedCategory}
+              onValueChange={setSelectedCategory}
             >
               <SelectTrigger className='w-[250px]'>
                 <SelectValue placeholder='Show All' />
@@ -90,7 +96,7 @@ export default function DiscussionsCard({ posts, user }: PostProps) {
           <ScrollArea
             style={{ maxHeight: 'calc(70vh - 180px)', overflowY: 'auto' }}
           >
-            <DiscussionPost posts={filteredPosts} user={user}/>
+            <DiscussionPost posts={filteredPosts} user={user} />
           </ScrollArea>
         </CardContent>
       </Card>
