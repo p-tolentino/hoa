@@ -7,30 +7,30 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger
-} from '@/components/ui/alert-dialog'
-import { Button, useToast } from '@chakra-ui/react'
-import { DeleteIcon } from '@chakra-ui/icons' // Import the DeleteIcon
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { Button, useToast } from "@chakra-ui/react";
+import { DeleteIcon } from "@chakra-ui/icons"; // Import the DeleteIcon
 
 interface DeleteDisputeButtonProps {
   dispute: {
-    title: string
-    description: string
-  }
-  continueDeletion: (confirmed: boolean) => void
+    title: string;
+    description: string;
+  };
+  continueDeletion: (confirmed: boolean) => void;
 }
 
 const DeleteDisputeButton: React.FC<DeleteDisputeButtonProps> = ({
   dispute,
-  continueDeletion
+  continueDeletion,
 }) => {
-  const toast = useToast()
+  const toast = useToast();
 
   return (
     <div>
       <AlertDialog>
         <AlertDialogTrigger asChild>
-          <Button key={dispute.title} size='sm' mr='10px' colorScheme='red'>
+          <Button key={dispute.title} size="sm" mr="10px" colorScheme="red">
             <DeleteIcon />
           </Button>
         </AlertDialogTrigger>
@@ -39,7 +39,7 @@ const DeleteDisputeButton: React.FC<DeleteDisputeButtonProps> = ({
             <AlertDialogTitle>Delete Dispute Type</AlertDialogTitle>
             <AlertDialogDescription>
               Are you sure that you want to delete the dispute type: <br />
-              <span className='font-semibold'>{dispute.title}</span>?
+              <span className="font-semibold">{dispute.title}</span>?
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
@@ -47,17 +47,17 @@ const DeleteDisputeButton: React.FC<DeleteDisputeButtonProps> = ({
               Cancel
             </AlertDialogCancel>
             <AlertDialogAction
-              className='bg-[green]'
+              className="bg-red-500"
               onClick={() => {
-                continueDeletion(true)
+                continueDeletion(true);
                 toast({
                   title: `Successfully deleted dispute type: `,
                   description: `${dispute.title}`,
-                  status: 'success',
-                  position: 'bottom-right',
+                  status: "success",
+                  position: "bottom-right",
                   isClosable: true,
-                  colorScheme: 'red'
-                })
+                  colorScheme: "red",
+                });
               }}
             >
               Continue
@@ -66,7 +66,7 @@ const DeleteDisputeButton: React.FC<DeleteDisputeButtonProps> = ({
         </AlertDialogContent>
       </AlertDialog>
     </div>
-  )
-}
+  );
+};
 
-export default DeleteDisputeButton
+export default DeleteDisputeButton;
