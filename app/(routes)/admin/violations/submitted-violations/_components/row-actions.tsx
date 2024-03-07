@@ -1,10 +1,10 @@
 import { Button, Wrap, WrapItem, useToast } from '@chakra-ui/react'
 import { useState } from 'react'
 
-import { SubmittedDisputesColumn } from './columns'
+import { SubmittedViolationsColumn } from './columns'
 
 interface RowActionProps {
-  data: SubmittedDisputesColumn
+  data: SubmittedViolationsColumn
 }
 
 export const RowActions: React.FC<RowActionProps> = ({ data }) => {
@@ -14,7 +14,7 @@ export const RowActions: React.FC<RowActionProps> = ({ data }) => {
   const handleButtonClick = () => {
     if (!isButtonClicked) {
       toast({
-        title: `Successfully followed up the dispute submitted on ${data.dateSubmitted}.`,
+        title: `Successfully followed up the violation submitted on ${data.dateSubmitted}.`,
         description:
           'The HOA officers will get back to you as soon as possible.',
         status: 'success',

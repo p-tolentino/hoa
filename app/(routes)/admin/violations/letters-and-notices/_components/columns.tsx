@@ -2,36 +2,36 @@
 
 import { ColumnDef } from '@tanstack/react-table'
 
-export type DisputeLettersAndNoticesColumn = {
+export type ViolationLettersAndNoticesColumn = {
   id: string
   dateReceived: string
-  disputeType: string
+  violationType: string
   sender: string
-  viewDisputeLetterNotice: string
+  viewViolationLetterNotice: string
 }
 
-export const columns: ColumnDef<DisputeLettersAndNoticesColumn>[] = [
+export const columns: ColumnDef<ViolationLettersAndNoticesColumn>[] = [
   {
     accessorKey: 'dateReceived',
     header: 'Date Received'
   },
   {
-    accessorKey: 'disputeType',
-    header: 'Dispute Type'
+    accessorKey: 'violationType',
+    header: 'Violation Type'
   },
   {
     accessorKey: 'sender',
     header: 'Sender'
   },
   {
-    accessorKey: 'viewDisputeLetterNotice',
-    header: 'View Dispute Letter/Notice',
+    accessorKey: 'viewViolationLetterNotice',
+    header: 'View Violation Letter/Notice',
     cell: ({ row }) => (
       <a
-        href={'/admin/disputes/letters-and-notices/sample'}
+        href={'/admin/violations/letters-and-notices/sample'}
         className='hover:underline'
       >
-        {row.original.viewDisputeLetterNotice}
+        {row.original.viewViolationLetterNotice}
       </a>
     )
   }

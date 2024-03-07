@@ -13,10 +13,10 @@ import {
   Text
 } from '@chakra-ui/react'
 
-export default function DisputeBylaws () {
-  const title = "Homeowners' Association Bylaws (Dispute Section)"
+export default function ViolationBylaws () {
+  const title = "Homeowners' Association Bylaws (Violation Section)"
   const description =
-    "View the dispute section of the Homeowners' Association Bylaws."
+    "View the violation section of the Homeowners' Association Bylaws."
 
   const { isOpen, onOpen, onClose } = useDisclosure()
 
