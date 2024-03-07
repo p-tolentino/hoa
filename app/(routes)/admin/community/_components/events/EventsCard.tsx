@@ -22,7 +22,7 @@ interface EventProps {
 export default function EventsCard({ events, user }: EventProps) {
   return (
     <div>
-      <Card className="h-[70vh]">
+      <Card className="h-[90vh]">
         <Flex justifyContent="space-between">
           <CardHeader>
             <CardTitle>Events</CardTitle>
@@ -33,7 +33,7 @@ export default function EventsCard({ events, user }: EventProps) {
             <CreateEventButton user={user} />
           </HStack>
         </Flex>
-        <CardContent className="items-center space-y-2 w-[58vw]">
+        <CardContent className=" space-y-2 w-[58vw]">
           <MonthlyEventList events={events} user={user} />
           {/* <EventDetails /> */}
         </CardContent>
