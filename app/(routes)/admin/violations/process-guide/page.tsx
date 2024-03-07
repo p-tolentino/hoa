@@ -13,20 +13,17 @@ import {
   Card,
   CardBody,
   Box,
-  Button,
   Flex,
   Text
 } from '@chakra-ui/react'
-import DisputeBylaws from './_components/DisputeBylaws'
+import ViolationBylaws from './_components/ViolationBylaws'
 import { Heading } from '@/components/ui/heading'
 import { Separator } from '@/components/ui/separator'
 import { ScrollArea } from '@/components/ui/scroll-area'
 
-const temp = 'https://www.hoamanagement.com/hoa-disputes/'
-
-export default function DisputeResolutionProcess () {
+export default function ViolationReviewProcess () {
   const steps = [
-    { title: 'Request for Dispute Resolution', description: 'Lorem ipsum' },
+    { title: 'Request for Violation Review', description: 'Lorem ipsum' },
     { title: 'Gather Sufficient Information', description: 'Lorem ipsum' },
     { title: 'Board Decision to Intervine', description: 'Lorem ipsum' },
     { title: 'HOA Negotiation', description: 'Lorem ipsum' }
@@ -37,34 +34,13 @@ export default function DisputeResolutionProcess () {
     count: steps.length
   })
 
-  const handleButtonClick = () => {
-    window.open(temp, '_blank') // Open in a new tab
-  }
-
   return (
     <div>
       <Flex justifyContent='space-between'>
         <Heading
-          title='Dispute Resolution Process Guide'
-          description='Read more about the dispute resolution process.'
+          title='Violation Review Process Guide'
+          description='Read more about the violation review process.'
         />
-        <Box lineHeight={1}>
-          <Text fontSize='xs' fontWeight='semibold'>
-            Reference:{' '}
-          </Text>
-          <Button
-            variant='link'
-            fontFamily='font.body'
-            fontWeight='light'
-            onClick={handleButtonClick} // Call the function on click
-            size='sm'
-          >
-            Dispute Resolution Process (Link to External)
-          </Button>
-          <Text color='red' fontSize='xs'>
-            To be removed later on
-          </Text>
-        </Box>
       </Flex>
       <Separator className='mt-4 mb-6' />
 
@@ -457,7 +433,7 @@ export default function DisputeResolutionProcess () {
               </ScrollArea>
             </CardBody>
           </Card>
-          <DisputeBylaws />
+          <ViolationBylaws />
         </Box>
       </Flex>
     </div>

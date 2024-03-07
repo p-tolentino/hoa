@@ -1,36 +1,36 @@
 import React from 'react'
-import { DisputeLettersAndNoticesClient } from './_components/client'
+import { ViolationLettersAndNoticesClient } from './_components/client'
 
-export default function DisputeLettersAndNotices () {
+export default function ViolationLettersAndNotices () {
   const data = [
     {
       id: '12345',
       dateReceived: '02/20/24',
-      disputeType: 'Neighbor-to-Neighbor Conflict',
+      violationType: 'Parking Violation',
       sender: 'HOA President',
-      viewDisputeLetterNotice: 'Sample Link to Letter/Notice 1'
+      viewViolationLetterNotice: 'Sample Link to Letter/Notice 1'
     },
     {
       id: '67890',
       dateReceived: '02/20/24',
-      disputeType: 'Neighbor-to-Neighbor Conflict',
+      violationType: 'Parking Violation',
       sender: 'HOA President',
 
-      viewDisputeLetterNotice: 'Sample Link to Letter/Notice 2'
+      viewViolationLetterNotice: 'Sample Link to Letter/Notice 2'
     },
     {
       id: '54321',
       dateReceived: '02/20/24',
-      disputeType: 'Neighbor-to-Neighbor Conflict',
+      violationType: 'Parking Violation',
       sender: 'HOA President',
-      viewDisputeLetterNotice: 'Sample Link to Letter/Notice 3'
+      viewViolationLetterNotice: 'Sample Link to Letter/Notice 3'
     }
   ]
 
   return (
     <div>
       <div className='flex-1 space-y-4'>
-        <DisputeLettersAndNoticesClient data={data} />
+        <ViolationLettersAndNoticesClient data={data} />
       </div>
     </div>
   )

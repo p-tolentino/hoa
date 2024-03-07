@@ -1,38 +1,38 @@
 import React from 'react'
-import { SubmittedDisputesClient } from './_components/client'
+import { SubmittedViolationsClient } from './_components/client'
 
-export default function SubmittedDisputes () {
+export default function SubmittedViolations () {
   const data = [
     {
       id: '12345',
       status: 'Pending',
       dateSubmitted: '02/14/24',
-      officerInCharge: 'G&A Officer 1',
+      officerInCharge: 'E&S Officer 1',
       title: 'ABCD',
-      viewDisputeForm: 'Sample Link to Dispute Form 1'
+      viewViolationForm: 'Sample Link to Violation Form 1'
     },
     {
       id: '67890',
       status: 'In Process',
       dateSubmitted: '02/20/24',
-      officerInCharge: 'G&A Officer 2',
+      officerInCharge: 'E&S Officer 2',
       title: 'EFGH',
-      viewDisputeForm: 'Sample Link to Dispute Form 2'
+      viewViolationForm: 'Sample Link to Violation Form 2'
     },
     {
       id: '54321',
       status: 'Resolved',
       dateSubmitted: '02/27/24',
-      officerInCharge: 'G&A Offocer 3',
+      officerInCharge: 'E&S Offocer 3',
       title: 'WSYZ',
-      viewDisputeForm: 'Sample Link to Dispute Form 3'
+      viewViolationForm: 'Sample Link to Violation Form 3'
     }
   ]
 
   return (
     <div>
       <div className='flex-1 space-y-4'>
-        <SubmittedDisputesClient data={data} />
+        <SubmittedViolationsClient data={data} />
       </div>
     </div>
   )

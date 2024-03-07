@@ -13,15 +13,9 @@ import Link from 'next/link'
 export default function MeetingNotice () {
   const recipient = 'Juan Dela Cruz'
   const dateReceived = 'MM/DD/YYYY'
-  const disputeType = 'Neighbor-to-Neighbor Conflict'
-  const involvedParties = [
-    'Crisostomo Ibarra',
-    'Padre Damaso',
-    'Padre Salvi',
-    'Elias'
-  ]
-  const dateAndTime = '1 March 2024, 3:00PM'
-  const meetingVenue = 'HOA Admin Office'
+  const violationDate = 'March 08, 2024'
+  const violationType = 'Parking Violation'
+  const violationFee = '₱ 500'
   const sender = {
     name: 'Maria Clara',
     position: 'HOA President'
@@ -30,7 +24,7 @@ export default function MeetingNotice () {
   return (
     <div>
       <Box textAlign='right'>
-        <Button as={Link} href='/admin/disputes/letters-and-notices'>
+        <Button as={Link} href='/admin/violations/letters-and-notices'>
           Go Back
         </Button>
       </Box>
@@ -42,7 +36,7 @@ export default function MeetingNotice () {
             fontWeight='bold'
             fontFamily='font.heading'
           >
-            Dispute Resolution Meeting Notice 📅
+            Violation Notice 📅
           </Text>
           <Box borderWidth='1px' p={10} borderRadius='md' w='50%'>
             <Stack spacing={5} fontFamily='font.body' fontSize='lg'>
@@ -54,53 +48,62 @@ export default function MeetingNotice () {
                 {/* Date Received */}
                 <Text fontWeight='bold'>{dateReceived}</Text>
               </Flex>
-              {/* Dispute Type */}
+
               <Text textAlign='justify'>
-                You are hereby summoned to attend a meeting regarding the
-                ongoing dispute: <br />
-                <span className='font-bold text-xl'>{disputeType}</span>
+                We are writing to bring your attention to an outstanding{' '}
+                <span className='font-bold'>violation fee</span> associated with
+                your account.
               </Text>
 
-              {/* Involved Parties (in 2 columns) */}
+              {/* Violation Details */}
               <Box>
-                <Text>Involved parties:</Text>
-                <Flex>
-                  <UnorderedList>
-                    {involvedParties
-                      .slice(0, Math.ceil(involvedParties.length / 2))
-                      .map((person, index) => (
-                        <ListItem key={index}>{person}</ListItem>
-                      ))}
-                  </UnorderedList>
-                  <UnorderedList ml={10}>
-                    {involvedParties
-                      .slice(Math.ceil(involvedParties.length / 2))
-                      .map((person, index) => (
-                        <ListItem key={index}>{person}</ListItem>
-                      ))}
-                  </UnorderedList>
-                </Flex>
+                <Text textAlign='justify'>
+                  Violation Details: <br />
+                </Text>
+                <UnorderedList>
+                  <ListItem>
+                    Date of Violation:{' '}
+                    <span className='font-semibold'>{violationDate}</span>
+                  </ListItem>
+                  <ListItem>
+                    Violation Type:{' '}
+                    <span className='font-semibold'>{violationType}</span>
+                  </ListItem>
+                  <ListItem>
+                    Violation Fee:{' '}
+                    <span className='font-semibold text-red-500'>
+                      {violationFee}
+                    </span>
+                  </ListItem>
+                </UnorderedList>
               </Box>
 
-              {/* Meeting Data, Time and Venue */}
               <Text textAlign='justify'>
-                The meeting is scheduled for{' '}
-                <span className='relative rounded bg-yellow-100 px-2 py-1 font-semibold'>
-                  {dateAndTime}
+                Please be aware that this violation requires immediate
+                attention, and the corresponding fee must be settled within{' '}
+                <span className='font-semibold text-red-500'>
+                  [number of days]
                 </span>{' '}
-                at the{' '}
-                <span className='relative rounded bg-yellow-100 px-2 py-1 font-semibold'>
-                  {meetingVenue}
-                  {'. '}
-                </span>
-                Your presence is crucial for resolving this matter.
+                days from the date of this notice. Failure to remit payment
+                within this period may result in further actions, including
+                additional penalties or legal measures.
               </Text>
+
               <Text textAlign='justify'>
-                Details of the dispute and proposed resolutions will be
-                discussed. Please come prepared to express your perspective and
-                work towards a resolution.
+                Kindly refer to your statement of account for the necessary
+                details, including the payment amount, due date, and acceptable
+                payment methods. If you have any questions or concerns regarding
+                the violation or the associated fee, please do not hesitate to
+                contact our office.
               </Text>
-              <Text>Thank you for your cooperation.</Text>
+
+              <Text textAlign='justify'>
+                Your prompt attention to this matter is crucial in maintaining a
+                positive relationship with our organization and avoiding any
+                potential consequences. We appreciate your cooperation in
+                resolving this issue promptly.
+              </Text>
+
               <Text textAlign='justify' mt={5}>
                 Sincerely,
               </Text>
