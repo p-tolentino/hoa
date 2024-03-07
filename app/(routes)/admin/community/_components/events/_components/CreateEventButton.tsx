@@ -1,4 +1,4 @@
-"use client";
+'use client'
 
 import {
   AlertDialog,
@@ -7,8 +7,8 @@ import {
   AlertDialogHeader,
   AlertDialogContent,
   AlertDialogOverlay,
-  useDisclosure,
-} from "@chakra-ui/react";
+  useDisclosure
+} from '@chakra-ui/react'
 
 import {
   Dialog,
@@ -17,8 +17,8 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+  DialogTrigger
+} from '@/components/ui/dialog'
 import {
   Input,
   Stack,
@@ -32,27 +32,27 @@ import {
   Radio,
   Select,
   Icon,
-  FormErrorMessage,
-} from "@chakra-ui/react";
+  FormErrorMessage
+} from '@chakra-ui/react'
 
-import { Calendar } from "@/components/ui/calendar";
+import { Calendar } from '@/components/ui/calendar'
 import {
   Popover,
   PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+  PopoverTrigger
+} from '@/components/ui/popover'
 
-import ReactDatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css"; // Import the CSS
+import ReactDatePicker from 'react-datepicker'
+import 'react-datepicker/dist/react-datepicker.css' // Import the CSS
 
-import { AddIcon } from "@chakra-ui/icons";
-import { useState, useEffect } from "react";
-import { CalendarIcon } from "lucide-react";
-import { PostEventButton } from "./PostEventButton";
+import { AddIcon } from '@chakra-ui/icons'
+import { useState, useEffect } from 'react'
+import { CalendarIcon } from 'lucide-react'
+import { PostEventButton } from './PostEventButton'
 
-import { format, addDays } from "date-fns";
-import { DateRange } from "react-day-picker";
-import { parseISO, isBefore, isPast, isToday } from "date-fns";
+import { format, addDays } from 'date-fns'
+import { DateRange } from 'react-day-picker'
+import { parseISO, isBefore, isPast, isToday } from 'date-fns'
 
 import {
   Form,
@@ -61,37 +61,37 @@ import {
   FormField,
   FormItem,
   // FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+  FormMessage
+} from '@/components/ui/form'
 
-import { newEventSchema } from "@/server/schemas";
-import * as z from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { cn } from "@/lib/utils";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import React from "react";
-import { getPersonalInfo } from "@/server/data/user-info";
-import { getProperty } from "@/server/data/property";
-import { PersonalInfo, Property } from "@prisma/client";
-import { createEvent } from "@/server/actions/event";
+import { newEventSchema } from '@/server/schemas'
+import * as z from 'zod'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { cn } from '@/lib/utils'
+import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
+import React from 'react'
+import { getPersonalInfo } from '@/server/data/user-info'
+import { getProperty } from '@/server/data/property'
+import { PersonalInfo, Property } from '@prisma/client'
+import { createEvent } from '@/server/actions/event'
 
-type EventFormValues = z.infer<typeof newEventSchema>;
+type EventFormValues = z.infer<typeof newEventSchema>
 
 interface EventProps {
-  user: string;
+  user: string
 }
 
-export default function CreateEventButton({ user }: EventProps) {
-  const router = useRouter();
-  const { update } = useSession();
-  const [open, setIsOpen] = useState(false);
+export default function CreateEventButton ({ user }: EventProps) {
+  const router = useRouter()
+  const { update } = useSession()
+  const [open, setIsOpen] = useState(false)
 
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const [venueType, setVenueType] = useState<string>("hoaFacilities");
-  const [address, setAddress] = useState<PersonalInfo | null>(null);
-  const [addressName, setAddressName] = useState<Property | null>(null);
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const [venueType, setVenueType] = useState<string>('hoaFacilities')
+  const [address, setAddress] = useState<PersonalInfo | null>(null)
+  const [addressName, setAddressName] = useState<Property | null>(null)
 
   // const { register, handleSubmit, setValue, watch } = useForm<EventFormValues>({
   //   resolver: zodResolver(newEventSchema),
@@ -100,74 +100,74 @@ export default function CreateEventButton({ user }: EventProps) {
   const form = useForm<EventFormValues>({
     resolver: zodResolver(newEventSchema),
     defaultValues: {
-      title: "" || undefined,
-      date: "" || undefined,
-      venue: "" || undefined,
-      description: "" || undefined,
-    },
-  });
+      title: '' || undefined,
+      date: '' || undefined,
+      venue: '' || undefined,
+      description: '' || undefined
+    }
+  })
 
   useEffect(() => {
     const fetchPersonalInfo = async () => {
       if (user) {
-        const personalInfo = await getPersonalInfo(user);
-        setAddress(personalInfo);
+        const personalInfo = await getPersonalInfo(user)
+        setAddress(personalInfo)
       }
-    };
+    }
 
-    fetchPersonalInfo();
-  }, [user]);
+    fetchPersonalInfo()
+  }, [user])
 
   useEffect(() => {
     const fetchPersonalAddress = async () => {
       if (address?.address) {
-        const personalAddress = await getProperty(address.address);
-        setAddressName(personalAddress);
+        const personalAddress = await getProperty(address.address)
+        setAddressName(personalAddress)
       }
-    };
+    }
 
-    fetchPersonalAddress();
-  }, [address]);
+    fetchPersonalAddress()
+  }, [address])
 
   useEffect(() => {
-    if (venueType === "homeAddress" && addressName?.address) {
-      form.setValue("venue", addressName.address);
+    if (venueType === 'homeAddress' && addressName?.address) {
+      form.setValue('venue', addressName.address)
     }
-  }, [venueType, addressName, form.setValue]);
+  }, [venueType, addressName, form.setValue])
 
-  const [dateError, setDateError] = useState("");
+  const [dateError, setDateError] = useState('')
 
   const onSubmit = async (values: EventFormValues) => {
-    setDateError("");
+    setDateError('')
 
     if (isPast(values.date)) {
-      console.log("error date");
-      setDateError("Start date cannot be in the past.");
-      return;
+      console.log('error date')
+      setDateError('Start date cannot be in the past.')
+      return
     }
 
     try {
-      await createEvent(values);
-      onOpen();
-      console.log("values passed are", values);
-      form.reset(); // Reset form upon success
-      setIsOpen(false); // Close dialog upon success
-      router.refresh(); // Refresh the page or navigate as needed
+      await createEvent(values)
+      onOpen()
+      console.log('values passed are', values)
+      form.reset() // Reset form upon success
+      setIsOpen(false) // Close dialog upon success
+      router.refresh() // Refresh the page or navigate as needed
     } catch (error) {
-      console.error("Failed to create post:", error);
+      console.error('Failed to create post:', error)
       // Handle error state here, if needed
     }
-  };
+  }
 
   return (
     <Dialog open={open} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button size="sm" colorScheme="yellow">
-          <AddIcon mr="10px" />
+        <Button size='sm' colorScheme='yellow'>
+          <AddIcon mr='10px' />
           Create Event
         </Button>
       </DialogTrigger>
-      <DialogContent className="lg:min-w-[800px]">
+      <DialogContent className='lg:min-w-[800px]'>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <DialogHeader>
@@ -178,22 +178,22 @@ export default function CreateEventButton({ user }: EventProps) {
             </DialogHeader>
 
             {/* Form Content */}
-            <Stack spacing="15px" my="2rem">
+            <Stack spacing='15px' my='2rem'>
               {/* Event Title */}
               <FormField
                 control={form.control}
-                name="title"
+                name='title'
                 render={({ field }) => (
                   <FormControl isRequired>
-                    <FormLabel fontSize="sm" fontWeight="semibold">
+                    <FormLabel fontSize='sm' fontWeight='semibold'>
                       Event Title:
                     </FormLabel>
                     <Input
-                      size="md"
-                      fontWeight="semibold"
-                      type="string"
+                      size='md'
+                      fontWeight='semibold'
+                      type='string'
                       {...field}
-                      placeholder="Enter the Event Title"
+                      placeholder='Enter the Event Title'
                     />
                   </FormControl>
                 )}
@@ -201,26 +201,26 @@ export default function CreateEventButton({ user }: EventProps) {
 
               {/* Event Date */}
               <FormField
-                name="date"
+                name='date'
                 control={form.control}
                 render={({ field }) => (
-                  <FormControl isRequired isInvalid={dateError !== ""}>
-                    <FormLabel fontSize="sm" fontWeight="semibold">
+                  <FormControl isRequired isInvalid={dateError !== ''}>
+                    <FormLabel fontSize='sm' fontWeight='semibold'>
                       Date and Time:
                     </FormLabel>
                     <ReactDatePicker
                       selected={field.value ? new Date(field.value) : null}
-                      onChange={(date) => {
+                      onChange={date => {
                         // Format the date to a string and pass it on
                         const dateString = date
-                          ? format(date, "yyyy-MM-dd HH:mm:ss")
-                          : null;
-                        field.onChange(dateString);
+                          ? format(date, 'yyyy-MM-dd HH:mm:ss')
+                          : null
+                        field.onChange(dateString)
                       }}
                       showTimeSelect
-                      placeholderText="Select Date and Time"
-                      dateFormat="MMMM d, yyyy h:mm aa"
-                      className="w-40 some-custom-class"
+                      placeholderText='Select Date and Time'
+                      dateFormat='MMMM d, yyyy h:mm aa'
+                      className='w-[250px] border p-2 text-sm'
                     />
                     {dateError && (
                       <FormErrorMessage>{dateError}</FormErrorMessage>
@@ -231,59 +231,59 @@ export default function CreateEventButton({ user }: EventProps) {
 
               {/* Venue */}
               <FormControl isRequired>
-                <FormLabel fontSize="sm" fontWeight="semibold">
+                <FormLabel fontSize='sm' fontWeight='semibold'>
                   Venue:
                 </FormLabel>
-                <FormHelperText fontSize="xs" mb="5px">
+                <FormHelperText fontSize='xs' mb='5px'>
                   Please select the type of venue to view its possible options.
                 </FormHelperText>
                 <RadioGroup
-                  size="sm"
-                  colorScheme="yellow"
+                  size='sm'
+                  colorScheme='yellow'
                   onChange={setVenueType}
                   value={venueType}
                 >
-                  <Stack spacing={5} direction="row" fontFamily="font.body">
-                    <Radio value="hoaFacilities">HOA Facilities</Radio>
-                    <Radio value="homeAddress">Your Home Address</Radio>
-                    <Radio value="otherVenue">Other Venue</Radio>
+                  <Stack spacing={5} direction='row' fontFamily='font.body'>
+                    <Radio value='hoaFacilities'>HOA Facilities</Radio>
+                    <Radio value='homeAddress'>Your Home Address</Radio>
+                    <Radio value='otherVenue'>Other Venue</Radio>
                   </Stack>
                 </RadioGroup>
               </FormControl>
 
               <FormField
-                name="venue"
+                name='venue'
                 control={form.control}
                 render={({ field }) => (
                   <FormControl isRequired>
-                    {venueType === "hoaFacilities" && (
+                    {venueType === 'hoaFacilities' && (
                       <Select
                         {...field}
-                        placeholder="Select facility"
-                        size="sm"
+                        placeholder='Select facility'
+                        size='sm'
                       >
-                        <option value="BasketballCourt">
+                        <option value='BasketballCourt'>
                           Basketball Court
                         </option>
-                        <option value="SwimmingPool">Swimming Pool</option>
-                        <option value="Clubhouse">Clubhouse</option>
+                        <option value='SwimmingPool'>Swimming Pool</option>
+                        <option value='Clubhouse'>Clubhouse</option>
                       </Select>
                     )}
-                    {venueType === "homeAddress" && (
+                    {venueType === 'homeAddress' && (
                       <Input
-                        type="string"
-                        size="sm"
+                        type='string'
+                        size='sm'
                         // {...field}
-                        value={addressName?.address || "Loading"}
+                        value={addressName?.address || 'Loading'}
                         readOnly // Make the field readOnly if you don't want the user to modify it
                       />
                     )}
-                    {venueType === "otherVenue" && (
+                    {venueType === 'otherVenue' && (
                       <Input
-                        type="string"
-                        size="sm"
+                        type='string'
+                        size='sm'
                         {...field}
-                        placeholder="Enter name of venue"
+                        placeholder='Enter name of venue'
                       />
                     )}
                   </FormControl>
@@ -291,20 +291,20 @@ export default function CreateEventButton({ user }: EventProps) {
               />
 
               {/* Event Description */}
-              <Box py="10px">
+              <Box py='10px'>
                 <FormField
                   control={form.control}
-                  name="description"
+                  name='description'
                   render={({ field }) => (
                     <FormControl isRequired>
-                      <FormLabel fontSize="sm" fontWeight="semibold">
+                      <FormLabel fontSize='sm' fontWeight='semibold'>
                         Description of the Event
                       </FormLabel>
                       <Textarea
-                        placeholder="Write the description of the event"
-                        id="discussionPost"
-                        fontSize="xs"
-                        maxH="300px"
+                        placeholder='Write the description of the event'
+                        id='discussionPost'
+                        fontSize='xs'
+                        maxH='300px'
                         {...field}
                       />
                     </FormControl>
@@ -314,7 +314,7 @@ export default function CreateEventButton({ user }: EventProps) {
             </Stack>
             <DialogFooter>
               {/* <PostEventButton /> */}
-              <Button size="sm" colorScheme="yellow" type="submit">
+              <Button size='sm' colorScheme='yellow' type='submit'>
                 Create Event
               </Button>
             </DialogFooter>
@@ -322,5 +322,5 @@ export default function CreateEventButton({ user }: EventProps) {
         </Form>
       </DialogContent>
     </Dialog>
-  );
+  )
 }
