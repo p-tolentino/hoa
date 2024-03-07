@@ -35,10 +35,11 @@ export function DeleteButton({ postId }: DeleteProps) {
       // Display success toast
       toast({
         title: "Post Deleted",
-        description: "The post has been successfully deleted.",
+        description: "The business post has been successfully deleted.",
         status: "success",
-        duration: 5000,
+        position: "bottom-right",
         isClosable: true,
+        colorScheme: "red",
       });
     } catch (error) {
       console.error("Failed to delete post:", error);
@@ -46,10 +47,11 @@ export function DeleteButton({ postId }: DeleteProps) {
       // Display error toast
       toast({
         title: "Error",
-        description: "Failed to delete post. Please try again.",
+        description: "Failed to delete business post. Please try again.",
         status: "error",
-        duration: 5000,
+        position: "bottom-right",
         isClosable: true,
+        colorScheme: "gray",
       });
     }
   };
