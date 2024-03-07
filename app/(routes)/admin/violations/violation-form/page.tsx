@@ -12,8 +12,6 @@ import {
   HStack,
   Select,
   Flex,
-  RadioGroup,
-  Radio,
 } from "@chakra-ui/react";
 import Link from "next/link";
 import { useState } from "react";
@@ -21,33 +19,10 @@ import { Separator } from "@/components/ui/separator";
 import { Heading } from "@/components/ui/heading";
 import { AddIcon } from "@chakra-ui/icons";
 
-export default function DisputeForm() {
-  const title = "File a Dispute";
+export default function ViolationForm() {
+  const title = "Report a Violation";
   const description =
-    "Fill out the Dispute Form to formally request for a dispute resolution from the Homeowners' Association.";
-
-  const disputeTypes = [
-    {
-      value: "neighbor",
-      name: "Neighbor-to-Neighbor Disputes",
-    },
-    {
-      value: "lease",
-      name: "Lease Restrictions",
-    },
-    {
-      value: "maintenance",
-      name: "Common Area Maintenance Issues",
-    },
-    {
-      value: "rules",
-      name: "Rule Enforcement and Fines",
-    },
-    {
-      value: "board",
-      name: "Board Decisions and Elections",
-    },
-  ];
+    "Fill out the Violation Form to formally request a violation review from the Homeowners' Association.";
 
   const violationTypes = [
     {
@@ -100,7 +75,6 @@ export default function DisputeForm() {
   const [value, setValue] = useState("");
   const [personsInvolved, setPersonsInvolved] = useState([""]);
   const [filesUploaded, setFilesUploaded] = useState([""]);
-  const [isViolationInvolved, setIsViolationInvolved] = useState(false);
 
   const addPersonInput = () => {
     setPersonsInvolved([...personsInvolved, ""]);
@@ -134,16 +108,11 @@ export default function DisputeForm() {
     setFilesUploaded(updatedFilesUploaded);
   };
 
-  const handleViolationChange = (value: string) => {
-    setIsViolationInvolved(value === "yes");
-    setValue(value);
-  };
-
   return (
     <>
       <Flex justifyContent="space-between">
         <Heading title={title} description={description} />
-        <Button size="sm" colorScheme="gray" as={Link} href="/admin/disputes">
+        <Button size="sm" colorScheme="gray" as={Link} href="/admin/violations">
           Go Back
         </Button>
       </Flex>
@@ -160,75 +129,30 @@ export default function DisputeForm() {
       >
         <form>
           <Stack spacing={5}>
-            {/* Dispute Type */}
+            {/* Violation Type */}
             <FormControl isRequired>
               <FormLabel fontSize="md" fontFamily="font.body">
-                Dispute Type
+                Violation Type
               </FormLabel>
               <Select
-                // placeholder='Select Dispute Type'
                 size="sm"
                 fontFamily="font.body"
                 onChange={(event) => setType(event.target.value)}
                 value={type}
               >
                 <option value="" disabled>
-                  Select a dispute type
+                  Select a violation type
                 </option>
-                {disputeTypes.map((dispute, index) => (
-                  <option key={index} value={dispute.value}>
-                    {dispute.name}
+                {violationTypes.map((violation, index) => (
+                  <option key={index} value={violation.value}>
+                    {violation.name}
                   </option>
                 ))}
                 <option value="other"> Other </option>
               </Select>
             </FormControl>
 
-            {/* Is Violation Involved? */}
-            <FormControl isRequired>
-              <Stack direction="row">
-                <FormLabel fontSize="md" fontFamily="font.body">
-                  Does the dispute involve any violations based on the HOA
-                  Bylaws?
-                </FormLabel>
-                <RadioGroup
-                  colorScheme="yellow"
-                  fontFamily="font.body"
-                  value={value}
-                  onChange={handleViolationChange}
-                >
-                  <Stack direction="row">
-                    <Radio value="yes">Yes</Radio>
-                    <Radio value="no">No</Radio>
-                  </Stack>
-                </RadioGroup>
-              </Stack>
-            </FormControl>
-
-            {/* Violation IS involved */}
-            {isViolationInvolved && (
-              <FormControl>
-                <Select
-                  mt={-5}
-                  size="sm"
-                  fontFamily="font.body"
-                  onChange={(event) => setType(event.target.value)}
-                  value={type}
-                >
-                  <option value="" disabled>
-                    Select a violation type
-                  </option>
-                  {violationTypes.map((violation, index) => (
-                    <option key={index} value={violation.value}>
-                      {violation.name}
-                    </option>
-                  ))}
-                  <option value="other"> Other </option>
-                </Select>
-              </FormControl>
-            )}
-
-            {/* Dispute Description */}
+            {/* Violation Description */}
             <FormControl isRequired>
               <FormLabel fontSize="md" fontFamily="font.body">
                 Description:
@@ -242,7 +166,7 @@ export default function DisputeForm() {
               />
             </FormControl>
 
-            {/* Dispute Document Uploading */}
+            {/* Violation Document Uploading */}
             <FormControl isRequired>
               <HStack justifyContent="space-between">
                 <FormLabel fontSize="md" fontFamily="font.body">
@@ -282,7 +206,7 @@ export default function DisputeForm() {
                 </Box>
               ))}
               <FormHelperText fontSize="xs" mt="-1">
-                This will allow us to gain more information about the dispute
+                This will allow us to gain more information about the violation
                 that would help us in decision making.
               </FormHelperText>
             </FormControl>
@@ -330,14 +254,14 @@ export default function DisputeForm() {
               ))}
               <FormHelperText fontSize="xs" mt="-1">
                 This will allow us to contact the individuals involved in the
-                dispute.
+                violation.
               </FormHelperText>
             </FormControl>
             {/* Submit Button */}
             <Box textAlign="center">
               <FormControl>
                 <Button size="sm" type="submit" colorScheme="yellow" my="20px">
-                  Submit Dispute
+                  Submit Violation
                 </Button>
               </FormControl>
             </Box>

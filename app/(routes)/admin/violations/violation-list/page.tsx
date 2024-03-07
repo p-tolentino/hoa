@@ -23,71 +23,129 @@ import {
   TableContainer,
   useToast,
 } from "@chakra-ui/react";
-import AddDisputeButton from "./_components/AddDisputeButton";
-import EditDisputeButton from "./_components/EditDisputeButton";
-import DeleteDisputeButton from "./_components/DeleteDisputeButton";
+import AddViolationButton from "./_components/AddViolationButton";
+import EditViolationButton from "./_components/EditViolationButton";
+import DeleteViolationButton from "./_components/DeleteViolationButton";
 import { useState } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import Link from "next/link";
 
-export default function ListOfDisputes() {
-  const title = "List of Homeowners' Association Disputes";
+export default function ListOfViolations() {
+  const title = "List of Homeowners' Association Violations";
   const description =
-    "View the list of disputes that can be reported with the homeowners' association. A list of the HOA services available to you is included.";
-  const disputeTypes = [
+    "View the list of violations that can be reported within the Homeowners' Association. Corresponding penalties for each violation type is included.";
+  const violationTypes = [
     {
-      title: "Neighbor-to-Neighbor Conflicts",
+      title: "Delinquent Payments",
       description:
-        "Issues that arise between neighbors, such as boundary disputes, property damage, or personal disagreements that escalate to involve the homeowner association.",
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum maiores repellendus officiis. Culpa nihil ad recusandae",
     },
     {
-      title: "Lease Restrictions",
+      title: "Breach of Construction",
       description:
-        "Conflicts involving the rental of properties in the HOA, including issues related to short-term rentals, tenant behavior, or restrictions on leasing properties.",
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum maiores repellendus officiis. Culpa nihil ad recusandae",
     },
     {
-      title: "Common Area Maintenance Issues",
+      title: "Unauthorized Commercial Establishment",
       description:
-        "Disputes over the upkeep, repair, or use of common areas within the community. Homeowners may disagree with how these areas are maintained or how funds are allocated for their maintenance.",
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum maiores repellendus officiis. Culpa nihil ad recusandae",
     },
     {
-      title: "Rule Enforcement and Fines",
+      title: "Parking Violations",
       description:
-        "Disagreements over the enforcement of HOA rules and the imposition of fines. Homeowners might contest the fairness or consistency of rule enforcement.",
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum maiores repellendus officiis. Culpa nihil ad recusandae",
     },
     {
-      title: "Board Decisions and Elections",
+      title: "Speed Limit",
       description:
-        "Disputes related to the actions or decisions of the HOA board, including disagreements over election processes or the behavior of board members.",
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum maiores repellendus officiis. Culpa nihil ad recusandae",
+    },
+    {
+      title: "Raising of Animals/Fowls",
+      description:
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum maiores repellendus officiis. Culpa nihil ad recusandae",
+    },
+    {
+      title: "Noise Complaints",
+      description:
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum maiores repellendus officiis. Culpa nihil ad recusandae",
+    },
+    {
+      title: "Open Fires",
+      description:
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum maiores repellendus officiis. Culpa nihil ad recusandae",
+    },
+    {
+      title: "Defective Water Meters",
+      description:
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum maiores repellendus officiis. Culpa nihil ad recusandae",
+    },
+    {
+      title: "Littering",
+      description:
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum maiores repellendus officiis. Culpa nihil ad recusandae",
+    },
+    {
+      title: "Stray Pets",
+      description:
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum maiores repellendus officiis. Culpa nihil ad recusandae",
     },
   ];
 
-  const disputeFees = [
+  const violationPenalties = [
     {
-      name: "Mediation or Arbitration Fees",
+      name: "Delinquent Payments",
       cost: "₱ 500",
     },
     {
-      name: "Administrative Fees",
+      name: "Breach of Construction",
       cost: "₱ 200",
     },
     {
-      name: "Legal Fees",
+      name: "Unauthorized Commercial Establishment",
       cost: "₱ 800",
     },
     {
-      name: "Violation Fees",
-      cost: "Cost may vary",
+      name: "Parking Violations",
+      cost: "₱ 200",
+    },
+    {
+      name: "Speed Limit",
+      cost: "₱ 200",
+    },
+    {
+      name: "Raising of Animals/Fowls",
+      cost: "₱ 200",
+    },
+    {
+      name: "Noise Complaints",
+      cost: "₱ 200",
+    },
+    {
+      name: "Open Fires",
+      cost: "₱ 200",
+    },
+    {
+      name: "Defective Water Meters",
+      cost: "₱ 200",
+    },
+    {
+      name: "Littering",
+      cost: "₱ 200",
+    },
+    {
+      name: "Stray Pets",
+      cost: "₱ 200",
     },
   ];
 
-  const [disputes, setDisputes] = useState([...disputeTypes]);
+  const [violations, setViolations] = useState([...violationTypes]);
 
-  const removeDispute = (titleToRemove: string) => {
-    const updatedDisputes = disputes.filter(
-      (dispute) => dispute.title !== titleToRemove
+  const removeViolation = (titleToRemove: string) => {
+    const updatedViolations = violations.filter(
+      (violation) => violation.title !== titleToRemove
     );
-    setDisputes(updatedDisputes);
+    setViolations(updatedViolations);
   };
 
   const toast = useToast();
@@ -97,8 +155,13 @@ export default function ListOfDisputes() {
       <Flex justifyContent="space-between">
         <Heading title={title} description={description} />
         <Stack direction="row" spacing="3">
-          <AddDisputeButton />
-          <Button size="sm" colorScheme="gray" as={Link} href="/admin/disputes">
+          <AddViolationButton />
+          <Button
+            size="sm"
+            colorScheme="gray"
+            as={Link}
+            href="/admin/violations"
+          >
             Go Back
           </Button>
         </Stack>
@@ -108,8 +171,8 @@ export default function ListOfDisputes() {
         <Flex flexGrow={3}>
           <ScrollArea className="h-[75vh] pr-5">
             <SimpleGrid columns={2} spacing={5} px={2}>
-              {disputes.map((dispute) => (
-                <Card key={dispute.title} pb={3}>
+              {violations.map((violation) => (
+                <Card key={violation.title} pb={3}>
                   <Stack>
                     <CardHeader pb="0">
                       <HStack justifyContent="space-between" align="end">
@@ -119,21 +182,21 @@ export default function ListOfDisputes() {
                           fontWeight="bold"
                           fontFamily="font.heading"
                         >
-                          {dispute.title}
+                          {violation.title}
                         </Text>
                         <ButtonGroup>
-                          {/* Edit Dispute Button */}
-                          <EditDisputeButton
-                            key={dispute.title}
-                            title={dispute.title}
-                            description={dispute.description}
+                          {/* Edit Violation Button */}
+                          <EditViolationButton
+                            key={violation.title}
+                            title={violation.title}
+                            description={violation.description}
                           />
-                          {/* Delete Dispute Button */}
-                          <DeleteDisputeButton
-                            dispute={dispute}
+                          {/* Delete Violation Button */}
+                          <DeleteViolationButton
+                            violation={violation}
                             continueDeletion={(confirmed) => {
                               if (confirmed) {
-                                removeDispute(dispute.title);
+                                removeViolation(violation.title);
                               }
                             }}
                           />
@@ -141,13 +204,13 @@ export default function ListOfDisputes() {
                       </HStack>
                     </CardHeader>
                     <CardBody pt={3} minH="100px">
-                      {/* Dispute Description */}
+                      {/* Violation Description */}
                       <Text
                         fontSize="sm"
                         fontFamily="font.body"
                         textAlign="justify"
                       >
-                        {dispute.description}
+                        {violation.description}
                       </Text>
                     </CardBody>
                   </Stack>
@@ -157,7 +220,7 @@ export default function ListOfDisputes() {
           </ScrollArea>
         </Flex>
 
-        {/* Services Available Table */}
+        {/* Penalties Table */}
         <Flex flexGrow={1}>
           <TableContainer w="min-content">
             <Table size="sm" fontFamily="font.body">
@@ -170,16 +233,16 @@ export default function ListOfDisputes() {
                 </Tr>
               </Thead>
               <Tbody fontSize="sm" fontFamily="font.body">
-                {disputeFees.map((fee, index) => (
+                {violationPenalties.map((penalty, index) => (
                   <Tr key={index}>
-                    <Td pl={5}>{fee.name}</Td>
+                    <Td pl={5}>{penalty.name}</Td>
                     <Td
                       isNumeric
                       color={
-                        fee.cost !== "Cost may vary" ? "black" : "lightgrey"
+                        penalty.cost !== "Cost may vary" ? "black" : "lightgrey"
                       }
                     >
-                      {fee.cost}
+                      {penalty.cost}
                     </Td>
                   </Tr>
                 ))}

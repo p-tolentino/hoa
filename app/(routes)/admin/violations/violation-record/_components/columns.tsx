@@ -7,15 +7,15 @@ import { ArrowUpDown } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
-export type ListOfDisputesColumn = {
+export type ListOfViolationsColumn = {
   id: string;
   status: string;
   dateSubmitted: string;
   submittedBy: string;
-  viewDisputeForm: string;
+  viewViolationForm: string;
 };
 
-export const columns: ColumnDef<ListOfDisputesColumn>[] = [
+export const columns: ColumnDef<ListOfViolationsColumn>[] = [
   {
     accessorKey: "status",
     header: ({ column }) => {
@@ -56,14 +56,14 @@ export const columns: ColumnDef<ListOfDisputesColumn>[] = [
     header: "Submitted By",
   },
   {
-    accessorKey: "viewDisputeForm",
-    header: "View Dispute Form",
+    accessorKey: "viewViolationForm",
+    header: "View Violation Form",
     cell: ({ row }) => (
       <a
-        href={"/admin/disputes/dispute-record/view-progress"}
+        href={"/admin/violations/violation-record/view-progress"}
         className="hover:underline"
       >
-        {row.original.viewDisputeForm}
+        {row.original.viewViolationForm}
       </a>
     ),
   },

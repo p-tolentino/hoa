@@ -22,7 +22,7 @@ import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
 
 const steps = [
-  { title: "1", description: "Submit Complaint Form" },
+  { title: "1", description: "Submit Violation Form" },
   { title: "2", description: "Upload Supporting Documents" },
   { title: "3", description: "Step Three" },
   { title: "4", description: "Step Four" },
@@ -31,9 +31,9 @@ const steps = [
 ];
 
 export default function ViewProgress() {
-  const title = "Dispute Resolution Progress";
+  const title = "Violation Review Progress";
   const description =
-    "View the progress of your submitted complaint in the Homeowners Association";
+    "View the progress of your submitted violation in the Homeowners Association";
 
   const { activeStep, setActiveStep } = useSteps({
     index: 0,
@@ -53,7 +53,7 @@ export default function ViewProgress() {
           size="sm"
           colorScheme="gray"
           as={Link}
-          href="/admin/disputes/dispute-record"
+          href="/admin/violations/violation-record"
         >
           Go Back
         </Button>
