@@ -13,18 +13,33 @@ import Link from 'next/link'
 export default function MeetingNotice () {
   const recipient = 'Juan Dela Cruz'
   const dateReceived = 'MM/DD/YYYY'
+  const disputeDate = 'March 01, 2024'
   const disputeType = 'Neighbor-to-Neighbor Conflict'
-  const involvedParties = [
-    'Crisostomo Ibarra',
+  const personsInvolved = formatInvolvedPersons([
+    'Crisostomo Ibpersonsa',
     'Padre Damaso',
     'Padre Salvi',
     'Elias'
-  ]
-  const dateAndTime = '1 March 2024, 3:00PM'
-  const meetingVenue = 'HOA Admin Office'
+  ])
+  const meetingDetails = {
+    date: '1 March 2024',
+    time: '3:00PM',
+    venue: 'HOA Admin Office'
+  }
   const sender = {
     name: 'Maria Clara',
     position: 'HOA President'
+  }
+
+  function formatInvolvedPersons (persons: string[]) {
+    if (persons.length === 0) {
+      return ''
+    } else if (persons.length === 1) {
+      return persons[0]
+    } else {
+      const lastItem = persons.pop()
+      return `${persons.join(', ')} and ${lastItem}`
+    }
   }
 
   return (
@@ -54,43 +69,42 @@ export default function MeetingNotice () {
                 {/* Date Received */}
                 <Text fontWeight='bold'>{dateReceived}</Text>
               </Flex>
-              {/* Dispute Type */}
               <Text textAlign='justify'>
-                You are hereby summoned to attend a meeting regarding the
-                ongoing dispute: <br />
-                <span className='font-bold text-xl'>{disputeType}</span>
+                You are hereby summoned to attend a meeting scheduled to address
+                and deliberate on the resolution of an ongoing{' '}
+                <span className='font-bold'>dispute</span>.
               </Text>
 
-              {/* Involved Parties (in 2 columns) */}
               <Box>
-                <Text>Involved parties:</Text>
-                <Flex>
-                  <UnorderedList>
-                    {involvedParties
-                      .slice(0, Math.ceil(involvedParties.length / 2))
-                      .map((person, index) => (
-                        <ListItem key={index}>{person}</ListItem>
-                      ))}
-                  </UnorderedList>
-                  <UnorderedList ml={10}>
-                    {involvedParties
-                      .slice(Math.ceil(involvedParties.length / 2))
-                      .map((person, index) => (
-                        <ListItem key={index}>{person}</ListItem>
-                      ))}
-                  </UnorderedList>
-                </Flex>
+                <Text>Dispute Details:</Text>
+                <UnorderedList>
+                  {/* Date of Dispute */}
+                  <ListItem>
+                    Date of Dispute:{' '}
+                    <span className='font-semibold'>{disputeDate}</span>
+                  </ListItem>
+                  {/* Dispute Type */}
+                  <ListItem>
+                    Dispute Type:{' '}
+                    <span className='font-semibold'>{disputeType}</span>
+                  </ListItem>
+                  {/* Involved Person/s */}
+                  <ListItem>
+                    Person/s Involved:{' '}
+                    <span className='font-semibold'>{personsInvolved}</span>
+                  </ListItem>
+                </UnorderedList>
               </Box>
 
-              {/* Meeting Data, Time and Venue */}
+              {/* Meeting Date, Time and Venue */}
               <Text textAlign='justify'>
                 The meeting is scheduled for{' '}
                 <span className='relative rounded bg-yellow-100 px-2 py-1 font-semibold'>
-                  {dateAndTime}
+                  {meetingDetails.date}, {meetingDetails.time}
                 </span>{' '}
                 at the{' '}
                 <span className='relative rounded bg-yellow-100 px-2 py-1 font-semibold'>
-                  {meetingVenue}
+                  {meetingDetails.venue}
                   {'. '}
                 </span>
                 Your presence is crucial for resolving this matter.
