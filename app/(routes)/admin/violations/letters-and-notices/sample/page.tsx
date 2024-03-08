@@ -15,7 +15,7 @@ export default function MeetingNotice () {
   const dateReceived = 'MM/DD/YYYY'
   const violationDate = 'March 08, 2024'
   const violationType = 'Parking Violation'
-  const violationFee = '₱ 500'
+  const penaltyFee = '₱ 500'
   const sender = {
     name: 'Maria Clara',
     position: 'HOA President'
@@ -51,7 +51,7 @@ export default function MeetingNotice () {
 
               <Text textAlign='justify'>
                 We are writing to bring your attention to an outstanding{' '}
-                <span className='font-bold'>violation fee</span> associated with
+                <span className='font-bold'>penalty fee</span> associated with
                 your account.
               </Text>
 
@@ -61,18 +61,21 @@ export default function MeetingNotice () {
                   Violation Details: <br />
                 </Text>
                 <UnorderedList>
+                  {/* Date of Violation */}
                   <ListItem>
                     Date of Violation:{' '}
                     <span className='font-semibold'>{violationDate}</span>
                   </ListItem>
+                  {/* Violation Type */}
                   <ListItem>
                     Violation Type:{' '}
                     <span className='font-semibold'>{violationType}</span>
                   </ListItem>
+                  {/* Penalty Fee */}
                   <ListItem>
-                    Violation Fee:{' '}
+                    Penalty Fee:{' '}
                     <span className='font-semibold text-red-500'>
-                      {violationFee}
+                      {penaltyFee}
                     </span>
                   </ListItem>
                 </UnorderedList>
