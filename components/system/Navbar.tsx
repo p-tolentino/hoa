@@ -84,7 +84,7 @@ export const Navbar = () => {
           </Heading>
           <Box ml="20px">
             <Heading paddingTop="5px" fontSize={{ base: "9px", md: "md" }}>
-              <Text fontFamily="font.heading">System Name</Text>
+              <Text fontFamily="font.heading">HOAs.is</Text>
             </Heading>
           </Box>
         </Flex>

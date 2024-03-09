@@ -1,36 +1,36 @@
-import { Button, Wrap, WrapItem, useToast } from '@chakra-ui/react'
-import { useState } from 'react'
+import { Button, Wrap, WrapItem, useToast } from "@chakra-ui/react";
+import { useState } from "react";
 
-import { SubmittedViolationsColumn } from './columns'
+import { SubmittedViolationsColumn } from "./columns";
 
 interface RowActionProps {
-  data: SubmittedViolationsColumn
+  data: SubmittedViolationsColumn;
 }
 
 export const RowActions: React.FC<RowActionProps> = ({ data }) => {
-  const toast = useToast()
-  const [isButtonClicked, setIsButtonClicked] = useState(false)
+  const toast = useToast();
+  const [isButtonClicked, setIsButtonClicked] = useState(false);
 
   const handleButtonClick = () => {
     if (!isButtonClicked) {
       toast({
-        title: `Successfully followed up the violation submitted on ${data.dateSubmitted}.`,
+        title: `Successfully followed up the violation submitted on ${data.createdAt}.`,
         description:
-          'The HOA officers will get back to you as soon as possible.',
-        status: 'success',
-        position: 'bottom-right',
-        isClosable: true
-      })
+          "The HOA officers will get back to you as soon as possible.",
+        status: "success",
+        position: "bottom-right",
+        isClosable: true,
+      });
 
-      setIsButtonClicked(true)
+      setIsButtonClicked(true);
     }
-  }
+  };
 
   return (
     <Wrap>
       <WrapItem>
         <Button
-          size='sm'
+          size="sm"
           onClick={handleButtonClick}
           isDisabled={isButtonClicked}
         >
@@ -38,5 +38,5 @@ export const RowActions: React.FC<RowActionProps> = ({ data }) => {
         </Button>
       </WrapItem>
     </Wrap>
-  )
-}
+  );
+};

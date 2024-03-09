@@ -1,16 +1,16 @@
-'use client'
+"use client";
 
-import { Heading } from '@/components/ui/heading'
-import { Separator } from '@/components/ui/separator'
+import { Heading } from "@/components/ui/heading";
+import { Separator } from "@/components/ui/separator";
 
-import { SubmittedViolationsColumn, columns } from './columns'
-import { DataTable } from '@/components/ui/data-table'
+import { SubmittedViolationsColumn, columns } from "./columns";
+import { DataTable } from "@/components/ui/data-table";
 
-import { Flex, Button } from '@chakra-ui/react'
-import Link from 'next/link'
+import { Flex, Button } from "@chakra-ui/react";
+import Link from "next/link";
 
 interface SubmittedViolationsClientProps {
-  data: SubmittedViolationsColumn[]
+  data: SubmittedViolationsColumn[];
 }
 
 export const SubmittedViolationsClient: React.FC<
@@ -18,17 +18,17 @@ export const SubmittedViolationsClient: React.FC<
 > = ({ data }) => {
   return (
     <>
-      <Flex justify='space-between'>
+      <Flex justify="space-between">
         <Heading
-          title='Submitted Violation Forms'
+          title="Submitted Violation Forms"
           description="Monitor the progress of your submitted violation forms to the Homeowners' Association."
         />
-        <Button size='sm' colorScheme='gray' as={Link} href='/admin/violations'>
+        <Button size="sm" colorScheme="gray" as={Link} href="/admin/violations">
           Go Back
         </Button>
       </Flex>
       <Separator />
-      <DataTable columns={columns} data={data} searchKey='dateSubmitted' />
+      <DataTable columns={columns} data={data} searchKey="createdAt" />
     </>
-  )
-}
+  );
+};

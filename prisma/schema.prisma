@@ -9,11 +9,12 @@ datasource db {
 }
 
 model Hoa {
-  id         String @id @default(cuid())
-  name       String
-  funds      Int
-  fixedDue   Int?
-  lotSizeDue Int?
+  id            String @id @default(cuid())
+  name          String
+  startingFunds Int
+  funds         Int
+  fixedDue      Int?
+  lotSizeDue    Int?
 }
 
 model User {
@@ -38,10 +39,11 @@ model PersonalInfo {
   phoneNumber String?
   birthDay    DateTime?
   address     String?
+  relation    HomeRelation?
   bio         String?
   type        String?
   position    String?       @default("Member")
-  relation    HomeRelation?
+  govtId      String?
   user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
@@ -56,24 +58,9 @@ model Property {
   address      String?
   lotNumber    String?
   lotSize      String?
-  latitude     Int?
-  longitude    Int?
+  latitude     Float?
+  longitude    Float?
   purchaseDate DateTime?
-  documents    PropertyDocument[]
-}
-
-model PropertyDocument {
-  id         String   @id @unique @default(cuid())
-  propertyId String
-  fileName   String?
-  imageUrl   String?
-  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
-}
-
-model UserPaymentInfo {
-  id         String @id @unique @default(cuid())
-  userId     String
-  cardNumber String
 }
 
 model UserTransaction {
@@ -101,30 +88,50 @@ model HoaTransaction {
   userId      String
 }
 
-model Inflow {
-  id     String     @id @unique @default(cuid())
-  planId String
-  title  String
-  amount Int
-  plan   BudgetPlan @relation(fields: [planId], references: [id], onDelete: Cascade)
-}
-
-model Outflow {
-  id     String     @id @unique @default(cuid())
-  planId String
-  title  String
-  amount Int
-  plan   BudgetPlan @relation(fields: [planId], references: [id], onDelete: Cascade)
-}
-
 model BudgetPlan {
-  id           String    @id @unique @default(cuid())
-  title        String
-  totalInflow  Int
-  totalOutflow Int
-  total        Int
-  inflow       Inflow[]
-  outflow      Outflow[]
+  id                        String @id @unique @default(cuid())
+  title                     String
+  forYear                   Int
+  cybAssocDues              Int
+  cybToll                   Int
+  cybFacility               Int
+  cybConstruction           Int
+  cybCarSticker             Int
+  cybOtherRev               Int
+  ytdaAssocDues             Int?
+  ytdaToll                  Int?
+  ytdaFacility              Int?
+  ytdaConstruction          Int?
+  ytdaCarSticker            Int?
+  ytdaOtherRev              Int?
+  
+  cybSalariesBenefits       Int
+  cybUtilities              Int
+  cybOfficeSupplies         Int
+  cybRepairMaintenance      Int
+  cybDonations              Int
+  cybFurnituresFixtures     Int
+  cybRepresentation         Int
+  cybLegalProfessionalFees  Int
+  cybAdministrativeCosts    Int
+  cybOtherExp               Int
+  ytdaSalariesBenefits      Int?
+  ytdaUtilities             Int?
+  ytdaOfficeSupplies        Int?
+  ytdaRepairMaintenance     Int?
+  ytdaDonations             Int?
+  ytdaFurnituresFixtures    Int?
+  ytdaRepresentation        Int?
+  ytdaLegalProfessionalFees Int?
+  ytdaAdministrativeCosts   Int?
+  ytdaOtherExp              Int?
+  
+  cybTotalYearlyExp         Int
+  cybTotalYearlyRev         Int
+  cybTotalYearlySurplus     Int
+  ytdaTotalYearlyExp        Int?
+  ytdaTotalYearlyRev        Int?
+  ytdaTotalYearlySurplus    Int?
 }
 
 model Account {
@@ -154,6 +161,141 @@ model ResetPasswordToken {
   @@unique([email, token])
 }
 
+model Post {
+  id          String             @id @unique @default(cuid())
+  userId      String
+  category    CategoryType      
+  type        PostType
+  title       String
+  description String
+  status      Status             @default(PENDING)
+  createdAt   DateTime           @default(now())
+  likes       Like[] 
+  comments    Comment[]
+}
+
+model Like {
+  id          String             @id @unique @default(cuid())
+  userId      String
+  postId      String
+  createdAt   DateTime           @default(now())
+  post   Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+}
+
+model Comment {
+  id          String             @id @unique @default(cuid())
+  userId      String
+  postId      String
+  text        String
+  createdAt   DateTime           @default(now())
+  post   Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+}
+
+model Polls {
+  id          String             @id @unique @default(cuid())
+  userId      String   
+  title       String
+  description String
+  category    CategoryType   
+  startDate   DateTime  
+  endDate     DateTime
+  status      Status             @default(INACTIVE)
+  createdAt   DateTime           @default(now())
+  questions   Question[] 
+}
+
+model Question {
+  id          String             @id @unique @default(cuid())
+  pollId      String
+  text        String 
+  options     Option[]  
+  polls   Polls @relation(fields: [pollId], references: [id], onDelete: Cascade)
+}
+
+model Option {
+  id          String             @id @unique @default(cuid())
+  questionId  String
+  text        String
+  question  Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+}
+
+model Response {
+  id          String             @id @unique @default(cuid())
+  userId      String
+  pollId      String
+  questionId  String
+  optionId    String            
+  createdAt   DateTime           @default(now())
+}
+
+model Events {
+  id          String             @id @unique @default(cuid())
+  title       String
+  description String
+  date        DateTime
+  venue       String
+  userId      String
+}
+
+model ViolationType {
+ id String @id @unique @default(cuid())
+ name String
+ description String
+ fee Float
+ deadline Int
+}
+
+model Violation {
+  id String @id @unique @default(cuid())
+  violationDate DateTime 
+  type String 
+  description String
+  personsInvolved String[]
+  status String?       @default("Pending")
+  officerAssigned String?                        //userId
+  createdAt DateTime @default(now())
+  submittedBy String                            //userId
+}
+
+model Notification { 
+  id String @id @unique @default(cuid())
+  type String 
+  userId String[]
+  title String
+  description String
+  isRead Boolean
+  link String
+  createdAt DateTime @default(now())
+}
+
+model Notice {
+  id String @id @unique @default(cuid())
+  type String                                 // "Dispute" / "Violation"
+  typeId String                               // id of dispute or violation submitted/concerned
+  recipient String                            // userId
+  meetDate String?                            // date of meeting set if any
+  venue String?                               // venue of meeting set if any
+  sender String                               // userId
+  createdAt DateTime @default(now())
+}
+
+enum CategoryType {
+  MEETING
+  ELECTION
+  INQUIRY
+  EVENT
+  FOODANDDRINK
+  CLOTHING
+  HOUSEHOLDITEMS
+  HOMESERVICES
+  OTHER
+}
+
+enum PostType {
+  DISCUSSION
+  BUSINESS
+}
+
 enum UserRole {
   ADMIN
   USER
@@ -178,6 +320,28 @@ enum PaymentStatus {
 }
 
 enum HoaTransactionType {
-  INCOME
+  REVENUE
   EXPENSE
+}
+
+enum RevenueCategory {
+  AssociationDues
+  Toll
+  Facility
+  Construction
+  CarSticker
+  Other
+}
+
+enum ExpenseCategory {
+  SalariesBenefits
+  Utilities
+  OfficeSupplies
+  RepairMaintenance
+  Donations
+  FurnituresFixtures
+  Representation
+  LegalProfessionalFees
+  AdministrativeCosts
+  Other
 }

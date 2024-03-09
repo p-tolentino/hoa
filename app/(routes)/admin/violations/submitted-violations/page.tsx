@@ -1,39 +1,64 @@
-import React from 'react'
-import { SubmittedViolationsClient } from './_components/client'
+import React from "react";
+import { SubmittedViolationsClient } from "./_components/client";
+import { currentUser } from "@/lib/auth";
+import { getAllUsers } from "@/server/data/user";
+import { getAllViolations } from "@/server/data/violation";
+import { SubmittedViolationsColumn } from "./_components/columns";
+import { format } from "date-fns";
 
-export default function SubmittedViolations () {
-  const data = [
-    {
-      id: '12345',
-      status: 'Pending',
-      dateSubmitted: '02/14/24',
-      officerInCharge: 'E&S Officer 1',
-      title: 'ABCD',
-      viewViolationForm: 'Sample Link to Violation Form 1'
-    },
-    {
-      id: '67890',
-      status: 'In Process',
-      dateSubmitted: '02/20/24',
-      officerInCharge: 'E&S Officer 2',
-      title: 'EFGH',
-      viewViolationForm: 'Sample Link to Violation Form 2'
-    },
-    {
-      id: '54321',
-      status: 'Resolved',
-      dateSubmitted: '02/27/24',
-      officerInCharge: 'E&S Offocer 3',
-      title: 'WSYZ',
-      viewViolationForm: 'Sample Link to Violation Form 3'
+export default async function SubmittedViolations() {
+  const user = await currentUser();
+  if (!user) {
+    return null;
+  }
+
+  const users = await getAllUsers();
+
+  if (!users) {
+    return null;
+  }
+
+  const violations = await getAllViolations();
+
+  if (!violations) {
+    return null;
+  }
+
+  const formattedViolations: SubmittedViolationsColumn[] = violations.map(
+    (item) => {
+      const officer = users.find((user) => user.id === item.officerAssigned);
+
+      return {
+        id: item.id || "",
+        status: item.status || "",
+        type: item.type || "",
+        createdAt: item.createdAt
+          ? format(
+              new Date(item.createdAt)?.toISOString().split("T")[0],
+              "MMMM dd, yyyy"
+            )
+          : "",
+        violationDate: item.violationDate
+          ? format(
+              new Date(item.violationDate)?.toISOString().split("T")[0],
+              "MMMM dd, yyyy"
+            )
+          : "",
+        personsInvolved: item.personsInvolved || [],
+        officerAssigned: officer
+          ? `${officer.info?.firstName} ${officer.info?.lastName}`
+          : "",
+        description: item.description || "",
+        submittedBy: item.submittedBy || "",
+      };
     }
-  ]
+  );
 
   return (
     <div>
-      <div className='flex-1 space-y-4'>
-        <SubmittedViolationsClient data={data} />
+      <div className="flex-1 space-y-4">
+        <SubmittedViolationsClient data={formattedViolations} />
       </div>
     </div>
-  )
+  );
 }

@@ -33,6 +33,7 @@ import {
 import { useRouter } from "next/navigation";
 import { ExtendedUser } from "@/next-auth";
 import { HomeRelation, Property } from "@prisma/client";
+import { Textarea } from "@/components/ui/textarea";
 
 interface SettingsFormProps {
   initialData: ExtendedUser;
@@ -287,6 +288,24 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({
                     </SelectContent>
                   </Select>
                   <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <div className="w-full ">
+            <FormField
+              control={form.control}
+              name="bio"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Biography</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      placeholder="Tell us a little bit about yourself"
+                      className="resize-none"
+                      {...field}
+                    />
+                  </FormControl>
                 </FormItem>
               )}
             />
