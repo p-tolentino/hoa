@@ -17,7 +17,7 @@ export default function ViolationProcess () {
       </Flex>
       <Separator className='mt-4 mb-6' />
 
-      <Stack spacing={10}>
+      <Stack spacing='50px'>
         {/* Violation Enforcement */}
         <Box id='violationEnforcement'>
           <ViolationEnforcement />

@@ -1,46 +1,44 @@
-import { db } from "@/lib/db";
-import ProgressDetails from "./_components/progress-details";
+import { db } from '@/lib/db'
+import ProgressDetails from './_components/progress-details'
 
 export const ViolationProgressPage = async ({
-  params,
+  params
 }: {
-  params: { violationId: string };
+  params: { violationId: string }
 }) => {
   const violation = await db.violation.findUnique({
     where: {
-      id: params.violationId,
-    },
-  });
+      id: params.violationId
+    }
+  })
 
   const violationType = await db.violationType.findFirst({
     where: {
-      name: violation?.type,
-    },
-  });
+      name: violation?.type
+    }
+  })
 
-  let officerAssigned;
+  let officerAssigned
 
   if (violation?.officerAssigned) {
     officerAssigned = await db.personalInfo.findFirst({
       where: {
-        userId: violation?.officerAssigned,
-      },
-    });
+        userId: violation?.officerAssigned
+      }
+    })
   }
 
   const reportDetails = {
     violation: violation,
     violationType: violationType,
-    officerAssigned: officerAssigned ? officerAssigned : null,
-  };
+    officerAssigned: officerAssigned ? officerAssigned : null
+  }
 
   return (
-    <div className="flex-col">
-      <div className="flex-1 p-8 pt-6 space-y-4">
-        <ProgressDetails reportDetails={reportDetails} />
-      </div>
+    <div>
+      <ProgressDetails reportDetails={reportDetails} />
     </div>
-  );
-};
+  )
+}
 
-export default ViolationProgressPage;
+export default ViolationProgressPage
