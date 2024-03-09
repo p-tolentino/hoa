@@ -38,8 +38,8 @@ export default function ViolationReviewProcess () {
     <div>
       <Flex justifyContent='space-between'>
         <Heading
-          title='Violation Review Process Guide'
-          description='Read more about the violation review process.'
+          title='Violation Enforcement Process Guide'
+          description='Read more about the violation enforcement process. '
         />
       </Flex>
       <Separator className='mt-4 mb-6' />

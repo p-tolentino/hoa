@@ -20,8 +20,8 @@ export const SubmittedViolationsClient: React.FC<
     <>
       <Flex justify='space-between'>
         <Heading
-          title='Submitted Violation Forms'
-          description="Monitor the progress of your submitted violation forms to the Homeowners' Association."
+          title='Submitted Violation Reports'
+          description="Monitor the progress of your submitted violation reports to the Homeowners' Association."
         />
         <Button size='sm' colorScheme='gray' as={Link} href='/admin/violations'>
           Go Back
