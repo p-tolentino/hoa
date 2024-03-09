@@ -240,6 +240,7 @@ model Events {
 model ViolationType {
  id String @id @unique @default(cuid())
  name String
+ title String
  description String
  fee Float
  deadline Int
@@ -247,6 +248,7 @@ model ViolationType {
 
 model Violation {
   id String @id @unique @default(cuid())
+  number Int @default(autoincrement())
   violationDate DateTime 
   type String 
   description String
@@ -255,6 +257,7 @@ model Violation {
   officerAssigned String?                        //userId
   createdAt DateTime @default(now())
   submittedBy String                            //userId
+  progress String @default("Step 1")
 }
 
 model Notification { 

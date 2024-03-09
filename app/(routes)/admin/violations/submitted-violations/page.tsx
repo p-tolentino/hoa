@@ -1,4 +1,3 @@
-import React from "react";
 import { SubmittedViolationsClient } from "./_components/client";
 import { currentUser } from "@/lib/auth";
 import { getAllUsers } from "@/server/data/user";
@@ -27,9 +26,11 @@ export default async function SubmittedViolations() {
   const formattedViolations: SubmittedViolationsColumn[] = violations.map(
     (item) => {
       const officer = users.find((user) => user.id === item.officerAssigned);
+      const submittedBy = users.find((user) => user.id === item.submittedBy);
 
       return {
         id: item.id || "",
+        number: item.number || 0,
         status: item.status || "",
         type: item.type || "",
         createdAt: item.createdAt
@@ -49,7 +50,9 @@ export default async function SubmittedViolations() {
           ? `${officer.info?.firstName} ${officer.info?.lastName}`
           : "",
         description: item.description || "",
-        submittedBy: item.submittedBy || "",
+        submittedBy: submittedBy
+          ? `${submittedBy.info?.firstName} ${submittedBy.info?.lastName}`
+          : "",
       };
     }
   );

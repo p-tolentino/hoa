@@ -28,7 +28,7 @@ export const ListOfViolationsClient: React.FC<ListOfViolationsClientProps> = ({
         </Button>
       </Flex>
       <Separator />
-      <DataTable columns={columns} data={data} searchKey="dataSubmitted" />
+      <DataTable columns={columns} data={data} searchKey="createdAt" />
     </>
   );
 };

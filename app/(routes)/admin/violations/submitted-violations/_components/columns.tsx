@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 
 export type SubmittedViolationsColumn = {
   id: string;
+  number: number;
   status: string;
   createdAt: string;
   officerAssigned: string;
@@ -72,13 +73,13 @@ export const columns: ColumnDef<SubmittedViolationsColumn>[] = [
   },
   {
     accessorKey: "viewViolationForm",
-    header: "View Violation Form",
+    header: "Enforcement Progress",
     cell: ({ row }) => (
       <a
         href={"/admin/violations/submitted-violations/view-progress"}
         className="hover:underline"
       >
-        View Enforcement Progress
+        View Progress
       </a>
     ),
   },
