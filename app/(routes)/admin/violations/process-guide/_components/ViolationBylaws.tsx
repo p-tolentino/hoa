@@ -10,7 +10,8 @@ import {
   DrawerCloseButton,
   useDisclosure,
   Heading,
-  Text
+  Text,
+  Link
 } from '@chakra-ui/react'
 
 export default function ViolationBylaws () {
@@ -21,19 +22,16 @@ export default function ViolationBylaws () {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   return (
-    <div>
-      <Button
-        variant='link'
+    <>
+      <Link
         fontFamily='font.body'
-        fontWeight='light'
         onClick={() => onOpen()}
-        key='Bylaws'
-        color='black'
+        color='blue.500'
         size='sm'
         textDecoration='underline'
       >
-        View {title}
-      </Button>
+        Homeowners' Association Bylaws
+      </Link>
 
       <Drawer isOpen={isOpen} onClose={onClose} placement='right' size='xl'>
         <DrawerOverlay />
@@ -55,6 +53,6 @@ export default function ViolationBylaws () {
           </DrawerBody>
         </DrawerContent>
       </Drawer>
-    </div>
+    </>
   )
 }
