@@ -1,12 +1,8 @@
-"use client";
-
+'use client'
+import { Heading } from '@/components/ui/heading'
+import { Separator } from '@/components/ui/separator'
 import {
-  Flex,
-  Button,
   Step,
-  Box,
-  Text,
-  Progress,
   StepDescription,
   StepIcon,
   StepIndicator,
@@ -16,98 +12,366 @@ import {
   StepTitle,
   Stepper,
   useSteps,
-} from "@chakra-ui/react";
-import { Heading } from "@/components/ui/heading";
-import { Separator } from "@/components/ui/separator";
-import Link from "next/link";
+  Card,
+  CardBody,
+  Box,
+  Flex,
+  Text,
+  UnorderedList,
+  ListItem,
+  CardHeader,
+  Link,
+  TableContainer,
+  Table,
+  Tbody,
+  Tr,
+  Th,
+  Td,
+  Stack
+} from '@chakra-ui/react'
+import ViolationBylaws from '../../process-guide/_components/ViolationBylaws'
 
-const steps = [
-  { title: "1", description: "Submit Violation Form" },
-  { title: "2", description: "Upload Supporting Documents" },
-  { title: "3", description: "Step Three" },
-  { title: "4", description: "Step Four" },
-  { title: "5", description: "Step Five" },
-  { title: "6", description: "Step Six" },
-];
+export default function ViolationEnforcementProgress () {
+  const violation = {
+    number: 'V0001',
+    formLink: '/admin/violation/submitted-violations',
+    officer: 'Juan Dela Cruz',
+    date: 'March 1, 2024',
+    type: 'Parking Violation',
+    penaltyFee: '₱ 500'
+  }
 
-export default function ViewProgress() {
-  const title = "Violation Review Progress";
-  const description =
-    "View the progress of your submitted violation in the Homeowners Association";
+  const processSteps = [
+    {
+      title: 'Violation Form Submission',
+      description:
+        'Homeowners submit violation reports through the Violation Monitoring module in the MIS.'
+    },
+    {
+      title: 'Violation Intake and Validation',
+      description:
+        'HOA staff or designated personnel review submitted violation reports.'
+    },
+    {
+      title: 'Acknowledgment of Violation Report Submission',
+      description:
+        "Homeowners receive acknowledgment of the violation report's receipt through the MIS."
+    },
+    {
+      title: 'Review by Environment and Security Committee',
+      description:
+        'The Environment and Security Committee receives and reviews the violation report.'
+    },
+    {
+      title: 'Issue Resolution and Enforcement with Penalty Fee',
+      description:
+        'The Officer-in-Charge takes appropriate actions based on their decision, including issuing a violation notice to the homeowner.'
+    },
+    {
+      title: 'Live Updates on Violation Enforcement',
+      description:
+        'The reporter and alleged violator are kept informed throughout the process.'
+    },
+    {
+      title: 'Record Keeping and Documentation',
+      description:
+        'The HOA maintains a comprehensive record of violation reports, actions taken, and penalty fees imposed.'
+    }
+  ]
 
   const { activeStep, setActiveStep } = useSteps({
     index: 0,
-    count: steps.length,
-  });
-
-  const activeStepText = steps[activeStep].description;
-
-  const max = steps.length - 1;
-  const progressPercent = (activeStep / max) * 100;
+    count: processSteps.length
+  })
 
   return (
-    <>
-      <Flex justifyContent="space-between">
-        <Heading title={title} description={description} />
-        <Button
-          size="sm"
-          colorScheme="gray"
-          as={Link}
-          href="/admin/violations/violation-record"
-        >
-          Go Back
-        </Button>
+    <div>
+      <Flex justifyContent='space-between'>
+        <Heading
+          title={`#:${violation.number} Violation Enforcement Progress`}
+          description="View the progress of your selection violation within the Homeowners' Association"
+        />
       </Flex>
-      <Separator className="mt-4 mb-6" />
+      <Separator className='mt-4 mb-6' />
 
-      <Box position="relative">
-        <Stepper index={activeStep} size="sm" gap="0" colorScheme="yellow">
-          {steps.map((step, index) => (
+      <Flex gap={10} h='65vh'>
+        <Stepper
+          index={activeStep}
+          orientation='vertical'
+          width='min-content'
+          gap='0'
+          colorScheme='yellow'
+          size='sm'
+        >
+          {processSteps.map((step, index) => (
             <Step key={index} onClick={() => setActiveStep(index)}>
-              <StepIndicator bg="white">
+              <StepIndicator>
                 <StepStatus
                   complete={<StepIcon />}
                   incomplete={<StepNumber />}
                   active={<StepNumber />}
                 />
               </StepIndicator>
-
-              {/* <Box flexShrink="0" fontSize="xs">
-                <StepTitle>{step.title}</StepTitle>
-                <StepDescription>{step.description}</StepDescription>
+              <Box
+                flexShrink='0'
+                fontFamily='font.body'
+                w='10vw'
+                onClick={() => Request}
+              >
+                {/* Stepper Number and Title */}
+                <StepTitle>Step {index + 1}</StepTitle>
+                <StepDescription>{step.title}</StepDescription>
               </Box>
-
-              <StepSeparator /> */}
+              <StepSeparator />
             </Step>
           ))}
         </Stepper>
-        <Progress
-          value={progressPercent}
-          position="absolute"
-          height="3px"
-          width="full"
-          top="10px"
-          zIndex={-1}
-          colorScheme="yellow"
-        />
-      </Box>
+        <Box w='100%'>
+          <Card shadow='lg' mb='1rem' h='60vh' p={5} overflowY='auto'>
+            <CardHeader pb={0}>
+              <Text
+                fontSize='sm'
+                fontFamily='font.body'
+                color='brand.500'
+                fontWeight='bold'
+              >
+                Step {activeStep + 1}
+              </Text>
+              <Text fontSize='lg' fontFamily='font.heading' fontWeight='bold'>
+                {/* Step Title */}
+                {processSteps[activeStep].title}
+              </Text>
+              <Text fontFamily='font.body' textAlign='justify'>
+                {/* Step Description */}
+                {processSteps[activeStep].description}
+              </Text>
+            </CardHeader>
+            <Card />
+            <CardBody>
+              <Stack spacing={5}>
+                {/* Step Details */}
+                <Box fontFamily='font.body' fontSize='sm' textAlign='justify'>
+                  <Text>Details:</Text>
+                  <UnorderedList>
+                    {/* Step 1 Details */}
+                    {activeStep === 0 && (
+                      <div>
+                        <ListItem>
+                          Homeowners provide details about the alleged
+                          violation, including the type of violation, date, and
+                          a detailed description of the violation.
+                        </ListItem>
+                        <ListItem>
+                          Supporting evidence such as photos or documents may be
+                          attached to the violation report.
+                        </ListItem>
+                      </div>
+                    )}
+                    {/* Step 2 Details */}
+                    {activeStep === 1 && (
+                      <div>
+                        <ListItem>
+                          HOA staff or designated personnel validate the
+                          violation report by ensuring it contains sufficient
+                          information and evidence.
+                        </ListItem>
+                        <ListItem>
+                          They confirm that the reported issue falls within the
+                          jurisdiction of the HOA's rules and regulations
+                          indicated in the {<ViolationBylaws />}.
+                        </ListItem>
+                        <ListItem>
+                          A unique identifier or tracking number is assigned to
+                          the violation report for future reference.
+                        </ListItem>
+                      </div>
+                    )}
+                    {/* Step 3 Details */}
+                    {activeStep === 2 && (
+                      <div>
+                        <ListItem>
+                          Homeowners can view their violation report submission
+                          in the{' '}
+                          <Link
+                            href='/admin/violations/submitted-violations'
+                            color='blue.500'
+                            textDecor='underline'
+                          >
+                            Submitted Violation Reports
+                          </Link>{' '}
+                          in the Violation Monitoring module.
+                        </ListItem>
+                        <ListItem>
+                          The upcoming review process and potential follow-up
+                          actions can also be accessed by clicking on the
+                          submitted violation report.
+                        </ListItem>
+                      </div>
+                    )}
+                    {/* Step 4 Details */}
+                    {activeStep === 3 && (
+                      <div>
+                        <ListItem>
+                          The Environment and Security Committee receives the
+                          violation report in the MIS and assigns an
+                          officer-in-charge to oversee its resolution.
+                        </ListItem>
+                        <ListItem>
+                          The Officer-in-Charge makes a decision whether the
+                          reported violation is valid and if any action is
+                          required.
+                        </ListItem>
+                      </div>
+                    )}
+                    {/* Step 5 Details */}
+                    {activeStep === 4 && (
+                      <div>
+                        <ListItem>
+                          The alleged violator receives a notice outlining the
+                          nature of the violation, required corrective actions,
+                          and a penalty fee.
+                        </ListItem>
+                        <ListItem>
+                          The homeowner is informed that the penalty fee is
+                          added to their{' '}
+                          <Link
+                            href='/admin/finance/statement-of-account'
+                            color='blue.500'
+                            textDecor='underline'
+                          >
+                            statement of account
+                          </Link>
+                          , which can be accessed via the Finance Management
+                          module.
+                        </ListItem>
+                      </div>
+                    )}
+                    {/* Step 6 Details */}
+                    {activeStep === 5 && (
+                      <div>
+                        <ListItem>
+                          Homeowners receive notifications on committee
+                          decisions and enforcement actions, including details
+                          of the penalty fee.
+                        </ListItem>
+                        <ListItem>
+                          The alleged violator can access the procedure on how
+                          to{' '}
+                          <Link
+                            href='#rectifyViolations'
+                            color='blue.500'
+                            textDecor='underline'
+                          >
+                            rectify the violation
+                          </Link>{' '}
+                          and{' '}
+                          <Link
+                            href='#payPenaltyFee'
+                            color='blue.500'
+                            textDecor='underline'
+                          >
+                            pay the penalty fee
+                          </Link>{' '}
+                          in the Violation Review Process Guide in the Violation
+                          Monitoring module.
+                        </ListItem>
+                      </div>
+                    )}
+                    {/* Step 7 Details */}
+                    {activeStep === 6 && (
+                      <div>
+                        <ListItem>
+                          Comprehensive records of violation reports, actions
+                          taken, and penalty fees imposed are maintained.
+                        </ListItem>
+                        <ListItem>
+                          Each violation report is documented, including
+                          evidence, committee decisions, enforcement actions,
+                          and penalty fee details.
+                        </ListItem>
+                        <ListItem>
+                          Records are kept organized and easily accessible for
+                          future reference in a secure system.
+                        </ListItem>
+                      </div>
+                    )}
+                  </UnorderedList>
+                </Box>
+                {/* Step Information Table */}
 
-      <Box
-        w="100%"
-        h="75vh"
-        border="1px"
-        borderColor="gray.200"
-        borderRadius="10px"
-        mt="2%"
-        p="20px"
-        overflowY="auto"
-      >
-        {steps.map((step, index) => (
-          <Text key={index} display={index === activeStep ? "block" : "none"}>
-            {`Step ${step.title}: ${step.description}`}
-          </Text>
-        ))}
-      </Box>
-    </>
-  );
+                {(activeStep === 0 || activeStep === 1 || activeStep === 4) && (
+                  <Box>
+                    <TableContainer>
+                      <Table
+                        variant='unstyled'
+                        fontFamily='font.body'
+                        size='sm'
+                        w='min-content'
+                      >
+                        <Tbody>
+                          {/* Step 1 Information Table */}
+                          {activeStep === 0 && (
+                            <Tr>
+                              <Th border='3px double black'>Violation Form</Th>
+                              <Td border='3px double black'>
+                                <Link
+                                  href={violation.formLink}
+                                  color='blue.500'
+                                  textDecor='underline'
+                                >
+                                  #{violation.number} Violation Form
+                                </Link>
+                              </Td>
+                            </Tr>
+                          )}
+                          {/* Step 2 Information Table */}
+                          {activeStep === 1 && (
+                            <Tr>
+                              <Th border='3px double black'>
+                                Officer-in-Charge
+                              </Th>
+                              <Td border='3px double black'>
+                                {violation.officer}
+                              </Td>
+                            </Tr>
+                          )}
+                          {/* Step 5 Information Table */}
+                          {activeStep === 4 && (
+                            <>
+                              <Tr>
+                                <Th border='3px double black'>
+                                  Date of Violation
+                                </Th>
+                                <Td border='3px double black'>
+                                  {violation.date}
+                                </Td>
+                              </Tr>
+                              <Tr>
+                                <Th border='3px double black'>
+                                  Violation Type
+                                </Th>
+                                <Td border='3px double black'>
+                                  {violation.type}
+                                </Td>
+                              </Tr>
+                              <Tr>
+                                <Th border='3px double black'>Penalty Fee</Th>
+                                <Td border='3px double black'>
+                                  {violation.penaltyFee}
+                                </Td>
+                              </Tr>
+                            </>
+                          )}
+                        </Tbody>
+                      </Table>
+                    </TableContainer>
+                  </Box>
+                )}
+              </Stack>
+            </CardBody>
+          </Card>
+        </Box>
+      </Flex>
+    </div>
+  )
 }

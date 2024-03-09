@@ -78,7 +78,7 @@ export const columns: ColumnDef<SubmittedViolationsColumn>[] = [
         href={"/admin/violations/submitted-violations/view-progress"}
         className="hover:underline"
       >
-        Violation Report Information
+        View Enforcement Progress
       </a>
     ),
   },
