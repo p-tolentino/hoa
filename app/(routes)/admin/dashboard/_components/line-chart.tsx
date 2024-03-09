@@ -7,7 +7,7 @@ import { ApexOptions } from "apexcharts";
 // import dynamic from "next/dynamic";
 // const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
-interface ApexChartState {
+interface LineChartState {
   series: {
     name: string;
     data: number[];
@@ -15,7 +15,7 @@ interface ApexChartState {
   options?: ApexOptions;
 }
 
-class ApexChart extends React.Component<{}, ApexChartState> {
+class LineChart extends React.Component<{}, LineChartState> {
   constructor(props: {}) {
     super(props);
 
@@ -39,10 +39,6 @@ class ApexChart extends React.Component<{}, ApexChartState> {
         },
         stroke: {
           curve: "straight",
-        },
-        title: {
-          text: "Total Revenue by Month",
-          align: "left",
         },
         grid: {
           row: {
@@ -79,6 +75,7 @@ class ApexChart extends React.Component<{}, ApexChartState> {
             series={this.state.series}
             type="line"
             height={350}
+            width={800}
           />
         </Box>
         <Box id="html-dist"></Box>
@@ -87,4 +84,4 @@ class ApexChart extends React.Component<{}, ApexChartState> {
   }
 }
 
-export default ApexChart;
+export default LineChart;

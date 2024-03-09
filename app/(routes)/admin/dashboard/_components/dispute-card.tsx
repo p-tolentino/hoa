@@ -16,10 +16,10 @@ export default function DisputeCard() {
         bg="white"
       >
         <Box>
-          <Text color="gray.500" textTransform="uppercase" fontSize="sm">
+          <Text color="gray.500" textTransform="uppercase" fontSize="xs">
             Dispute Reports
           </Text>
-          <Text fontSize="xl" fontWeight="bold">
+          <Text fontSize="3xl" fontWeight="bold">
             12
           </Text>
         </Box>

@@ -16,10 +16,10 @@ export default function ViolationCard() {
         bg="white"
       >
         <Box>
-          <Text color="gray.500" textTransform="uppercase" fontSize="sm">
+          <Text color="gray.500" textTransform="uppercase" fontSize="xs">
             Violation Reports
           </Text>
-          <Text fontSize="xl" fontWeight="bold">
+          <Text fontSize="3xl" fontWeight="bold">
             6
           </Text>
         </Box>

@@ -5,21 +5,26 @@ import { Box } from "@chakra-ui/react";
 import Chart from "react-apexcharts";
 import { ApexOptions } from "apexcharts";
 
-interface DonutChartState {
+interface PolarAreaChartState {
   series: number[];
-  options: ApexOptions;
+  options?: ApexOptions;
 }
 
-class DonutChart extends React.Component<{}, DonutChartState> {
+class PolarAreaChart extends React.Component<{}, PolarAreaChartState> {
   constructor(props: {}) {
     super(props);
 
     this.state = {
-      series: [44, 55, 41, 17, 15],
+      series: [14, 23, 21, 17, 15, 10, 12, 17, 21],
       options: {
         chart: {
-          height: 350,
-          type: "donut",
+          type: "polarArea",
+        },
+        stroke: {
+          colors: ["#fff"],
+        },
+        fill: {
+          opacity: 0.8,
         },
         responsive: [
           {
@@ -34,7 +39,17 @@ class DonutChart extends React.Component<{}, DonutChartState> {
             },
           },
         ],
-        labels: ["one", "two", "three", "four", "five"],
+        labels: [
+          "one",
+          "two",
+          "three",
+          "four",
+          "five",
+          "six",
+          "seven",
+          "eight",
+          "nine",
+        ],
         colors: ["#9F7AEA", "#ED64A6", "#4299E1", "#ED8936", "#38B2AC"],
       },
     };
@@ -47,8 +62,7 @@ class DonutChart extends React.Component<{}, DonutChartState> {
           <Chart
             options={this.state.options}
             series={this.state.series}
-            type="donut"
-            height={350}
+            type="polarArea"
           />
         </Box>
         <Box id="html-dist"></Box>
@@ -57,4 +71,4 @@ class DonutChart extends React.Component<{}, DonutChartState> {
   }
 }
 
-export default DonutChart;
+export default PolarAreaChart;

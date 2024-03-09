@@ -16,10 +16,10 @@ export default function MembershipCard() {
         bg="white"
       >
         <Box>
-          <Text color="gray.500" textTransform="uppercase" fontSize="sm">
+          <Text color="gray.500" textTransform="uppercase" fontSize="xs">
             Total Homeowners
           </Text>
-          <Text fontSize="xl" fontWeight="bold">
+          <Text fontSize="3xl" fontWeight="bold">
             220
           </Text>
         </Box>
