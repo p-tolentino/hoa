@@ -1,6 +1,13 @@
-'use client'
+"use client";
 
-import { Button, FormControl, Text, useToast, Box } from '@chakra-ui/react'
+import {
+  Button,
+  FormControl,
+  Text,
+  useToast,
+  Box,
+  HStack,
+} from "@chakra-ui/react";
 import {
   Dialog,
   DialogContent,
@@ -8,8 +15,8 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger
-} from '@/components/ui/dialog'
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -19,8 +26,8 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger
-} from '@/components/ui/alert-dialog'
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import {
   Select,
   SelectContent,
@@ -28,40 +35,57 @@ import {
   SelectItem,
   SelectLabel,
   SelectTrigger,
-  SelectValue
-} from '@/components/ui/select'
+  SelectValue,
+} from "@/components/ui/select";
 
-import { ListOfViolationsColumn } from './columns'
-import SetFeesTable from './penalty'
-import Penalty from './penalty'
+import { ListOfViolationsColumn } from "./columns";
+import { useEffect, useState } from "react";
+import { getViolationTypeByName } from "@/server/data/violation-type";
+import { PersonalInfo, ViolationType } from "@prisma/client";
 
 interface RowActionProps {
-  data: ListOfViolationsColumn
+  data: ListOfViolationsColumn;
 }
 
 export const RowActions: React.FC<RowActionProps> = ({ data }) => {
-  const toast = useToast()
+  const toast = useToast();
+  const [violation, setViolation] = useState<ViolationType | null>();
+  const [commMembers, setCommMembers] = useState<PersonalInfo | null>();
+
+  useEffect(() => {
+    const fetchViolationType = async () => {
+      try {
+        await getViolationTypeByName(data.type).then((violation) =>
+          setViolation(violation)
+        );
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    fetchViolationType();
+  }, []);
 
   return (
     <div>
       {/* Status: PENDING = Button: Assign Officer */}
-      {data.status === 'Pending' && (
+      {data.status === "Pending" && (
         <form>
           <Dialog>
             <DialogTrigger asChild>
-              <Button size='sm'>Assign Officer-in-Charge</Button>
+              <Button size="sm">Assign Officer-in-Charge</Button>
             </DialogTrigger>
-            <DialogContent className='sm:max-w-[425px]'>
+            <DialogContent className="sm:max-w-[425px]">
               <DialogHeader>
                 <DialogTitle>Assign Officer-in-Charge</DialogTitle>
                 <DialogDescription>
                   Assign the officer-in-charge to handle the violation process:
-                  <Text mt='1rem'>
-                    Submitted by:{' '}
-                    <span className='font-semibold'>{data.submittedBy}</span>{' '}
+                  <Text mt="1rem">
+                    Submitted by:{" "}
+                    <span className="font-semibold">{data.submittedBy}</span>{" "}
                     <br />
-                    Submitted on:{' '}
-                    <span className='font-semibold'>{data.dateSubmitted}</span>
+                    Submitted on:{" "}
+                    <span className="font-semibold">{data.createdAt}</span>
                   </Text>
                 </DialogDescription>
               </DialogHeader>
@@ -69,7 +93,7 @@ export const RowActions: React.FC<RowActionProps> = ({ data }) => {
               <FormControl isRequired>
                 <Select>
                   <SelectTrigger>
-                    <SelectValue placeholder='Select an officer-in-charge' />
+                    <SelectValue placeholder="Select an officer-in-charge" />
                   </SelectTrigger>
                   <SelectContent>
                     {/* Environment and Security Committee */}
@@ -77,13 +101,13 @@ export const RowActions: React.FC<RowActionProps> = ({ data }) => {
                       <SelectLabel>
                         Environment and Security Committee
                       </SelectLabel>
-                      <SelectItem value='g&a1'>
+                      <SelectItem value="g&a1">
                         E&S Committee Member 1
                       </SelectItem>
-                      <SelectItem value='g&a2'>
+                      <SelectItem value="g&a2">
                         E&S Committee Member 2
                       </SelectItem>
-                      <SelectItem value='g&a3'>
+                      <SelectItem value="g&a3">
                         E&S Committee Member 3
                       </SelectItem>
                     </SelectGroup>
@@ -91,20 +115,20 @@ export const RowActions: React.FC<RowActionProps> = ({ data }) => {
                 </Select>
               </FormControl>
 
-              <DialogFooter className='text-right'>
+              <DialogFooter className="text-right">
                 <FormControl>
                   <Button
-                    type='submit'
-                    size='sm'
-                    colorScheme='yellow'
+                    type="submit"
+                    size="sm"
+                    colorScheme="yellow"
                     onClick={() =>
                       toast({
-                        title: `Successfully assigned an officer-in-charge for the violation submitted by ${data.submittedBy} on ${data.dateSubmitted}.`,
+                        title: `Successfully assigned an officer-in-charge for the violation submitted by ${data.submittedBy} on ${data.createdAt}.`,
                         description:
-                          'Thank you for offering your services to your homeowners.',
-                        status: 'success',
-                        position: 'bottom-right',
-                        isClosable: true
+                          "Thank you for offering your services to your homeowners.",
+                        status: "success",
+                        position: "bottom-right",
+                        isClosable: true,
                       })
                     }
                   >
@@ -118,11 +142,12 @@ export const RowActions: React.FC<RowActionProps> = ({ data }) => {
       )}
 
       {/* Status: INPROCESS = Button: Mark as Resolved */}
-      {data.status === 'In Process' && (
+      {/* // !! ADD CHECKING FOR PROGRESS BEFORE MARKING AS RESOLVED */}
+      {data.status === "In Process" && (
         <div>
           <AlertDialog>
             <AlertDialogTrigger asChild>
-              <Button size='sm' colorScheme='green'>
+              <Button size="sm" colorScheme="green">
                 Mark as Resolved
               </Button>
             </AlertDialogTrigger>
@@ -131,32 +156,43 @@ export const RowActions: React.FC<RowActionProps> = ({ data }) => {
                 <AlertDialogTitle>Resolve Violation</AlertDialogTitle>
                 <AlertDialogDescription>
                   Are you sure that the violation below has been resolved?
-                  <Text mt='1rem'>
-                    Submitted by:{' '}
-                    <span className='font-semibold'>{data.submittedBy}</span>{' '}
+                  <Text mt="1rem">
+                    Submitted by:{" "}
+                    <span className="font-semibold">{data.submittedBy}</span>{" "}
                     <br />
-                    Submitted on:{' '}
-                    <span className='font-semibold'>{data.dateSubmitted}</span>
+                    Submitted on:{" "}
+                    <span className="font-semibold">{data.createdAt}</span>
                   </Text>
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <Box mt={2}>
-                <Penalty />
+                <HStack>
+                  <Text fontSize="md" fontWeight="semibold">
+                    {violation?.title} Penalty:
+                  </Text>
+                  <Text
+                    fontSize="lg"
+                    fontWeight="bold"
+                    className="text-red-700"
+                  >
+                    ₱ {violation?.fee}
+                  </Text>
+                </HStack>
               </Box>
               <AlertDialogFooter>
-                <AlertDialogCancel className='mt-0 hover:bg-gray-100'>
+                <AlertDialogCancel className="mt-0 hover:bg-gray-100">
                   Cancel
                 </AlertDialogCancel>
                 <AlertDialogAction
-                  className='bg-green-500 hover:bg-green-600'
+                  className="bg-green-700 hover:bg-green-900"
                   onClick={() =>
                     toast({
-                      title: `Successfully marked the violation submitted by ${data.submittedBy} on ${data.dateSubmitted} as resolved.`,
+                      title: `Marked the violation submitted by ${data.submittedBy} on ${data.createdAt} as resolved.`,
                       description:
-                        'Thank you for offering your services to your homeowners.',
-                      status: 'success',
-                      position: 'bottom-right',
-                      isClosable: true
+                        "Thank you for offering your services to your homeowners.",
+                      status: "success",
+                      position: "bottom-right",
+                      isClosable: true,
                     })
                   }
                 >
@@ -168,5 +204,5 @@ export const RowActions: React.FC<RowActionProps> = ({ data }) => {
         </div>
       )}
     </div>
-  )
-}
+  );
+};

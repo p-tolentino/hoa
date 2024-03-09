@@ -41,8 +41,6 @@ interface ProgressDetailsProps {
 export const ProgressDetails: React.FC<ProgressDetailsProps> = ({
   reportDetails,
 }) => {
-  console.log(reportDetails);
-
   const processSteps = [
     {
       title: "Violation Form Submission",

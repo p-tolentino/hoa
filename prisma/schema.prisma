@@ -257,7 +257,8 @@ model Violation {
   officerAssigned String?                        //userId
   createdAt DateTime @default(now())
   submittedBy String                            //userId
-  progress String @default("Step 1")
+  step Int @default(1)
+  progress String @default("Step 1: ")
 }
 
 model Notification { 
