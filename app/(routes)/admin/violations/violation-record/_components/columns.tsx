@@ -18,6 +18,7 @@ export type ListOfViolationsColumn = {
   description: string;
   personsInvolved: string[];
   submittedBy: string;
+  step: number;
   progress: string;
 };
 
@@ -39,7 +40,7 @@ export const columns: ColumnDef<ListOfViolationsColumn>[] = [
     cell: ({ row }) => (
       <Badge
         className={cn(
-          row.getValue("status") === "Resolved"
+          row.getValue("status") === "Appealed"
             ? "bg-green-700"
             : row.getValue("status") === "Pending"
             ? "bg-red-700"
@@ -64,9 +65,14 @@ export const columns: ColumnDef<ListOfViolationsColumn>[] = [
     header: "Submitted By",
   },
   {
+    accessorKey: "type",
+    header: "Type",
+  },
+  {
     accessorKey: "officerAssigned",
     header: "Officer Assigned",
   },
+
   {
     accessorKey: "progress",
     header: "Enforcement Progress",

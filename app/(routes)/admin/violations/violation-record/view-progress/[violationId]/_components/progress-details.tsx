@@ -31,6 +31,7 @@ import {
   Td,
   Stack,
 } from "@chakra-ui/react";
+import { PersonalInfo } from "@prisma/client";
 import { format } from "date-fns";
 
 interface ProgressDetailsProps {
@@ -79,13 +80,15 @@ export const ProgressDetails: React.FC<ProgressDetailsProps> = ({
     <div>
       <Flex className="gap-x-4">
         <Heading
-          title={`#V000${reportDetails.violation.number} - Violation Enforcement Progress`}
+          title={`#V${reportDetails.violation.number
+            .toString()
+            .padStart(4, "0")} - Violation Enforcement Progress`}
           description="View the progress of your selection violation within the Homeowners' Association"
         />
         <Badge
           className={cn(
-            "w-[100px] h-full p-2 text-center justify-center",
-            reportDetails.violation.status === "Resolved"
+            " h-full p-4 text-center justify-center",
+            reportDetails.violation.status === "Appealed"
               ? "bg-green-700"
               : reportDetails.violation.status === "Pending"
               ? "bg-red-700"
@@ -115,8 +118,6 @@ export const ProgressDetails: React.FC<ProgressDetailsProps> = ({
             <Step
               key={index}
               onClick={() => {
-                // Active step should be less than or equal to reportDetails.violation.step; not yet working
-                // if (activeStep <= reportDetails.violation.step)
                 setActiveStep(index);
               }}
             >
@@ -198,7 +199,10 @@ export const ProgressDetails: React.FC<ProgressDetailsProps> = ({
                                 Violation Form Number
                               </Th>
                               <Td border="3px double black">
-                                #V000{reportDetails.violation.number}
+                                #V
+                                {reportDetails.violation.number
+                                  .toString()
+                                  .padStart(4, "0")}
                               </Td>
                             </Tr>
                             <Tr>
@@ -215,9 +219,11 @@ export const ProgressDetails: React.FC<ProgressDetailsProps> = ({
                               </Th>
                               <Td border="3px double black">
                                 <UnorderedList>
-                                  {reportDetails.violation.personsInvolved.map(
-                                    (person: string, index: number) => (
-                                      <ListItem key={index}>{person}</ListItem>
+                                  {reportDetails.personsInvolved.map(
+                                    (item: PersonalInfo) => (
+                                      <ListItem key={item.id}>
+                                        {item.firstName} {item.lastName}
+                                      </ListItem>
                                     )
                                   )}
                                 </UnorderedList>
@@ -231,7 +237,7 @@ export const ProgressDetails: React.FC<ProgressDetailsProps> = ({
                             <Th border="3px double black">Officer-in-Charge</Th>
                             <Td border="3px double black">
                               {reportDetails.officerAssigned
-                                ? `${reportDetails.officerAssigned.firstName} ${reportDetails.violation.officerAssigned.lastName}`
+                                ? `${reportDetails.officerAssigned.firstName} ${reportDetails.officerAssigned.lastName}`
                                 : "Unassigned"}
                             </Td>
                           </Tr>

@@ -14,7 +14,7 @@ import {
   Flex,
 } from "@chakra-ui/react";
 import Link from "next/link";
-import { startTransition, useState } from "react";
+import { startTransition, useEffect, useState } from "react";
 import { Separator } from "@/components/ui/separator";
 import { Heading } from "@/components/ui/heading";
 import { AddIcon } from "@chakra-ui/icons";
@@ -23,8 +23,23 @@ import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createViolation } from "@/server/actions/violation";
-import { ViolationType } from "@prisma/client";
+import { PersonalInfo, ViolationType } from "@prisma/client";
 import { useRouter } from "next/navigation";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { ChevronsUpDown } from "lucide-react";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+} from "@/components/ui/command";
+import { cn } from "@/lib/utils";
+import { useCurrentUser } from "@/hooks/use-current-user";
 
 const ViolationFormSchema = z.object({
   violationDate: z.string(),
@@ -36,16 +51,28 @@ type ViolationFormValues = z.infer<typeof ViolationFormSchema>;
 
 interface ReportFormProps {
   violationTypes: ViolationType[];
+  users: PersonalInfo[];
 }
 
-export const ReportForm: React.FC<ReportFormProps> = ({ violationTypes }) => {
+export const ReportForm: React.FC<ReportFormProps> = ({
+  violationTypes,
+  users,
+}) => {
+  const currentUser = useCurrentUser();
   const router = useRouter();
   const title = "Report a Violation";
   const description =
     "Fill out the Violation Form to formally request a violation review from the Homeowners' Association.";
 
+  const [allUsers, setUsers] = useState<PersonalInfo[] | []>([]);
   const [personsInvolved, setPersonsInvolved] = useState([""]);
   const [filesUploaded, setFilesUploaded] = useState([""]);
+
+  useEffect(() => {
+    if (users) {
+      setUsers(users);
+    }
+  }, []);
 
   const addPersonInput = () => {
     setPersonsInvolved([...personsInvolved, ""]);
@@ -93,7 +120,9 @@ export const ReportForm: React.FC<ReportFormProps> = ({ violationTypes }) => {
       const formData = {
         ...values,
         violationDate: new Date(values.violationDate),
-        personsInvolved: personsInvolved,
+        personsInvolved: personsInvolved.filter(
+          (item, index) => personsInvolved.indexOf(item) === index
+        ),
       };
 
       createViolation(formData)
@@ -260,9 +289,10 @@ export const ReportForm: React.FC<ReportFormProps> = ({ violationTypes }) => {
                     Add Person
                   </Button>
                 </HStack>
+
                 {personsInvolved.map((person, index) => (
                   <Box key={index} display="flex" alignItems="center">
-                    <Input
+                    {/* <Input
                       key={index}
                       size="sm"
                       type="string"
@@ -273,7 +303,33 @@ export const ReportForm: React.FC<ReportFormProps> = ({ violationTypes }) => {
                       onChange={(e) =>
                         handlePersonInputChange(index, e.target.value)
                       }
-                    />
+                    /> */}
+
+                    <Select
+                      key={index}
+                      size="sm"
+                      fontFamily="font.body"
+                      w="max-content"
+                      onChange={(e) =>
+                        handlePersonInputChange(index, e.target.value)
+                      }
+                      value={person}
+                      className="w-full"
+                    >
+                      <option value="" disabled>
+                        Select from users...
+                      </option>
+                      {users.map((user) => {
+                        if (user.userId !== currentUser?.id) {
+                          return (
+                            <option key={user.userId} value={user.userId}>
+                              {user.firstName} {user.lastName}
+                            </option>
+                          );
+                        }
+                      })}
+                    </Select>
+
                     {personsInvolved.length > 1 && index !== 0 && (
                       <Button
                         size="xs"
@@ -286,7 +342,7 @@ export const ReportForm: React.FC<ReportFormProps> = ({ violationTypes }) => {
                     )}
                   </Box>
                 ))}
-                <FormHelperText fontSize="xs" mt="-1">
+                <FormHelperText fontSize="xs" mt="-1" className="pt-2">
                   This will allow us to contact the individuals involved in the
                   violation.
                 </FormHelperText>

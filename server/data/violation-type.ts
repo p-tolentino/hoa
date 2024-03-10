@@ -14,13 +14,27 @@ export const getAllViolationTypes = async () => {
 
 export const getViolationTypeByName = async (name: string) => {
   try {
-    const violations = await db.violationType.findFirst({
+    const violation = await db.violationType.findFirst({
       where: {
         name,
       },
     });
 
-    return violations;
+    return violation;
+  } catch {
+    return null;
+  }
+};
+
+export const getViolationTypeByTitle = async (title: string) => {
+  try {
+    const violation = await db.violationType.findFirst({
+      where: {
+        title,
+      },
+    });
+
+    return violation;
   } catch {
     return null;
   }

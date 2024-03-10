@@ -1,6 +1,6 @@
 import { db } from "@/lib/db";
-import ProgressDetails from "./_components/progress-details";
 import { getAllInfo } from "@/server/data/user-info";
+import ViewProgress from "./_components/view-progress";
 
 export const ViolationProgressPage = async ({
   params,
@@ -59,7 +59,7 @@ export const ViolationProgressPage = async ({
 
   return (
     <div>
-      <ProgressDetails reportDetails={reportDetails} />
+      <ViewProgress reportDetails={reportDetails} />
     </div>
   );
 };

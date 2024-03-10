@@ -258,7 +258,7 @@ model Violation {
   createdAt       DateTime @default(now())
   submittedBy     String
   step            Int      @default(1)
-  progress        String   @default("Step 1")
+  progress        String   @default("Step 1: Violation Form Submission")
 }
 
 model Notification {

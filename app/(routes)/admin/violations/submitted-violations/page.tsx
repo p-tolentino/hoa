@@ -64,6 +64,8 @@ export default async function SubmittedViolations() {
         submittedBy: submittedBy
           ? `${submittedBy.info?.firstName} ${submittedBy.info?.lastName}`
           : "",
+        step: item.step || 1,
+        progress: item.progress || "Step 0",
       };
     }
   );

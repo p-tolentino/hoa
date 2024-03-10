@@ -52,6 +52,8 @@ export const updateOfficerAssigned = async (
     data: {
       officerAssigned,
       status: "Under Review",
+      step: 2,
+      progress: "Step 2: Review by Environment and Security Committee",
     },
   });
 
