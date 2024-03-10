@@ -41,6 +41,7 @@ export const columns: ColumnDef<SubmittedViolationsColumn>[] = [
     cell: ({ row }) => (
       <Badge
         className={cn(
+          "w-[max-content] p-2 text-center justify-center",
           row.getValue("status") === "Appealed"
             ? "bg-green-700"
             : row.getValue("status") === "Pending"
@@ -81,15 +82,17 @@ export const columns: ColumnDef<SubmittedViolationsColumn>[] = [
     ),
   },
   {
-    accessorKey: "viewViolationForm",
+    accessorKey: "progress",
     header: "Enforcement Progress",
     cell: ({ row }) => (
-      <a
-        href={"/admin/violations/submitted-violations/view-progress"}
-        className="hover:underline"
-      >
-        View Progress
-      </a>
+      <div className="w-[150px]">
+        <a
+          href={`/admin/violations/submitted-violations/view-progress`}
+          className="text-xs hover:underline hover:text-blue-500"
+        >
+          View Progress
+        </a>
+      </div>
     ),
   },
   {

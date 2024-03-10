@@ -30,6 +30,8 @@ import {
   Th,
   Td,
   Stack,
+  Button,
+  Link,
 } from "@chakra-ui/react";
 import { PersonalInfo } from "@prisma/client";
 import { format } from "date-fns";
@@ -78,29 +80,39 @@ export const ProgressDetails: React.FC<ProgressDetailsProps> = ({
 
   return (
     <div>
-      <Flex className="gap-x-4">
-        <Heading
-          title={`#V${reportDetails.violation.number
-            .toString()
-            .padStart(4, "0")} - Violation Enforcement Progress`}
-          description="View the progress of your selection violation within the Homeowners' Association"
-        />
-        <Badge
-          className={cn(
-            " h-full p-4 text-center justify-center",
-            reportDetails.violation.status === "Appealed"
-              ? "bg-green-700"
-              : reportDetails.violation.status === "Pending"
-              ? "bg-red-700"
-              : reportDetails.violation.status === "Under Review"
-              ? "bg-yellow-600"
-              : reportDetails.violation.status === "Closed"
-              ? ""
-              : "display-none"
-          )}
+      <Flex justifyContent="space-between">
+        <Flex className="gap-x-4">
+          <Heading
+            title={`#V${reportDetails.violation.number
+              .toString()
+              .padStart(4, "0")} - Violation Enforcement Progress`}
+            description="View the progress of your selection violation within the Homeowners' Association"
+          />
+          <Badge
+            className={cn(
+              "w-[max-content] h-[min-content] px-3 py-2 text-center justify-center text-sm",
+              reportDetails.violation.status === "Appealed"
+                ? "bg-green-700"
+                : reportDetails.violation.status === "Pending"
+                ? "bg-red-700"
+                : reportDetails.violation.status === "Under Review"
+                ? "bg-yellow-600"
+                : reportDetails.violation.status === "Closed"
+                ? ""
+                : "display-none"
+            )}
+          >
+            {reportDetails.violation.status}
+          </Badge>
+        </Flex>
+        <Button
+          as={Link}
+          href="/admin/violations/violation-record"
+          size="sm"
+          _hover={{ textDecoration: "none" }}
         >
-          {reportDetails.violation.status}
-        </Badge>
+          Go Back
+        </Button>
       </Flex>
       <Separator className="mt-4 mb-6" />
 
