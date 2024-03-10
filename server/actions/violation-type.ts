@@ -30,3 +30,57 @@ export const createViolationType = async (values: ViolationTypeFormValues) => {
 
   return { success: "Created violation type successfully" };
 };
+
+export const updateViolationType = async (
+  values: ViolationTypeFormValues,
+  id: string
+) => {
+  const user = await currentUser();
+
+  // No Current User
+  if (!user) {
+    return { error: "Unauthorized" };
+  }
+
+  // Validation if user is in database (not leftover session)
+  const dbUser = await getUserById(user.id);
+
+  if (!dbUser) {
+    return { error: "Unauthorized" };
+  }
+
+  await db.violationType.update({
+    where: { id },
+    data: {
+      ...values,
+      fee: parseFloat(values.fee),
+      deadline: parseInt(values.deadline),
+    },
+  });
+
+  return { success: "Created violation type successfully" };
+};
+
+export const deleteViolationType = async (id: string) => {
+  const user = await currentUser();
+
+  // No Current User
+  if (!user) {
+    return { error: "Unauthorized" };
+  }
+
+  // Validation if user is in database (not leftover session)
+  const dbUser = await getUserById(user.id);
+
+  if (!dbUser) {
+    return { error: "Unauthorized" };
+  }
+
+  await db.violationType.delete({
+    where: {
+      id,
+    },
+  });
+
+  return { success: "Violation deleted successfully" };
+};

@@ -11,12 +11,11 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button, useToast } from "@chakra-ui/react";
 import { DeleteIcon } from "@chakra-ui/icons"; // Import the DeleteIcon
+import { ViolationType } from "@prisma/client";
+import { deleteViolationType } from "@/server/actions/violation-type";
 
 interface DeleteViolationButtonProps {
-  violation: {
-    title: string;
-    description: string;
-  };
+  violation: ViolationType;
   continueDeletion: (confirmed: boolean) => void;
 }
 
@@ -30,7 +29,7 @@ const DeleteViolationButton: React.FC<DeleteViolationButtonProps> = ({
     <div>
       <AlertDialog>
         <AlertDialogTrigger asChild>
-          <Button key={violation.title} size="sm" mr="10px" colorScheme="red">
+          <Button key={violation.id} size="sm" mr="10px" colorScheme="red">
             <DeleteIcon />
           </Button>
         </AlertDialogTrigger>
@@ -52,14 +51,18 @@ const DeleteViolationButton: React.FC<DeleteViolationButtonProps> = ({
             <AlertDialogAction
               className="bg-red-500 hover:bg-red-600"
               onClick={() => {
-                continueDeletion(true);
-                toast({
-                  title: `Successfully deleted violation type: `,
-                  description: `${violation.title}`,
-                  status: "success",
-                  position: "bottom-right",
-                  isClosable: true,
-                  colorScheme: "red",
+                deleteViolationType(violation.id).then((data) => {
+                  if (data.success) {
+                    continueDeletion(true);
+                    toast({
+                      title: `Successfully deleted violation type: `,
+                      description: `${violation.title}`,
+                      status: "success",
+                      position: "bottom-right",
+                      isClosable: true,
+                      colorScheme: "red",
+                    });
+                  }
                 });
               }}
             >

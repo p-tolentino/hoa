@@ -26,6 +26,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormField } from "@/components/ui/form";
 import { getViolationTypeByName } from "@/server/data/violation-type";
 import { createViolationType } from "@/server/actions/violation-type";
+import { useRouter } from "next/navigation";
 
 export const ViolationTypeFormSchema = z.object({
   name: z.string(),
@@ -38,6 +39,8 @@ export const ViolationTypeFormSchema = z.object({
 export type ViolationTypeFormValues = z.infer<typeof ViolationTypeFormSchema>;
 
 export default function AddViolation() {
+  const router = useRouter();
+
   const form = useForm<ViolationTypeFormValues>({
     resolver: zodResolver(ViolationTypeFormSchema),
     defaultValues: {
@@ -77,21 +80,11 @@ export default function AddViolation() {
             });
           }
         })
-        .then(() => form.reset());
+        .then(() => {
+          form.reset();
+          router.refresh();
+        });
     }
-
-    // const formData = {
-    //   ...values,
-    //   violationDate: new Date(values.violationDate),
-    //   personsInvolved: personsInvolved,
-    // };
-    // createViolationType(formData)
-    //   .then((data) => {
-    //     console.log(data.success);
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
   };
 
   const toast = useToast();
