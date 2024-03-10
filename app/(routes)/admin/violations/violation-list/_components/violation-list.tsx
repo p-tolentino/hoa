@@ -22,6 +22,7 @@ import DeleteViolationButton from "./DeleteViolationButton";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import Link from "next/link";
 import { ViolationType } from "@prisma/client";
+import { useRouter } from "next/navigation";
 
 interface ViolationListProps {
   violations: ViolationType[];
@@ -31,6 +32,8 @@ export const ViolationList: React.FC<ViolationListProps> = ({ violations }) => {
   const title = "List of Homeowners' Association Violations";
   const description =
     "View the list of violations that can be reported within the Homeowners' Association. Corresponding penalties for each violation type is included.";
+
+  const router = useRouter();
 
   return (
     <>
@@ -66,23 +69,19 @@ export const ViolationList: React.FC<ViolationListProps> = ({ violations }) => {
                         >
                           {violation.title}
                         </Text>
-                        {/*  // TODO: Edit and Delete Functions
+
                         <ButtonGroup>
-                          
-                          <EditViolationButton
-                            key={violation.title}
-                            title={violation.title}
-                            description={violation.description}
-                          />
+                          <EditViolationButton violation={violation} />
 
                           <DeleteViolationButton
                             violation={violation}
                             continueDeletion={(confirmed) => {
                               if (confirmed) {
+                                router.refresh();
                               }
                             }}
                           />
-                        </ButtonGroup> */}
+                        </ButtonGroup>
                       </HStack>
                     </CardHeader>
                     <CardBody pt={3} minH="100px">
