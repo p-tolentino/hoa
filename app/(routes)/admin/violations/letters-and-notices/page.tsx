@@ -5,25 +5,17 @@ export default function ViolationLettersAndNotices () {
   const data = [
     {
       id: '12345',
-      dateReceived: '02/20/24',
+      dateReceived: '03/24/24',
+      violationNumber: '1',
       violationType: 'Parking Violation',
-      sender: 'HOA President',
-      viewViolationLetterNotice: 'Sample Link to Letter/Notice 1'
+      viewViolationLetterNotice: 'View Violation Notice'
     },
     {
       id: '67890',
-      dateReceived: '02/20/24',
+      dateReceived: '03/10/24',
+      violationNumber: '1',
       violationType: 'Parking Violation',
-      sender: 'HOA President',
-
-      viewViolationLetterNotice: 'Sample Link to Letter/Notice 2'
-    },
-    {
-      id: '54321',
-      dateReceived: '02/20/24',
-      violationType: 'Parking Violation',
-      sender: 'HOA President',
-      viewViolationLetterNotice: 'Sample Link to Letter/Notice 3'
+      viewViolationLetterNotice: 'View Violation Letter'
     }
   ]
 

@@ -1,12 +1,13 @@
 'use client'
 
+import { Text } from '@chakra-ui/react'
 import { ColumnDef } from '@tanstack/react-table'
 
 export type ViolationLettersAndNoticesColumn = {
   id: string
   dateReceived: string
+  violationNumber: string
   violationType: string
-  sender: string
   viewViolationLetterNotice: string
 }
 
@@ -16,20 +17,25 @@ export const columns: ColumnDef<ViolationLettersAndNoticesColumn>[] = [
     header: 'Date Received'
   },
   {
+    accessorKey: 'violationNumber',
+    header: 'Violation Number',
+    cell: ({ row }) => <Text>{`#V00${row.original.violationNumber}`}</Text>
+  },
+  {
     accessorKey: 'violationType',
     header: 'Violation Type'
   },
   {
-    accessorKey: 'sender',
-    header: 'Sender'
-  },
-  {
     accessorKey: 'viewViolationLetterNotice',
-    header: 'View Violation Letter/Notice',
+    header: '',
     cell: ({ row }) => (
       <a
-        href={'/admin/violations/letters-and-notices/sample'}
-        className='hover:underline'
+        href={
+          row.original.viewViolationLetterNotice.includes('Letter')
+            ? '/admin/violations/letters-and-notices/sample-letter'
+            : '/admin/violations/letters-and-notices/sample-notice'
+        }
+        className='hover:underline hover:text-blue-500'
       >
         {row.original.viewViolationLetterNotice}
       </a>

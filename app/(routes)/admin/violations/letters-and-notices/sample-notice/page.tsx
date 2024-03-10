@@ -9,22 +9,30 @@ import {
   ListItem
 } from '@chakra-ui/react'
 import Link from 'next/link'
+import { format, addDays } from 'date-fns'
 
-export default function MeetingNotice () {
+export default function ViolationNotice () {
   const recipient = 'Juan Dela Cruz'
-  const dateReceived = 'MM/DD/YYYY'
-  const violationDate = 'March 08, 2024'
+  const dateReceived = format(new Date(2024, 2, 24), 'MMMM dd, yyyy')
+  const violationNum = '#V001'
+  const violationDate = format(new Date(2024, 2, 8), 'MMMM dd, yyyy')
   const violationType = 'Parking Violation'
   const penaltyFee = '₱ 500'
   const sender = {
     name: 'Maria Clara',
-    position: 'HOA President'
+    position: 'Environment and Security Committee Member'
   }
+  const withinNumDays: number = 3 // 3 days or 1 day; can be adjusted by admin
+  const deadline = format(addDays(dateReceived, withinNumDays), 'MMMM dd, yyyy')
 
   return (
     <div>
       <Box textAlign='right'>
-        <Button as={Link} href='/admin/violations/letters-and-notices'>
+        <Button
+          as={Link}
+          href='/admin/violations/letters-and-notices'
+          size='sm'
+        >
           Go Back
         </Button>
       </Box>
@@ -36,10 +44,10 @@ export default function MeetingNotice () {
             fontWeight='bold'
             fontFamily='font.heading'
           >
-            Violation Notice 📅
+            {violationNum} Violation Notice 📩
           </Text>
-          <Box borderWidth='1px' p={10} borderRadius='md' w='50%'>
-            <Stack spacing={5} fontFamily='font.body' fontSize='lg'>
+          <Box borderWidth='1px' p={10} borderRadius='md' w='60vw'>
+            <Stack spacing={5} fontFamily='font.body' fontSize='md'>
               <Flex justifyContent='space-between'>
                 {/* Recipient */}
                 <Text>
@@ -84,12 +92,15 @@ export default function MeetingNotice () {
               <Text textAlign='justify'>
                 Please be aware that this violation requires immediate
                 attention, and the corresponding fee must be settled within{' '}
-                <span className='font-semibold text-red-500'>
-                  [number of days]
+                <span className='font-semibold'>
+                  {withinNumDays.toLocaleString()}{' '}
+                  {withinNumDays === 1 ? 'day' : 'days'}
                 </span>{' '}
-                days from the date of this notice. Failure to remit payment
-                within this period may result in further actions, including
-                additional penalties or legal measures.
+                from the date of this notice{' '}
+                <span className='font-bold text-red-500'>({deadline})</span>.
+                Failure to remit payment within this period may result in
+                further actions, including additional penalties or legal
+                measures.
               </Text>
 
               <Text textAlign='justify'>
