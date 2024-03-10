@@ -86,7 +86,7 @@ export const ProgressDetails: React.FC<ProgressDetailsProps> = ({
             title={`#V${reportDetails.violation.number
               .toString()
               .padStart(4, "0")} - Violation Enforcement Progress`}
-            description="View the progress of your selection violation within the Homeowners' Association"
+            description="View the progress of a selected violation case within the Homeowners' Association."
           />
           <Badge
             className={cn(
@@ -130,10 +130,18 @@ export const ProgressDetails: React.FC<ProgressDetailsProps> = ({
             <Step
               key={index}
               onClick={() => {
-                setActiveStep(index);
+                if (index <= reportDetails.violation.step - 1)
+                  // to make uncompleted steps unclickable
+                  setActiveStep(index);
               }}
             >
-              <StepIndicator>
+              <StepIndicator
+                className={
+                  index <= reportDetails.violation.step - 1
+                    ? "text-black"
+                    : "text-gray-300"
+                }
+              >
                 <StepStatus
                   complete={<StepIcon />}
                   incomplete={<StepNumber />}
@@ -147,8 +155,28 @@ export const ProgressDetails: React.FC<ProgressDetailsProps> = ({
                 onClick={() => Request}
               >
                 {/* Stepper Number and Title */}
-                <StepTitle>Step {index + 1}</StepTitle>
-                <StepDescription>{step.title}</StepDescription>
+                <StepTitle>
+                  <span
+                    className={
+                      index <= reportDetails.violation.step - 1
+                        ? "text-black"
+                        : "text-gray-300"
+                    }
+                  >
+                    Step {index + 1}
+                  </span>
+                </StepTitle>
+                <StepDescription>
+                  <span
+                    className={
+                      index <= reportDetails.violation.step - 1
+                        ? "text-black"
+                        : "text-gray-300"
+                    }
+                  >
+                    {step.title}
+                  </span>
+                </StepDescription>
               </Box>
               <StepSeparator />
             </Step>
@@ -200,15 +228,15 @@ export const ProgressDetails: React.FC<ProgressDetailsProps> = ({
                       variant="unstyled"
                       fontFamily="font.body"
                       size="sm"
-                      w="min-content"
+                      w="400px"
                     >
                       <Tbody>
                         {/* Step 1 Information Table Part 1 */}
                         {activeStep === 0 && (
                           <>
-                            <Tr>
-                              <Th border="3px double black">
-                                Violation Form Number
+                            <Tr whiteSpace="normal">
+                              <Th border="3px double black" w="110px">
+                                Violation Number
                               </Th>
                               <Td border="3px double black">
                                 #V
@@ -217,16 +245,18 @@ export const ProgressDetails: React.FC<ProgressDetailsProps> = ({
                                   .padStart(4, "0")}
                               </Td>
                             </Tr>
-                            <Tr>
-                              <Th border="3px double black">Submitted By</Th>
+                            <Tr whiteSpace="normal">
+                              <Th border="3px double black" w="110px">
+                                Submitted By
+                              </Th>
                               <Td border="3px double black">
                                 {reportDetails.submittedBy
                                   ? `${reportDetails.submittedBy.firstName} ${reportDetails.submittedBy.lastName}`
                                   : ""}
                               </Td>
                             </Tr>
-                            <Tr>
-                              <Th border="3px double black">
+                            <Tr whiteSpace="normal">
+                              <Th border="3px double black" w="110px">
                                 Person/s Involved
                               </Th>
                               <Td border="3px double black">
@@ -245,9 +275,23 @@ export const ProgressDetails: React.FC<ProgressDetailsProps> = ({
                         )}
                         {/* Step 2 Information Table */}
                         {activeStep === 1 && (
-                          <Tr>
-                            <Th border="3px double black">Officer-in-Charge</Th>
-                            <Td border="3px double black">
+                          <Tr whiteSpace="normal">
+                            <Th border="3px double black" w="110px">
+                              Officer-in-Charge
+                            </Th>
+                            <Td
+                              border="3px double black"
+                              color={
+                                reportDetails.officerAssigned
+                                  ? "black"
+                                  : "lightgray"
+                              }
+                              fontStyle={
+                                reportDetails.officerAssigned
+                                  ? "normal"
+                                  : "italic"
+                              }
+                            >
                               {reportDetails.officerAssigned
                                 ? `${reportDetails.officerAssigned.firstName} ${reportDetails.officerAssigned.lastName}`
                                 : "Unassigned"}
@@ -257,14 +301,18 @@ export const ProgressDetails: React.FC<ProgressDetailsProps> = ({
                         {/* Step 5 Information Table */}
                         {activeStep === 2 && (
                           <>
-                            <Tr>
-                              <Th border="3px double black">Violation Type</Th>
+                            <Tr whiteSpace="normal">
+                              <Th border="3px double black" w="110px">
+                                Violation Type
+                              </Th>
                               <Td border="3px double black">
                                 {reportDetails.violationType.title}
                               </Td>
                             </Tr>
-                            <Tr>
-                              <Th border="3px double black">Penalty Fee</Th>
+                            <Tr whiteSpace="normal">
+                              <Th border="3px double black" w="110px">
+                                Penalty Fee
+                              </Th>
                               <Td border="3px double black">
                                 ₱ {reportDetails.violationType.fee}
                               </Td>
@@ -282,12 +330,14 @@ export const ProgressDetails: React.FC<ProgressDetailsProps> = ({
                         variant="unstyled"
                         fontFamily="font.body"
                         size="sm"
-                        w="min-content"
+                        maxWidth="400px"
                       >
                         <Tbody>
                           <>
-                            <Tr>
-                              <Th border="3px double black">Date Submitted</Th>
+                            <Tr whiteSpace="normal">
+                              <Th border="3px double black" w="110px">
+                                Date Submitted
+                              </Th>
                               <Td border="3px double black">
                                 {reportDetails.violation.createdAt
                                   ? format(
@@ -301,8 +351,8 @@ export const ProgressDetails: React.FC<ProgressDetailsProps> = ({
                                   : ""}
                               </Td>
                             </Tr>
-                            <Tr>
-                              <Th border="3px double black">
+                            <Tr whiteSpace="normal">
+                              <Th border="3px double black" w="110px">
                                 Date of Violation
                               </Th>
                               <Td border="3px double black">
@@ -318,8 +368,10 @@ export const ProgressDetails: React.FC<ProgressDetailsProps> = ({
                                   : ""}
                               </Td>
                             </Tr>
-                            <Tr>
-                              <Th border="3px double black">Violation Type</Th>
+                            <Tr whiteSpace="normal">
+                              <Th border="3px double black" w="110px">
+                                Violation Type
+                              </Th>
                               <Td border="3px double black">
                                 {reportDetails.violationType.title}
                               </Td>

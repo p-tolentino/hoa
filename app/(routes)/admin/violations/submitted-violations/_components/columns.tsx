@@ -65,6 +65,11 @@ export const columns: ColumnDef<SubmittedViolationsColumn>[] = [
   {
     accessorKey: "type",
     header: "Type",
+    cell: ({ row }) => (
+      <div className="w-[150px]">
+        <p>{row.original.type}</p>
+      </div>
+    ),
   },
   {
     accessorKey: "officerAssigned",
@@ -72,7 +77,7 @@ export const columns: ColumnDef<SubmittedViolationsColumn>[] = [
     cell: ({ row }) => (
       <span
         className={cn(
-          !row.getValue("officerAssigned") ? "text-gray-400 italic" : ""
+          !row.getValue("officerAssigned") ? "text-gray-300 italic" : ""
         )}
       >
         {row.getValue("officerAssigned")
@@ -88,9 +93,9 @@ export const columns: ColumnDef<SubmittedViolationsColumn>[] = [
       <div className="w-[150px]">
         <a
           href={`/admin/violations/submitted-violations/view-progress/${row.original.id}`}
-          className="text-xs hover:underline hover:text-blue-500"
+          className="text-sm hover:underline hover:text-blue-500"
         >
-          View Progress
+          {row.original.progress}
         </a>
       </div>
     ),

@@ -1,4 +1,4 @@
-"use client";
+'use client'
 
 import {
   FormControl,
@@ -11,109 +11,109 @@ import {
   Stack,
   HStack,
   Select,
-  Flex,
-} from "@chakra-ui/react";
-import Link from "next/link";
-import { startTransition, useEffect, useState } from "react";
-import { Separator } from "@/components/ui/separator";
-import { Heading } from "@/components/ui/heading";
-import { AddIcon } from "@chakra-ui/icons";
-import { Form, FormField } from "@/components/ui/form";
-import * as z from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { createViolation } from "@/server/actions/violation";
-import { PersonalInfo, ViolationType } from "@prisma/client";
-import { useRouter } from "next/navigation";
+  Flex
+} from '@chakra-ui/react'
+import Link from 'next/link'
+import { startTransition, useEffect, useState } from 'react'
+import { Separator } from '@/components/ui/separator'
+import { Heading } from '@/components/ui/heading'
+import { AddIcon } from '@chakra-ui/icons'
+import { Form, FormField } from '@/components/ui/form'
+import * as z from 'zod'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { createViolation } from '@/server/actions/violation'
+import { PersonalInfo, ViolationType } from '@prisma/client'
+import { useRouter } from 'next/navigation'
 import {
   Popover,
   PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { ChevronsUpDown } from "lucide-react";
+  PopoverTrigger
+} from '@/components/ui/popover'
+import { ChevronsUpDown } from 'lucide-react'
 import {
   Command,
   CommandEmpty,
   CommandGroup,
   CommandInput,
-  CommandItem,
-} from "@/components/ui/command";
-import { cn } from "@/lib/utils";
-import { useCurrentUser } from "@/hooks/use-current-user";
+  CommandItem
+} from '@/components/ui/command'
+import { cn } from '@/lib/utils'
+import { useCurrentUser } from '@/hooks/use-current-user'
 
 const ViolationFormSchema = z.object({
   violationDate: z.string(),
   type: z.string(),
-  description: z.string(),
-});
+  description: z.string()
+})
 
-type ViolationFormValues = z.infer<typeof ViolationFormSchema>;
+type ViolationFormValues = z.infer<typeof ViolationFormSchema>
 
 interface ReportFormProps {
-  violationTypes: ViolationType[];
-  users: PersonalInfo[];
+  violationTypes: ViolationType[]
+  users: PersonalInfo[]
 }
 
 export const ReportForm: React.FC<ReportFormProps> = ({
   violationTypes,
-  users,
+  users
 }) => {
-  const currentUser = useCurrentUser();
-  const router = useRouter();
-  const title = "Report a Violation";
+  const currentUser = useCurrentUser()
+  const router = useRouter()
+  const title = 'Report a Violation'
   const description =
-    "Fill out the Violation Form to formally request a violation review from the Homeowners' Association.";
+    "Fill out the Violation Form to formally request a violation review from the Homeowners' Association."
 
-  const [allUsers, setUsers] = useState<PersonalInfo[] | []>([]);
-  const [personsInvolved, setPersonsInvolved] = useState([""]);
-  const [filesUploaded, setFilesUploaded] = useState([""]);
+  const [allUsers, setUsers] = useState<PersonalInfo[] | []>([])
+  const [personsInvolved, setPersonsInvolved] = useState([''])
+  const [filesUploaded, setFilesUploaded] = useState([''])
 
   useEffect(() => {
     if (users) {
-      setUsers(users);
+      setUsers(users)
     }
-  }, []);
+  }, [])
 
   const addPersonInput = () => {
-    setPersonsInvolved([...personsInvolved, ""]);
-  };
+    setPersonsInvolved([...personsInvolved, ''])
+  }
 
   const removePersonInput = (index: number) => {
-    const updatedPersonsInvolved = [...personsInvolved];
-    updatedPersonsInvolved.splice(index, 1);
-    setPersonsInvolved(updatedPersonsInvolved);
-  };
+    const updatedPersonsInvolved = [...personsInvolved]
+    updatedPersonsInvolved.splice(index, 1)
+    setPersonsInvolved(updatedPersonsInvolved)
+  }
 
   const handlePersonInputChange = (index: number, value: string) => {
-    const updatedPersonsInvolved = [...personsInvolved];
-    updatedPersonsInvolved[index] = value;
-    setPersonsInvolved(updatedPersonsInvolved);
-  };
+    const updatedPersonsInvolved = [...personsInvolved]
+    updatedPersonsInvolved[index] = value
+    setPersonsInvolved(updatedPersonsInvolved)
+  }
 
   const addFileUpload = () => {
-    setFilesUploaded([...filesUploaded, ""]);
-  };
+    setFilesUploaded([...filesUploaded, ''])
+  }
 
   const removeFileUpload = (index: number) => {
-    const updatedFilesUploaded = [...filesUploaded];
-    updatedFilesUploaded.splice(index, 1);
-    setFilesUploaded(updatedFilesUploaded);
-  };
+    const updatedFilesUploaded = [...filesUploaded]
+    updatedFilesUploaded.splice(index, 1)
+    setFilesUploaded(updatedFilesUploaded)
+  }
 
   const handleFileUploadChange = (index: number, value: string) => {
-    const updatedFilesUploaded = [...filesUploaded];
-    updatedFilesUploaded[index] = value;
-    setFilesUploaded(updatedFilesUploaded);
-  };
+    const updatedFilesUploaded = [...filesUploaded]
+    updatedFilesUploaded[index] = value
+    setFilesUploaded(updatedFilesUploaded)
+  }
 
   const form = useForm<ViolationFormValues>({
     resolver: zodResolver(ViolationFormSchema),
     defaultValues: {
-      violationDate: "",
-      type: "",
-      description: "",
-    },
-  });
+      violationDate: '',
+      type: '',
+      description: ''
+    }
+  })
 
   const onSubmit = async (values: ViolationFormValues) => {
     startTransition(() => {
@@ -122,38 +122,38 @@ export const ReportForm: React.FC<ReportFormProps> = ({
         violationDate: new Date(values.violationDate),
         personsInvolved: personsInvolved.filter(
           (item, index) => personsInvolved.indexOf(item) === index
-        ),
-      };
+        )
+      }
 
       createViolation(formData)
-        .then((data) => {
-          console.log(data.success);
-          router.push(`/admin/violations/submitted-violations`);
+        .then(data => {
+          console.log(data.success)
+          router.push(`/admin/violations/submitted-violations`)
         })
-        .catch((error) => {
-          console.log(error);
-        });
-    });
-  };
+        .catch(error => {
+          console.log(error)
+        })
+    })
+  }
 
   return (
     <>
-      <Flex justifyContent="space-between">
+      <Flex justifyContent='space-between'>
         <Heading title={title} description={description} />
-        <Button size="sm" colorScheme="gray" as={Link} href="/admin/violations">
+        <Button size='sm' colorScheme='gray' as={Link} href='/admin/violations'>
           Go Back
         </Button>
       </Flex>
-      <Separator className="mt-4 mb-6" />
+      <Separator className='mt-4 mb-6' />
 
       <Box
-        w="80%"
-        border="1px"
-        borderColor="gray.200"
-        borderRadius="10px"
-        mt="2%"
-        p="20px"
-        overflowY="auto"
+        w='80%'
+        border='1px'
+        borderColor='gray.200'
+        borderRadius='10px'
+        mt='2%'
+        p='20px'
+        overflowY='auto'
       >
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -161,17 +161,17 @@ export const ReportForm: React.FC<ReportFormProps> = ({
               {/* Date of Violation */}
               <FormField
                 control={form.control}
-                name="violationDate"
+                name='violationDate'
                 render={({ field }) => (
                   <FormControl isRequired>
-                    <FormLabel fontSize="md" fontFamily="font.body">
+                    <FormLabel fontSize='md' fontFamily='font.body'>
                       Date of Violation:
                     </FormLabel>
                     <Input
-                      type="date"
-                      fontSize="sm"
-                      fontFamily="font.body"
-                      w="max-content"
+                      type='date'
+                      fontSize='sm'
+                      fontFamily='font.body'
+                      w='max-content'
                       {...field}
                     />
                   </FormControl>
@@ -181,28 +181,28 @@ export const ReportForm: React.FC<ReportFormProps> = ({
               {/* Violation Type */}
               <FormField
                 control={form.control}
-                name="type"
+                name='type'
                 render={({ field }) => (
                   <FormControl isRequired>
-                    <FormLabel fontSize="md" fontFamily="font.body">
+                    <FormLabel fontSize='md' fontFamily='font.body'>
                       Violation Type:
                     </FormLabel>
                     <Select
-                      size="sm"
-                      fontFamily="font.body"
-                      w="max-content"
+                      size='sm'
+                      fontFamily='font.body'
+                      w='max-content'
                       onChange={field.onChange}
                       value={field.value}
                     >
-                      <option value="" disabled>
+                      <option value='' disabled>
                         Select a violation type
                       </option>
-                      {violationTypes.map((violation) => (
+                      {violationTypes.map(violation => (
                         <option key={violation.id} value={violation.name}>
                           {violation.title}
                         </option>
                       ))}
-                      <option value="other">Other</option>
+                      <option value='other'>Other</option>
                     </Select>
                   </FormControl>
                 )}
@@ -211,18 +211,18 @@ export const ReportForm: React.FC<ReportFormProps> = ({
               {/* Violation Description */}
               <FormField
                 control={form.control}
-                name="description"
+                name='description'
                 render={({ field }) => (
                   <FormControl isRequired>
-                    <FormLabel fontSize="md" fontFamily="font.body">
+                    <FormLabel fontSize='md' fontFamily='font.body'>
                       Description:
                     </FormLabel>
                     <Textarea
-                      size="sm"
-                      placeholder="Tell us what happened..."
-                      h="160px"
-                      fontFamily="font.body"
-                      resize={"none"}
+                      size='sm'
+                      placeholder='Tell us what happened...'
+                      h='160px'
+                      fontFamily='font.body'
+                      resize={'none'}
                       {...field}
                     />
                   </FormControl>
@@ -231,13 +231,13 @@ export const ReportForm: React.FC<ReportFormProps> = ({
 
               {/* Violation Document Uploading */}
               <FormControl isRequired>
-                <HStack justifyContent="space-between">
-                  <FormLabel fontSize="md" fontFamily="font.body">
+                <HStack justifyContent='space-between'>
+                  <FormLabel fontSize='md' fontFamily='font.body'>
                     Upload your supporting documents:
                   </FormLabel>
                   <Button
-                    size="xs"
-                    mt="-1"
+                    size='xs'
+                    mt='-1'
                     leftIcon={<AddIcon />}
                     onClick={addFileUpload}
                   >
@@ -245,21 +245,21 @@ export const ReportForm: React.FC<ReportFormProps> = ({
                   </Button>
                 </HStack>
                 {filesUploaded.map((file, index) => (
-                  <Box key={index} display="flex" alignItems="center">
+                  <Box key={index} display='flex' alignItems='center'>
                     <Input
-                      type="file"
-                      size="sm"
-                      fontFamily="font.body"
+                      type='file'
+                      size='sm'
+                      fontFamily='font.body'
                       mb={2}
                       value={file}
-                      onChange={(e) =>
+                      onChange={e =>
                         handleFileUploadChange(index, e.target.value)
                       }
                     />
                     {filesUploaded.length > 1 && index !== 0 && (
                       <Button
-                        size="xs"
-                        colorScheme="red"
+                        size='xs'
+                        colorScheme='red'
                         ml={2}
                         onClick={() => removeFileUpload(index)}
                       >
@@ -268,7 +268,7 @@ export const ReportForm: React.FC<ReportFormProps> = ({
                     )}
                   </Box>
                 ))}
-                <FormHelperText fontSize="xs" mt="-1">
+                <FormHelperText fontSize='xs' mt='-1'>
                   This will allow us to gain more information about the
                   violation that would help us in decision making.
                 </FormHelperText>
@@ -276,13 +276,13 @@ export const ReportForm: React.FC<ReportFormProps> = ({
 
               {/* Person/s Involved */}
               <FormControl isRequired>
-                <HStack justifyContent="space-between">
-                  <FormLabel fontSize="md" fontFamily="font.body">
+                <HStack justifyContent='space-between'>
+                  <FormLabel fontSize='md' fontFamily='font.body'>
                     Person/s Involved
                   </FormLabel>
                   <Button
-                    size="xs"
-                    mt="-1"
+                    size='xs'
+                    mt='-1'
                     leftIcon={<AddIcon />}
                     onClick={addPersonInput}
                   >
@@ -291,49 +291,36 @@ export const ReportForm: React.FC<ReportFormProps> = ({
                 </HStack>
 
                 {personsInvolved.map((person, index) => (
-                  <Box key={index} display="flex" alignItems="center">
-                    {/* <Input
-                      key={index}
-                      size="sm"
-                      type="string"
-                      fontFamily="font.body"
-                      placeholder="Enter a Name"
-                      mb={2}
-                      value={person}
-                      onChange={(e) =>
-                        handlePersonInputChange(index, e.target.value)
-                      }
-                    /> */}
-
+                  <Box key={index} display='flex' alignItems='center'>
                     <Select
                       key={index}
-                      size="sm"
-                      fontFamily="font.body"
-                      w="max-content"
-                      onChange={(e) =>
+                      size='sm'
+                      fontFamily='font.body'
+                      mb={2}
+                      w='full'
+                      onChange={e =>
                         handlePersonInputChange(index, e.target.value)
                       }
                       value={person}
-                      className="w-full"
                     >
-                      <option value="" disabled>
+                      <option value='' disabled>
                         Select from users...
                       </option>
-                      {users.map((user) => {
+                      {users.map(user => {
                         if (user.userId !== currentUser?.id) {
                           return (
                             <option key={user.userId} value={user.userId}>
                               {user.firstName} {user.lastName}
                             </option>
-                          );
+                          )
                         }
                       })}
                     </Select>
 
                     {personsInvolved.length > 1 && index !== 0 && (
                       <Button
-                        size="xs"
-                        colorScheme="red"
+                        size='xs'
+                        colorScheme='red'
                         ml={2}
                         onClick={() => removePersonInput(index)}
                       >
@@ -342,14 +329,14 @@ export const ReportForm: React.FC<ReportFormProps> = ({
                     )}
                   </Box>
                 ))}
-                <FormHelperText fontSize="xs" mt="-1" className="pt-2">
+                <FormHelperText fontSize='xs' mt='-1' className='pt-2'>
                   This will allow us to contact the individuals involved in the
                   violation.
                 </FormHelperText>
               </FormControl>
               {/* Submit Button */}
-              <Box textAlign="center">
-                <Button size="sm" type="submit" colorScheme="yellow" my="20px">
+              <Box textAlign='center'>
+                <Button size='sm' type='submit' colorScheme='yellow' my='20px'>
                   Submit Violation
                 </Button>
               </Box>
@@ -358,7 +345,7 @@ export const ReportForm: React.FC<ReportFormProps> = ({
         </Form>
       </Box>
     </>
-  );
-};
+  )
+}
 
-export default ReportForm;
+export default ReportForm
