@@ -1,12 +1,11 @@
 'use client'
 
+import { Badge } from '@/components/ui/badge'
+import { Heading } from '@/components/ui/heading'
+import { Separator } from '@/components/ui/separator'
+import { cn } from '@/lib/utils'
 import {
-  Flex,
-  Button,
   Step,
-  Box,
-  Text,
-  Progress,
   StepDescription,
   StepIcon,
   StepIndicator,
@@ -15,99 +14,278 @@ import {
   StepStatus,
   StepTitle,
   Stepper,
-  useSteps
+  useSteps,
+  Card,
+  CardBody,
+  Box,
+  Flex,
+  Text,
+  UnorderedList,
+  ListItem,
+  CardHeader,
+  TableContainer,
+  Table,
+  Tbody,
+  Tr,
+  Th,
+  Td,
+  Stack,
+  Button,
+  Link
 } from '@chakra-ui/react'
-import { Heading } from '@/components/ui/heading'
-import { Separator } from '@/components/ui/separator'
-import Link from 'next/link'
+import { format } from 'date-fns'
 
-const steps = [
-  { title: '1', description: 'Submit Violation Form' },
-  { title: '2', description: 'Upload Supporting Documents' },
-  { title: '3', description: 'Step Three' },
-  { title: '4', description: 'Step Four' },
-  { title: '5', description: 'Step Five' },
-  { title: '6', description: 'Step Six' }
-]
-
-export default function ViewProgress () {
-  const title = 'Violation Resolution Progress'
-  const description =
-    'View the progress of your reported violation to the Homeowners Association'
+export const ProgressDetails = () => {
+  const processSteps = [
+    {
+      title: 'Violation Form Submission',
+      description:
+        'Homeowners submit violation reports through the Violation Monitoring module in the MIS.',
+      details: [
+        'Homeowners provide details about the alleged violation, including the type of violation, date, and a detailed description of the violation.',
+        'Supporting evidence such as photos or documents may be attached to the violation report.'
+      ]
+    },
+    {
+      title: 'Review by Environment and Security Committee',
+      description:
+        'The Environment and Security Committee receives and reviews the violation report.',
+      details: [
+        'The Environment and Security Committee receives the violation report in the MIS and assigns an officer-in-charge to oversee its resolution.',
+        'The Officer-in-Charge makes a decision whether the reported violation is valid and if any action is required.'
+      ]
+    },
+    {
+      title: 'Issue Resolution and Enforcement with Penalty Fee',
+      description:
+        'The Officer-in-Charge takes appropriate actions based on their decision, including issuing a violation notice to the homeowner.',
+      details: [
+        'The alleged violator receives a notice outlining the nature of the violation, required corrective actions, and a penalty fee.',
+        'The homeowner is informed that the penalty fee is added to their statement of account, which can be accessed via the Finance Management module.'
+      ]
+    }
+  ]
 
   const { activeStep, setActiveStep } = useSteps({
     index: 0,
-    count: steps.length
+    count: processSteps.length
   })
 
-  const activeStepText = steps[activeStep].description
-
-  const max = steps.length - 1
-  const progressPercent = (activeStep / max) * 100
-
   return (
-    <>
+    <div>
       <Flex justifyContent='space-between'>
-        <Heading title={title} description={description} />
+        <Flex className='gap-x-4'>
+          <Heading
+            title={`#V0001 - Violation Enforcement Progress`}
+            description="View the progress of your selection violation within the Homeowners' Association"
+          />
+          <Badge
+            className={cn(
+              'w-[max-content] h-[min-content] px-3 py-2 text-center justify-center text-sm bg-red-700'
+            )}
+          >
+            Pending
+          </Badge>
+        </Flex>
         <Button
-          size='sm'
-          colorScheme='gray'
           as={Link}
           href='/admin/violations/submitted-violations'
+          size='sm'
+          _hover={{ textDecoration: 'none' }}
         >
           Go Back
         </Button>
       </Flex>
       <Separator className='mt-4 mb-6' />
 
-      <Box position='relative'>
-        <Stepper index={activeStep} size='sm' gap='0' colorScheme='yellow'>
-          {steps.map((step, index) => (
-            <Step key={index} onClick={() => setActiveStep(index)}>
-              <StepIndicator bg='white'>
+      <Flex gap={10} h='65vh'>
+        <Stepper
+          index={activeStep}
+          orientation='vertical'
+          width='min-content'
+          gap='0'
+          colorScheme='yellow'
+          size='md'
+          h='40vh'
+        >
+          {processSteps.map((step, index) => (
+            <Step
+              key={index}
+              onClick={() => {
+                // Active step should be less than or equal to reportDetails.violation.step; not yet working
+                // if (activeStep <= reportDetails.violation.step)
+                setActiveStep(index)
+              }}
+            >
+              <StepIndicator>
                 <StepStatus
                   complete={<StepIcon />}
                   incomplete={<StepNumber />}
                   active={<StepNumber />}
                 />
               </StepIndicator>
-
-              {/* <Box flexShrink="0" fontSize="xs">
-                <StepTitle>{step.title}</StepTitle>
-                <StepDescription>{step.description}</StepDescription>
+              <Box
+                flexShrink='0'
+                fontFamily='font.body'
+                w='10vw'
+                onClick={() => Request}
+              >
+                {/* Stepper Number and Title */}
+                <StepTitle>Step {index + 1}</StepTitle>
+                <StepDescription>{step.title}</StepDescription>
               </Box>
-
-              <StepSeparator /> */}
+              <StepSeparator />
             </Step>
           ))}
         </Stepper>
-        <Progress
-          value={progressPercent}
-          position='absolute'
-          height='3px'
-          width='full'
-          top='10px'
-          zIndex={-1}
-          colorScheme='yellow'
-        />
-      </Box>
+        <Box w='100%'>
+          <Card
+            shadow='lg'
+            mb='1rem'
+            h='65vh'
+            p='20px 20px 30px 20px'
+            overflowY='auto'
+          >
+            <CardHeader pb={0}>
+              <Text
+                fontSize='sm'
+                fontFamily='font.body'
+                color='brand.500'
+                fontWeight='bold'
+              >
+                Step {activeStep + 1}
+              </Text>
+              <Text fontSize='lg' fontFamily='font.heading' fontWeight='bold'>
+                {/* Step Title */}
+                {processSteps[activeStep].title}
+              </Text>
+              <Text fontFamily='font.body' textAlign='justify'>
+                {/* Step Description */}
+                {processSteps[activeStep].description}
+              </Text>
+            </CardHeader>
+            <Card />
+            <CardBody>
+              <Stack spacing={5}>
+                {/* Step Details */}
+                <Box fontFamily='font.body' fontSize='sm' textAlign='justify'>
+                  <Text>Details:</Text>
+                  <UnorderedList ml={7}>
+                    {processSteps[activeStep].details.map((detail, index) => (
+                      <ListItem key={index}>{detail}</ListItem>
+                    ))}
+                  </UnorderedList>
+                </Box>
 
-      <Box
-        w='100%'
-        h='75vh'
-        border='1px'
-        borderColor='gray.200'
-        borderRadius='10px'
-        mt='2%'
-        p='20px'
-        overflowY='auto'
-      >
-        {steps.map((step, index) => (
-          <Text key={index} display={index === activeStep ? 'block' : 'none'}>
-            {`Step ${step.title}: ${step.description}`}
-          </Text>
-        ))}
-      </Box>
-    </>
+                {/* INFORMATION TABLES */}
+                <Flex gap={5}>
+                  <TableContainer>
+                    <Table
+                      variant='unstyled'
+                      fontFamily='font.body'
+                      size='sm'
+                      w='min-content'
+                    >
+                      <Tbody>
+                        {/* Step 1 Information Table Part 1 */}
+                        {activeStep === 0 && (
+                          <>
+                            <Tr>
+                              <Th border='3px double black'>
+                                Violation Form Number
+                              </Th>
+                              <Td border='3px double black'>#V0001</Td>
+                            </Tr>
+                            <Tr>
+                              <Th border='3px double black'>Submitted By</Th>
+                              <Td border='3px double black'>Submitted by</Td>
+                            </Tr>
+                            <Tr>
+                              <Th border='3px double black'>
+                                Person/s Involved
+                              </Th>
+                              <Td border='3px double black'>
+                                <UnorderedList>
+                                  <ListItem>Persons involved</ListItem>
+                                </UnorderedList>
+                              </Td>
+                            </Tr>
+                          </>
+                        )}
+                        {/* Step 2 Information Table */}
+                        {activeStep === 1 && (
+                          <Tr>
+                            <Th border='3px double black'>Officer-in-Charge</Th>
+                            <Td border='3px double black'>Assigned Officer</Td>
+                          </Tr>
+                        )}
+                        {/* Step 5 Information Table */}
+                        {activeStep === 2 && (
+                          <>
+                            <Tr>
+                              <Th border='3px double black'>Violation Type</Th>
+                              <Td border='3px double black'>Violation Type</Td>
+                            </Tr>
+                            <Tr>
+                              <Th border='3px double black'>Penalty Fee</Th>
+                              <Td border='3px double black'>₱ 000</Td>
+                            </Tr>
+                          </>
+                        )}
+                      </Tbody>
+                    </Table>
+                  </TableContainer>
+
+                  {activeStep === 0 && (
+                    // Step 1 Information Table Part 2
+                    <TableContainer>
+                      <Table
+                        variant='unstyled'
+                        fontFamily='font.body'
+                        size='sm'
+                        w='min-content'
+                      >
+                        <Tbody>
+                          <>
+                            <Tr>
+                              <Th border='3px double black'>Date Submitted</Th>
+                              <Td border='3px double black'>MMM dd yyyy</Td>
+                            </Tr>
+                            <Tr>
+                              <Th border='3px double black'>
+                                Date of Violation
+                              </Th>
+                              <Td border='3px double black'>MMM dd yyyy</Td>
+                            </Tr>
+                            <Tr>
+                              <Th border='3px double black'>Violation Type</Th>
+                              <Td border='3px double black'>violation type</Td>
+                            </Tr>
+                          </>
+                        </Tbody>
+                      </Table>
+                    </TableContainer>
+                  )}
+                </Flex>
+                {/* Violation Description */}
+                {activeStep === 0 && (
+                  <Text
+                    fontSize='xs'
+                    fontFamily='font.body'
+                    color='grey'
+                    textAlign='justify'
+                  >
+                    <span className='font-bold'>Violation Description:</span>{' '}
+                    <br /> violation description
+                  </Text>
+                )}
+              </Stack>
+            </CardBody>
+          </Card>
+        </Box>
+      </Flex>
+    </div>
   )
 }
+
+export default ProgressDetails

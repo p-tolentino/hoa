@@ -29,7 +29,9 @@ import {
   Tr,
   Th,
   Td,
-  Stack
+  Stack,
+  Button,
+  Link
 } from '@chakra-ui/react'
 import { format } from 'date-fns'
 
@@ -77,27 +79,37 @@ export const ProgressDetails: React.FC<ProgressDetailsProps> = ({
 
   return (
     <div>
-      <Flex className='gap-x-4'>
-        <Heading
-          title={`#V000${reportDetails.violation.number} - Violation Enforcement Progress`}
-          description="View the progress of your selection violation within the Homeowners' Association"
-        />
-        <Badge
-          className={cn(
-            'w-[max-content] h-full px-3 py-2 text-center justify-center text-sm',
-            reportDetails.violation.status === 'Resolved'
-              ? 'bg-green-700'
-              : reportDetails.violation.status === 'Pending'
-              ? 'bg-red-700'
-              : reportDetails.violation.status === 'Under Review'
-              ? 'bg-yellow-600'
-              : reportDetails.violation.status === 'Closed'
-              ? ''
-              : 'display-none'
-          )}
+      <Flex justifyContent='space-between'>
+        <Flex className='gap-x-4'>
+          <Heading
+            title={`#V000${reportDetails.violation.number} - Violation Enforcement Progress`}
+            description="View the progress of your selection violation within the Homeowners' Association"
+          />
+          <Badge
+            className={cn(
+              'w-[max-content] h-[min-content] px-3 py-2 text-center justify-center text-sm',
+              reportDetails.violation.status === 'Resolved'
+                ? 'bg-green-700'
+                : reportDetails.violation.status === 'Pending'
+                ? 'bg-red-700'
+                : reportDetails.violation.status === 'Under Review'
+                ? 'bg-yellow-600'
+                : reportDetails.violation.status === 'Closed'
+                ? ''
+                : 'display-none'
+            )}
+          >
+            {reportDetails.violation.status}
+          </Badge>
+        </Flex>
+        <Button
+          as={Link}
+          href='/admin/violations/violation-record'
+          size='sm'
+          _hover={{ textDecoration: 'none' }}
         >
-          {reportDetails.violation.status}
-        </Badge>
+          Go Back
+        </Button>
       </Flex>
       <Separator className='mt-4 mb-6' />
 
