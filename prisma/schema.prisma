@@ -43,6 +43,7 @@ model PersonalInfo {
   bio         String?
   type        String?
   position    String?       @default("Member")
+  committee   String?
   govtId      String?
   user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
@@ -74,7 +75,7 @@ model UserTransaction {
   updateAt    DateTime      @updatedAt
   datePaid    DateTime?
   paidBy      String?
-  
+
 }
 
 model HoaTransaction {

@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowUpDown } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import { getViolationTypeByName } from "@/server/data/violation-type";
 
 export type SubmittedViolationsColumn = {
   id: string;
@@ -55,6 +56,10 @@ export const columns: ColumnDef<SubmittedViolationsColumn>[] = [
   {
     accessorKey: "createdAt",
     header: "Date Submitted",
+  },
+  {
+    accessorKey: "type",
+    header: "Title",
   },
   {
     accessorKey: "officerAssigned",

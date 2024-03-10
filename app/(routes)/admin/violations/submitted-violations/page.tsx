@@ -4,6 +4,10 @@ import { getAllUsers } from "@/server/data/user";
 import { getAllViolations } from "@/server/data/violation";
 import { SubmittedViolationsColumn } from "./_components/columns";
 import { format } from "date-fns";
+import {
+  getAllViolationTypes,
+  getViolationTypeByName,
+} from "@/server/data/violation-type";
 
 export default async function SubmittedViolations() {
   const user = await currentUser();
@@ -23,16 +27,23 @@ export default async function SubmittedViolations() {
     return null;
   }
 
+  const violationTypes = await getAllViolationTypes();
+
+  if (!violationTypes) {
+    return null;
+  }
+
   const formattedViolations: SubmittedViolationsColumn[] = violations.map(
     (item) => {
       const officer = users.find((user) => user.id === item.officerAssigned);
       const submittedBy = users.find((user) => user.id === item.submittedBy);
+      const violation = violationTypes.find((type) => type.name === item.type);
 
       return {
         id: item.id || "",
         number: item.number || 0,
         status: item.status || "",
-        type: item.type || "",
+        type: violation?.title || "",
         createdAt: item.createdAt
           ? format(
               new Date(item.createdAt)?.toISOString().split("T")[0],

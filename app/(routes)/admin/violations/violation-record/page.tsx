@@ -49,7 +49,7 @@ export default async function Violations() {
         personsInvolved: item.personsInvolved || [],
         officerAssigned: officer
           ? `${officer.info?.firstName} ${officer.info?.lastName}`
-          : "",
+          : "Unassigned",
         description: item.description || "",
         submittedBy: submittedBy
           ? `${submittedBy.info?.firstName} ${submittedBy.info?.lastName}`

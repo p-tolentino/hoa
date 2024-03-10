@@ -64,6 +64,10 @@ export const columns: ColumnDef<ListOfViolationsColumn>[] = [
     header: "Submitted By",
   },
   {
+    accessorKey: "officerAssigned",
+    header: "Officer Assigned",
+  },
+  {
     accessorKey: "progress",
     header: "Enforcement Progress",
     cell: ({ row }) => (

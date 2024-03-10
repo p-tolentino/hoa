@@ -31,7 +31,6 @@ import {
   Td,
   Stack,
 } from "@chakra-ui/react";
-import { PersonalInfo, Violation, ViolationType } from "@prisma/client";
 import { format } from "date-fns";
 
 interface ProgressDetailsProps {

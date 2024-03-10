@@ -23,6 +23,8 @@ import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createViolation } from "@/server/actions/violation";
+import { ViolationType } from "@prisma/client";
+import { useRouter } from "next/navigation";
 
 const ViolationFormSchema = z.object({
   violationDate: z.string(),
@@ -32,57 +34,15 @@ const ViolationFormSchema = z.object({
 
 type ViolationFormValues = z.infer<typeof ViolationFormSchema>;
 
-export default function ReportForm() {
+interface ReportFormProps {
+  violationTypes: ViolationType[];
+}
+
+export const ReportForm: React.FC<ReportFormProps> = ({ violationTypes }) => {
+  const router = useRouter();
   const title = "Report a Violation";
   const description =
     "Fill out the Violation Form to formally request a violation review from the Homeowners' Association.";
-
-  const violationTypes = [
-    {
-      value: "delinquentPay",
-      name: "Delinquent Payments",
-    },
-    {
-      value: "constructionBreach",
-      name: "Breach of Construction/Architecture",
-    },
-    {
-      value: "commercial",
-      name: "Unauthorized Commercial Establishment / Business Activities (e.g., Garage Sales)",
-    },
-    {
-      value: "parking",
-      name: "Parking Violations",
-    },
-    {
-      value: "speedLimit",
-      name: "Speed Limit",
-    },
-    {
-      value: "raisingAnimals",
-      name: "Raising of Animals / Fowls (except for domesticated pets)",
-    },
-    {
-      value: "noise",
-      name: "Noise Complaints",
-    },
-    {
-      value: "openFires",
-      name: "Open Fires (burning of trash, garbage and grass)",
-    },
-    {
-      value: "defectiveWater",
-      name: "Defective Water Meters",
-    },
-    {
-      value: "littering",
-      name: "Littering",
-    },
-    {
-      value: "strayPets",
-      name: "Stray Pets",
-    },
-  ];
 
   const [personsInvolved, setPersonsInvolved] = useState([""]);
   const [filesUploaded, setFilesUploaded] = useState([""]);
@@ -139,6 +99,7 @@ export default function ReportForm() {
       createViolation(formData)
         .then((data) => {
           console.log(data.success);
+          router.push(`/admin/violations/submitted-violations`);
         })
         .catch((error) => {
           console.log(error);
@@ -207,12 +168,12 @@ export default function ReportForm() {
                       <option value="" disabled>
                         Select a violation type
                       </option>
-                      {violationTypes.map((violation, index) => (
-                        <option key={index} value={violation.value}>
-                          {violation.name}
+                      {violationTypes.map((violation) => (
+                        <option key={violation.id} value={violation.name}>
+                          {violation.title}
                         </option>
                       ))}
-                      <option value="other"> Other </option>
+                      <option value="other">Other</option>
                     </Select>
                   </FormControl>
                 )}
@@ -342,4 +303,6 @@ export default function ReportForm() {
       </Box>
     </>
   );
-}
+};
+
+export default ReportForm;
