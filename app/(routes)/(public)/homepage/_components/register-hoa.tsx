@@ -14,7 +14,7 @@ export const RegisterHOA = () => {
           mt="60"
           mb="-5"
         >
-          Want to use *System Name*?
+          Want to use HOAs.is?
         </Text>
         <Heading
           size="xl"

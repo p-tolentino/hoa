@@ -22,7 +22,6 @@ import { currentUser } from "@/lib/auth";
 import { SettingsForm } from "./_components/settings-form";
 import { getAllProperties } from "@/server/data/property";
 import AddVehicle from "./_components/add-vehicle";
-// import { getRelativesById } from '@/server/data/user-info'
 import { getVehicleById } from "@/server/data/user-info";
 
 const Settings = async () => {

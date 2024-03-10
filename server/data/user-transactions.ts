@@ -1,3 +1,5 @@
+"use server";
+
 import { db } from "@/lib/db";
 import { PaymentStatus } from "@prisma/client";
 
@@ -38,7 +40,7 @@ export const getAllTransactions = async () => {
 export const getPersonalAddress = async (id: string) => {
   try {
     const personal = await db.personalInfo.findFirst({
-      where: { userId: id}
+      where: { userId: id },
     });
 
     return personal;
@@ -50,7 +52,7 @@ export const getPersonalAddress = async (id: string) => {
 export const getPersonalInfo = async (id: string) => {
   try {
     const personal = await db.personalInfo.findFirst({
-      where: { userId: id}
+      where: { userId: id },
     });
 
     return personal;

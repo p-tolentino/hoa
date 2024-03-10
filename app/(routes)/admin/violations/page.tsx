@@ -27,15 +27,15 @@ export default function ViolationMonitoringMenu () {
       category_users: 'ALL Homeowners',
       category_buttons: [
         {
-          text: 'Violation Review Process Guide',
+          text: 'Violation Enforcement Process Guide',
           href: '/admin/violations/process-guide',
-          description: 'Read more about the violation review process.'
+          description: 'Read more about the violation enforcement process.'
         },
         {
           text: "List of Homeowners' Association Violations",
           href: '/admin/violations/violation-list',
           description:
-            "View the list of violations that can be reported within the Homeowners' Association. Corresponding fees for each violation type is included."
+            "View the list of violations that can be reported within the Homeowners' Association. Corresponding penalties for each violation type is included."
         }
       ]
     }
@@ -53,10 +53,10 @@ export default function ViolationMonitoringMenu () {
             "Fill out the Violation Form to formally request a violation review from the Homeowners' Association."
         },
         {
-          text: 'Submitted Violation Forms',
+          text: 'Submitted Violation Reports',
           href: '/admin/violations/submitted-violations',
           description:
-            "View your submitted violation forms to the Homeowners' Association and monitor its progress."
+            "View your submitted violation reports to the Homeowners' Association and monitor its progress."
         },
         {
           text: 'Violation Letters and Notices',
