@@ -74,6 +74,7 @@ model UserTransaction {
   updateAt    DateTime      @updatedAt
   datePaid    DateTime?
   paidBy      String?
+  
 }
 
 model HoaTransaction {
@@ -246,6 +247,7 @@ model ViolationType {
 
 model Violation {
   id              String   @id @unique @default(cuid())
+  number          Int      @default(autoincrement())
   violationDate   DateTime
   type            String
   description     String
@@ -254,7 +256,7 @@ model Violation {
   officerAssigned String?
   createdAt       DateTime @default(now())
   submittedBy     String
-  number          Int      @default(autoincrement())
+  step            Int      @default(1)
   progress        String   @default("Step 1")
 }
 
