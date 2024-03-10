@@ -32,6 +32,7 @@ import {
   Stack,
   Button,
 } from "@chakra-ui/react";
+import { PersonalInfo } from "@prisma/client";
 import { format } from "date-fns";
 import Link from "next/link";
 
@@ -72,34 +73,38 @@ interface ViewProgressProps {
 export const ViewProgress: React.FC<ViewProgressProps> = ({
   reportDetails,
 }) => {
-  const title = "Violation Resolution Progress";
-  const description =
-    "View the progress of your reported violation to the Homeowners Association";
-
   const { activeStep, setActiveStep } = useSteps({
-    index: 0,
+    index: reportDetails.violation.step - 1,
     count: processSteps.length,
   });
 
-  const activeStepText = processSteps[activeStep].description;
-
   const max = processSteps.length - 1;
-  const progressPercent = (activeStep / max) * 100;
 
   return (
     <div>
       <Flex justifyContent="space-between">
         <Flex className="gap-x-4">
           <Heading
-            title={`#V0001 - Violation Enforcement Progress`}
+            title={`#V${reportDetails.violation.number
+              .toString()
+              .padStart(4, "0")} - Violation Enforcement Progress`}
             description="View the progress of your selection violation within the Homeowners' Association"
           />
           <Badge
             className={cn(
-              "w-[max-content] h-[min-content] px-3 py-2 text-center justify-center text-sm bg-red-700"
+              "w-[max-content] h-[min-content] px-3 py-2 text-center justify-center text-sm",
+              reportDetails.violation.status === "Appealed"
+                ? "bg-green-700"
+                : reportDetails.violation.status === "Pending"
+                ? "bg-red-700"
+                : reportDetails.violation.status === "Under Review"
+                ? "bg-yellow-600"
+                : reportDetails.violation.status === "Closed"
+                ? ""
+                : "display-none"
             )}
           >
-            Pending
+            {reportDetails.violation.status}
           </Badge>
         </Flex>
         <Button
@@ -127,8 +132,6 @@ export const ViewProgress: React.FC<ViewProgressProps> = ({
             <Step
               key={index}
               onClick={() => {
-                // Active step should be less than or equal to reportDetails.violation.step; not yet working
-                // if (activeStep <= reportDetails.violation.step)
                 setActiveStep(index);
               }}
             >
@@ -209,11 +212,17 @@ export const ViewProgress: React.FC<ViewProgressProps> = ({
                               <Th border="3px double black">
                                 Violation Form Number
                               </Th>
-                              <Td border="3px double black">#V0001</Td>
+                              <Td border="3px double black">{`#V${reportDetails.violation.number
+                                .toString()
+                                .padStart(4, "0")}`}</Td>
                             </Tr>
                             <Tr>
                               <Th border="3px double black">Submitted By</Th>
-                              <Td border="3px double black">Submitted by</Td>
+                              <Td border="3px double black">
+                                {reportDetails.submittedBy
+                                  ? `${reportDetails.submittedBy.firstName} ${reportDetails.submittedBy.lastName}`
+                                  : ""}
+                              </Td>
                             </Tr>
                             <Tr>
                               <Th border="3px double black">
@@ -221,7 +230,13 @@ export const ViewProgress: React.FC<ViewProgressProps> = ({
                               </Th>
                               <Td border="3px double black">
                                 <UnorderedList>
-                                  <ListItem>Persons involved</ListItem>
+                                  {reportDetails.personsInvolved.map(
+                                    (item: PersonalInfo) => (
+                                      <ListItem key={item.id}>
+                                        {item.firstName} {item.lastName}
+                                      </ListItem>
+                                    )
+                                  )}
                                 </UnorderedList>
                               </Td>
                             </Tr>
@@ -231,7 +246,11 @@ export const ViewProgress: React.FC<ViewProgressProps> = ({
                         {activeStep === 1 && (
                           <Tr>
                             <Th border="3px double black">Officer-in-Charge</Th>
-                            <Td border="3px double black">Assigned Officer</Td>
+                            <Td border="3px double black">
+                              {reportDetails.officerAssigned
+                                ? `${reportDetails.officerAssigned.firstName} ${reportDetails.officerAssigned.lastName}`
+                                : "Unassigned"}
+                            </Td>
                           </Tr>
                         )}
                         {/* Step 5 Information Table */}
@@ -239,11 +258,16 @@ export const ViewProgress: React.FC<ViewProgressProps> = ({
                           <>
                             <Tr>
                               <Th border="3px double black">Violation Type</Th>
-                              <Td border="3px double black">Violation Type</Td>
+                              <Td border="3px double black">
+                                {reportDetails.violationType.title}
+                              </Td>
                             </Tr>
                             <Tr>
                               <Th border="3px double black">Penalty Fee</Th>
-                              <Td border="3px double black">₱ 000</Td>
+                              <Td border="3px double black">
+                                {" "}
+                                ₱ {reportDetails.violationType.fee}
+                              </Td>
                             </Tr>
                           </>
                         )}
@@ -264,17 +288,41 @@ export const ViewProgress: React.FC<ViewProgressProps> = ({
                           <>
                             <Tr>
                               <Th border="3px double black">Date Submitted</Th>
-                              <Td border="3px double black">MMM dd yyyy</Td>
+                              <Td border="3px double black">
+                                {reportDetails.violation.createdAt
+                                  ? format(
+                                      new Date(
+                                        reportDetails.violation.createdAt
+                                      )
+                                        ?.toISOString()
+                                        .split("T")[0],
+                                      "MMMM dd, yyyy"
+                                    )
+                                  : ""}
+                              </Td>
                             </Tr>
                             <Tr>
                               <Th border="3px double black">
                                 Date of Violation
                               </Th>
-                              <Td border="3px double black">MMM dd yyyy</Td>
+                              <Td border="3px double black">
+                                {reportDetails.violation.violationDate
+                                  ? format(
+                                      new Date(
+                                        reportDetails.violation.violationDate
+                                      )
+                                        ?.toISOString()
+                                        .split("T")[0],
+                                      "MMMM dd, yyyy"
+                                    )
+                                  : ""}
+                              </Td>
                             </Tr>
                             <Tr>
                               <Th border="3px double black">Violation Type</Th>
-                              <Td border="3px double black">violation type</Td>
+                              <Td border="3px double black">
+                                {reportDetails.violationType.title}
+                              </Td>
                             </Tr>
                           </>
                         </Tbody>
@@ -291,7 +339,7 @@ export const ViewProgress: React.FC<ViewProgressProps> = ({
                     textAlign="justify"
                   >
                     <span className="font-bold">Violation Description:</span>{" "}
-                    <br /> violation description
+                    <br /> {reportDetails.violation.description}
                   </Text>
                 )}
               </Stack>

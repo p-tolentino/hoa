@@ -275,7 +275,7 @@ model Notification {
 model Notice {
   id        String   @id @unique @default(cuid())
   type      String
-  typeId    String
+  idToLink  String
   recipient String
   meetDate  String?
   venue     String?

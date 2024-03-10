@@ -87,7 +87,7 @@ export const columns: ColumnDef<SubmittedViolationsColumn>[] = [
     cell: ({ row }) => (
       <div className="w-[150px]">
         <a
-          href={`/admin/violations/submitted-violations/view-progress`}
+          href={`/admin/violations/submitted-violations/view-progress/${row.original.id}`}
           className="text-xs hover:underline hover:text-blue-500"
         >
           View Progress
