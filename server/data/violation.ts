@@ -11,3 +11,15 @@ export const getAllViolations = async () => {
     return null;
   }
 };
+
+export const getViolationById = async (id: string) => {
+  try {
+    const violation = await db.violation.findUnique({
+      where: { id },
+    });
+
+    return violation;
+  } catch {
+    return null;
+  }
+};
