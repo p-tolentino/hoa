@@ -268,7 +268,7 @@ export const ReportForm: React.FC<ReportFormProps> = ({
                     )}
                   </Box>
                 ))}
-                <FormHelperText fontSize='xs' mt='-1'>
+                <FormHelperText fontSize='xs' mt='-1' pt={2}>
                   This will allow us to gain more information about the
                   violation that would help us in decision making.
                 </FormHelperText>
@@ -329,7 +329,7 @@ export const ReportForm: React.FC<ReportFormProps> = ({
                     )}
                   </Box>
                 ))}
-                <FormHelperText fontSize='xs' mt='-1' className='pt-2'>
+                <FormHelperText fontSize='xs' mt='-1' pt={2}>
                   This will allow us to contact the individuals involved in the
                   violation.
                 </FormHelperText>
@@ -337,7 +337,7 @@ export const ReportForm: React.FC<ReportFormProps> = ({
               {/* Submit Button */}
               <Box textAlign='center'>
                 <Button size='sm' type='submit' colorScheme='yellow' my='20px'>
-                  Submit Violation
+                  Submit Violation Form
                 </Button>
               </Box>
             </Stack>
