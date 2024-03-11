@@ -12,7 +12,7 @@ import {
   AlertDialogTrigger
 } from '@/components/ui/alert-dialog'
 import { PendingPostColumn } from './columns' // Assuming this is the correct import path
-import { updatePostStatus } from '@/server/actions/post'
+import { updatePostStatus, declinePost } from '@/server/actions/post'
 import { useRouter } from 'next/navigation'
 
 interface RowActionProps {
@@ -50,6 +50,36 @@ const RowActions: React.FC<RowActionProps> = ({ data }) => {
       // Handle error appropriately
     }
   }
+
+  const handleDecline = async () => {
+    try {
+      const response = await declinePost(data.id) // Assuming updatePostStatus now also takes a status argument
+      if (response.error) {
+        toast({
+          title: 'Error',
+          description: response.error,
+          status: 'error',
+          duration: 5000,
+          isClosable: true
+        })
+      } else {
+        toast({
+          title: 'Post Declined',
+          description: 'The post has been declined.',
+          status: 'success',
+          duration: 5000,
+          isClosable: true
+        })
+        router.refresh()
+        // Optionally, refresh the data or navigate as needed
+      }
+    } catch (error) {
+      console.error('Failed to approve post:', error)
+      // Handle error appropriately
+    }
+  }
+
+
   return (
     <Flex gap={2}>
       {/* Approve Button */}
@@ -103,7 +133,9 @@ const RowActions: React.FC<RowActionProps> = ({ data }) => {
             <AlertDialogCancel className='mt-0 hover:bg-gray-100'>
               Cancel
             </AlertDialogCancel>
-            <AlertDialogAction className='bg-red-500 hover:bg-red-600'>
+            <AlertDialogAction 
+            className='bg-red-500 hover:bg-red-600'
+            onClick={handleDecline}>
               Continue
             </AlertDialogAction>
           </AlertDialogFooter>

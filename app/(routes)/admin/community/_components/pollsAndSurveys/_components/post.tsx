@@ -121,7 +121,10 @@ const Post: React.FC<PollProps> = ({ polls, user }) => {
               fontWeight="bold"
               bgColor={poll.status == "ACTIVE" ? "green.200" : "red.200"}
             >
-              {poll.status}
+              {/* {poll.status} */}
+              {poll.status === "ACTIVE" ? "Active" : 
+    new Date() < new Date(poll.startDate) ? "Inactive - Incoming Poll" : 
+    new Date() > new Date(poll.endDate) ? "Inactive - Voting Period is Over" : "Inactive"}
             </Box>
             <Box p="20px">
               <HStack mb="0.5rem">
@@ -132,8 +135,7 @@ const Post: React.FC<PollProps> = ({ polls, user }) => {
                   </Heading>
                   {/* Survey Duration */}
                   <Text fontSize="xs">
-                    Duration: {poll.startDate.toLocaleString()} to{" "}
-                    {poll.endDate.toLocaleString()}
+                  Duration: {poll.startDate ? poll.startDate.toLocaleString() : 'Start date not set'} to {poll.endDate ? poll.endDate.toLocaleString() : 'End date not set'}
                   </Text>
                 </Stack>
                 <Spacer />

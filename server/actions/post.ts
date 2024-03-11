@@ -60,6 +60,27 @@ export const updatePostStatus = async (postId: string) => {
     }
 };
 
+
+export const declinePost = async (postId: string) => {
+  const user = await currentUser();
+
+  // No Current User
+  if (!user) {
+    return { error: "Unauthorized" };
+  }
+
+  try {
+      await db.post.delete({
+          where: { id: postId },
+      });
+      return { success: "Post declined successfully." };
+  } catch (error) {
+      console.error("Failed to update post status:", error);
+      return { error: "Failed to update post status." };
+  }
+};
+
+
 export const createLike = async (userId: string, postId: string) => {
     // Assuming currentUser() fetches the currently logged-in user
     const user = await currentUser();

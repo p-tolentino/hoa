@@ -19,6 +19,7 @@ import {
 } from '@/server/data/posts'
 import { getPolls } from '@/server/data/polls'
 import { getEvents } from '@/server/data/events'
+import { getAllPersonalInfo } from '@/server/data/user-info'
 
 const Community = async () => {
   const discussion = await getDiscussionPosts()
@@ -47,6 +48,11 @@ const Community = async () => {
   const user = await currentUser()
 
   if (!user) {
+    return null
+  }
+
+  const personalInfo = await getAllPersonalInfo()
+  if (!personalInfo) {
     return null
   }
 
@@ -81,7 +87,7 @@ const Community = async () => {
           </Tabs>
         </Flex>
         <Flex flexDir='column' gap='2rem' flexGrow={1}>
-          <AnnouncementBoard />
+          <AnnouncementBoard personalInfo={personalInfo} events={events} user={user.id}/>
           <HomeownerResources />
           <AdminOfficerLinks />
         </Flex>

@@ -27,6 +27,16 @@ export const getPersonalInfo = async (id: string) => {
   }
 };
 
+export const getAllPersonalInfo = async () => {
+  try {
+    const info = await db.personalInfo.findMany();
+
+    return info;
+  } catch {
+    return null;
+  }
+};
+
 export const getPropertyById = async (id: string) => {
   const user = await getUserById(id);
 
