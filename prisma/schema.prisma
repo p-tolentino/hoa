@@ -43,6 +43,7 @@ model PersonalInfo {
   bio         String?
   type        String?
   position    String?       @default("Member")
+  committee   String?
   govtId      String?
   user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
@@ -74,6 +75,7 @@ model UserTransaction {
   updateAt    DateTime      @updatedAt
   datePaid    DateTime?
   paidBy      String?
+
 }
 
 model HoaTransaction {
@@ -246,6 +248,7 @@ model ViolationType {
 
 model Violation {
   id              String   @id @unique @default(cuid())
+  number          Int      @default(autoincrement())
   violationDate   DateTime
   type            String
   description     String
@@ -254,8 +257,8 @@ model Violation {
   officerAssigned String?
   createdAt       DateTime @default(now())
   submittedBy     String
-  number          Int      @default(autoincrement())
-  progress        String   @default("Step 1")
+  step            Int      @default(1)
+  progress        String   @default("Step 1: Violation Form Submission")
 }
 
 model Notification {
@@ -272,7 +275,7 @@ model Notification {
 model Notice {
   id        String   @id @unique @default(cuid())
   type      String
-  typeId    String
+  idToLink  String
   recipient String
   meetDate  String?
   venue     String?

@@ -1,5 +1,7 @@
 import { currentUser } from "@/lib/auth";
 import ReportForm from "./_components/report-form";
+import { getAllViolationTypes } from "@/server/data/violation-type";
+import { getAllInfo } from "@/server/data/user-info";
 
 export const ViolationForm = async () => {
   const user = await currentUser();
@@ -8,9 +10,21 @@ export const ViolationForm = async () => {
     return null;
   }
 
+  const allUsers = await getAllInfo();
+
+  if (!allUsers) {
+    return null;
+  }
+
+  const types = await getAllViolationTypes();
+
+  if (!types) {
+    return null;
+  }
+
   return (
     <>
-      <ReportForm />
+      <ReportForm violationTypes={types} users={allUsers || null} />
     </>
   );
 };

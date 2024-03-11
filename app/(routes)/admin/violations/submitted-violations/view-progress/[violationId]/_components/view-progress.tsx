@@ -31,10 +31,10 @@ import {
   Td,
   Stack,
   Button,
-  Link,
 } from "@chakra-ui/react";
 import { PersonalInfo } from "@prisma/client";
 import { format } from "date-fns";
+import Link from "next/link";
 
 const processSteps = [
   {
@@ -66,43 +66,13 @@ const processSteps = [
   },
 ];
 
-interface ProgressDetailsProps {
+interface ViewProgressProps {
   reportDetails: any;
 }
 
-export const ProgressDetails: React.FC<ProgressDetailsProps> = ({
+export const ViewProgress: React.FC<ViewProgressProps> = ({
   reportDetails,
 }) => {
-  const processSteps = [
-    {
-      title: "Violation Form Submission",
-      description:
-        "Homeowners submit violation reports through the Violation Monitoring module in the MIS.",
-      details: [
-        "Homeowners provide details about the alleged violation, including the type of violation, date, and a detailed description of the violation.",
-        "Supporting evidence such as photos or documents may be attached to the violation report.",
-      ],
-    },
-    {
-      title: "Review by Environment and Security Committee",
-      description:
-        "The Environment and Security Committee receives and reviews the violation report.",
-      details: [
-        "The Environment and Security Committee receives the violation report in the MIS and assigns an officer-in-charge to oversee its resolution.",
-        "The Officer-in-Charge makes a decision whether the reported violation is valid and if any action is required.",
-      ],
-    },
-    {
-      title: "Issue Resolution and Enforcement with Penalty Fee",
-      description:
-        "The Officer-in-Charge takes appropriate actions based on their decision, including issuing a violation notice to the homeowner.",
-      details: [
-        "The alleged violator receives a notice outlining the nature of the violation, required corrective actions, and a penalty fee.",
-        "The homeowner is informed that the penalty fee is added to their statement of account, which can be accessed via the Finance Management module.",
-      ],
-    },
-  ];
-
   const { activeStep, setActiveStep } = useSteps({
     index: reportDetails.violation.step - 1,
     count: processSteps.length,
@@ -116,7 +86,7 @@ export const ProgressDetails: React.FC<ProgressDetailsProps> = ({
             title={`#V${reportDetails.violation.number
               .toString()
               .padStart(4, "0")} - Violation Enforcement Progress`}
-            description="View the progress of a selected violation case within the Homeowners' Association."
+            description="View the progress of your selection violation within the Homeowners' Association"
           />
           <Badge
             className={cn(
@@ -137,7 +107,7 @@ export const ProgressDetails: React.FC<ProgressDetailsProps> = ({
         </Flex>
         <Button
           as={Link}
-          href="/admin/violations/violation-record"
+          href="/admin/violations/submitted-violations"
           size="sm"
           _hover={{ textDecoration: "none" }}
         >
@@ -160,6 +130,7 @@ export const ProgressDetails: React.FC<ProgressDetailsProps> = ({
             <Step
               key={index}
               onClick={() => {
+                setActiveStep(index);
                 if (index <= reportDetails.violation.step - 1)
                   // to make uncompleted steps unclickable
                   setActiveStep(index);
@@ -433,4 +404,4 @@ export const ProgressDetails: React.FC<ProgressDetailsProps> = ({
   );
 };
 
-export default ProgressDetails;
+export default ViewProgress;

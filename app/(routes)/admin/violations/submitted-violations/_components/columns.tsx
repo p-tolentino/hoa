@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowUpDown } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import { getViolationTypeByName } from "@/server/data/violation-type";
 
 export type SubmittedViolationsColumn = {
   id: string;
@@ -18,6 +19,8 @@ export type SubmittedViolationsColumn = {
   description: string;
   personsInvolved: string[];
   submittedBy: string;
+  step: number;
+  progress: string;
 };
 
 export const columns: ColumnDef<SubmittedViolationsColumn>[] = [
@@ -38,12 +41,15 @@ export const columns: ColumnDef<SubmittedViolationsColumn>[] = [
     cell: ({ row }) => (
       <Badge
         className={cn(
-          row.getValue("status") === "Resolved"
+          "w-[max-content] p-2 text-center justify-center",
+          row.getValue("status") === "Appealed"
             ? "bg-green-700"
             : row.getValue("status") === "Pending"
             ? "bg-red-700"
-            : row.getValue("status") === "In Process"
+            : row.getValue("status") === "Under Review"
             ? "bg-yellow-600"
+            : row.getValue("status") === "Closed"
+            ? ""
             : "display-none"
         )}
       >
@@ -57,12 +63,21 @@ export const columns: ColumnDef<SubmittedViolationsColumn>[] = [
     header: "Date Submitted",
   },
   {
+    accessorKey: "type",
+    header: "Type",
+    cell: ({ row }) => (
+      <div className="w-[150px]">
+        <p>{row.original.type}</p>
+      </div>
+    ),
+  },
+  {
     accessorKey: "officerAssigned",
     header: "Officer-in-Charge",
     cell: ({ row }) => (
       <span
         className={cn(
-          !row.getValue("officerAssigned") ? "text-gray-400 italic" : ""
+          !row.getValue("officerAssigned") ? "text-gray-300 italic" : ""
         )}
       >
         {row.getValue("officerAssigned")
@@ -72,15 +87,17 @@ export const columns: ColumnDef<SubmittedViolationsColumn>[] = [
     ),
   },
   {
-    accessorKey: "viewViolationForm",
+    accessorKey: "progress",
     header: "Enforcement Progress",
     cell: ({ row }) => (
-      <a
-        href={"/admin/violations/submitted-violations/view-progress"}
-        className="hover:underline"
-      >
-        View Progress
-      </a>
+      <div className="w-[150px]">
+        <a
+          href={`/admin/violations/submitted-violations/view-progress/${row.original.id}`}
+          className="text-sm hover:underline hover:text-blue-500"
+        >
+          {row.original.progress}
+        </a>
+      </div>
     ),
   },
   {

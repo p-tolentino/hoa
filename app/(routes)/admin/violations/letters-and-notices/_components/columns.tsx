@@ -1,38 +1,55 @@
-'use client'
+"use client";
 
-import { ColumnDef } from '@tanstack/react-table'
+import { Text } from "@chakra-ui/react";
+import { Violation, ViolationType } from "@prisma/client";
+import { ColumnDef } from "@tanstack/react-table";
 
 export type ViolationLettersAndNoticesColumn = {
-  id: string
-  dateReceived: string
-  violationType: string
-  sender: string
-  viewViolationLetterNotice: string
-}
+  id: string;
+  type: string;
+  recipient: string;
+  meetDate?: string;
+  venue?: string;
+  sender: string;
+  createdAt: string;
+  violation: Violation;
+  violationType: ViolationType;
+};
 
 export const columns: ColumnDef<ViolationLettersAndNoticesColumn>[] = [
   {
-    accessorKey: 'dateReceived',
-    header: 'Date Received'
+    accessorKey: "createdAt",
+    header: "Date Received",
   },
   {
-    accessorKey: 'violationType',
-    header: 'Violation Type'
+    accessorKey: "violationNumber",
+    header: "Violation Number",
+    cell: ({ row }) => (
+      <Text>{`#V${row.original.violation.number
+        .toString()
+        .padStart(4, "0")}`}</Text>
+    ),
   },
   {
-    accessorKey: 'sender',
-    header: 'Sender'
+    accessorKey: "violationType",
+    header: "Violation Type",
+    cell: ({ row }) => <span>{row.original.violationType.title}</span>,
   },
   {
-    accessorKey: 'viewViolationLetterNotice',
-    header: 'View Violation Letter/Notice',
+    accessorKey: "viewViolationLetterNotice",
+    header: "",
     cell: ({ row }) => (
       <a
-        href={'/admin/violations/letters-and-notices/sample'}
-        className='hover:underline'
+        href={
+          row.original.type.toLowerCase() === "letter"
+            ? `/admin/violations/letters-and-notices/letter?letterId=${row.original.id}&violationId=${row.original.violation.id}&violationTypeName=${row.original.violationType.name}`
+            : `/admin/violations/letters-and-notices/notice?noticeId=${row.original.id}&violationId=${row.original.violation.id}&violationTypeName=${row.original.violationType.name}`
+        }
+        className="hover:underline hover:text-blue-500"
       >
-        {row.original.viewViolationLetterNotice}
+        View{" "}
+        <span className="capitalize">{row.original.type.toLowerCase()}</span>
       </a>
-    )
-  }
-]
+    ),
+  },
+];
