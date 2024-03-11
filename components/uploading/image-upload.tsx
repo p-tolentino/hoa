@@ -45,7 +45,7 @@ export const Upload = () => {
           },
         }}
         endpoint="imageUploader"
-        onClientUploadComplete={(res) => {
+        onClientUploadComplete={(res: any) => {
           onSubmit(res[0].url);
           alert("Upload Completed");
         }}
