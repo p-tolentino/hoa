@@ -20,30 +20,37 @@ import {
   Text,
   UnorderedList
 } from '@chakra-ui/react'
-import { format } from 'date-fns'
+import { format, isSameMonth, parseISO, getMonth } from 'date-fns'
 
-export default function AnnouncementBoard () {
+import { PersonalInfo, User, Events } from '@prisma/client'
+
+interface AnnouncementProps {
+  personalInfo: PersonalInfo[]
+  events: Events[]
+  user: string
+}
+
+export default function AnnouncementBoard ({ personalInfo, events, user }: AnnouncementProps) {
   // Get Current Month
-  const currentMonthYear = format(new Date(), 'LLLL RRRR')
+  const currentDate = new Date();
+  const currentMonth = getMonth(currentDate); // This gets the current month as a zero-based index (0 = January, 11 = December)
+  const currentMonthName = format(currentDate, 'LLLL');
 
-  const monthCelebrants = [
-    {
-      name: 'Dan Abrahmov',
-      avatar: 'https://bit.ly/dan-abramov',
-      profileLink: ''
-    },
-    {
-      name: 'Kent Dodds',
-      avatar: 'https://bit.ly/kent-c-dodds',
-      profileLink: ''
-    },
-    {
-      name: 'Ryan Florence',
-      avatar: 'https://bit.ly/ryan-florence',
-      profileLink: ''
-    }
-  ]
+  const monthCelebrants = personalInfo.filter((info) => {
+    if (!info.birthDay) return false; // Skip if birthday is not defined
+    
+    // Parse the birthday to a Date object if it's a string, otherwise use it directly
+    const birthDate = typeof info.birthDay === 'string' ? new Date(info.birthDay) : info.birthDay;
+    
+    return getMonth(birthDate) === currentMonth;
+  }).map((celebrant) => ({
+    name: `${celebrant.firstName} ${celebrant.lastName}`.trim(),
+    // Additional properties and adjustments can be made here as needed
+  }));
 
+  const currentMonthEvents = events.filter(event => 
+    isSameMonth(event.date, currentDate)
+  );
   return (
     <>
       <Card>
@@ -57,146 +64,76 @@ export default function AnnouncementBoard () {
               <Dialog>
                 <DialogTrigger asChild>
                   <Link fontSize='sm'>
-                    {currentMonthYear} Celebrants{' '}
+                    {currentMonthName} Birthday Celebrants{' '}
                     <Text as='span' fontWeight='bold'>
-                      (3)
+                      ({monthCelebrants.length})
                     </Text>
                   </Link>
                 </DialogTrigger>
                 <DialogContent className='sm:max-w-[425px]'>
                   <DialogHeader>
-                    <DialogTitle>{currentMonthYear} Celebrants</DialogTitle>
+                    <DialogTitle>{currentMonthName} Celebrants</DialogTitle>
                     <DialogDescription></DialogDescription>
                   </DialogHeader>
                   <Stack>
                     {monthCelebrants.map((celebrant, index) => (
                       <Flex key={index} align='center' gap='1rem'>
-                        <Avatar name={celebrant.name} src={celebrant.avatar} />
-                        <Link fontSize='sm' href={celebrant.profileLink}>
+                        {/* <Avatar name={celebrant.name} src={celebrant.avatar} />
+                        <Link fontSize='sm' href={celebrant.profileLink}> */}
                           {celebrant.name}
-                        </Link>
+                        {/* </Link> */}
                       </Flex>
                     ))}
                   </Stack>
                 </DialogContent>
               </Dialog>
             </ListItem>
-            <ListItem key={'Announcement1'}>
-              <Dialog>
-                {/* Announcement 1 */}
-                <DialogTrigger asChild>
-                  <Link fontSize='sm'>Upcoming Event 1</Link>
-                </DialogTrigger>
-                <DialogContent className='lg:min-w-[800px]'>
-                  <DialogHeader>
-                    <DialogTitle>Upcoming Event 1</DialogTitle>
-                    <DialogDescription></DialogDescription>
-                  </DialogHeader>
-                  <Box h='full'>
-                    <Text as='span' fontSize='xl' fontWeight='bold'>
-                      Event Title
-                    </Text>
-                    <ScrollArea className='h-[450px] rounded-md'>
-                      <Stack spacing={3} p={4}>
-                        <Flex gap={20}>
-                          <Box>
-                            <Text as='span' fontWeight='semibold'>
-                              Date:{' '}
-                            </Text>
-                            <Text as='span'>MM/DD/YYYY</Text>
-                          </Box>
-                          <Box>
-                            <Text as='span' fontWeight='semibold'>
-                              Venue:{' '}
-                            </Text>
-                            <Text as='span'>Lorem ipsum</Text>
-                          </Box>
-                        </Flex>
-                        <Box pr='2rem'>
-                          <Text fontWeight='semibold'>Event Description:</Text>
-                          <Text>
-                            Lorem, ipsum dolor sit amet consectetur adipisicing
-                            elit. Praesentium atque aliquid harum, quo sapiente
-                            nihil cupiditate doloremque reprehenderit iste
-                            laboriosam minus voluptatum et. Tenetur, dolorum
-                            cupiditate dicta asperiores architecto eveniet
-                            magnam provident similique hic sed sequi impedit
-                            quisquam error, a incidunt consectetur nihil vitae
-                            porro ullam voluptatem ipsum! Natus voluptas, non
-                            dignissimos perferendis aspernatur eveniet sapiente
-                            minima ea ipsa deserunt iure assumenda architecto
-                            quas impedit nostrum? Et inventore nemo, id veniam
-                            cum obcaecati autem. Dolor, eius doloribus error
-                            repellat non, eligendi voluptatem, repellendus eaque
-                            quisquam exercitationem rerum aliquam aperiam?
-                            Placeat quaerat cupiditate alias optio laboriosam
-                            suscipit voluptatum eligendi nobis saepe.
-                          </Text>
-                        </Box>
-                      </Stack>
-                    </ScrollArea>
-                  </Box>
-                </DialogContent>
-              </Dialog>
-            </ListItem>
-            <ListItem key={'Announcement2'}>
-              <Dialog>
-                {/* Announcement 2 */}
-                <DialogTrigger asChild>
-                  <Link fontSize='sm'>Upcoming Event 2</Link>
-                </DialogTrigger>
-                <DialogContent className='lg:min-w-[800px]'>
-                  <DialogHeader>
-                    <DialogTitle>Upcoming Event 2</DialogTitle>
-                    <DialogDescription></DialogDescription>
-                  </DialogHeader>
-                  <Box h='full'>
-                    <Text as='span' fontSize='xl' fontWeight='bold'>
-                      Event Title
-                    </Text>
-                    <ScrollArea className='h-[450px] rounded-md'>
-                      <Stack spacing={3} p={4}>
-                        <Flex gap={20}>
-                          <Box>
-                            <Text as='span' fontWeight='semibold'>
-                              Date:{' '}
-                            </Text>
-                            <Text as='span'>MM/DD/YYYY</Text>
-                          </Box>
-                          <Box>
-                            <Text as='span' fontWeight='semibold'>
-                              Venue:{' '}
-                            </Text>
-                            <Text as='span'>Lorem ipsum</Text>
-                          </Box>
-                        </Flex>
-                        <Box pr='2rem'>
-                          <Text fontWeight='semibold'>Event Description:</Text>
-                          <Text>
-                            Lorem, ipsum dolor sit amet consectetur adipisicing
-                            elit. Praesentium atque aliquid harum, quo sapiente
-                            nihil cupiditate doloremque reprehenderit iste
-                            laboriosam minus voluptatum et. Tenetur, dolorum
-                            cupiditate dicta asperiores architecto eveniet
-                            magnam provident similique hic sed sequi impedit
-                            quisquam error, a incidunt consectetur nihil vitae
-                            porro ullam voluptatem ipsum! Natus voluptas, non
-                            dignissimos perferendis aspernatur eveniet sapiente
-                            minima ea ipsa deserunt iure assumenda architecto
-                            quas impedit nostrum? Et inventore nemo, id veniam
-                            cum obcaecati autem. Dolor, eius doloribus error
-                            repellat non, eligendi voluptatem, repellendus eaque
-                            quisquam exercitationem rerum aliquam aperiam?
-                            Placeat quaerat cupiditate alias optio laboriosam
-                            suscipit voluptatum eligendi nobis saepe.
-                          </Text>
-                        </Box>
-                      </Stack>
-                    </ScrollArea>
-                  </Box>
-                </DialogContent>
-              </Dialog>
-            </ListItem>
+
+{currentMonthEvents.map((event, index) => (
+  <ListItem key={event.id}>
+    <Dialog>
+      {/* Event Title */}
+      <DialogTrigger asChild>
+        <Link fontSize='sm'>{event.title}</Link>
+      </DialogTrigger>
+      <DialogContent className='lg:min-w-[800px]'>
+        <DialogHeader>
+          <DialogTitle>{event.title}</DialogTitle>
+        </DialogHeader>
+        <Box h='full'>
+          <Text as='span' fontSize='xl' fontWeight='bold'>
+            {event.title}
+          </Text>
+          <ScrollArea className='h-[450px] rounded-md'>
+            <Stack spacing={3} p={4}>
+              <Flex gap={20}>
+                <Box>
+                  <Text as='span' fontWeight='semibold'>
+                    Date:{' '}
+                  </Text>
+                  <Text as='span'>{format(new Date(event.date), 'MM/dd/yyyy')}</Text> {/* Format the event.date */}
+                </Box>
+                <Box>
+                  <Text as='span' fontWeight='semibold'>
+                    Venue:{' '}
+                  </Text>
+                  <Text as='span'>{event.venue}</Text> {/* Display the event.venue */}
+                </Box>
+              </Flex>
+              <Box pr='2rem'>
+                <Text fontWeight='semibold'>Event Description:</Text>
+                <Text>
+                  {event.description} {/* Display the event.description */}
+                </Text>
+              </Box>
+            </Stack>
+          </ScrollArea>
+        </Box>
+      </DialogContent>
+    </Dialog>
+  </ListItem>
+))}
+
           </UnorderedList>
         </CardContent>
       </Card>

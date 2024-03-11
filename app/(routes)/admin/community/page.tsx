@@ -20,6 +20,7 @@ import {
 import { getPolls } from "@/server/data/polls";
 import { getEvents } from "@/server/data/events";
 import { getHoaInfo } from "@/server/data/hoa-info";
+import { getAllPersonalInfo } from "@/server/data/user-info";
 
 const Community = async () => {
   const discussion = await getDiscussionPosts();
@@ -57,6 +58,11 @@ const Community = async () => {
     return null;
   }
 
+  const personalInfo = await getAllPersonalInfo();
+  if (!personalInfo) {
+    return null;
+  }
+
   return (
     <>
       <Heading
@@ -88,7 +94,11 @@ const Community = async () => {
           </Tabs>
         </Flex>
         <Flex flexDir="column" gap="2rem" flexGrow={1}>
-          <AnnouncementBoard />
+          <AnnouncementBoard
+            personalInfo={personalInfo}
+            events={events}
+            user={user.id}
+          />
           <HomeownerResources hoa={hoa} />
           <AdminOfficerLinks hoa={hoa} />
         </Flex>
