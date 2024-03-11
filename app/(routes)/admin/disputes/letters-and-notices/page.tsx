@@ -5,25 +5,17 @@ export default function DisputeLettersAndNotices () {
   const data = [
     {
       id: '12345',
-      dateReceived: '02/20/24',
+      createdAt: '03/10/24',
+      disputeNumber: 'D001',
       disputeType: 'Neighbor-to-Neighbor Conflict',
-      sender: 'HOA President',
-      viewDisputeLetterNotice: 'Sample Link to Letter/Notice 1'
+      viewDisputeLetterNotice: 'Notice'
     },
     {
       id: '67890',
-      dateReceived: '02/20/24',
+      createdAt: '03/01/24',
+      disputeNumber: 'D002',
       disputeType: 'Neighbor-to-Neighbor Conflict',
-      sender: 'HOA President',
-
-      viewDisputeLetterNotice: 'Sample Link to Letter/Notice 2'
-    },
-    {
-      id: '54321',
-      dateReceived: '02/20/24',
-      disputeType: 'Neighbor-to-Neighbor Conflict',
-      sender: 'HOA President',
-      viewDisputeLetterNotice: 'Sample Link to Letter/Notice 3'
+      viewDisputeLetterNotice: 'Letter'
     }
   ]
 
