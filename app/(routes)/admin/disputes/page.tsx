@@ -53,10 +53,10 @@ export default function DisputeResolutionMenu () {
             "Fill out the Dispute Form to formally request for a dispute resolution from the Homeowners' Association."
         },
         {
-          text: 'Submitted Dispute Forms',
+          text: 'Submitted Dispute Reports',
           href: '/admin/disputes/submitted-disputes',
           description:
-            "View your submitted dispute forms to the Homeowners' Association and monitor its progress."
+            "View your submitted dispute reports to the Homeowners' Association and monitor its progress."
         },
         {
           text: 'Dispute Letters and Notices',

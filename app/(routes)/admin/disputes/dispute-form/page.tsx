@@ -1,40 +1,40 @@
-import { currentUser } from '@/lib/auth'
-import ReportForm from './_components/report-form'
-import { getAllViolationTypes } from '@/server/data/violation-type'
+import ReportForm from "./_components/report-form";
+// import { currentUser } from '@/lib/auth'
+// import { getAllViolationTypes } from '@/server/data/violation-type'
 // import { getAllDisputeTypes } from '@/server/data/dispute-type'
-import { getAllInfo } from '@/server/data/user-info'
+// import { getAllInfo } from '@/server/data/user-info'
 
 export const DisputeForm = async () => {
-  const user = await currentUser()
+  // const user = await currentUser()
 
-  if (!user) {
-    return null
-  }
-
-  const allUsers = await getAllInfo()
-
-  if (!allUsers) {
-    return null
-  }
-
-  // const disputeTypes = await getAllDisputeTypes()
-
-  // if (!disputeTypes) {
+  // if (!user) {
   //   return null
   // }
 
-  const violationTypes = await getAllViolationTypes()
+  // const allUsers = await getAllInfo()
 
-  if (!violationTypes) {
-    return null
-  }
+  // if (!allUsers) {
+  //   return null
+  // }
+
+  // // const disputeTypes = await getAllDisputeTypes()
+
+  // // if (!disputeTypes) {
+  // //   return null
+  // // }
+
+  // const violationTypes = await getAllViolationTypes()
+
+  // if (!violationTypes) {
+  //   return null
+  // }
 
   return (
     <>
       {/* <ReportForm disputeTypes={disputeTypes} violationTypes={violationTypes} users={allUsers || null} /> */}
       <ReportForm />
     </>
-  )
-}
+  );
+};
 
-export default DisputeForm
+export default DisputeForm;
