@@ -8,14 +8,14 @@ export default function DisputeLettersAndNotices () {
       createdAt: '02/20/24',
       disputeNumber: 'D001',
       disputeType: 'Neighbor-to-Neighbor Conflict',
-      viewDisputeLetterNotice: 'Letter'
+      viewDisputeLetterNotice: 'Notice'
     },
     {
       id: '67890',
       createdAt: '02/20/24',
       disputeNumber: 'D002',
       disputeType: 'Neighbor-to-Neighbor Conflict',
-      viewDisputeLetterNotice: 'Notice'
+      viewDisputeLetterNotice: 'Letter'
     }
   ]
 
