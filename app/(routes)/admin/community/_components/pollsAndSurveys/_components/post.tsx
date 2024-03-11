@@ -115,7 +115,7 @@ const Post: React.FC<PollProps> = ({ polls, user }) => {
             {/* Survey Status */}
             <Box
               fontSize="xs"
-              w="10%"
+              w="7%"
               textAlign="center"
               ml="20px"
               fontWeight="bold"
