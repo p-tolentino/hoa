@@ -1,17 +1,24 @@
-import { Card, CardContent, CardHeader } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { FormError } from '@/components/form-error'
-import { Box, Flex } from '@chakra-ui/react'
-import { Sidebar } from '@/components/system/Sidebar'
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { FormError } from "@/components/form-error";
+import { Box, Flex } from "@chakra-ui/react";
+import { Sidebar } from "@/components/system/Sidebar";
 
-import { UserRole } from '@prisma/client'
-import { currentRole } from '@/lib/auth'
-import Link from 'next/link'
+import { UserRole } from "@prisma/client";
+import { currentRole, currentUser } from "@/lib/auth";
+import Link from "next/link";
 
-import { FaUserShield as Admin } from 'react-icons/fa'
+import { FaUserShield as Admin } from "react-icons/fa";
+import { getNotificationsByUserId } from "@/server/data/notification";
 
 const AdminLayout = async ({ children }: { children: React.ReactNode }) => {
-  const role = await currentRole()
+  const user = await currentUser();
+
+  if (!user) {
+    return null;
+  }
+
+  const role = await currentRole();
 
   // TODO: REVERT AFTER ALL DONE
   // return role === UserRole.USER ? (
@@ -37,14 +44,21 @@ const AdminLayout = async ({ children }: { children: React.ReactNode }) => {
   //   </div>
   // ) :
 
+  const notifications = await getNotificationsByUserId(user.id);
+
   return (
     <Flex>
-      <Sidebar />
-      <Box className='p-10' w='100%'>
+      <Sidebar
+        notifications={
+          notifications?.sort((a: any, b: any) => b.createdAt - a.createdAt) ||
+          null
+        }
+      />
+      <Box className="p-10" w="100%">
         {children}
       </Box>
     </Flex>
-  )
-}
+  );
+};
 
-export default AdminLayout
+export default AdminLayout;

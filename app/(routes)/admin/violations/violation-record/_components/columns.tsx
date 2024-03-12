@@ -20,6 +20,7 @@ export type ListOfViolationsColumn = {
   submittedBy: string;
   step: number;
   progress: string;
+  letterSent: boolean;
 };
 
 export const columns: ColumnDef<ListOfViolationsColumn>[] = [
@@ -41,14 +42,14 @@ export const columns: ColumnDef<ListOfViolationsColumn>[] = [
       <Badge
         className={cn(
           "w-[max-content] p-2 text-center justify-center",
-          row.getValue("status") === "Appealed"
-            ? "bg-green-700"
+          row.getValue("status") === "Invalid"
+            ? ""
             : row.getValue("status") === "Pending"
             ? "bg-red-700"
             : row.getValue("status") === "Under Review"
             ? "bg-yellow-600"
             : row.getValue("status") === "Closed"
-            ? ""
+            ? "bg-green-700"
             : "display-none"
         )}
       >
@@ -80,7 +81,7 @@ export const columns: ColumnDef<ListOfViolationsColumn>[] = [
     cell: ({ row }) => (
       <div>
         {row.original.officerAssigned === "Unassigned" ? (
-          <p className="text-gray-300 italic">{row.original.officerAssigned}</p>
+          <p className="italic text-gray-300">{row.original.officerAssigned}</p>
         ) : (
           <p>{row.original.officerAssigned}</p>
         )}

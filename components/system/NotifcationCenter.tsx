@@ -19,6 +19,9 @@ import { useState } from "react";
 import { PiBellFill, PiBellRingingFill } from "react-icons/pi";
 import { ScrollArea } from "../ui/scroll-area";
 import Link from "next/link";
+import { Notification } from "@prisma/client";
+import { format } from "date-fns";
+import { updateIsRead } from "@/server/actions/notification";
 
 interface NotificationCenter {
   isRead: boolean;
@@ -28,55 +31,29 @@ interface NotificationCenter {
   onClick: () => void;
 }
 
-export default function NotificationCenter() {
+export default function NotificationCenter({
+  initialData,
+}: {
+  initialData: Notification[];
+}) {
   const title = "Notification Center";
-
-  const initialData = [
-    {
-      isRead: false,
-      title: "Urgent: Dispute Resolution Meeting Notice 📅",
-      description:
-        "The meeting is scheduled for 1 March 2024, 3:00PM at the HOA Admin Office. Your presence is crucial for resolving this matter.",
-      date: "1 day ago",
-      href: "/admin/disputes/letters-and-notices/sample",
-    },
-    {
-      isRead: false,
-      title: "Notification 1",
-      description:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorem, quasi.",
-      date: "2 days ago",
-      href: "",
-    },
-    {
-      isRead: true,
-      title: "Notification 2",
-      description:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorem, quasi.",
-      date: "3 days ago",
-      href: "",
-    },
-    {
-      isRead: true,
-      title: "Notification 3",
-      description:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorem, quasi.",
-      date: "4 days ago",
-      href: "",
-    },
-  ];
 
   const [notifications, setNotifications] = useState(initialData);
   const [unreadCount, setUnreadCount] = useState(
-    notifications.filter((notification) => notification.isRead).length
+    initialData.filter((item) => !item.isRead).length
   );
 
   // Function to handle closing the popover and updating isRead value
-  const handlePopoverClose = (clickedIndex: number) => {
+  const handlePopoverClose = async (clickedIndex: number) => {
     const updatedNotifications = notifications.map((notification, index) => ({
       ...notification,
       isRead: index === clickedIndex ? true : notification.isRead,
     }));
+
+    await updateIsRead(
+      updatedNotifications[clickedIndex].id,
+      updatedNotifications[clickedIndex].isRead
+    );
 
     setNotifications(updatedNotifications);
     setUnreadCount(
@@ -139,48 +116,69 @@ export default function NotificationCenter() {
           <PopoverBody h="330px" p="20px">
             <ScrollArea className="h-[300px]">
               <Stack spacing="3" alignItems="center" pb="15px">
-                {notifications.map((notification, index) => (
-                  <Card
-                    key={index}
-                    variant="elevated"
-                    _hover={{ transform: "scale(1.02)" }}
-                    as={Link}
-                    href={notification.href}
-                    onClick={() => {
-                      handlePopoverClose(index);
-                    }}
-                    size="sm"
-                    textAlign="left"
-                  >
-                    <CardHeader p="15px 15px 0px 15px">
-                      <Text
-                        as="span"
-                        fontSize="sm"
-                        fontWeight="bold"
-                        display="flex"
-                        alignItems="top"
-                      >
-                        {notification.isRead === false && (
-                          <span
-                            className="flex w-2 h-2 mr-1 translate-y-1 bg-red-500 rounded-full"
-                            style={{ minWidth: "8px" }}
-                          />
-                        )}
-                        {notification.title}
-                      </Text>
-                    </CardHeader>
-                    <CardBody
-                      p="5px 15px 20px 15px"
-                      fontSize="xs"
+                {notifications.map((notification, index) => {
+                  let href = "/";
+
+                  if (notification.type === "violation") {
+                    href = `/admin/violations/letters-and-notices`;
+                  }
+
+                  if (notification.type === "finance") {
+                    href = `/admin/finance/statement-of-account`;
+                  }
+
+                  return (
+                    <Card
+                      key={index}
+                      variant="elevated"
+                      _hover={{ transform: "scale(1.02)" }}
+                      as={Link}
+                      href={href}
+                      onClick={() => {
+                        handlePopoverClose(index);
+                      }}
+                      size="sm"
                       textAlign="left"
                     >
-                      <Stack spacing={2}>
-                        <Text>{notification.description}</Text>
-                        <Text color="grey">{notification.date}</Text>
-                      </Stack>
-                    </CardBody>
-                  </Card>
-                ))}
+                      <CardHeader p="15px 15px 0px 15px">
+                        <Text
+                          as="span"
+                          fontSize="sm"
+                          fontWeight="bold"
+                          display="flex"
+                          alignItems="top"
+                        >
+                          {notification.isRead === false && (
+                            <span
+                              className="flex w-2 h-2 mr-1 translate-y-1 bg-red-500 rounded-full"
+                              style={{ minWidth: "8px" }}
+                            />
+                          )}
+                          {notification.title}
+                        </Text>
+                      </CardHeader>
+                      <CardBody
+                        p="5px 15px 20px 15px"
+                        fontSize="xs"
+                        textAlign="left"
+                      >
+                        <Stack spacing={2}>
+                          <Text>{notification.description}</Text>
+                          <Text color="grey">
+                            {notification.createdAt
+                              ? format(
+                                  new Date(notification.createdAt)
+                                    ?.toISOString()
+                                    .split("T")[0],
+                                  "MMMM dd, yyyy"
+                                )
+                              : ""}
+                          </Text>
+                        </Stack>
+                      </CardBody>
+                    </Card>
+                  );
+                })}
               </Stack>
             </ScrollArea>
           </PopoverBody>

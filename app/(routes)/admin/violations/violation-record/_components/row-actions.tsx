@@ -20,9 +20,18 @@ import {
   getViolationTypeByTitle,
 } from "@/server/data/violation-type";
 import { PersonalInfo, ViolationType } from "@prisma/client";
-import { updateOfficerAssigned } from "@/server/actions/violation";
+import {
+  updateClosed,
+  updateLetterSent,
+  updateOfficerAssigned,
+  updateStatus,
+} from "@/server/actions/violation";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { useRouter } from "next/navigation";
+import { createNotice } from "@/server/actions/letter-notice";
+import { createNotification } from "@/server/actions/notification";
+import { getAllInfo } from "@/server/data/user-info";
+import { newUserTransaction } from "@/server/actions/user-transactions";
 
 interface RowActionProps {
   data: ListOfViolationsColumn;
@@ -34,19 +43,24 @@ export const RowActions: React.FC<RowActionProps> = ({ data }) => {
   const router = useRouter();
   const [violation, setViolation] = useState<ViolationType | null>();
   const [commMembers, setCommMembers] = useState<PersonalInfo | null>();
+  const [userInfos, setUserInfos] = useState<PersonalInfo[] | null>();
 
   useEffect(() => {
-    const fetchViolationType = async () => {
+    const fetchData = async () => {
       try {
         await getViolationTypeByTitle(data.type).then((violation) =>
           setViolation(violation)
         );
+
+        await getAllInfo().then((infos) => {
+          setUserInfos(infos);
+        });
       } catch (err) {
         console.log(err);
       }
     };
 
-    fetchViolationType();
+    fetchData();
   }, []);
 
   const setOfficer = async (data: ListOfViolationsColumn) => {
@@ -63,11 +77,136 @@ export const RowActions: React.FC<RowActionProps> = ({ data }) => {
       });
   };
 
+  const sendLetter = async (data: ListOfViolationsColumn) => {
+    const noticeValues = {
+      type: "LETTER",
+      idToLink: data.id,
+      sender: user?.id,
+    };
+
+    const notifData = {
+      type: "violation",
+      userId: data.personsInvolved,
+      title: "A violation report has been submitted against you.",
+      description:
+        "Click here to view report details and contact the committee, should you make an appeal.",
+      link: data.id,
+    };
+
+    data.personsInvolved.map(async (person) => {
+      const noticeData = {
+        ...noticeValues,
+        recipient: person,
+      };
+
+      await createNotice(noticeData).then(async (res) => {
+        if (res.success) {
+          console.log(res.success);
+          await updateLetterSent(data.id, true).then((data) => {
+            if (data.success) {
+              console.log(data.success);
+            }
+          });
+        }
+      });
+    });
+
+    await createNotification(notifData).then((data) => {
+      if (data.success) {
+        console.log(data.success);
+      }
+    });
+  };
+
+  const invalidateReport = async (id: string) => {
+    await updateStatus(id, "Invalid").then((data) => {
+      if (data.success) {
+        console.log(data.success);
+        router.refresh();
+      }
+    });
+  };
+
+  const markResolved = async (data: ListOfViolationsColumn) => {
+    data.personsInvolved.map(async (person) => {
+      // Send Notice
+      const noticeValues = {
+        type: "NOTICE",
+        idToLink: data.id,
+        sender: user?.id,
+      };
+
+      const noticeData = {
+        ...noticeValues,
+        recipient: person,
+      };
+
+      await createNotice(noticeData).then(async (res) => {
+        if (res.success) {
+          console.log(res.success);
+        }
+      });
+
+      // Bill to Address of Person Involved + Notification
+
+      const feeData = {
+        addressId: userInfos?.find((info) => info.userId === person)?.address,
+        purpose: "violation",
+        description: violation?.title,
+        amount: violation?.fee,
+      };
+
+      await newUserTransaction(feeData).then((data) => {
+        if (data.success) {
+          console.log(data.success);
+        }
+      });
+    });
+
+    // Send Notifications
+    const notifNoticeData = {
+      type: "violation",
+      userId: data.personsInvolved,
+      title: "Violation Notice",
+      description:
+        "Click here to view violation details and how to proceed with settling penalty fees.",
+      link: data.id,
+    };
+
+    await createNotification(notifNoticeData).then((data) => {
+      if (data.success) {
+        console.log(data.success);
+      }
+    });
+
+    const notifPaymentData = {
+      type: "finance",
+      userId: data.personsInvolved,
+      title: "Urgent: Payment Required (Violation Fee)",
+      description: "Click here to proceed to payment",
+      link: data.id,
+    };
+
+    await createNotification(notifPaymentData).then((data) => {
+      if (data.success) {
+        console.log(data.success);
+      }
+    });
+
+    // Update Progress and Mark Closed
+    await updateClosed(data.id).then((data) => {
+      if (data.success) {
+        console.log(data.success);
+      }
+    });
+  };
+
   return (
     <div>
       {/* Status: PENDING = Button: Take Case */}
       {data.status === "Pending" &&
-        user?.info?.committee === "Environment and Security Committee" && (
+        user?.info?.committee === "Environment and Security Committee" &&
+        !data.personsInvolved.includes(user.id) && (
           <Button
             size="sm"
             _hover={{ textDecoration: "none" }}
@@ -79,7 +218,7 @@ export const RowActions: React.FC<RowActionProps> = ({ data }) => {
 
       {/* Status: REVIEW or AWAITING PAYMENT = Button: Mark as Resolved */}
       {/* // !! ADD CHECKING FOR PROGRESS BEFORE MARKING AS RESOLVED */}
-      {data.status === "Under Review" && (
+      {data.status === "Under Review" && data.letterSent ? (
         <div>
           <AlertDialog>
             <AlertDialogTrigger asChild>
@@ -123,13 +262,18 @@ export const RowActions: React.FC<RowActionProps> = ({ data }) => {
                 <AlertDialogAction
                   className="bg-green-700 hover:bg-green-900"
                   onClick={() =>
-                    toast({
-                      title: `Marked the violation #V000${data.number} as resolved.`,
-                      description:
-                        "Thank you for offering your services to your homeowners.",
-                      status: "success",
-                      position: "bottom-right",
-                      isClosable: true,
+                    markResolved(data).then(() => {
+                      toast({
+                        title: `Marked the violation #V${data.number
+                          .toString()
+                          .padStart(4, "0")} as resolved.`,
+                        description:
+                          "Thank you for offering your services to your homeowners.",
+                        status: "success",
+                        position: "bottom-right",
+                        isClosable: true,
+                      });
+                      router.refresh();
                     })
                   }
                 >
@@ -139,6 +283,99 @@ export const RowActions: React.FC<RowActionProps> = ({ data }) => {
             </AlertDialogContent>
           </AlertDialog>
         </div>
+      ) : (
+        data.status === "Under Review" &&
+        !data.letterSent && (
+          <div className="flex gap-x-4">
+            <div>
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button size="sm" colorScheme="green">
+                    Send Letter
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>
+                      Send Letter to Persons Involved
+                    </AlertDialogTitle>
+                    <AlertDialogDescription>
+                      Proceeding will inform persons involved in #V
+                      {data.number.toString().padStart(4, "0")} that a report
+                      has been made against them.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel className="mt-0 hover:bg-gray-100">
+                      Cancel
+                    </AlertDialogCancel>
+                    <AlertDialogAction
+                      className="bg-green-700 hover:bg-green-900"
+                      onClick={() => {
+                        sendLetter(data).then(() => {
+                          toast({
+                            title: `Persons involved in #V${data.number
+                              .toString()
+                              .padStart(4, "0")} have been informed.`,
+                            status: "info",
+                            position: "bottom-right",
+                            isClosable: true,
+                          });
+                          router.refresh();
+                        });
+                      }}
+                    >
+                      Continue
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            </div>
+
+            <div>
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button size="sm" colorScheme="red">
+                    Mark as Invalid
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Mark Report as Invalid</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      Upon reviewing report details of #V
+                      {data.number.toString().padStart(4, "0")}, by proceeding,
+                      you will now mark this report as invalid due to
+                      insufficient evidence.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel className="mt-0 hover:bg-gray-100">
+                      Cancel
+                    </AlertDialogCancel>
+                    <AlertDialogAction
+                      className="bg-red-700 hover:bg-red-900"
+                      onClick={() =>
+                        invalidateReport(data.id).then(() => {
+                          toast({
+                            title: `Marked report #V${data.number
+                              .toString()
+                              .padStart(4, "0")} as invalid.`,
+                            status: "warning",
+                            position: "bottom-right",
+                            isClosable: true,
+                          });
+                        })
+                      }
+                    >
+                      Continue
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            </div>
+          </div>
+        )
       )}
     </div>
   );

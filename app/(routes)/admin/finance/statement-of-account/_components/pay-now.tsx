@@ -362,7 +362,7 @@ export const PayNow = ({
                         <FormDescription>GCash MPIN</FormDescription>
                         <FormControl>
                           <Input
-                            type="number"
+                            type="password"
                             disabled={isPending}
                             placeholder="****"
                             {...field}
@@ -404,6 +404,7 @@ export const PayNow = ({
                         <FormDescription>Password</FormDescription>
                         <FormControl>
                           <Input
+                            type="password"
                             disabled={isPending}
                             placeholder="********"
                             {...field}
