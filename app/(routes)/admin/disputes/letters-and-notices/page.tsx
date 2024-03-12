@@ -4,14 +4,14 @@ import { DisputeLettersAndNoticesClient } from './_components/client'
 export default function DisputeLettersAndNotices () {
   const data = [
     {
-      id: '12345',
+      id: '#D001',
       createdAt: '03/10/24',
       disputeNumber: 'D001',
       disputeType: 'Neighbor-to-Neighbor Conflict',
       viewDisputeLetterNotice: 'Notice'
     },
     {
-      id: '67890',
+      id: '#D001',
       createdAt: '03/01/24',
       disputeNumber: 'D002',
       disputeType: 'Neighbor-to-Neighbor Conflict',

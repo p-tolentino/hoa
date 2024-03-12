@@ -9,12 +9,13 @@ datasource db {
 }
 
 model Hoa {
-  id            String @id @default(cuid())
+  id            String  @id @default(cuid())
   name          String
   startingFunds Int
   funds         Int
   fixedDue      Int?
   lotSizeDue    Int?
+  byLawsLink    String?
 }
 
 model User {
@@ -43,8 +44,8 @@ model PersonalInfo {
   bio         String?
   type        String?
   position    String?       @default("Member")
-  committee   String?
   govtId      String?
+  committee   String?
   user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
@@ -75,7 +76,6 @@ model UserTransaction {
   updateAt    DateTime      @updatedAt
   datePaid    DateTime?
   paidBy      String?
-
 }
 
 model HoaTransaction {
@@ -248,7 +248,6 @@ model ViolationType {
 
 model Violation {
   id              String   @id @unique @default(cuid())
-  number          Int      @default(autoincrement())
   violationDate   DateTime
   type            String
   description     String
@@ -257,8 +256,9 @@ model Violation {
   officerAssigned String?
   createdAt       DateTime @default(now())
   submittedBy     String
-  step            Int      @default(1)
+  number          Int      @default(autoincrement())
   progress        String   @default("Step 1: Violation Form Submission")
+  step            Int      @default(1)
 }
 
 model Notification {
@@ -275,12 +275,12 @@ model Notification {
 model Notice {
   id        String   @id @unique @default(cuid())
   type      String
-  idToLink  String
   recipient String
   meetDate  String?
   venue     String?
   sender    String
   createdAt DateTime @default(now())
+  idToLink  String
 }
 
 enum CategoryType {

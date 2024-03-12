@@ -14,7 +14,7 @@ export const RowActions: React.FC<RowActionProps> = ({ data }) => {
   const handleButtonClick = () => {
     if (!isButtonClicked) {
       toast({
-        title: `Successfully followed up the dispute submitted on ${data.dateSubmitted}.`,
+        title: `Successfully followed up the dispute submitted on ${data.createdAt}.`,
         description:
           'The HOA officers will get back to you as soon as possible.',
         status: 'success',

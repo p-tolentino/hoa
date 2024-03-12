@@ -4,28 +4,46 @@ import { SubmittedDisputesClient } from './_components/client'
 export default function SubmittedDisputes () {
   const data = [
     {
-      id: '12345',
+      id: '#D001',
+      number: 1,
       status: 'Pending',
-      dateSubmitted: '02/14/24',
-      officerInCharge: 'G&A Officer 1',
-      title: 'ABCD',
-      viewDisputeForm: 'Sample Link to Dispute Form 1'
+      createdAt: 'March 01, 2024',
+      officerAssigned: 'G&A Officer 1',
+      disputeDate: 'MM/DD/YYYY',
+      type: 'Neighbor-to-Neighbor Conflict',
+      description: '',
+      personsInvolved: [''],
+      submittedBy: 'Juan Dela Cruz',
+      step: 1,
+      progress: 'Step 1: Dispute Form Submission'
     },
     {
-      id: '67890',
-      status: 'In Process',
-      dateSubmitted: '02/20/24',
-      officerInCharge: 'G&A Officer 2',
-      title: 'EFGH',
-      viewDisputeForm: 'Sample Link to Dispute Form 2'
+      id: '#D002',
+      number: 2,
+      status: 'Under Review',
+      createdAt: 'March 01, 2024',
+      officerAssigned: 'G&A Officer 2',
+      disputeDate: 'MM/DD/YYYY',
+      type: 'Neighbor-to-Neighbor Conflict',
+      description: '',
+      personsInvolved: [''],
+      submittedBy: 'Juan Dela Cruz',
+      step: 2,
+      progress: 'Step 2: Review by Grievance and Adjudication Committee'
     },
     {
-      id: '54321',
+      id: '#D003',
+      number: 3,
       status: 'Resolved',
-      dateSubmitted: '02/27/24',
-      officerInCharge: 'G&A Offocer 3',
-      title: 'WSYZ',
-      viewDisputeForm: 'Sample Link to Dispute Form 3'
+      createdAt: 'March 01, 2024',
+      officerAssigned: 'G&A Officer 3',
+      disputeDate: 'MM/DD/YYYY',
+      type: 'Neighbor-to-Neighbor Conflict',
+      description: '',
+      personsInvolved: [''],
+      submittedBy: 'Juan Dela Cruz',
+      step: 3,
+      progress: 'Step 3: Dispute Resolution with Corrective Actions'
     }
   ]
 

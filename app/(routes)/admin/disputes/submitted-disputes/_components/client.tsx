@@ -20,15 +20,15 @@ export const SubmittedDisputesClient: React.FC<
     <>
       <Flex justify='space-between'>
         <Heading
-          title='Submitted Dispute Forms'
-          description="Monitor the progress of your submitted dispute forms to the Homeowners' Association."
+          title='Submitted Dispute Reports'
+          description="Monitor the progress of your submitted dispute reports to the Homeowners' Association."
         />
-        <Button size='sm' colorScheme='gray' as={Link} href='/admin/disputes'>
+        <Button size='sm' as={Link} href='/admin/disputes'>
           Go Back
         </Button>
       </Flex>
       <Separator />
-      <DataTable columns={columns} data={data} searchKey='dateSubmitted' />
+      <DataTable columns={columns} data={data} searchKey='createdAt' />
     </>
   )
 }
