@@ -121,14 +121,16 @@ export const ProgressDetails: React.FC<ProgressDetailsProps> = ({
           <Badge
             className={cn(
               "w-[max-content] h-[min-content] px-3 py-2 text-center justify-center text-sm",
-              reportDetails.violation.status === "Invalid"
+              reportDetails.violation.status === "Completed"
                 ? ""
                 : reportDetails.violation.status === "Pending"
                 ? "bg-red-700"
                 : reportDetails.violation.status === "Under Review"
                 ? "bg-yellow-600"
-                : reportDetails.violation.status === "Closed"
+                : reportDetails.violation.status === "Appealed"
                 ? "bg-green-700"
+                : reportDetails.violation.status === "Invalid"
+                ? "bg-gray-300 text-black"
                 : "display-none"
             )}
           >

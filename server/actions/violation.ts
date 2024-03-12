@@ -136,7 +136,7 @@ export const updateClosed = async (id: string) => {
     data: {
       step: 3,
       progress: "Step 3: Issue Resolution and Enforcement with Penalty Fee",
-      status: "Closed",
+      status: "Completed",
     },
   });
 

@@ -127,6 +127,15 @@ export const RowActions: React.FC<RowActionProps> = ({ data }) => {
     });
   };
 
+  const appealedReport = async (id: string) => {
+    await updateStatus(id, "Appealed").then((data) => {
+      if (data.success) {
+        console.log(data.success);
+        router.refresh();
+      }
+    });
+  };
+
   const markResolved = async (data: ListOfViolationsColumn) => {
     data.personsInvolved.map(async (person) => {
       // Send Notice
@@ -218,70 +227,123 @@ export const RowActions: React.FC<RowActionProps> = ({ data }) => {
 
       {/* Status: REVIEW or AWAITING PAYMENT = Button: Mark as Resolved */}
       {/* // !! ADD CHECKING FOR PROGRESS BEFORE MARKING AS RESOLVED */}
-      {data.status === "Under Review" && data.letterSent ? (
-        <div>
-          <AlertDialog>
-            <AlertDialogTrigger asChild>
-              <Button size="sm" colorScheme="green">
-                Mark as Resolved
-              </Button>
-            </AlertDialogTrigger>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>Resolve Violation</AlertDialogTitle>
-                <AlertDialogDescription>
-                  Are you sure that the violation #V
-                  {data.number.toString().padStart(4, "0")} has been resolved?
-                  <Text mt="1rem">
-                    Submitted by:{" "}
-                    <span className="font-semibold">{data.submittedBy}</span>{" "}
-                    <br />
-                    Date received:{" "}
-                    <span className="font-semibold">{data.createdAt}</span>
-                  </Text>
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <Box mt={2}>
-                <HStack>
-                  <Text fontSize="md" fontWeight="semibold">
-                    {violation?.title} Penalty:
-                  </Text>
-                  <Text
-                    fontSize="lg"
-                    fontWeight="bold"
-                    className="text-red-700"
+      {data.status === "Under Review" &&
+      data.letterSent &&
+      data.officerAssigned ===
+        `${user?.info.firstName} ${user?.info.lastName}` ? (
+        <div className="flex gap-x-4">
+          <div>
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button size="sm" colorScheme="facebook">
+                  Mark as Completed
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Close Violation</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    Are you sure that the violation #V
+                    {data.number.toString().padStart(4, "0")} has been reviewed
+                    thoroughly and proceed with fining persons involved with the
+                    penalty fee?
+                    <Text mt="1rem">
+                      Submitted by:{" "}
+                      <span className="font-semibold">{data.submittedBy}</span>{" "}
+                      <br />
+                      Date received:{" "}
+                      <span className="font-semibold">{data.createdAt}</span>
+                    </Text>
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <Box mt={2}>
+                  <HStack>
+                    <Text fontSize="md" fontWeight="semibold">
+                      {violation?.title} Penalty:
+                    </Text>
+                    <Text
+                      fontSize="lg"
+                      fontWeight="bold"
+                      className="text-red-700"
+                    >
+                      ₱ {violation?.fee}
+                    </Text>
+                  </HStack>
+                </Box>
+                <AlertDialogFooter>
+                  <AlertDialogCancel className="mt-0 hover:bg-gray-100">
+                    Cancel
+                  </AlertDialogCancel>
+                  <AlertDialogAction
+                    className="bg-green-700 hover:bg-green-900"
+                    onClick={() =>
+                      markResolved(data).then(() => {
+                        toast({
+                          title: `Marked the violation #V${data.number
+                            .toString()
+                            .padStart(4, "0")} as resolved.`,
+                          description:
+                            "Thank you for offering your services to your homeowners.",
+                          status: "success",
+                          position: "bottom-right",
+                          isClosable: true,
+                        });
+                        router.refresh();
+                      })
+                    }
                   >
-                    ₱ {violation?.fee}
-                  </Text>
-                </HStack>
-              </Box>
-              <AlertDialogFooter>
-                <AlertDialogCancel className="mt-0 hover:bg-gray-100">
-                  Cancel
-                </AlertDialogCancel>
-                <AlertDialogAction
-                  className="bg-green-700 hover:bg-green-900"
-                  onClick={() =>
-                    markResolved(data).then(() => {
-                      toast({
-                        title: `Marked the violation #V${data.number
-                          .toString()
-                          .padStart(4, "0")} as resolved.`,
-                        description:
-                          "Thank you for offering your services to your homeowners.",
-                        status: "success",
-                        position: "bottom-right",
-                        isClosable: true,
-                      });
-                      router.refresh();
-                    })
-                  }
-                >
-                  Continue
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
+                    Continue
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+          </div>
+
+          <div>
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button size="sm" colorScheme="green">
+                  Mark as Appealed
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>
+                    Mark Violation as Appealed
+                  </AlertDialogTitle>
+                  <AlertDialogDescription>
+                    You are about to mark violation #V
+                    {data.number.toString().padStart(4, "0")} as appealed. Are
+                    you sure?
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+
+                <AlertDialogFooter>
+                  <AlertDialogCancel className="mt-0 hover:bg-gray-100">
+                    Cancel
+                  </AlertDialogCancel>
+                  <AlertDialogAction
+                    className="bg-green-700 hover:bg-green-900"
+                    onClick={() =>
+                      appealedReport(data.id).then(() => {
+                        toast({
+                          title: `Marked the violation #V${data.number
+                            .toString()
+                            .padStart(4, "0")} as appealed.`,
+                          status: "success",
+                          position: "bottom-right",
+                          isClosable: true,
+                        });
+                        router.refresh();
+                      })
+                    }
+                  >
+                    Continue
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+          </div>
         </div>
       ) : (
         data.status === "Under Review" &&
