@@ -42,14 +42,14 @@ export const columns: ColumnDef<SubmittedViolationsColumn>[] = [
       <Badge
         className={cn(
           "w-[max-content] p-2 text-center justify-center",
-          row.getValue("status") === "Appealed"
-            ? "bg-green-700"
+          row.getValue("status") === "Invalid"
+            ? ""
             : row.getValue("status") === "Pending"
             ? "bg-red-700"
             : row.getValue("status") === "Under Review"
             ? "bg-yellow-600"
             : row.getValue("status") === "Closed"
-            ? ""
+            ? "bg-green-700"
             : "display-none"
         )}
       >
