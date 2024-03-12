@@ -347,7 +347,9 @@ export const RowActions: React.FC<RowActionProps> = ({ data }) => {
         </div>
       ) : (
         data.status === "Under Review" &&
-        !data.letterSent && (
+        !data.letterSent &&
+        data.officerAssigned ===
+          `${user?.info.firstName} ${user?.info.lastName}` && (
           <div className="flex gap-x-4">
             <div>
               <AlertDialog>
