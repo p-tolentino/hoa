@@ -29,20 +29,23 @@ import {
 import React, { useEffect, useState } from "react";
 
 interface PostProps {
-  posts: Post[];
-  user: string;
+  posts: Post[]
+  user: string
+  userInfos: UserInfos
 }
 
 interface UserInfo {
-  fullname: string;
+  lastName: string | null;
+  firstName: string | null;
   position: string | null;
 }
 
 interface UserInfos {
-  [userId: string]: UserInfo;
+  [userId: string]: UserInfo | null;
 }
 
-const DiscussionPost: React.FC<PostProps> = ({ posts, user }) => {
+
+const DiscussionPost: React.FC<PostProps> = ({ posts, user, userInfos }) => {
   const categoryColors = {
     MEETING: "purple.200",
     ELECTION: "pink.200",
@@ -65,39 +68,39 @@ const DiscussionPost: React.FC<PostProps> = ({ posts, user }) => {
 
   useEffect(() => {
     const fetchUserInfoAndLikes = async () => {
-      const userInfoPromises = posts.map((post) =>
-        getPersonalInfo(post.userId)
-      );
+      // const userInfoPromises = posts.map((post) =>
+      //   getPersonalInfo(post.userId)
+      // );
       const likeCountPromises = posts.map((post) => getLikeCount(post.id));
       const likedByUserPromises = posts.map((post) =>
         checkUserLiked(user, post.id)
       );
 
       try {
-        const usersDetails = await Promise.all(userInfoPromises);
+        // const usersDetails = await Promise.all(userInfoPromises);
         const likesDetails: number[] = await Promise.all(likeCountPromises);
         const likedDetails: boolean[] = await Promise.all(likedByUserPromises);
 
-        const newUsersInfo: UserInfos = {};
+        // const newUsersInfo: UserInfos = {};
         const newLikeCounts: { [postId: string]: number } = {};
         const newLikedByUser: { [postId: string]: boolean } = {};
 
-        usersDetails.forEach((userInfo, index) => {
-          if (userInfo) {
-            const userId = posts[index].userId;
-            newUsersInfo[userId] = {
-              fullname: `${userInfo.firstName} ${userInfo.lastName}`,
-              position: userInfo.position,
-            };
-          }
-        });
+        // usersInfo.forEach((user, index) => {
+        //   if (user) {
+        //     const userId = posts[index].userId;
+        //     newUsersInfo[userId] = {
+        //       fullname: `${user.firstName} ${userInfo.lastName}`,
+        //       position: userInfo.position,
+        //     };
+        //   }
+        // });
 
         posts.forEach((post, index) => {
           newLikeCounts[post.id] = likesDetails[index];
           newLikedByUser[post.id] = likedDetails[index];
         });
 
-        setUsersInfo(newUsersInfo);
+        // setUsersInfo(newUsersInfo);
         setLikeCounts(newLikeCounts);
         setLikedByUser(newLikedByUser);
       } catch (error) {
@@ -183,15 +186,14 @@ const DiscussionPost: React.FC<PostProps> = ({ posts, user }) => {
                   fontWeight="bold"
                   fontFamily="font.body"
                 >
-                  {usersInfo[post.userId]?.fullname || "Name is still Loading"}
-                </Text>
+{userInfos[post.userId] ? `${userInfos[post.userId]?.firstName} ${userInfos[post.userId]?.lastName}` : "Name is still Loading"}                </Text>
                 <Text
                   id="position"
                   fontSize="sm"
                   fontWeight="bold"
                   fontFamily="font.body"
                 >
-                  {usersInfo[post.userId]?.position || "Position is still Loading"}
+                  {userInfos[post.userId]?.position || "Position is still Loading"}
                 </Text>
                 <Text
                   id="description"

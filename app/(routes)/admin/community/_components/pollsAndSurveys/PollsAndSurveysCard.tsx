@@ -24,10 +24,22 @@ import Create from './_components/create'
 import { useState } from 'react'
 
 import { Polls, User } from '@prisma/client'
+import { getPersonalInfo } from "@/server/data/user-info";
+import { useEffect } from "react";
 
 interface PollProps {
   polls: Polls[]
   user: string
+}
+
+interface UserInfo {
+  lastName: string | null;
+  firstName: string | null;
+  position: string | null;
+}
+
+interface UserInfos {
+  [userId: string]: UserInfo | null;
 }
 
 export default function PollsAndSurveysCard ({ polls, user }: PollProps) {
@@ -44,6 +56,37 @@ export default function PollsAndSurveysCard ({ polls, user }: PollProps) {
       poll.title.toLowerCase().includes(searchInput.toLowerCase())
     )
     .filter(poll => selectedStatus === 'All' || poll.status === selectedStatus)
+
+    const [usersInfo, setUsersInfo] = useState<UserInfos>({});
+
+    useEffect(() => {
+      const fetchUserInfos = async () => {
+        // Extract unique userIds from polls to avoid redundant fetches
+        const uniqueUserIds = Array.from(
+          new Set(polls.map((post) => post.userId))
+        );
+  
+        // Fetch user info for each unique userId
+        const userInfoPromises = uniqueUserIds.map(async (userId) => {
+          const userInfo = await getPersonalInfo(userId);
+          return { userId, userInfo };
+        });
+  
+        // Resolve all promises and update state
+        const userInfosArray = await Promise.all(userInfoPromises);
+        const userInfosObj = userInfosArray.reduce<UserInfos>(
+          (acc, { userId, userInfo }) => {
+            acc[userId] = userInfo;
+            return acc;
+          },
+          {}
+        );
+  
+        setUsersInfo(userInfosObj);
+      };
+  
+      fetchUserInfos();
+    }, [polls]);
 
   return (
     <>
@@ -115,7 +158,7 @@ export default function PollsAndSurveysCard ({ polls, user }: PollProps) {
           <ScrollArea
             style={{ maxHeight: 'calc(70vh - 180px)', overflowY: 'auto' }}
           >
-            <Post polls={filteredPolls} user={user} />
+            <Post polls={filteredPolls} user={user}  userInfos={usersInfo}/>
           </ScrollArea>
         </CardContent>
       </Card>

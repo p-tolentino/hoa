@@ -22,6 +22,28 @@ import { getEvents } from "@/server/data/events";
 import { getHoaInfo } from "@/server/data/hoa-info";
 import { getAllPersonalInfo } from "@/server/data/user-info";
 
+import { Polls, User } from "@prisma/client";
+import { getPersonalInfo } from "@/server/data/user-info";
+import React, { useEffect } from "react";
+import { useState } from "react";
+
+
+interface PollProps {
+  polls: Polls[];
+  user: string;
+  // userInfos: UserInfos
+}
+
+interface UserInfo {
+  lastName: string | null;
+  firstName: string | null;
+  position: string | null;
+}
+
+interface UserInfos {
+  [userId: string]: UserInfo | null;
+}
+
 const Community = async () => {
   const discussion = await getDiscussionPosts();
   if (!discussion) {
@@ -63,6 +85,7 @@ const Community = async () => {
     return null;
   }
 
+
   return (
     <>
       <Heading
@@ -80,7 +103,7 @@ const Community = async () => {
               <TabsTrigger value="events">Events</TabsTrigger>
             </TabsList>
             <TabsContent value="discussions">
-              <DiscussionsCard posts={filteredPosts1} user={user.id} />
+              <DiscussionsCard posts={filteredPosts1} user={user.id}/>
             </TabsContent>
             <TabsContent value="business">
               <BusinessForumCard posts={filteredPosts2} user={user.id} />

@@ -24,6 +24,7 @@ import React, { useEffect } from "react";
 interface PollProps {
   polls: Polls[];
   user: string;
+  userInfos: UserInfos
 }
 
 interface UserInfo {
@@ -36,7 +37,7 @@ interface UserInfos {
   [userId: string]: UserInfo | null;
 }
 
-const Post: React.FC<PollProps> = ({ polls, user }) => {
+const Post: React.FC<PollProps> = ({ polls, user, userInfos}) => {
   const categoryColors = {
     MEETING: "purple.200",
     ELECTION: "pink.200",
@@ -71,34 +72,34 @@ const Post: React.FC<PollProps> = ({ polls, user }) => {
     });
   }, [polls]);
 
-  useEffect(() => {
-    const fetchUserInfos = async () => {
-      // Extract unique userIds from polls to avoid redundant fetches
-      const uniqueUserIds = Array.from(
-        new Set(polls.map((poll) => poll.userId))
-      );
+  // useEffect(() => {
+  //   const fetchUserInfos = async () => {
+  //     // Extract unique userIds from polls to avoid redundant fetches
+  //     const uniqueUserIds = Array.from(
+  //       new Set(polls.map((poll) => poll.userId))
+  //     );
 
-      // Fetch user info for each unique userId
-      const userInfoPromises = uniqueUserIds.map(async (userId) => {
-        const userInfo = await getPersonalInfo(userId);
-        return { userId, userInfo };
-      });
+  //     // Fetch user info for each unique userId
+  //     const userInfoPromises = uniqueUserIds.map(async (userId) => {
+  //       const userInfo = await getPersonalInfo(userId);
+  //       return { userId, userInfo };
+  //     });
 
-      // Resolve all promises and update state
-      const userInfosArray = await Promise.all(userInfoPromises);
-      const userInfosObj = userInfosArray.reduce<UserInfos>(
-        (acc, { userId, userInfo }) => {
-          acc[userId] = userInfo;
-          return acc;
-        },
-        {}
-      );
+  //     // Resolve all promises and update state
+  //     const userInfosArray = await Promise.all(userInfoPromises);
+  //     const userInfosObj = userInfosArray.reduce<UserInfos>(
+  //       (acc, { userId, userInfo }) => {
+  //         acc[userId] = userInfo;
+  //         return acc;
+  //       },
+  //       {}
+  //     );
 
-      setUsersInfo(userInfosObj);
-    };
+  //     setUsersInfo(userInfosObj);
+  //   };
 
-    fetchUserInfos();
-  }, [polls]);
+  //   fetchUserInfos();
+  // }, [polls]);
 
   return (
     <>
@@ -177,8 +178,8 @@ const Post: React.FC<PollProps> = ({ polls, user }) => {
                     fontWeight="bold"
                     fontFamily="font.body"
                   >
-                    {usersInfo[poll.userId]?.firstName || "User Fullname is still loading"}
-                    {usersInfo[poll.userId]?.lastName}
+                    {userInfos[poll.userId]?.firstName || "User Fullname is still loading"}
+                    {userInfos[poll.userId]?.lastName}
                   </Text>
                   <Text
                     id="position"
@@ -186,7 +187,7 @@ const Post: React.FC<PollProps> = ({ polls, user }) => {
                     fontWeight="bold"
                     fontFamily="font.body"
                   >
-                    {usersInfo[poll.userId]?.position ||
+                    {userInfos[poll.userId]?.position ||
                       "Position is stil loading"}
                   </Text>
                   <Text
