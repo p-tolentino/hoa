@@ -183,7 +183,7 @@ const DiscussionPost: React.FC<PostProps> = ({ posts, user }) => {
                   fontWeight="bold"
                   fontFamily="font.body"
                 >
-                  {usersInfo[post.userId]?.fullname || "Unknown User"}
+                  {usersInfo[post.userId]?.fullname || "Name is still Loading"}
                 </Text>
                 <Text
                   id="position"
@@ -191,7 +191,7 @@ const DiscussionPost: React.FC<PostProps> = ({ posts, user }) => {
                   fontWeight="bold"
                   fontFamily="font.body"
                 >
-                  {usersInfo[post.userId]?.position || "No Position Available"}
+                  {usersInfo[post.userId]?.position || "Position is still Loading"}
                 </Text>
                 <Text
                   id="description"

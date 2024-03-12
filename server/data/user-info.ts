@@ -37,6 +37,22 @@ export const getAllPersonalInfo = async () => {
   }
 };
 
+export const getPersonalInfoBatched = async (ids: string[]) => {
+  try {
+    const info = await db.personalInfo.findMany({
+      where: {
+        userId: {
+          in: ids, // Use the 'in' operator to filter by a list of user IDs
+        },
+      },
+    });
+
+    return info;
+  } catch {
+    return null;
+  }
+};
+
 export const getPropertyById = async (id: string) => {
   const user = await getUserById(id);
 

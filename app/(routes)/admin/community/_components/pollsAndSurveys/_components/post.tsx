@@ -177,7 +177,7 @@ const Post: React.FC<PollProps> = ({ polls, user }) => {
                     fontWeight="bold"
                     fontFamily="font.body"
                   >
-                    {usersInfo[poll.userId]?.firstName || "Unknown User"}
+                    {usersInfo[poll.userId]?.firstName || "User Fullname is still loading"}
                     {usersInfo[poll.userId]?.lastName}
                   </Text>
                   <Text
@@ -187,7 +187,7 @@ const Post: React.FC<PollProps> = ({ polls, user }) => {
                     fontFamily="font.body"
                   >
                     {usersInfo[poll.userId]?.position ||
-                      "No Position Available"}
+                      "Position is stil loading"}
                   </Text>
                   <Text
                     id="description"
