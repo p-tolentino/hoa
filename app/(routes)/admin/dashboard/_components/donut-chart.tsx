@@ -18,7 +18,6 @@ class DonutChart extends React.Component<{}, DonutChartState> {
       series: [44, 55, 41, 17, 15],
       options: {
         chart: {
-          height: 350,
           type: "donut",
         },
         responsive: [
@@ -48,7 +47,7 @@ class DonutChart extends React.Component<{}, DonutChartState> {
             options={this.state.options}
             series={this.state.series}
             type="donut"
-            height={350}
+            height={250}
           />
         </Box>
         <Box id="html-dist"></Box>

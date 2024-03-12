@@ -28,7 +28,6 @@ class BarChart extends React.Component<{}, BarChartState> {
       options: {
         chart: {
           type: "bar",
-          height: 430,
         },
         plotOptions: {
           bar: {
@@ -71,7 +70,7 @@ class BarChart extends React.Component<{}, BarChartState> {
             options={this.state.options}
             series={this.state.series}
             type="bar"
-            height={this.state.options?.chart?.height || 430}
+            height={250}
           />
         </Box>
         <Box id="html-dist"></Box>

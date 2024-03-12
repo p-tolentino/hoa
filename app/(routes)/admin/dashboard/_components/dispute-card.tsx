@@ -19,7 +19,7 @@ export default function DisputeCard() {
           <Text color="gray.500" textTransform="uppercase" fontSize="xs">
             Dispute Reports
           </Text>
-          <Text fontSize="3xl" fontWeight="bold">
+          <Text fontSize="2xl" fontWeight="bold">
             12
           </Text>
         </Box>

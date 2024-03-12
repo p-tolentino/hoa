@@ -63,6 +63,7 @@ class PolarAreaChart extends React.Component<{}, PolarAreaChartState> {
             options={this.state.options}
             series={this.state.series}
             type="polarArea"
+            height={250}
           />
         </Box>
         <Box id="html-dist"></Box>

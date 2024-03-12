@@ -19,7 +19,7 @@ export default function FinanceCard() {
           <Text color="gray.500" textTransform="uppercase" fontSize="xs">
             Budget
           </Text>
-          <Text fontSize="3xl" fontWeight="bold">
+          <Text fontSize="2xl" fontWeight="bold">
             150K
           </Text>
         </Box>

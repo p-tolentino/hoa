@@ -8,6 +8,8 @@ import {
   Card,
   CardBody,
   CardHeader,
+  HStack,
+  Text,
   Stack,
 } from "@chakra-ui/react";
 import Link from "next/link";
@@ -58,7 +60,7 @@ export default function ExampleChart() {
         </Grid>
 
         <Grid templateColumns="repeat(5, 1fr)" gap={6}>
-          <GridItem colSpan={3} alignSelf="center">
+          <GridItem colSpan={2}>
             <Card>
               <CardHeader
                 fontSize="md"
@@ -87,12 +89,74 @@ export default function ExampleChart() {
               </CardBody>
             </Card>
           </GridItem>
-        </Grid>
-
-        <Grid templateColumns="repeat(5, 1fr)" gap={6}>
-          <GridItem colSpan={2} alignSelf="center">
+          <GridItem colSpan={1} rowSpan={2}>
             <Card>
               <CardHeader
+                mb="2.1%"
+                fontSize="md"
+                fontFamily="font.heading"
+                fontWeight="semibold"
+              >
+                Total Events per Annum
+              </CardHeader>
+              <CardBody>
+                <HStack justifyContent="space-between" p="5%">
+                  <Stack>
+                    <Text fontSize="sm">Event </Text>
+                    <Text fontSize="sm">Event </Text>
+                    <Text fontSize="sm">Event </Text>
+                    <Text fontSize="sm">Event </Text>
+                    <Text fontSize="sm">Event </Text>
+                    <Text fontSize="sm">Event </Text>
+                    <Text fontSize="sm">Event </Text>
+                    <Text fontSize="sm">Event </Text>
+                    <Text fontSize="sm">Event </Text>
+                    <Text fontSize="sm">Event </Text>
+                    <Text fontSize="sm">Event </Text>
+                    <Text fontSize="sm">Event </Text>
+                    <Text fontSize="sm">Event </Text>
+                    <Text fontSize="sm">Event </Text>
+                    <Text fontSize="sm">Event </Text>
+                    <Text fontSize="sm">Event </Text>
+                    <Text fontSize="sm">Event </Text>
+                    <Text fontSize="sm">Event </Text>
+                    <Text fontSize="sm">Event </Text>
+                    <Text fontSize="sm">Event </Text>
+                    <Text fontSize="sm">Event </Text>
+                    <Text fontSize="sm">Event </Text>
+                  </Stack>
+                  <Stack>
+                    <Text fontSize="sm"> 25% (2)</Text>
+                    <Text fontSize="sm"> 25% (3)</Text>
+                    <Text fontSize="sm"> 25% (2)</Text>
+                    <Text fontSize="sm"> 25% (1)</Text>
+                    <Text fontSize="sm"> 25% (1)</Text>
+                    <Text fontSize="sm"> 25% (1)</Text>
+                    <Text fontSize="sm"> 25% (1)</Text>
+                    <Text fontSize="sm"> 25% (1)</Text>
+                    <Text fontSize="sm"> 25% (1)</Text>
+                    <Text fontSize="sm"> 25% (1)</Text>
+                    <Text fontSize="sm"> 25% (1)</Text>
+                    <Text fontSize="sm"> 25% (1)</Text>
+                    <Text fontSize="sm"> 25% (1)</Text>
+                    <Text fontSize="sm"> 25% (1)</Text>
+                    <Text fontSize="sm"> 25% (1)</Text>
+                    <Text fontSize="sm"> 25% (1)</Text>
+                    <Text fontSize="sm"> 25% (1)</Text>
+                    <Text fontSize="sm"> 25% (1)</Text>
+                    <Text fontSize="sm"> 25% (1)</Text>
+                    <Text fontSize="sm"> 25% (1)</Text>
+                    <Text fontSize="sm"> 25% (1)</Text>
+                    <Text fontSize="sm"> 25% (1)</Text>
+                  </Stack>
+                </HStack>
+              </CardBody>
+            </Card>
+          </GridItem>
+          <GridItem colSpan={2}>
+            <Card>
+              <CardHeader
+                mb="2.1%"
                 fontSize="md"
                 fontFamily="font.heading"
                 fontWeight="semibold"
@@ -104,10 +168,9 @@ export default function ExampleChart() {
               </CardBody>
             </Card>
           </GridItem>
-          <GridItem colSpan={3} alignSelf="center">
+          <GridItem colSpan={2}>
             <Card>
               <CardHeader
-                mb="-0.7%"
                 fontSize="md"
                 fontFamily="font.heading"
                 fontWeight="semibold"

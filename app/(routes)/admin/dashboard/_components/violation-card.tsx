@@ -19,7 +19,7 @@ export default function ViolationCard() {
           <Text color="gray.500" textTransform="uppercase" fontSize="xs">
             Violation Reports
           </Text>
-          <Text fontSize="3xl" fontWeight="bold">
+          <Text fontSize="2xl" fontWeight="bold">
             6
           </Text>
         </Box>

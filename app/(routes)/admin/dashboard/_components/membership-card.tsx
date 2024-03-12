@@ -19,7 +19,7 @@ export default function MembershipCard() {
           <Text color="gray.500" textTransform="uppercase" fontSize="xs">
             Total Homeowners
           </Text>
-          <Text fontSize="3xl" fontWeight="bold">
+          <Text fontSize="2xl" fontWeight="bold">
             220
           </Text>
         </Box>

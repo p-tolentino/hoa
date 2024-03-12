@@ -28,7 +28,7 @@ class LineChart extends React.Component<{}, LineChartState> {
       ],
       options: {
         chart: {
-          height: 350,
+          height: 300,
           type: "line",
           zoom: {
             enabled: true,
@@ -74,8 +74,7 @@ class LineChart extends React.Component<{}, LineChartState> {
             options={this.state.options}
             series={this.state.series}
             type="line"
-            height={350}
-            width={800}
+            height={250}
           />
         </Box>
         <Box id="html-dist"></Box>
