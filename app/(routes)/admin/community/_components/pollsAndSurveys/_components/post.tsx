@@ -24,7 +24,7 @@ import React, { useEffect } from "react";
 interface PollProps {
   polls: Polls[];
   user: string;
-  userInfos: UserInfos
+  userInfos: UserInfos;
 }
 
 interface UserInfo {
@@ -37,7 +37,7 @@ interface UserInfos {
   [userId: string]: UserInfo | null;
 }
 
-const Post: React.FC<PollProps> = ({ polls, user, userInfos}) => {
+const Post: React.FC<PollProps> = ({ polls, user, userInfos }) => {
   const categoryColors = {
     MEETING: "purple.200",
     ELECTION: "pink.200",
@@ -116,16 +116,20 @@ const Post: React.FC<PollProps> = ({ polls, user, userInfos}) => {
             {/* Survey Status */}
             <Box
               fontSize="xs"
-              w="7%"
+              w="20%"
               textAlign="center"
               ml="20px"
               fontWeight="bold"
               bgColor={poll.status == "ACTIVE" ? "green.200" : "red.200"}
             >
               {/* {poll.status} */}
-              {poll.status === "ACTIVE" ? "Active" : 
-    new Date() < new Date(poll.startDate) ? "Inactive - Incoming Poll" : 
-    new Date() > new Date(poll.endDate) ? "Inactive - Voting Period is Over" : "Inactive"}
+              {poll.status === "ACTIVE"
+                ? "Active"
+                : new Date() < new Date(poll.startDate)
+                ? "Inactive - Incoming Poll"
+                : new Date() > new Date(poll.endDate)
+                ? "Inactive - Voting Period is Over"
+                : "Inactive"}
             </Box>
             <Box p="20px">
               <HStack mb="0.5rem">
@@ -136,7 +140,14 @@ const Post: React.FC<PollProps> = ({ polls, user, userInfos}) => {
                   </Heading>
                   {/* Survey Duration */}
                   <Text fontSize="xs">
-                  Duration: {poll.startDate ? poll.startDate.toLocaleString() : 'Start date not set'} to {poll.endDate ? poll.endDate.toLocaleString() : 'End date not set'}
+                    Duration:{" "}
+                    {poll.startDate
+                      ? poll.startDate.toLocaleString()
+                      : "Start date not set"}{" "}
+                    to{" "}
+                    {poll.endDate
+                      ? poll.endDate.toLocaleString()
+                      : "End date not set"}
                   </Text>
                 </Stack>
                 <Spacer />
@@ -178,7 +189,8 @@ const Post: React.FC<PollProps> = ({ polls, user, userInfos}) => {
                     fontWeight="bold"
                     fontFamily="font.body"
                   >
-                    {userInfos[poll.userId]?.firstName || "User Fullname is still loading"}
+                    {userInfos[poll.userId]?.firstName ||
+                      "User Fullname is still loading"}
                     {userInfos[poll.userId]?.lastName}
                   </Text>
                   <Text
