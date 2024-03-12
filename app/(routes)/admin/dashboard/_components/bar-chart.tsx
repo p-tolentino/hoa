@@ -2,8 +2,9 @@
 
 import React from "react";
 import { Box } from "@chakra-ui/react";
-import Chart from "react-apexcharts";
 import { ApexOptions } from "apexcharts";
+import dynamic from "next/dynamic";
+const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 interface BarChartState {
   series: {
@@ -71,6 +72,7 @@ class BarChart extends React.Component<{}, BarChartState> {
             series={this.state.series}
             type="bar"
             height={250}
+            width={"100%"}
           />
         </Box>
         <Box id="html-dist"></Box>

@@ -2,10 +2,9 @@
 
 import React from "react";
 import { Box } from "@chakra-ui/react";
-import Chart from "react-apexcharts";
 import { ApexOptions } from "apexcharts";
-// import dynamic from "next/dynamic";
-// const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
+import dynamic from "next/dynamic";
+const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 interface LineChartState {
   series: {
@@ -75,6 +74,7 @@ class LineChart extends React.Component<{}, LineChartState> {
             series={this.state.series}
             type="line"
             height={250}
+            width={"100%"}
           />
         </Box>
         <Box id="html-dist"></Box>

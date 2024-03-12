@@ -2,8 +2,9 @@
 
 import React from "react";
 import { Box } from "@chakra-ui/react";
-import Chart from "react-apexcharts";
 import { ApexOptions } from "apexcharts";
+import dynamic from "next/dynamic";
+const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 interface DonutChartState {
   series: number[];
@@ -48,6 +49,7 @@ class DonutChart extends React.Component<{}, DonutChartState> {
             series={this.state.series}
             type="donut"
             height={250}
+            width={"100%"}
           />
         </Box>
         <Box id="html-dist"></Box>
