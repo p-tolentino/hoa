@@ -5,7 +5,6 @@ import { cn } from "@/lib/utils";
 import {
   FiBriefcase,
   FiCalendar,
-  FiDollarSign,
   FiUserCheck,
   FiUsers,
   FiMenu,
