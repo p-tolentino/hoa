@@ -17,7 +17,7 @@ export default function DisputeCard() {
       >
         <Box>
           <Text color="gray.500" textTransform="uppercase" fontSize="xs">
-            Dispute Reports
+            Monthly Disputes
           </Text>
           <Text fontSize="2xl" fontWeight="bold">
             12

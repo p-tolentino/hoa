@@ -9,8 +9,8 @@ import {
   CardBody,
   CardHeader,
   HStack,
-  Text,
   Stack,
+  Text,
 } from "@chakra-ui/react";
 import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
@@ -23,9 +23,9 @@ import DisputeCard from "./_components/dispute-card";
 import ViolationCard from "./_components/violation-card";
 
 import LineChart from "./_components/line-chart";
-import DonutChart from "./_components/donut-chart";
+import DisputePieChart from "./_components/dispute-pie-chart";
 import BarChart from "./_components/bar-chart";
-import PolarAreaChart from "./_components/polar-area";
+import ViolationPieChart from "./_components/violation-pie-chart";
 
 export default function ExampleChart() {
   const title = "Dashboard";
@@ -48,18 +48,30 @@ export default function ExampleChart() {
           <GridItem w="100%">
             <FinanceCard />
           </GridItem>
-          <GridItem w="100%">
+          {/* <GridItem w="100%">
             <CommunityEngagmentCard />
-          </GridItem>
+          </GridItem> */}
           <GridItem w="100%">
             <DisputeCard />
           </GridItem>
           <GridItem w="100%">
             <ViolationCard />
           </GridItem>
-        </Grid>
-
-        <Grid templateColumns="repeat(5, 1fr)" gap={6}>
+          <GridItem colSpan={1} rowSpan={3}>
+            <Card>
+              <CardHeader
+                mb="2.1%"
+                fontSize="md"
+                fontFamily="font.heading"
+                fontWeight="semibold"
+              >
+                Total Events per Annum
+              </CardHeader>
+              <CardBody>
+                <CommunityEngagmentCard />
+              </CardBody>
+            </Card>
+          </GridItem>
           <GridItem colSpan={2}>
             <Card>
               <CardHeader
@@ -85,86 +97,7 @@ export default function ExampleChart() {
                 Dispute Reports per Annum
               </CardHeader>
               <CardBody>
-                <DonutChart />
-              </CardBody>
-            </Card>
-          </GridItem>
-          <GridItem colSpan={1} rowSpan={2}>
-            <Card>
-              <CardHeader
-                mb="2.1%"
-                fontSize="md"
-                fontFamily="font.heading"
-                fontWeight="semibold"
-              >
-                Total Events per Annum
-              </CardHeader>
-              <CardBody>
-                <HStack justifyContent="space-between" p="5%">
-                  <Stack>
-                    <Text fontSize="sm">Event </Text>
-                    <Text fontSize="sm">Event </Text>
-                    <Text fontSize="sm">Event </Text>
-                    <Text fontSize="sm">Event </Text>
-                    <Text fontSize="sm">Event </Text>
-                    <Text fontSize="sm">Event </Text>
-                    <Text fontSize="sm">Event </Text>
-                    <Text fontSize="sm">Event </Text>
-                    <Text fontSize="sm">Event </Text>
-                    <Text fontSize="sm">Event </Text>
-                    <Text fontSize="sm">Event </Text>
-                    <Text fontSize="sm">Event </Text>
-                    <Text fontSize="sm">Event </Text>
-                    <Text fontSize="sm">Event </Text>
-                    <Text fontSize="sm">Event </Text>
-                    <Text fontSize="sm">Event </Text>
-                    <Text fontSize="sm">Event </Text>
-                    <Text fontSize="sm">Event </Text>
-                    <Text fontSize="sm">Event </Text>
-                    <Text fontSize="sm">Event </Text>
-                    <Text fontSize="sm">Event </Text>
-                    <Text fontSize="sm">Event </Text>
-                  </Stack>
-                  <Stack>
-                    <Text fontSize="sm"> 25% (2)</Text>
-                    <Text fontSize="sm"> 25% (3)</Text>
-                    <Text fontSize="sm"> 25% (2)</Text>
-                    <Text fontSize="sm"> 25% (1)</Text>
-                    <Text fontSize="sm"> 25% (1)</Text>
-                    <Text fontSize="sm"> 25% (1)</Text>
-                    <Text fontSize="sm"> 25% (1)</Text>
-                    <Text fontSize="sm"> 25% (1)</Text>
-                    <Text fontSize="sm"> 25% (1)</Text>
-                    <Text fontSize="sm"> 25% (1)</Text>
-                    <Text fontSize="sm"> 25% (1)</Text>
-                    <Text fontSize="sm"> 25% (1)</Text>
-                    <Text fontSize="sm"> 25% (1)</Text>
-                    <Text fontSize="sm"> 25% (1)</Text>
-                    <Text fontSize="sm"> 25% (1)</Text>
-                    <Text fontSize="sm"> 25% (1)</Text>
-                    <Text fontSize="sm"> 25% (1)</Text>
-                    <Text fontSize="sm"> 25% (1)</Text>
-                    <Text fontSize="sm"> 25% (1)</Text>
-                    <Text fontSize="sm"> 25% (1)</Text>
-                    <Text fontSize="sm"> 25% (1)</Text>
-                    <Text fontSize="sm"> 25% (1)</Text>
-                  </Stack>
-                </HStack>
-              </CardBody>
-            </Card>
-          </GridItem>
-          <GridItem colSpan={2}>
-            <Card>
-              <CardHeader
-                mb="2.1%"
-                fontSize="md"
-                fontFamily="font.heading"
-                fontWeight="semibold"
-              >
-                Violation Reports per Annum
-              </CardHeader>
-              <CardBody>
-                <PolarAreaChart />
+                <DisputePieChart />
               </CardBody>
             </Card>
           </GridItem>
@@ -179,6 +112,21 @@ export default function ExampleChart() {
               </CardHeader>
               <CardBody>
                 <BarChart />
+              </CardBody>
+            </Card>
+          </GridItem>
+          <GridItem colSpan={2}>
+            <Card>
+              <CardHeader
+                mb="6%"
+                fontSize="md"
+                fontFamily="font.heading"
+                fontWeight="semibold"
+              >
+                Violation Reports per Annum
+              </CardHeader>
+              <CardBody>
+                <ViolationPieChart />
               </CardBody>
             </Card>
           </GridItem>
