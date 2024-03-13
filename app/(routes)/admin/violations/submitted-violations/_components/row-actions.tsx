@@ -32,6 +32,7 @@ export const RowActions: React.FC<RowActionProps> = ({ data }) => {
         {(data.status === "Pending" || data.status === "Under Review") && (
           <Button
             size="sm"
+            fontFamily="font.body"
             onClick={handleButtonClick}
             isDisabled={isButtonClicked}
           >

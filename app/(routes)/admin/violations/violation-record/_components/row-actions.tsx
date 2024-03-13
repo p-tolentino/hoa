@@ -237,7 +237,7 @@ export const RowActions: React.FC<RowActionProps> = ({ data }) => {
           <div>
             <AlertDialog>
               <AlertDialogTrigger asChild>
-                <Button size="sm" colorScheme="facebook">
+                <Button size="sm" colorScheme="facebook" fontFamily="font.body">
                   Mark as Settled
                 </Button>
               </AlertDialogTrigger>
@@ -304,7 +304,7 @@ export const RowActions: React.FC<RowActionProps> = ({ data }) => {
           <div>
             <AlertDialog>
               <AlertDialogTrigger asChild>
-                <Button size="sm" colorScheme="green">
+                <Button size="sm" colorScheme="green" fontFamily="font.body">
                   Mark as Appealed
                 </Button>
               </AlertDialogTrigger>
@@ -356,7 +356,7 @@ export const RowActions: React.FC<RowActionProps> = ({ data }) => {
             <div>
               <AlertDialog>
                 <AlertDialogTrigger asChild>
-                  <Button size="sm" colorScheme="green">
+                  <Button size="sm" colorScheme="green" fontFamily="font.body">
                     Send Letter
                   </Button>
                 </AlertDialogTrigger>
@@ -401,7 +401,7 @@ export const RowActions: React.FC<RowActionProps> = ({ data }) => {
             <div>
               <AlertDialog>
                 <AlertDialogTrigger asChild>
-                  <Button size="sm" colorScheme="red">
+                  <Button size="sm" colorScheme="red" fontFamily="font.body">
                     Mark as Invalid
                   </Button>
                 </AlertDialogTrigger>
