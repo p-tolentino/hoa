@@ -29,9 +29,9 @@ import {
 import React, { useEffect, useState } from "react";
 
 interface PostProps {
-  posts: Post[]
-  user: string
-  userInfos: UserInfos
+  posts: Post[];
+  user: string;
+  userInfos: UserInfos;
 }
 
 interface UserInfo {
@@ -43,7 +43,6 @@ interface UserInfo {
 interface UserInfos {
   [userId: string]: UserInfo | null;
 }
-
 
 const DiscussionPost: React.FC<PostProps> = ({ posts, user, userInfos }) => {
   const categoryColors = {
@@ -186,14 +185,20 @@ const DiscussionPost: React.FC<PostProps> = ({ posts, user, userInfos }) => {
                   fontWeight="bold"
                   fontFamily="font.body"
                 >
-{userInfos[post.userId] ? `${userInfos[post.userId]?.firstName} ${userInfos[post.userId]?.lastName}` : "Name is still Loading"}                </Text>
+                  {userInfos[post.userId]
+                    ? `${userInfos[post.userId]?.firstName} ${
+                        userInfos[post.userId]?.lastName
+                      }`
+                    : "Name is still Loading"}
+                </Text>
                 <Text
                   id="position"
                   fontSize="sm"
                   fontWeight="bold"
                   fontFamily="font.body"
                 >
-                  {userInfos[post.userId]?.position || "Position is still Loading"}
+                  {userInfos[post.userId]?.position ||
+                    "Position is still Loading"}
                 </Text>
                 <Text
                   id="description"
@@ -205,7 +210,7 @@ const DiscussionPost: React.FC<PostProps> = ({ posts, user, userInfos }) => {
                 </Text>
                 {/* Date distance */}
                 <Text fontFamily="font.body" color="grey" fontSize="xs">
-                  Posted {formatDistanceToNowStrict(new Date(post.createdAt))}{" "}
+                  Posted {formatDistanceToNowStrict(new Date(post.createdAt))}
                   ago
                 </Text>
                 {/* Discussion Post Actions */}

@@ -190,7 +190,7 @@ const Post: React.FC<PollProps> = ({ polls, user, userInfos }) => {
                     fontFamily="font.body"
                   >
                     {userInfos[poll.userId]?.firstName ||
-                      "User Fullname is still loading"}
+                      "Fullname is still loading"}
                     {userInfos[poll.userId]?.lastName}
                   </Text>
                   <Text
