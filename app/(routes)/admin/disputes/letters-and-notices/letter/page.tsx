@@ -25,6 +25,7 @@ export default function DisputeMeetingLetter () {
     contact: '090X XXX XXXX'
   }
 
+  const disputeNum = '#D001'
   const recipient = 'Juan Dela Cruz'
   const dateReceived = format(new Date(2023, 2, 1), 'MMMM dd, yyyy')
   const disputeDate = format(new Date(2023, 2, 1), 'MMMM dd, yyyy')
@@ -35,16 +36,10 @@ export default function DisputeMeetingLetter () {
     'Padre Salvi',
     'Elias'
   ]
-  const violations = [
-    {
-      type: 'Parking',
-      penaltyFee: '₱ 500'
-    },
-    {
-      type: 'Noise',
-      penaltyFee: '₱ 200'
-    }
-  ]
+  const violation = {
+    type: 'Parking',
+    penaltyFee: '₱ 500'
+  }
 
   return (
     <div>
@@ -61,7 +56,7 @@ export default function DisputeMeetingLetter () {
             fontWeight='bold'
             fontFamily='font.heading'
           >
-            Dispute Resolution Meeting Letter 📅
+            {disputeNum} Dispute Resolution Meeting Letter 📅
           </Text>
           <Box borderWidth='1px' p={10} borderRadius='md' w='60vw'>
             <Stack spacing={5} fontFamily='font.body' fontSize='md'>
@@ -112,28 +107,27 @@ export default function DisputeMeetingLetter () {
                       </>
                     </ListItem>
                   </UnorderedList>
-                  {/* Violations */}
+                  {/* Violation */}
                   <UnorderedList>
                     <ListItem>
                       <>
-                        Violation/s:{' '}
-                        {violations[0].type === '' &&
-                        violations[0].penaltyFee ? (
+                        Violation:{' '}
+                        {violation === null ? (
                           <span className='font-semibold'>N/A</span>
                         ) : (
-                          <UnorderedList ml={7}>
-                            {violations.map((detail, index) => (
-                              <ListItem
-                                key={'Violation' + index}
-                                fontWeight='semibold'
-                              >
-                                {detail.type} (
-                                <span className='text-red-500'>
-                                  {detail.penaltyFee}
-                                </span>
-                                )
-                              </ListItem>
-                            ))}
+                          <UnorderedList>
+                            <ListItem>
+                              Type:{' '}
+                              <span className='font-semibold'>
+                                {violation.type}
+                              </span>
+                            </ListItem>
+                            <ListItem>
+                              Penalty Fee:{' '}
+                              <span className='text-red-500 font-semibold'>
+                                {violation.penaltyFee}
+                              </span>
+                            </ListItem>
                           </UnorderedList>
                         )}
                       </>
