@@ -1,6 +1,6 @@
 'use client'
 
-import { Button, Text, useToast, Box } from '@chakra-ui/react'
+import { Button, Text, useToast, Box, Input, Flex } from '@chakra-ui/react'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -45,11 +45,55 @@ export const RowActions: React.FC<RowActionProps> = ({ data }) => {
         </Button>
       )}
 
-      {/* Status: REVIEW or AWAITING PAYMENT = Button: Mark as Resolved */}
-      {/* // !! ADD CHECKING FOR PROGRESS BEFORE MARKING AS RESOLVED */}
+      {/* Status: UNDERREVIEW = Button: Send Letter */}
+      {data.status === 'Under Review' && data.number === 2 && (
+        <div>
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button size='sm' colorScheme='orange'>
+                Send Meeting Letter
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Send Meeting Letter</AlertDialogTitle>
+                <AlertDialogDescription>
+                  Please set the dispute resolution meeting date and time to
+                  inform all parties involved.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+
+              {/* Meeting Date and Time Input */}
+              <Flex gap='1rem' my='1rem'>
+                <Input type='date' fontSize='sm' />
+                <Input type='time' fontSize='sm' />
+              </Flex>
+
+              <AlertDialogFooter>
+                <AlertDialogCancel className='mt-0 hover:bg-gray-100'>
+                  Cancel
+                </AlertDialogCancel>
+                <AlertDialogAction
+                  className='bg-green-500 hover:bg-green-600'
+                  onClick={() =>
+                    toast({
+                      title: `Successfully sent out ${data.id} dispute resolution meeting letter to all parties involved.`,
+                      status: 'success',
+                      position: 'bottom-right',
+                      isClosable: true
+                    })
+                  }
+                >
+                  Continue
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        </div>
+      )}
 
       {/* Status: UNDERREVIEW = Button: Mark as Resolved */}
-      {data.status === 'Under Review' && (
+      {data.status === 'Under Review' && data.number === 3 && (
         <div>
           <AlertDialog>
             <AlertDialogTrigger asChild>
