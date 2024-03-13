@@ -87,7 +87,7 @@ export const columns: ColumnDef<ListOfDisputesColumn>[] = [
   },
   {
     accessorKey: 'progress',
-    header: 'Enforcement Progress',
+    header: 'Resolution Progress',
     cell: ({ row }) => (
       <div className='w-[150px]'>
         <a

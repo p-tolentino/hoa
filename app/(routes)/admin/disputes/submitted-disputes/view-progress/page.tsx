@@ -106,8 +106,8 @@ export const ViewProgress: React.FC<ViewProgressProps> = ({
           <Heading
             // title={`#V${reportDetails.dispute.number
             //   .toString()
-            //   .padStart(4, '0')} - Dispute Enforcement Progress`}
-            title={`${temp.id} - Dispute Enforcement Progress`}
+            //   .padStart(4, '0')} - Dispute Resolution Progress`}
+            title={`${temp.id} - Dispute Resolution Progress`}
             description="View the progress of a selected dispute case within the Homeowners' Association."
           />
           <Badge
