@@ -114,11 +114,7 @@ export const columns: ColumnDef<PaymentRecordColumn>[] = [
       );
     },
     cell: ({ row }) => (
-      <div className="capitalize">
-        {row.getValue("purpose") !== "assocDues"
-          ? `${row.getValue("purpose")}`
-          : "Association Dues"}
-      </div>
+      <div className="capitalize">{row.getValue("purpose")}</div>
     ),
   },
   {
