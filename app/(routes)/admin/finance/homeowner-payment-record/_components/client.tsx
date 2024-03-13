@@ -19,6 +19,7 @@ import {
 import { useReactToPrint } from "react-to-print";
 import { useRef } from "react";
 import PDFTable from "@/components/system/PDFTable";
+import Link from "next/link";
 
 interface PaymentRecordClientProps {
   data: PaymentRecordColumn[];
@@ -61,9 +62,14 @@ export const PaymentRecordClient: React.FC<PaymentRecordClientProps> = ({
           title="Homeowners Payment Record"
           description={`Manage the payment records of Homeowners (Total No. of Transactions = ${data.length})`}
         />
-        <Button size="sm" colorScheme="yellow" onClick={generatePDF}>
-          Generate PDF
-        </Button>
+        <HStack>
+          <Button size="sm" colorScheme="yellow" onClick={generatePDF}>
+            Generate PDF
+          </Button>
+          <Button size="sm" as={Link} href="/admin/finance">
+            Go Back
+          </Button>
+        </HStack>
       </div>
       <Separator />
 
@@ -79,7 +85,7 @@ export const PaymentRecordClient: React.FC<PaymentRecordClientProps> = ({
           <SelectContent>
             <SelectGroup>
               <SelectItem value="showAll" className="font-semibold">
-                Show All
+                Show All (Purpose)
               </SelectItem>
               <SelectItem value="Association Dues">Association Dues</SelectItem>
               <SelectItem value="Dispute Fees">Dispute Fees</SelectItem>
@@ -106,7 +112,7 @@ export const PaymentRecordClient: React.FC<PaymentRecordClientProps> = ({
           <SelectContent>
             <SelectGroup>
               <SelectItem value="showAll" className="font-semibold">
-                Show All
+                Show All (Status)
               </SelectItem>
 
               <SelectItem value="PAID">Paid</SelectItem>

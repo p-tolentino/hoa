@@ -6,7 +6,7 @@ import { Separator } from "@/components/ui/separator";
 
 import { PaymentHistoryColumn, columns } from "./columns";
 import { DataTable } from "@/components/ui/data-table";
-import { HStack, Spacer } from "@chakra-ui/react";
+import { HStack, Spacer, Button } from "@chakra-ui/react";
 import {
   Select,
   SelectContent,
@@ -16,6 +16,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+import { useReactToPrint } from "react-to-print";
+import { useRef } from "react";
+import PDFTable from "@/components/system/PDFTable";
+import Link from "next/link";
+
 interface PaymentHistoryClientProps {
   data: PaymentHistoryColumn[];
 }
@@ -23,6 +28,14 @@ interface PaymentHistoryClientProps {
 export const PaymentHistoryClient: React.FC<PaymentHistoryClientProps> = ({
   data,
 }) => {
+  const componentPDF = useRef<HTMLDivElement | null>(null);
+
+  const generatePDF = useReactToPrint({
+    content: () => componentPDF.current || null,
+    documentTitle: "Admin Directory Report",
+    onAfterPrint: () => alert("Data saved in PDF"),
+  });
+
   const [selectedCategoryFilter, setSelectedCategoryFilter] =
     useState("showAll");
   const filteredData = useMemo(() => {
@@ -45,6 +58,14 @@ export const PaymentHistoryClient: React.FC<PaymentHistoryClientProps> = ({
           title="Payment History"
           description={`View your payment history in the Homeowners Association (Total No. of Transactions = ${data.length})`}
         />
+        <HStack>
+          <Button size="sm" colorScheme="yellow" onClick={generatePDF}>
+            Generate PDF
+          </Button>
+          <Button size="sm" as={Link} href="/admin/finance">
+            Go Back
+          </Button>
+        </HStack>
       </div>
       <Separator />
 
@@ -60,7 +81,7 @@ export const PaymentHistoryClient: React.FC<PaymentHistoryClientProps> = ({
           <SelectContent>
             <SelectGroup>
               <SelectItem value="showAll" className="font-semibold">
-                Show All
+                Show All (Purpose)
               </SelectItem>
               <SelectItem value="Association Dues">Association Dues</SelectItem>
               <SelectItem value="Dispute Fees">Dispute Fees</SelectItem>
@@ -96,7 +117,14 @@ export const PaymentHistoryClient: React.FC<PaymentHistoryClientProps> = ({
       </HStack>
 
       {/* Table */}
-      <DataTable columns={columns} data={filteredData} searchKey="paidBy" />
+      {/* <div className="hidden">
+        <div ref={componentPDF} style={{ width: "100%" }}>
+          <PDFTable />
+        </div>
+      </div> */}
+      <div ref={componentPDF} style={{ width: "100%" }}>
+        <DataTable columns={columns} data={filteredData} searchKey="paidBy" />
+      </div>
     </>
   );
 };

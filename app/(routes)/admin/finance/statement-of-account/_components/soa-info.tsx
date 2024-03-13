@@ -1,6 +1,7 @@
 "use client";
 
 import * as z from "zod";
+import React from "react";
 import { Heading } from "@/components/ui/heading";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -12,8 +13,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-import { Button } from "@/components/ui/button";
-import { Box, Flex, Text, VStack } from "@chakra-ui/react";
+import { Box, Flex, Text, VStack, Button, HStack } from "@chakra-ui/react";
 import { format } from "date-fns";
 
 import SoaTableCategory from "./SoaTableCategory";
@@ -29,6 +29,11 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useEffect } from "react";
+import Link from "next/link";
+
+import { useReactToPrint } from "react-to-print";
+import { useRef } from "react";
+import PDFTable from "@/components/system/PDFTable";
 
 interface SoaInfoProps {
   user: ExtendedUser;
@@ -47,6 +52,14 @@ export const SoaInfo: React.FC<SoaInfoProps> = ({
   transactions,
   allUsers,
 }) => {
+  const componentPDF = useRef<HTMLDivElement | null>(null);
+
+  const generatePDF = useReactToPrint({
+    content: () => componentPDF.current || null,
+    documentTitle: "Admin Directory Report",
+    onAfterPrint: () => alert("Data saved in PDF"),
+  });
+
   const form = useForm<z.infer<typeof SelectSchema>>({
     defaultValues: {
       dueType: "all",
@@ -237,6 +250,14 @@ export const SoaInfo: React.FC<SoaInfoProps> = ({
           title={`Statement of Account`}
           description="ABC Homeowners' Association"
         />
+        <HStack>
+          <Button size="sm" colorScheme="yellow" onClick={generatePDF}>
+            Generate PDF
+          </Button>
+          <Button size="sm" as={Link} href="/admin/finance">
+            Go Back
+          </Button>
+        </HStack>
       </div>
       <Separator className="mt-4 mb-6" />
 
@@ -302,29 +323,36 @@ export const SoaInfo: React.FC<SoaInfoProps> = ({
         </Form>
 
         <Box mt="15px">
-          {/* SOA Summary Table */}
-          {form.getValues("dueType") === "all" && (
-            <SoaTableSummary
-              data={summarySoa}
-              transactionsToUpdate={transactions}
-            />
-          )}
+          {/* <div className="hidden">
+            <div ref={componentPDF} style={{ width: "100%" }}>
+              <PDFTable />
+            </div>
+          </div> */}
+          <div ref={componentPDF} style={{ width: "100%" }}>
+            {/* SOA Summary Table */}
+            {form.getValues("dueType") === "all" && (
+              <SoaTableSummary
+                data={summarySoa}
+                transactionsToUpdate={transactions}
+              />
+            )}
 
-          {form.getValues("dueType") === "Association Dues" && (
-            <SoaTableCategory data={assocDues} users={allUsers} />
-          )}
-          {/* {form.getValues("dueType") === "Dispute Fees" && (
+            {form.getValues("dueType") === "Association Dues" && (
+              <SoaTableCategory data={assocDues} users={allUsers} />
+            )}
+            {/* {form.getValues("dueType") === "Dispute Fees" && (
             <SoaTableCategory data={disputeFees} users={allUsers} />
           )} */}
-          {form.getValues("dueType") === "Violation Fines" && (
-            <SoaTableCategory data={violationFees} users={allUsers} />
-          )}
-          {form.getValues("dueType") === "Facility Rentals" && (
-            <SoaTableCategory data={facilityFees} users={allUsers} />
-          )}
-          {form.getValues("dueType") === "Repair and Maintenance" && (
-            <SoaTableCategory data={maintenanceFees} users={allUsers} />
-          )}
+            {form.getValues("dueType") === "Violation Fines" && (
+              <SoaTableCategory data={violationFees} users={allUsers} />
+            )}
+            {form.getValues("dueType") === "Facility Rentals" && (
+              <SoaTableCategory data={facilityFees} users={allUsers} />
+            )}
+            {form.getValues("dueType") === "Repair and Maintenance" && (
+              <SoaTableCategory data={maintenanceFees} users={allUsers} />
+            )}
+          </div>
         </Box>
       </VStack>
     </>

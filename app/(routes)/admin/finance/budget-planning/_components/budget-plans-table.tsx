@@ -12,6 +12,7 @@ import {
   Th,
   Td,
   VStack,
+  HStack,
 } from "@chakra-ui/react";
 import { Separator } from "@/components/ui/separator";
 import { AddIcon } from "@chakra-ui/icons";
@@ -30,17 +31,21 @@ export const BudgetPlanning = ({
           title="Budget Planning"
           description="View the list of all budget plans of the Homeowners Association."
         />
-        {/* Create Button */}
-        <Button
-          size="sm"
-          colorScheme="yellow"
-          mb="10px"
-          as={Link}
-          href="/admin/finance/budget-planning/create"
-        >
-          <AddIcon mr="10px" boxSize={3} />
-          <Text fontSize="sm">Create Budget Plan</Text>
-        </Button>
+        <HStack>
+          {/* Create Button */}
+          <Button
+            size="sm"
+            colorScheme="yellow"
+            as={Link}
+            href="/admin/finance/budget-planning/create"
+          >
+            <AddIcon mr="10px" boxSize={3} />
+            <Text fontSize="sm">Create Budget Plan</Text>
+          </Button>
+          <Button size="sm" as={Link} href="/admin/finance">
+            Go Back
+          </Button>
+        </HStack>
       </Flex>
       <Separator className="mt-2 mb-5" />
 
