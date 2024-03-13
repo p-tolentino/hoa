@@ -13,7 +13,7 @@ export default function ViolationMonitoringMenu () {
       category_buttons: [
         {
           text: "Homeowners' Association Violation Record",
-          href: '/admin/violations/list-of-reports',
+          href: '/admin/violations/violation-record',
           description:
             "Manage and view the violation record within the Homeowners' Association."
         }
@@ -27,15 +27,15 @@ export default function ViolationMonitoringMenu () {
       category_users: 'ALL Homeowners',
       category_buttons: [
         {
-          text: 'Violation Review Process',
-          href: '',
-          description: 'Read more about the violation review process.'
+          text: 'Violation Enforcement Process Guide',
+          href: '/admin/violations/process-guide',
+          description: 'Read more about the violation enforcement process.'
         },
         {
           text: "List of Homeowners' Association Violations",
-          href: '/admin/violations/list-of-violations',
+          href: '/admin/violations/violation-list',
           description:
-            "View the list of violations that can be reported within the Homeowners' Association."
+            "View the list of violations that can be reported within the Homeowners' Association. Corresponding penalties for each violation type is included."
         }
       ]
     }
@@ -48,9 +48,21 @@ export default function ViolationMonitoringMenu () {
       category_buttons: [
         {
           text: 'Report a Violation',
-          href: '/admin/violations/report-violations',
+          href: '/admin/violations/violation-form',
           description:
             "Fill out the Violation Form to formally request a violation review from the Homeowners' Association."
+        },
+        {
+          text: 'Submitted Violation Reports',
+          href: '/admin/violations/submitted-violations',
+          description:
+            "View your submitted violation reports to the Homeowners' Association and monitor its progress."
+        },
+        {
+          text: 'Violation Letters and Notices',
+          href: '/admin/violations/letters-and-notices',
+          description:
+            "View received violation letters and notices from the Homeowners' Association."
         }
       ]
     }
@@ -59,8 +71,8 @@ export default function ViolationMonitoringMenu () {
   return (
     <>
       <Heading
-        title='Dispute Resolution'
-        description='Navigate through the Dispute Resolution module'
+        title='Violation Monitoring'
+        description='Navigate through the Violation Monitoring module'
       />
       <Separator className='mt-4 mb-6' />
       <SimpleGrid spacing={10} columns={3}>

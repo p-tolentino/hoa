@@ -76,6 +76,7 @@ model UserTransaction {
   updateAt    DateTime      @updatedAt
   datePaid    DateTime?
   paidBy      String?
+
 }
 
 model HoaTransaction {
@@ -258,6 +259,7 @@ model Violation {
   submittedBy     String
   number          Int      @default(autoincrement())
   progress        String   @default("Step 1: Violation Form Submission")
+  letterSent      Boolean  @default(false)
   step            Int      @default(1)
 }
 
@@ -267,7 +269,7 @@ model Notification {
   userId      String[]
   title       String
   description String
-  isRead      Boolean
+  isRead      Boolean @default(false)
   link        String
   createdAt   DateTime @default(now())
 }

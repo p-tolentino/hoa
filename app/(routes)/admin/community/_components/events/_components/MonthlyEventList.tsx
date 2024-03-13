@@ -57,6 +57,7 @@ export function MonthlyEventList ({events, user}:EventProps) {
             <CarouselItem key={index} className='pl-1 basis-1/3'>
               <div className='p-1'>
                 <Card className='h-[250px]'>
+                  {/* Monthly Events */}
                   <CardContent className='p-6'>
                     <Text size='xl' fontWeight='semibold' mb='10px'>
                       {getMonthYearFromIndex(index)}
@@ -79,6 +80,7 @@ export function MonthlyEventList ({events, user}:EventProps) {
                         </Table>
                       </ScrollArea>
                     ) : (
+                      // Scenario: No events to show for the month
                       <Center h='100px' color='grey'>
                         No events to show.
                       </Center>

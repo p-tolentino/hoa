@@ -88,7 +88,6 @@ export default function AnnouncementBoard ({ personalInfo, events, user }: Annou
                 </DialogContent>
               </Dialog>
             </ListItem>
-
 {currentMonthEvents.map((event, index) => (
   <ListItem key={event.id}>
     <Dialog>
@@ -133,7 +132,6 @@ export default function AnnouncementBoard ({ personalInfo, events, user }: Annou
     </Dialog>
   </ListItem>
 ))}
-
           </UnorderedList>
         </CardContent>
       </Card>

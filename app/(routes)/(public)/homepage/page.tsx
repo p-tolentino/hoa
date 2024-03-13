@@ -23,7 +23,7 @@ export default function Homepage() {
               p="2rem"
             >
               <Heading size={"2xl"} fontFamily="font.heading">
-                System Name
+                HOAs.is
               </Heading>
               <Text
                 fontFamily="font.body"

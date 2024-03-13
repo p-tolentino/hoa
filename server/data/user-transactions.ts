@@ -36,3 +36,27 @@ export const getAllTransactions = async () => {
     throw err;
   }
 };
+
+export const getPersonalAddress = async (id: string) => {
+  try {
+    const personal = await db.personalInfo.findFirst({
+      where: { userId: id },
+    });
+
+    return personal;
+  } catch (err) {
+    throw err;
+  }
+};
+
+export const getPersonalInfo = async (id: string) => {
+  try {
+    const personal = await db.personalInfo.findFirst({
+      where: { userId: id },
+    });
+
+    return personal;
+  } catch (err) {
+    throw err;
+  }
+};

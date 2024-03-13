@@ -45,7 +45,7 @@ export default function BusinessForumCard ({ posts, user }: PostProps) {
 
   return (
     <>
-      <Card className='h-[75vh]'>
+      <Card className='h-[70vh]'>
         <Flex justifyContent='space-between'>
           <CardHeader>
             <CardTitle>Business Forum</CardTitle>

@@ -91,7 +91,7 @@ export default function DiscussionsCard ({ posts, user}: PostProps) {
 
   return (
     <>
-      <Card className='h-[75vh]'>
+      <Card className='h-[70vh]'>
         <Flex justifyContent='space-between'>
           <CardHeader>
             <CardTitle>Discussions</CardTitle>
