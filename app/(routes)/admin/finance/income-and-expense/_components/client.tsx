@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { Heading } from "@/components/ui/heading";
 import { Separator } from "@/components/ui/separator";
 
@@ -7,8 +8,12 @@ import NewTransactionButton from "./NewTransactionButton";
 
 import { TransactionColumn, columns } from "./columns";
 import { DataTable } from "@/components/ui/data-table";
-import { Stack, Text } from "@chakra-ui/react";
+import { Stack, Text, Button, HStack } from "@chakra-ui/react";
 import { Hoa } from "@prisma/client";
+
+import { useReactToPrint } from "react-to-print";
+import { useRef } from "react";
+import PDFTable from "@/components/system/PDFTable";
 
 interface TransactionClientProps {
   data: TransactionColumn[];
@@ -19,6 +24,14 @@ export const TransactionClient: React.FC<TransactionClientProps> = ({
   data,
   hoaInfo,
 }) => {
+  const componentPDF = useRef<HTMLDivElement | null>(null);
+
+  const generatePDF = useReactToPrint({
+    content: () => componentPDF.current || null,
+    documentTitle: "Revenue and Expense Report",
+    onAfterPrint: () => alert("Data saved in PDF"),
+  });
+
   return (
     <>
       <div className="flex items-center justify-between">
@@ -32,10 +45,22 @@ export const TransactionClient: React.FC<TransactionClientProps> = ({
             P {new Intl.NumberFormat("en-US").format(hoaInfo.funds)}
           </Text>
         </Stack>
-        <NewTransactionButton currentFunds={hoaInfo.funds} />
+        <HStack>
+          <Button size="sm" colorScheme="yellow" onClick={generatePDF}>
+            Generate PDF
+          </Button>
+          <NewTransactionButton currentFunds={hoaInfo.funds} />
+        </HStack>
       </div>
       <Separator />
-      <DataTable columns={columns} data={data} searchKey="purpose" />
+      {/* <div className="hidden">
+        <div ref={componentPDF} style={{ width: "100%" }}>
+          <PDFTable />
+        </div>
+      </div> */}
+      <div ref={componentPDF} style={{ width: "100%" }}>
+        <DataTable columns={columns} data={data} searchKey="purpose" />
+      </div>
     </>
   );
 };

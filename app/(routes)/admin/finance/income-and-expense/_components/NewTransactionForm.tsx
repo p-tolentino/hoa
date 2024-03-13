@@ -22,6 +22,7 @@ import {
   RadioGroup,
   Stack,
   Textarea,
+  Button,
 } from "@chakra-ui/react";
 
 import {
@@ -44,7 +45,6 @@ import {
 } from "@/components/ui/select";
 
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 
 import { NewTransactionSchema } from "@/server/schemas";
 import { HoaTransaction } from "@prisma/client";
@@ -249,7 +249,8 @@ export default function NewTransactionForm({
         <Box textAlign={"center"} mt="2rem">
           <Button
             disabled={isPending}
-            className="text-black bg-yellow-400 end hover:bg-yellow-500 focus:bg-yellow-600"
+            colorScheme="yellow"
+            size="sm"
             type="submit"
           >
             Submit Transaction

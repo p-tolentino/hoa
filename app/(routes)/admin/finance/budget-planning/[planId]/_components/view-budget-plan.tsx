@@ -1,3 +1,5 @@
+"use client";
+
 import { Heading } from "@/components/ui/heading";
 import {
   Button,
@@ -17,6 +19,10 @@ import { getBudget } from "@/server/data/budget-plan";
 import { useEffect, useState } from "react";
 import { BudgetPlan } from "@prisma/client";
 
+import { useReactToPrint } from "react-to-print";
+import { useRef } from "react";
+import PDFTable from "@/components/system/PDFTable";
+
 interface ViewFormProps {
   initialData: BudgetPlan | null;
   previous: BudgetPlan | null;
@@ -26,14 +32,25 @@ export const ViewBudgetPlan: React.FC<ViewFormProps> = ({
   initialData,
   previous,
 }) => {
+  const componentPDF = useRef<HTMLDivElement | null>(null);
+
+  const generatePDF = useReactToPrint({
+    content: () => componentPDF.current || null,
+    documentTitle: "Budget Plan of (year) Report",
+    onAfterPrint: () => alert("Data saved in PDF"),
+  });
   return (
     <>
-      <Flex>
+      <Flex justifyContent="space-between">
         <Heading
           title="View Budget Plan"
           description="View the budget plan of the HOA."
         />
+        <Button size="sm" colorScheme="yellow" onClick={generatePDF}>
+          Generate PDF
+        </Button>
       </Flex>
+
       <Separator className="mt-2 mb-5" />
 
       {/* Title & Current Fiscal Year */}
@@ -54,9 +71,16 @@ export const ViewBudgetPlan: React.FC<ViewFormProps> = ({
       </Flex>
 
       {/* Budget Planning Table */}
-      <ViewRevenueTable plan={initialData} previous={previous} />
-      <ViewExpenseTable plan={initialData} previous={previous} />
-      <ViewTotalTable plan={initialData} previous={previous} />
+      {/* <div className="hidden">
+        <div ref={componentPDF} style={{ width: "100%" }}>
+          <PDFTable />
+        </div>
+      </div> */}
+      <div ref={componentPDF} style={{ width: "100%" }}>
+        <ViewRevenueTable plan={initialData} previous={previous} />
+        <ViewExpenseTable plan={initialData} previous={previous} />
+        <ViewTotalTable plan={initialData} previous={previous} />
+      </div>
     </>
   );
 };

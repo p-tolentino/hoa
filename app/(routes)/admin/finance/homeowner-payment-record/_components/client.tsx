@@ -6,7 +6,7 @@ import { Separator } from "@/components/ui/separator";
 
 import { PaymentRecordColumn, columns } from "./columns";
 import { DataTable } from "@/components/ui/data-table";
-import { HStack, Spacer } from "@chakra-ui/react";
+import { HStack, Spacer, Button } from "@chakra-ui/react";
 import {
   Select,
   SelectContent,
@@ -15,6 +15,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+
+import { useReactToPrint } from "react-to-print";
+import { useRef } from "react";
+import PDFTable from "@/components/system/PDFTable";
 
 interface PaymentRecordClientProps {
   data: PaymentRecordColumn[];
@@ -26,6 +30,13 @@ export const PaymentRecordClient: React.FC<PaymentRecordClientProps> = ({
   const [selectedStatusFilter, setSelectedStatusFilter] = useState("showAll");
   const [selectedCategoryFilter, setSelectedCategoryFilter] =
     useState("showAll");
+  const componentPDF = useRef<HTMLDivElement | null>(null);
+
+  const generatePDF = useReactToPrint({
+    content: () => componentPDF.current || null,
+    documentTitle: "Homeowner Payment Report",
+    onAfterPrint: () => alert("Data saved in PDF"),
+  });
 
   // Filter the data based on the selected status filter
   const filteredData = useMemo(() => {
@@ -50,6 +61,9 @@ export const PaymentRecordClient: React.FC<PaymentRecordClientProps> = ({
           title="Homeowners Payment Record"
           description={`Manage the payment records of Homeowners (Total No. of Transactions = ${data.length})`}
         />
+        <Button size="sm" colorScheme="yellow" onClick={generatePDF}>
+          Generate PDF
+        </Button>
       </div>
       <Separator />
 
@@ -104,7 +118,14 @@ export const PaymentRecordClient: React.FC<PaymentRecordClientProps> = ({
       </HStack>
 
       {/* Table */}
-      <DataTable columns={columns} data={filteredData} searchKey="purpose" />
+      {/* <div className="hidden">
+        <div ref={componentPDF} style={{ width: "100%" }}>
+          <PDFTable />
+        </div>
+      </div> */}
+      <div ref={componentPDF} style={{ width: "100%" }}>
+        <DataTable columns={columns} data={filteredData} searchKey="purpose" />
+      </div>
     </>
   );
 };

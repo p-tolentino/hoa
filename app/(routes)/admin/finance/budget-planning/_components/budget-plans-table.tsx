@@ -32,15 +32,14 @@ export const BudgetPlanning = ({
         />
         {/* Create Button */}
         <Button
+          size="sm"
           colorScheme="yellow"
           mb="10px"
           as={Link}
           href="/admin/finance/budget-planning/create"
         >
-          <AddIcon mr="10px" />
-          <Text fontSize="lg" fontFamily="font.body">
-            Create Budget Plan
-          </Text>
+          <AddIcon mr="10px" boxSize={3} />
+          <Text fontSize="sm">Create Budget Plan</Text>
         </Button>
       </Flex>
       <Separator className="mt-2 mb-5" />
