@@ -5,13 +5,13 @@ import { cn } from "@/lib/utils";
 import {
   FiBriefcase,
   FiCalendar,
-  FiDollarSign,
   FiUserCheck,
   FiUsers,
   FiMenu,
 } from "react-icons/fi";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { TbCurrencyPeso } from "react-icons/tb";
 import { PiBinocularsBold, PiBroomFill } from "react-icons/pi";
 import { TfiDashboard as Dashboard } from "react-icons/tfi";
 import { FaUser as User } from "react-icons/fa";
@@ -62,7 +62,7 @@ export function Sidebar({
     {
       label: "Finance Management",
       href: `/${user?.role.toLowerCase()}/finance`,
-      icon: FiDollarSign,
+      icon: TbCurrencyPeso,
       active: pathname.startsWith(`/${user?.role.toLowerCase()}/finance`),
     },
     {

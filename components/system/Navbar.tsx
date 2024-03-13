@@ -26,6 +26,8 @@ import { LogoutButton } from "../auth/logout-button";
 import Link from "next/link";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { usePathname } from "next/navigation";
+import NextImage from "next/image";
+import SystemLogo from "@/public/HOAs.is-logo.png";
 
 export const Navbar = () => {
   const user = useCurrentUser();
@@ -43,12 +45,6 @@ export const Navbar = () => {
       label: "Register HOA",
       href: "/#registerHOA",
       active: pathname === `/#registerHOA`,
-      requireAuth: false,
-    },
-    {
-      label: "Terms and Conditions",
-      href: "/#policies",
-      active: pathname === `/#policies`,
       requireAuth: false,
     },
     {
@@ -72,21 +68,19 @@ export const Navbar = () => {
       alignItems="center"
       bg="brand.500"
       color="white"
-      position="fixed"
       top="0"
+      position="fixed"
       direction="row"
       width="100%"
     >
       <Link href="/">
         <Flex>
-          <Heading ml="10px" color="white" size={{ base: "xl", md: "xl" }}>
-            <Logo />
-          </Heading>
-          <Box ml="20px">
-            <Heading paddingTop="5px" fontSize={{ base: "9px", md: "md" }}>
-              <Text fontFamily="font.heading">HOAs.is</Text>
-            </Heading>
-          </Box>
+          <NextImage
+            src={SystemLogo}
+            alt="HOAs.is Logo"
+            width={120}
+            height={120}
+          />
         </Flex>
       </Link>
       <Show breakpoint="(max-width: 767px)">

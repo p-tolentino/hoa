@@ -7,9 +7,9 @@ export const RegisterHOA = () => {
     <Box id="registerHOA" m={"3rem"}>
       <Stack>
         <Text
-          fontFamily="font.body"
+          fontFamily="font.heading"
           textAlign="center"
-          fontWeight="800"
+          fontWeight="500"
           fontSize="18px"
           mt="60"
           mb="-5"

@@ -9,9 +9,10 @@ import PublicLayout from "../../layout";
 export default function Homepage() {
   return (
     <PublicLayout>
-      <Box>
+      <Box id="about">
         <Center
-          h="40vh"
+          mt="4.5%"
+          h="30vh"
           bgSize={"cover"}
           bgImage={`url("/landscapeLowerOpacity.png")`}
         >
@@ -22,12 +23,12 @@ export default function Homepage() {
               textAlign={"center"}
               p="2rem"
             >
-              <Heading size={"2xl"} fontFamily="font.heading">
+              <Heading size={"xl"} fontFamily="font.heading">
                 HOAs.is
               </Heading>
               <Text
                 fontFamily="font.body"
-                fontSize="1.5rem"
+                fontSize="1.2rem"
                 textAlign={"center"}
                 textShadow="1px 1px grey.05"
               >
