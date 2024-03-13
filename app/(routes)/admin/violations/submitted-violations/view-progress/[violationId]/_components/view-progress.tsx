@@ -91,7 +91,7 @@ export const ViewProgress: React.FC<ViewProgressProps> = ({
           <Badge
             className={cn(
               "w-[max-content] h-[min-content] px-3 py-2 text-center justify-center text-sm",
-              reportDetails.violation.status === "Completed"
+              reportDetails.violation.status === "Settled"
                 ? ""
                 : reportDetails.violation.status === "Pending"
                 ? "bg-red-700"

@@ -238,7 +238,7 @@ export const RowActions: React.FC<RowActionProps> = ({ data }) => {
             <AlertDialog>
               <AlertDialogTrigger asChild>
                 <Button size="sm" colorScheme="facebook">
-                  Mark as Completed
+                  Mark as Settled
                 </Button>
               </AlertDialogTrigger>
               <AlertDialogContent>

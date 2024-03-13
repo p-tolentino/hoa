@@ -42,7 +42,7 @@ export const columns: ColumnDef<ListOfViolationsColumn>[] = [
       <Badge
         className={cn(
           "w-[max-content] p-2 text-center justify-center",
-          row.getValue("status") === "Completed"
+          row.getValue("status") === "Settled"
             ? ""
             : row.getValue("status") === "Pending"
             ? "bg-red-700"
