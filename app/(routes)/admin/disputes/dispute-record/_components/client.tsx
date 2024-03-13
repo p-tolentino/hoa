@@ -23,12 +23,12 @@ export const ListOfDisputesClient: React.FC<ListOfDisputesClientProps> = ({
           title="Homeowners' Association Dispute Record"
           description='Manage the submitted dispute forms of Homeowners.'
         />
-        <Button size='sm' colorScheme='gray' as={Link} href='/admin/disputes'>
+        <Button size='sm' as={Link} href='/admin/disputes'>
           Go Back
         </Button>
       </Flex>
       <Separator />
-      <DataTable columns={columns} data={data} searchKey='dataSubmitted' />
+      <DataTable columns={columns} data={data} searchKey='createdAt' />
     </>
   )
 }

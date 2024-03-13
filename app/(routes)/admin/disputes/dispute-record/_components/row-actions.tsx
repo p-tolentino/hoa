@@ -1,15 +1,6 @@
 'use client'
 
-import { Button, FormControl, Text, useToast, Box } from '@chakra-ui/react'
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger
-} from '@/components/ui/dialog'
+import { Button, Text, useToast, Box } from '@chakra-ui/react'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -21,19 +12,8 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger
 } from '@/components/ui/alert-dialog'
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue
-} from '@/components/ui/select'
-
 import { ListOfDisputesColumn } from './columns'
 import SetFeesTable from './set-fees'
-import SetFees from './set-fees'
 
 interface RowActionProps {
   data: ListOfDisputesColumn
@@ -44,82 +24,32 @@ export const RowActions: React.FC<RowActionProps> = ({ data }) => {
 
   return (
     <div>
-      {/* Status: PENDING = Button: Assign Officer */}
+      {/* Status: PENDING = Button: Take Case */}
+      {/* {data.status === "Pending" &&
+        user?.info?.committee === "Environment and Security Committee" && (
+          <Button
+            size="sm"
+            _hover={{ textDecoration: "none" }}
+            onClick={() => setOfficer(data)}
+          >
+            Take Case
+          </Button>
+        )} */}
       {data.status === 'Pending' && (
-        <form>
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button size='sm'>Assign Officer-in-Charge</Button>
-            </DialogTrigger>
-            <DialogContent className='sm:max-w-[425px]'>
-              <DialogHeader>
-                <DialogTitle>Assign Officer-in-Charge</DialogTitle>
-                <DialogDescription>
-                  Assign the officer-in-charge to handle the dispute resolution
-                  process for the dispute:
-                  <Text mt='1rem'>
-                    Submitted by:{' '}
-                    <span className='font-semibold'>{data.submittedBy}</span>{' '}
-                    <br />
-                    Submitted on:{' '}
-                    <span className='font-semibold'>{data.dateSubmitted}</span>
-                  </Text>
-                </DialogDescription>
-              </DialogHeader>
-
-              <FormControl isRequired>
-                <Select>
-                  <SelectTrigger>
-                    <SelectValue placeholder='Select an officer-in-charge' />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {/* Grievance and Adjudication Committee */}
-                    <SelectGroup>
-                      <SelectLabel>
-                        Grievance and Adjudication Committee
-                      </SelectLabel>
-                      <SelectItem value='g&a1'>
-                        G&A Committee Member 1
-                      </SelectItem>
-                      <SelectItem value='g&a2'>
-                        G&A Committee Member 2
-                      </SelectItem>
-                      <SelectItem value='g&a3'>
-                        G&A Committee Member 3
-                      </SelectItem>
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-              </FormControl>
-
-              <DialogFooter className='text-right'>
-                <FormControl>
-                  <Button
-                    type='submit'
-                    size='sm'
-                    colorScheme='yellow'
-                    onClick={() =>
-                      toast({
-                        title: `Successfully assigned an officer-in-charge for the dispute submitted by ${data.submittedBy} on ${data.dateSubmitted}.`,
-                        description:
-                          'Thank you for offering your services to your homeowners.',
-                        status: 'success',
-                        position: 'bottom-right',
-                        isClosable: true
-                      })
-                    }
-                  >
-                    Save changes
-                  </Button>
-                </FormControl>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
-        </form>
+        <Button
+          size='sm'
+          colorScheme='gray'
+          // onClick={() => setOfficer(data)}
+        >
+          Take Case
+        </Button>
       )}
 
-      {/* Status: INPROCESS = Button: Mark as Resolved */}
-      {data.status === 'In Process' && (
+      {/* Status: REVIEW or AWAITING PAYMENT = Button: Mark as Resolved */}
+      {/* // !! ADD CHECKING FOR PROGRESS BEFORE MARKING AS RESOLVED */}
+
+      {/* Status: UNDERREVIEW = Button: Mark as Resolved */}
+      {data.status === 'Under Review' && (
         <div>
           <AlertDialog>
             <AlertDialogTrigger asChild>
@@ -137,7 +67,7 @@ export const RowActions: React.FC<RowActionProps> = ({ data }) => {
                     <span className='font-semibold'>{data.submittedBy}</span>{' '}
                     <br />
                     Submitted on:{' '}
-                    <span className='font-semibold'>{data.dateSubmitted}</span>
+                    <span className='font-semibold'>{data.createdAt}</span>
                   </Text>
                 </AlertDialogDescription>
               </AlertDialogHeader>
@@ -152,7 +82,7 @@ export const RowActions: React.FC<RowActionProps> = ({ data }) => {
                   className='bg-green-500 hover:bg-green-600'
                   onClick={() =>
                     toast({
-                      title: `Successfully marked the dispute submitted by ${data.submittedBy} on ${data.dateSubmitted} as resolved.`,
+                      title: `Successfully marked the dispute submitted by ${data.submittedBy} on ${data.createdAt} as resolved.`,
                       description:
                         'Thank you for offering your services to your homeowners.',
                       status: 'success',

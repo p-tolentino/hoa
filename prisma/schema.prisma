@@ -76,7 +76,6 @@ model UserTransaction {
   updateAt    DateTime      @updatedAt
   datePaid    DateTime?
   paidBy      String?
-
 }
 
 model HoaTransaction {
