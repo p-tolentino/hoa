@@ -1,34 +1,68 @@
 "use client";
 
-import { Box, Text, Flex, Avatar } from "@chakra-ui/react";
-import { TbCalendarEvent } from "react-icons/tb";
+import { Text, HStack, Stack } from "@chakra-ui/react";
 
 export default function CommunityEngagmentCard() {
   return (
-    <Box>
-      <Flex
-        alignItems="flex-start"
-        direction="row"
-        justifyContent="space-between"
-        p={4}
-        borderRadius="md"
-        boxShadow="md"
-        bg="white"
-      >
-        <Box>
-          <Text color="gray.500" textTransform="uppercase" fontSize="xs">
-            Monthly Events
-          </Text>
-          <Text fontSize="2xl" fontWeight="bold">
-            8
-          </Text>
-        </Box>
-        <Avatar
-          bg="blue.400"
-          size="lg"
-          icon={<TbCalendarEvent size={24} color="white" />}
-        />
-      </Flex>
-    </Box>
+    <HStack justifyContent="space-between" p="5%">
+      <Stack>
+        <Text fontSize="sm">Event </Text>
+        <Text fontSize="sm">Event </Text>
+        <Text fontSize="sm">Event </Text>
+        <Text fontSize="sm">Event </Text>
+        <Text fontSize="sm">Event </Text>
+        <Text fontSize="sm">Event </Text>
+        <Text fontSize="sm">Event </Text>
+        <Text fontSize="sm">Event </Text>
+        <Text fontSize="sm">Event </Text>
+        <Text fontSize="sm">Event </Text>
+        <Text fontSize="sm">Event </Text>
+        <Text fontSize="sm">Event </Text>
+        <Text fontSize="sm">Event </Text>
+        <Text fontSize="sm">Event </Text>
+        <Text fontSize="sm">Event </Text>
+        <Text fontSize="sm">Event </Text>
+        <Text fontSize="sm">Event </Text>
+        <Text fontSize="sm">Event </Text>
+        <Text fontSize="sm">Event </Text>
+        <Text fontSize="sm">Event </Text>
+        <Text fontSize="sm">Event </Text>
+        <Text fontSize="sm">Event </Text>
+        <Text fontSize="sm">Event </Text>
+        <Text fontSize="sm">Event </Text>
+        <Text fontSize="sm">Event </Text>
+        <Text fontSize="sm">Event </Text>
+        <Text fontSize="sm">Event </Text>
+      </Stack>
+      <Stack>
+        <Text fontSize="sm"> 25% (2)</Text>
+        <Text fontSize="sm"> 25% (3)</Text>
+        <Text fontSize="sm"> 25% (2)</Text>
+        <Text fontSize="sm"> 25% (1)</Text>
+        <Text fontSize="sm"> 25% (1)</Text>
+        <Text fontSize="sm"> 25% (1)</Text>
+        <Text fontSize="sm"> 25% (1)</Text>
+        <Text fontSize="sm"> 25% (1)</Text>
+        <Text fontSize="sm"> 25% (1)</Text>
+        <Text fontSize="sm"> 25% (1)</Text>
+        <Text fontSize="sm"> 25% (1)</Text>
+        <Text fontSize="sm"> 25% (1)</Text>
+        <Text fontSize="sm"> 25% (1)</Text>
+        <Text fontSize="sm"> 25% (1)</Text>
+        <Text fontSize="sm"> 25% (1)</Text>
+        <Text fontSize="sm"> 25% (1)</Text>
+        <Text fontSize="sm"> 25% (1)</Text>
+        <Text fontSize="sm"> 25% (1)</Text>
+        <Text fontSize="sm"> 25% (1)</Text>
+        <Text fontSize="sm"> 25% (1)</Text>
+        <Text fontSize="sm"> 25% (1)</Text>
+        <Text fontSize="sm"> 25% (1)</Text>
+        <Text fontSize="sm"> 25% (1)</Text>
+        <Text fontSize="sm"> 25% (1)</Text>
+        <Text fontSize="sm"> 25% (1)</Text>
+        <Text fontSize="sm"> 25% (1)</Text>
+        <Text fontSize="sm"> 25% (1)</Text>
+      </Stack>
+    </HStack>
   );
 }

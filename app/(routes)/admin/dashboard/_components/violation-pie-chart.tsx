@@ -1,32 +1,31 @@
-"use client";
-
 import React from "react";
 import { Box } from "@chakra-ui/react";
 import { ApexOptions } from "apexcharts";
 import dynamic from "next/dynamic";
 const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
-interface PolarAreaChartState {
+interface ViolationPieChartState {
   series: number[];
-  options?: ApexOptions;
+  options: ApexOptions;
 }
 
-class PolarAreaChart extends React.Component<{}, PolarAreaChartState> {
+class ViolationPieChart extends React.Component<{}, ViolationPieChartState> {
   constructor(props: {}) {
     super(props);
 
     this.state = {
-      series: [14, 23, 21, 17, 15, 10, 12, 17, 21],
+      series: [44, 55, 13, 43, 22],
       options: {
         chart: {
-          type: "polarArea",
+          type: "pie",
         },
-        stroke: {
-          colors: ["#fff"],
-        },
-        fill: {
-          opacity: 0.8,
-        },
+        labels: [
+          "violation",
+          "violation",
+          "violation",
+          "violation",
+          "violation",
+        ],
         responsive: [
           {
             breakpoint: 480,
@@ -40,17 +39,6 @@ class PolarAreaChart extends React.Component<{}, PolarAreaChartState> {
             },
           },
         ],
-        labels: [
-          "one",
-          "two",
-          "three",
-          "four",
-          "five",
-          "six",
-          "seven",
-          "eight",
-          "nine",
-        ],
         colors: ["#9F7AEA", "#ED64A6", "#4299E1", "#ED8936", "#38B2AC"],
       },
     };
@@ -63,7 +51,7 @@ class PolarAreaChart extends React.Component<{}, PolarAreaChartState> {
           <Chart
             options={this.state.options}
             series={this.state.series}
-            type="polarArea"
+            type="pie"
             height={250}
             width={"100%"}
           />
@@ -74,4 +62,4 @@ class PolarAreaChart extends React.Component<{}, PolarAreaChartState> {
   }
 }
 
-export default PolarAreaChart;
+export default ViolationPieChart;

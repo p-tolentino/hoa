@@ -17,7 +17,7 @@ export default function ViolationCard() {
       >
         <Box>
           <Text color="gray.500" textTransform="uppercase" fontSize="xs">
-            Violation Reports
+            Monthly Violations
           </Text>
           <Text fontSize="2xl" fontWeight="bold">
             6
