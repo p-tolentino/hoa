@@ -35,9 +35,6 @@ export default function ExampleChart() {
     <>
       <Flex justifyContent="space-between">
         <Heading title={title} description={description} />
-        <Button size="sm" colorScheme="gray" as={Link} href="/admin/disputes">
-          Go Back
-        </Button>
       </Flex>
       <Separator className="mt-4 mb-6" />
       <Grid rowGap={6}>
