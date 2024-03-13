@@ -7,10 +7,11 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
+import PdfUpload from "./pdf-upload";
 import { Button } from "@chakra-ui/react";
+import { Hoa } from "@prisma/client";
 
-export function UploadBylaws() {
+export async function UploadBylaws({ hoa }: { hoa: Hoa }) {
   const title = "Upload Homeowners' Association Bylaws";
   const description =
     "Upload the latest Homeowners' Association Bylaws for members to view.";
@@ -29,14 +30,12 @@ export function UploadBylaws() {
         </DialogHeader>
 
         {/* File input */}
-        <div>
-          <Input type="file" />
-        </div>
+        <PdfUpload hoa={hoa} />
 
         <DialogFooter>
-          <Button type="submit" colorScheme="yellow">
+          {/* <Button type="submit" colorScheme="yellow">
             Publish
-          </Button>
+          </Button> */}
         </DialogFooter>
       </DialogContent>
     </Dialog>

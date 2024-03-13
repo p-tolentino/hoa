@@ -54,31 +54,31 @@ export const SoaInfo: React.FC<SoaInfoProps> = ({
   });
 
   const assocDues = transactions.filter((transaction) => {
-    if (transaction.purpose === "assocDues") {
+    if (transaction.purpose === "Association Dues") {
       return transaction;
     }
   });
 
   const disputeFees = transactions.filter((transaction) => {
-    if (transaction.purpose === "dispute") {
+    if (transaction.purpose === "Dispute Fees") {
       return transaction;
     }
   });
 
   const violationFees = transactions.filter((transaction) => {
-    if (transaction.purpose === "violation") {
+    if (transaction.purpose === "Violation Fines") {
       return transaction;
     }
   });
 
   const facilityFees = transactions.filter((transaction) => {
-    if (transaction.purpose === "facility") {
+    if (transaction.purpose === "Facility Rentals") {
       return transaction;
     }
   });
 
   const maintenanceFees = transactions.filter((transaction) => {
-    if (transaction.purpose === "maintenance") {
+    if (transaction.purpose === "Repair and Maintenance") {
       return transaction;
     }
   });
@@ -114,34 +114,34 @@ export const SoaInfo: React.FC<SoaInfoProps> = ({
         return unpaidSum;
       })(),
     },
-    {
-      purpose: "Dispute Fees",
-      debit: (() => {
-        let paidSum = 0;
+    // {
+    //   purpose: "Dispute Fees",
+    //   debit: (() => {
+    //     let paidSum = 0;
 
-        disputeFees.forEach((fee) => {
-          if (fee.status === PaymentStatus.PAID) {
-            paidSum += parseFloat(fee.amount.toString().replace(/,/g, ""));
-          }
-        });
+    //     disputeFees.forEach((fee) => {
+    //       if (fee.status === PaymentStatus.PAID) {
+    //         paidSum += parseFloat(fee.amount.toString().replace(/,/g, ""));
+    //       }
+    //     });
 
-        return paidSum;
-      })(),
-      credit: (() => {
-        let unpaidSum = 0;
+    //     return paidSum;
+    //   })(),
+    //   credit: (() => {
+    //     let unpaidSum = 0;
 
-        disputeFees.forEach((fee) => {
-          if (
-            fee.status === PaymentStatus.UNPAID ||
-            fee.status === PaymentStatus.OVERDUE
-          ) {
-            unpaidSum += parseFloat(fee.amount.toString().replace(/,/g, ""));
-          }
-        });
+    //     disputeFees.forEach((fee) => {
+    //       if (
+    //         fee.status === PaymentStatus.UNPAID ||
+    //         fee.status === PaymentStatus.OVERDUE
+    //       ) {
+    //         unpaidSum += parseFloat(fee.amount.toString().replace(/,/g, ""));
+    //       }
+    //     });
 
-        return unpaidSum;
-      })(),
-    },
+    //     return unpaidSum;
+    //   })(),
+    // },
     {
       purpose: "Violation Fees",
       debit: (() => {
@@ -279,15 +279,17 @@ export const SoaInfo: React.FC<SoaInfoProps> = ({
                       <SelectItem value="all" className="font-semibold">
                         Show All
                       </SelectItem>
-                      <SelectItem value="assocDues">
+                      <SelectItem value="Association Dues">
                         Association Dues
                       </SelectItem>
-                      <SelectItem value="dispute">Dispute Fines</SelectItem>
-                      <SelectItem value="violation">Violation Fines</SelectItem>
-                      <SelectItem value="facility">
+                      {/* <SelectItem value="Dispute Fees">Dispute Fees</SelectItem> */}
+                      <SelectItem value="Violation Fines">
+                        Violation Fines
+                      </SelectItem>
+                      <SelectItem value="Facility Rentals">
                         Facility Reservation Fees
                       </SelectItem>
-                      <SelectItem value="maintenance">
+                      <SelectItem value="Repair and Maintenance">
                         Maintenance Fees
                       </SelectItem>
                     </SelectContent>
@@ -308,19 +310,19 @@ export const SoaInfo: React.FC<SoaInfoProps> = ({
             />
           )}
 
-          {form.getValues("dueType") === "assocDues" && (
+          {form.getValues("dueType") === "Association Dues" && (
             <SoaTableCategory data={assocDues} users={allUsers} />
           )}
-          {form.getValues("dueType") === "dispute" && (
+          {/* {form.getValues("dueType") === "Dispute Fees" && (
             <SoaTableCategory data={disputeFees} users={allUsers} />
-          )}
-          {form.getValues("dueType") === "violation" && (
+          )} */}
+          {form.getValues("dueType") === "Violation Fines" && (
             <SoaTableCategory data={violationFees} users={allUsers} />
           )}
-          {form.getValues("dueType") === "facility" && (
+          {form.getValues("dueType") === "Facility Rentals" && (
             <SoaTableCategory data={facilityFees} users={allUsers} />
           )}
-          {form.getValues("dueType") === "maintenance" && (
+          {form.getValues("dueType") === "Repair and Maintenance" && (
             <SoaTableCategory data={maintenanceFees} users={allUsers} />
           )}
         </Box>

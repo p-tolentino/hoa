@@ -11,11 +11,18 @@ import {
   useDisclosure,
   Heading,
   Text,
+  useToast,
 } from "@chakra-ui/react";
+import { Hoa } from "@prisma/client";
 
-export default function Bylaws() {
+import { useRouter } from "next/navigation";
+
+export default function Bylaws({ hoa }: { hoa: Hoa }) {
   const title = "Homeowners' Association Bylaws";
   const description = "View the Homeowners' Association Bylaws.";
+
+  const toast = useToast();
+  const router = useRouter();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -25,8 +32,17 @@ export default function Bylaws() {
         variant="link"
         fontFamily="font.body"
         fontWeight="light"
-        onClick={() => onOpen()}
-        key="Bylaws"
+        onClick={() => {
+          hoa.byLawsLink
+            ? onOpen()
+            : toast({
+                title: `HOA By-laws has not been uploaded yet`,
+                description: `Kindly contact any of the HOA Officers`,
+                status: "info",
+                position: "bottom-right",
+                isClosable: true,
+              });
+        }}
         color="black"
         size="sm"
       >
@@ -44,12 +60,16 @@ export default function Bylaws() {
             <Text fontSize="xs">{description}</Text>
           </DrawerHeader>
           <DrawerBody>
-            <object
-              data="/documents/HOA-Bylaws-2023.pdf"
-              type="application/pdf"
-              width="100%"
-              height="900px"
-            ></object>
+            {hoa.byLawsLink ? (
+              <iframe
+                src={hoa.byLawsLink}
+                title="HOA Bylaws"
+                width="100%"
+                height="900px"
+              ></iframe>
+            ) : (
+              <Text>No bylaws available</Text>
+            )}
           </DrawerBody>
         </DrawerContent>
       </Drawer>

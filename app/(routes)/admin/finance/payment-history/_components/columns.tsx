@@ -9,7 +9,13 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { PaymentStatus } from "@prisma/client";
-// import { ViewInfo } from "./view-info";
+
+const formatNumber = (value: number) => {
+  return value.toLocaleString("en-US", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+};
 
 export type PaymentHistoryColumn = {
   id: string;
@@ -64,7 +70,11 @@ export const columns: ColumnDef<PaymentHistoryColumn>[] = [
         </Button>
       );
     },
-    cell: ({ row }) => row.getValue("amount"),
+    cell: ({ row }) => (
+      <span className="flex justify-end pr-6">
+        ₱ {formatNumber(parseFloat(`${row.getValue("amount")}`))}
+      </span>
+    ),
   },
   {
     accessorKey: "purpose",

@@ -83,6 +83,12 @@ export const PropertySchema = z.object({
   purchaseDate: z.string({
     required_error: "Please specify when the property was bought.",
   }),
+  latitude: z.string({
+    required_error: "Please specify latitude value of address.",
+  }),
+  longitude: z.string({
+    required_error: "Please specify longitude value of address.",
+  }),
 });
 
 export const SettingsSchema = z
@@ -132,14 +138,108 @@ export const NewPasswordSchema = z.object({
 });
 
 export const NewTransactionSchema = z.object({
-  dateIssued: z.string()
-  .refine(date => new Date(date) <= new Date(), {
+  dateIssued: z.string().refine((date) => new Date(date) <= new Date(), {
     message: "Date issued cannot be in the future",
   }),
-  type: z.enum(["INCOME", "EXPENSE"], {
-    required_error: "Please specify if it is an income or expense.",
+  type: z.enum(["REVENUE", "EXPENSE"], {
+    required_error: "Please specify if it is an revenue or expense.",
   }),
   purpose: z.string(),
   amount: z.string(),
   description: z.string(),
 });
+
+export const NewPostSchema = z.object({
+  type: z.enum(["DISCUSSION", "BUSINESS"], {
+    required_error: "Please specify if it is an revenue or expense.",
+  }),
+  title: z.string(),
+  category: z.enum([ "MEETING",
+    "ELECTION",
+    "INQUIRY",
+    "EVENT",
+    "FOODANDDRINK",
+    "CLOTHING",
+    "HOUSEHOLDITEMS",
+    "HOMESERVICES",
+    "OTHER"], {
+    required_error: "Please specify the category",
+  }),
+  description: z.string(),
+});
+
+export const NewBudgetPlanSchema = z.object({
+  title: z.string(),
+  forYear: z.number(),
+  cybAssocDues: z.number(),
+  cybToll: z.number(),
+  cybFacility: z.number(),
+  cybConstruction: z.number(),
+  cybCarSticker: z.number(),
+  cybOtherRev: z.number(),
+
+  cybSalariesBenefits: z.number(),
+  cybUtilities: z.number(),
+  cybOfficeSupplies: z.number(),
+  cybRepairMaintenance: z.number(),
+  cybDonations: z.number(),
+  cybFurnituresFixtures: z.number(),
+  cybRepresentation: z.number(),
+  cybLegalProfessionalFees: z.number(),
+  cybAdministrativeCosts: z.number(),
+  cybOtherExp: z.number(),
+
+  cybTotalYearlyRev: z.number(),
+  cybTotalYearlyExp: z.number(),
+  cybTotalYearlySurplus: z.number(),
+});
+
+export const OptionSchema = z.object({
+  text: z.string(),
+});
+
+export const QuestionSchema = z.object({
+  text: z.string(),
+  options: z.array(OptionSchema),
+});
+
+export const PollSchema = z.object({
+  title: z.string(),
+  description: z.string(),
+  category: z.enum([ "MEETING",
+  "ELECTION",
+  "INQUIRY",
+  "EVENT",
+  "OTHER"], {
+    required_error: "Please specify the category",
+  }),
+  startDate: z.string(),
+  endDate: z.string(),
+  status: z.enum(["ACTIVE", "INACTIVE"]), // Assuming Status is an enum with values ACTIVE and INACTIVE
+  questions: z.array(QuestionSchema),
+}).refine((data) => {
+  // Ensure endDate is not in the past
+  const now = new Date();
+  const endDate = data.endDate ? new Date(data.endDate) : null;
+  if (endDate && endDate < now) {
+    return false;
+  }
+
+  // Ensure startDate is not after endDate
+  const startDate = data.startDate ? new Date(data.startDate) : null;
+  if (startDate && endDate && startDate > endDate) {
+    return false;
+  }
+
+  return true;
+}, {
+  // Custom error message
+  message: "End date cannot be in the past, and start date must be before end date.",
+});
+
+export const newEventSchema = z.object({
+  title: z.string(),
+  date: z.string(),
+  venue: z.string(),
+  description: z.string(),
+})

@@ -34,10 +34,14 @@ export const updateProperty = async (
     where: { id: propertyId },
     update: {
       ...values,
+      latitude: parseFloat(values.latitude),
+      longitude: parseFloat(values.longitude),
       purchaseDate: new Date(values.purchaseDate),
     },
     create: {
       ...values,
+      latitude: parseFloat(values.latitude),
+      longitude: parseFloat(values.longitude),
       purchaseDate: new Date(values.purchaseDate),
     },
   });

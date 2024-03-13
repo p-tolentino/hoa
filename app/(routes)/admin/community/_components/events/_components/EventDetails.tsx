@@ -3,47 +3,50 @@ import { Separator } from '@/components/ui/separator'
 import { Box, Flex, Stack, Text } from '@chakra-ui/react'
 import React from 'react'
 
-export default function EventDetails () {
+// Adding a prop type for EventDetails props
+interface EventDetailsProps {
+  title: string
+  date: string
+  venue: string
+  description: string
+}
+
+export default function EventDetails ({
+  title,
+  date,
+  venue,
+  description
+}: EventDetailsProps) {
   return (
-    <div className='px-10'>
-      <Separator className='mt-8 mb-5' />
+    <div>
+      <Separator className='mt-5 mb-5' />
       <Box>
-        <Text as='span' fontSize='xl' fontWeight='bold'>
-          Event Title
+        <Text as='span' fontSize='lg' fontWeight='bold'>
+          {title}
         </Text>
-        <ScrollArea className='h-[120px] rounded-md'>
-          <Stack spacing={3} p={4}>
+        <ScrollArea className='h-[200px] rounded-md'>
+          <Stack spacing={5} p={4}>
             <Flex gap={20}>
               <Box>
-                <Text as='span' fontWeight='semibold'>
-                  Date:{' '}
+                <Text as='span' fontWeight='semibold' mr='5px'>
+                  Date:
                 </Text>
-                <Text as='span'>MM/DD/YYYY</Text>
+                <Text as='span' fontFamily='font.body'>
+                  {date}
+                </Text>
               </Box>
               <Box>
-                <Text as='span' fontWeight='semibold'>
-                  Venue:{' '}
+                <Text as='span' fontWeight='semibold' mr='5px'>
+                  Venue:
                 </Text>
-                <Text as='span'>Lorem ipsum</Text>
+                <Text as='span' fontFamily='font.body'>
+                  {venue}
+                </Text>
               </Box>
             </Flex>
             <Box pr='2rem'>
               <Text fontWeight='semibold'>Event Description:</Text>
-              <Text>
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                Praesentium atque aliquid harum, quo sapiente nihil cupiditate
-                doloremque reprehenderit iste laboriosam minus voluptatum et.
-                Tenetur, dolorum cupiditate dicta asperiores architecto eveniet
-                magnam provident similique hic sed sequi impedit quisquam error,
-                a incidunt consectetur nihil vitae porro ullam voluptatem ipsum!
-                Natus voluptas, non dignissimos perferendis aspernatur eveniet
-                sapiente minima ea ipsa deserunt iure assumenda architecto quas
-                impedit nostrum? Et inventore nemo, id veniam cum obcaecati
-                autem. Dolor, eius doloribus error repellat non, eligendi
-                voluptatem, repellendus eaque quisquam exercitationem rerum
-                aliquam aperiam? Placeat quaerat cupiditate alias optio
-                laboriosam suscipit voluptatum eligendi nobis saepe.
-              </Text>
+              <Text fontFamily='font.body'>{description}</Text>
             </Box>
           </Stack>
         </ScrollArea>

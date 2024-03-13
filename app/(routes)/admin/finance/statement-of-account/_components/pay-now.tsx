@@ -3,7 +3,7 @@
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -104,7 +104,7 @@ const PaymentFormSchema = z.object({
       message: "Required",
     }),
   mayaNumber: z
-    .number({
+    .string({
       required_error: "Valid account number required.",
     })
     .min(11, {
@@ -143,6 +143,47 @@ export const PayNow = ({
       paymentType: "",
     },
   });
+
+  useEffect(() => {
+    const paymentType = form.getValues("paymentType");
+    if (paymentType === "card") {
+      form.setValue("cardHolderName", "");
+      form.setValue("cardNumber", "");
+      form.setValue("monthExpiry", "");
+      form.setValue("yearExpiry", "");
+      form.setValue("code", "");
+
+      form.setValue("gcashNumber", "12345678900");
+      form.setValue("gcashPin", "4321");
+
+      form.setValue("mayaNumber", "12345678900");
+      form.setValue("mayaPassword", "432100");
+    } else if (paymentType === "gcash") {
+      form.setValue("gcashNumber", "");
+      form.setValue("gcashPin", "");
+
+      form.setValue("cardHolderName", "First M. Last");
+      form.setValue("cardNumber", "1111222233334444");
+      form.setValue("monthExpiry", "07");
+      form.setValue("yearExpiry", "77");
+      form.setValue("code", "321");
+
+      form.setValue("mayaNumber", "12345678900");
+      form.setValue("mayaPassword", "432100");
+    } else if (paymentType === "maya") {
+      form.setValue("mayaNumber", "");
+      form.setValue("mayaPassword", "");
+
+      form.setValue("cardHolderName", "First M. Last");
+      form.setValue("cardNumber", "1111222233334444");
+      form.setValue("monthExpiry", "07");
+      form.setValue("yearExpiry", "77");
+      form.setValue("code", "321");
+
+      form.setValue("gcashNumber", "12345678900");
+      form.setValue("gcashPin", "4321");
+    }
+  }, [form.watch("paymentType")]);
 
   const onSubmit = async () => {
     startTransition(() => {
@@ -345,6 +386,7 @@ export const PayNow = ({
                         <FormDescription>GCash Mobile Number</FormDescription>
                         <FormControl>
                           <Input
+                            type="number"
                             disabled={isPending}
                             placeholder="ex. 09XX-XXX-XXXX"
                             {...field}
@@ -362,6 +404,7 @@ export const PayNow = ({
                         <FormDescription>GCash MPIN</FormDescription>
                         <FormControl>
                           <Input
+                            className="text-2xl"
                             type="password"
                             disabled={isPending}
                             placeholder="****"
@@ -387,6 +430,7 @@ export const PayNow = ({
                         </FormDescription>
                         <FormControl>
                           <Input
+                            type="number"
                             disabled={isPending}
                             placeholder="ex. 09XX-XXX-XXXX"
                             {...field}
@@ -404,6 +448,7 @@ export const PayNow = ({
                         <FormDescription>Password</FormDescription>
                         <FormControl>
                           <Input
+                            className="text-2xl"
                             type="password"
                             disabled={isPending}
                             placeholder="********"
@@ -419,13 +464,14 @@ export const PayNow = ({
             </div>
             <DialogFooter>
               <Button
-                disabled={isPending}
+                disabled={isPending || !form.watch("paymentType")}
                 className="w-full text-black bg-yellow-400 end hover:bg-yellow-500"
                 type="submit"
-                onClick={() => onSubmit()}
               >
                 {isPending ? (
                   <Spinner />
+                ) : form.watch("paymentType") === "" ? (
+                  `Select payment method first`
                 ) : (
                   `Pay Amount of ₱ ${formatNumber(Number(amountToPay))}`
                 )}

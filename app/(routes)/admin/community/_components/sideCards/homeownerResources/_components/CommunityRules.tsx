@@ -19,32 +19,36 @@ import { Link, Text } from '@chakra-ui/react'
 export function CommunityRules () {
   const rules = [
     {
-      title: 'Rule Title',
+      title: 'Respectful Communication',
       description:
-        'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Cupiditate veritatis optio corporis voluptatibus velit quas voluptates praesentium, doloribus id vitae.'
+        'Always communicate with respect towards others, regardless of differing opinions. Personal attacks, hate speech, or discriminatory language will not be tolerated.'
     },
     {
-      title: 'Rule Title',
+      title: 'Relevant Content',
       description:
-        'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Cupiditate veritatis optio corporis voluptatibus velit quas voluptates praesentium, doloribus id vitae.'
+        'Keep discussions relevant to the specific forum topic. For instance, business-related content should be posted in the Business Forum, and event-related discussions should go in the Events section.'
     },
     {
-      title: 'Rule Title',
+      title: 'No Spam or Advertising',
       description:
-        'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Cupiditate veritatis optio corporis voluptatibus velit quas voluptates praesentium, doloribus id vitae.'
+        'Avoid posting unsolicited advertisements or spam. The community platform is for discussion and information sharing, not commercial promotion unless explicitly allowed in certain sections.'
     },
     {
-      title: 'Rule Title',
+      title: 'Privacy and Confidentiality',
       description:
-        'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Cupiditate veritatis optio corporis voluptatibus velit quas voluptates praesentium, doloribus id vitae.'
+        'Respect the privacy of others. Do not share personal information without consent, and always be mindful of the confidentiality of discussions when required.'
     },
     {
-      title: 'Rule Title',
+      title: 'Constructive Polls and Surveys',
       description:
-        'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Cupiditate veritatis optio corporis voluptatibus velit quas voluptates praesentium, doloribus id vitae.'
+        'When creating polls and surveys, ensure they are constructed in a manner that is respectful, inclusive, and beneficial for community insights. Avoid leading questions or biased options.'
+    },
+    {
+      title: 'Event Participation Etiquette',
+      description:
+        'For community events, whether online or in-person, participants are expected to be courteous, arrive on time, and contribute positively to the event’s objectives.'
     }
-  ]
-
+  ];
   const title = 'Community Rules'
   const description =
     "To continue, please read the following Community Rules carefully. Understanding and agreeing to these rules will contribute to a healthy community engagement platform within the Homeowners' Association."

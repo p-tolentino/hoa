@@ -63,6 +63,31 @@ export const addVehicle = async (values: z.infer<typeof VehicleSchema>) => {
   return { success: "Vehicle added successfully" };
 };
 
+export const updateGovtId = async (govtId: string) => {
+  const user = await currentUser();
+
+  // No Current User
+  if (!user) {
+    return { error: "Unauthorized" };
+  }
+
+  // Validation if user is in database (not leftover session)
+  const dbUser = await getUserById(user.id);
+
+  if (!dbUser) {
+    return { error: "Unauthorized" };
+  }
+
+  await db.personalInfo.update({
+    where: { userId: dbUser.id },
+    data: {
+      govtId,
+    },
+  });
+
+  return { success: "Member approved successfully" };
+};
+
 export const updateUserStatus = async (id: string) => {
   const user = await currentUser();
 
@@ -79,7 +104,7 @@ export const updateUserStatus = async (id: string) => {
   }
 
   await db.user.update({
-    where: { id: id },
+    where: { id },
     data: {
       status: Status.ACTIVE,
     },

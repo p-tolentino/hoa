@@ -18,11 +18,31 @@ import {
 } from '@/components/ui/select'
 import React from 'react'
 import { ScrollArea } from '@radix-ui/react-scroll-area'
+import { useState } from 'react'
 
 import BusinessPosts from './_components/BusinessPost'
 import CreateBusinessPostButton from './_components/CreateBusinessPostButton'
+import { getPosts } from '@/server/data/posts'
+import { Post, User } from '@prisma/client'
 
-export default function BusinessForumCard () {
+interface PostProps {
+  posts: Post[]
+  user: string
+}
+
+export default function BusinessForumCard ({ posts, user }: PostProps) {
+  const [selectedCategory, setSelectedCategory] = useState('showAll')
+  const [searchInput, setSearchInput] = useState('')
+
+  const filteredPosts = posts
+    .filter(
+      post =>
+        selectedCategory === 'showAll' || post.category === selectedCategory
+    )
+    .filter(post =>
+      post.title.toLowerCase().includes(searchInput.toLowerCase())
+    )
+
   return (
     <>
       <Card className='h-[70vh]'>
@@ -45,10 +65,14 @@ export default function BusinessForumCard () {
               w='30%'
               type='string'
               placeholder='Search by Business Title'
+              value={searchInput}
+              onChange={e => setSearchInput(e.target.value)}
             />
             <Spacer />
             {/* Select category to show */}
-            <Select /*value={selectedCategoryFilter} onValueChange={(value) => setSelectedCategoryFilter(value)}*/
+            <Select
+              value={selectedCategory}
+              onValueChange={setSelectedCategory}
             >
               <SelectTrigger className='w-[250px]'>
                 <SelectValue placeholder='Show All' />
@@ -58,13 +82,13 @@ export default function BusinessForumCard () {
                   <SelectItem value='showAll' className='font-semibold'>
                     Show All
                   </SelectItem>
-                  <SelectItem value='foodAndDrink'>Food and Drink</SelectItem>
-                  <SelectItem value='clothing'>Clothing</SelectItem>
-                  <SelectItem value='householdItems'>
+                  <SelectItem value='FOODANDDRINK'>Food and Drink</SelectItem>
+                  <SelectItem value='CLOTHING'>Clothing</SelectItem>
+                  <SelectItem value='HOUSEHOLDITEMS'>
                     Household Items
                   </SelectItem>
-                  <SelectItem value='homeServices'>HomeServices</SelectItem>
-                  <SelectItem value='other'>Other</SelectItem>
+                  <SelectItem value='HOMESERVICES'>HomeServices</SelectItem>
+                  <SelectItem value='OTHER'>Other</SelectItem>
                 </SelectGroup>
               </SelectContent>
             </Select>
@@ -74,7 +98,7 @@ export default function BusinessForumCard () {
           <ScrollArea
             style={{ maxHeight: 'calc(70vh - 180px)', overflowY: 'auto' }}
           >
-            <BusinessPosts />
+            <BusinessPosts posts={filteredPosts} user={user} />
             {/* Like and Dislike buttons in all posts reflect the same action since a map function is used to reflect a post for each nature of business  */}
           </ScrollArea>
         </CardContent>

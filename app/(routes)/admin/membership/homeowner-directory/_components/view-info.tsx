@@ -32,6 +32,7 @@ import { Separator } from "@/components/ui/separator";
 
 import { FaHouseUser as HouseMember } from "react-icons/fa6";
 import { getHouseMembers } from "@/server/actions/user-info";
+import Image from "next/image";
 
 interface ViewInfoProps {
   data: HomeownerColumn;
@@ -199,16 +200,19 @@ export const ViewInfo: React.FC<ViewInfoProps> = ({ data }) => {
                           houseMembers?.map(
                             (member) =>
                               member.userId !== data.id && (
-                                <>
+                                <div key={member.id}>
                                   <div className="flex justify-between">
                                     <div key={member.id} className="flex">
                                       <HouseMember className="mt-2 mr-2" />{" "}
                                       {`${member?.firstName} ${member?.lastName}`}
                                     </div>
-                                    <div className="capitalize">{`${member?.relation?.toLowerCase()}`}</div>
+                                    <div className="capitalize">
+                                      {`${member?.relation?.toLowerCase()}`} (
+                                      {`${member?.type}`})
+                                    </div>
                                   </div>
                                   <Separator className="my-2" />
-                                </>
+                                </div>
                               )
                           )
                         ) : (
@@ -219,6 +223,27 @@ export const ViewInfo: React.FC<ViewInfoProps> = ({ data }) => {
                       </div>
                     </ScrollArea>
                   </Text>
+                </Box>
+                <Box w="100%" h="100%" p="5">
+                  <Heading size={"md"} fontFamily={"font.heading"}>
+                    Government-Issued ID
+                  </Heading>
+                  <div className="p-4">
+                    {data.govtId.length ? (
+                      <div>
+                        <Image
+                          src={data.govtId}
+                          alt="image"
+                          width={2000}
+                          height={2000}
+                        />
+                      </div>
+                    ) : (
+                      <span className="text-gray-400">
+                        No government ID uploaded yet.
+                      </span>
+                    )}
+                  </div>
                 </Box>
               </Box>
             </Stack>

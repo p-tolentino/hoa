@@ -21,7 +21,6 @@ import { BsNewspaper } from "react-icons/bs";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { LogoutButton } from "../auth/logout-button";
 import { Notification, UserRole } from "@prisma/client";
-
 import { useState, useEffect } from "react";
 import {
   Flex,
