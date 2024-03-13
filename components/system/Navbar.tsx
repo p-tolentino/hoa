@@ -37,7 +37,7 @@ export const Navbar = () => {
   const navRoutes = [
     {
       label: "About",
-      href: "/#about",
+      href: "/",
       active: pathname === `/#about`,
       requireAuth: false,
     },
