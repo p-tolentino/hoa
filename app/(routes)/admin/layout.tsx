@@ -33,9 +33,9 @@ const AdminLayout = async ({ children }: { children: React.ReactNode }) => {
   //       <CardContent className="space-y-4">
   //         <FormError message="You do not have permission to view this page." />
   //         <div className="flex items-center justify-center">
-  //           <Link href="/user">
+  //           <Link href="/user/membership">
   //             <Button className="text-black bg-yellow-400 hover:bg-yellow-500 focus:bg-yellow-600">
-  //               ← Return to Dashboard
+  //               ← Return to Homepage
   //             </Button>
   //           </Link>
   //         </div>

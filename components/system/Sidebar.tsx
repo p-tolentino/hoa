@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import {
   FiBriefcase,
   FiCalendar,
+  FiDollarSign,
   FiUserCheck,
   FiUsers,
   FiMenu,
@@ -48,9 +49,9 @@ export function Sidebar({
   const sidebarRoutes = [
     {
       label: "Dashboard",
-      href: `/${user?.role.toLowerCase()}`,
+      href: `/${user?.role.toLowerCase()}/dashboard`,
       icon: Dashboard,
-      active: pathname === `/${user?.role.toLowerCase()}`,
+      active: pathname === `/${user?.role.toLowerCase()}/dashboard`,
     },
     {
       label: "Membership",

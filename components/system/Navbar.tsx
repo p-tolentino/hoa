@@ -59,8 +59,8 @@ export const Navbar = () => {
     },
     {
       label: "Dashboard",
-      href: `/${user?.role.toLowerCase()}`,
-      active: pathname === `/${user?.role.toLowerCase()}`,
+      href: `/${user?.role.toLowerCase()}/dashboard`,
+      active: pathname === `/${user?.role.toLowerCase()}/dashboard`,
       requireAuth: true,
     },
   ];

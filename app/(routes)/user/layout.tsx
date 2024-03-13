@@ -28,7 +28,7 @@ const UserLayout = ({ children }: { children: React.ReactNode }) => {
 
   // TODO: REVERT AFTER ALL DONE
   // if (isAdmin) {
-  //   router.replace("/admin");
+  //   router.replace("/admin/dashboard");
   // }
 
   // return !isAdmin && !existingUserInfo && !isMemberInfoPath ? (
