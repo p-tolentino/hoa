@@ -120,7 +120,7 @@ export const MapViewInfo: React.FC<MapViewInfoProps> = ({
             users={users}
           />
         </Center>
-        <Box fontFamily={"font.body"}>
+        <Box>
           <Form {...form}>
             <form>
               <FormField
@@ -165,10 +165,10 @@ export const MapViewInfo: React.FC<MapViewInfoProps> = ({
             spacing={"2rem"}
           >
             <Box>
-              <Heading size={"md"} fontFamily={"font.heading"}>
+              <Heading size={"sm"} fontFamily={"font.heading"}>
                 Household Members
               </Heading>
-              <Text fontSize={"lg"} fontFamily={"font.body"} lineHeight={2}>
+              <Text fontSize={"sm"} fontFamily={"font.body"} lineHeight={2}>
                 <ScrollArea className="h-40 border rounded-md">
                   <div className="p-4">
                     {occupants?.length !== 0 ? (
@@ -198,11 +198,11 @@ export const MapViewInfo: React.FC<MapViewInfoProps> = ({
             </Box>
             <Box className="flex justify-between">
               <Box>
-                <Heading size={"md"} fontFamily={"font.heading"}>
+                <Heading size={"sm"} fontFamily={"font.heading"}>
                   Occupancy Status
                 </Heading>
                 <Text
-                  fontSize={"lg"}
+                  fontSize={"md"}
                   fontFamily={"font.body"}
                   lineHeight={2}
                   fontWeight="800"

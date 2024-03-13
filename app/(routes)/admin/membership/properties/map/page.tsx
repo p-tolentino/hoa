@@ -5,6 +5,8 @@ import { Heading } from "@/components/ui/heading";
 import { getAllUsers } from "@/server/data/user";
 import { getAllPropertyDocuments } from "@/server/data/property-document";
 import { Separator } from "@/components/ui/separator";
+import { Button } from "@chakra-ui/react";
+import Link from "next/link";
 
 const Settings = async () => {
   const user = await currentUser();
@@ -16,16 +18,21 @@ const Settings = async () => {
   }
 
   return (
-    <div className="flex-row">
-      <Heading
-        title="Browse Properties"
-        description="Browse properties using Google Maps"
-      />
+    <>
+      <div className="flex items-center justify-between">
+        <Heading
+          title="Browse Properties"
+          description="Browse properties using Google Maps"
+        />
+        <Button size="sm" as={Link} href="/admin/membership">
+          Go Back
+        </Button>
+      </div>
       <Separator className="mt-2" />
       <div className="space-y-4">
         <MapViewInfo properties={properties} users={allUsers} />
       </div>
-    </div>
+    </>
   );
 };
 

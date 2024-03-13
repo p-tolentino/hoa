@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState, useTransition } from "react";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@chakra-ui/react";
 import {
   Form,
   FormControl,
@@ -79,12 +79,12 @@ export const AddProperty = () => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="text-black bg-yellow-400 end hover:bg-yellow-500 focus:bg-yellow-600">
+        <Button size="sm" colorScheme="yellow">
           <Plus className="w-4 h-4 mr-2" />
           New Property
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="md:min-w-[500px]">
         <DialogHeader>
           <DialogTitle>Add New Property</DialogTitle>
           <DialogDescription>
@@ -212,7 +212,8 @@ export const AddProperty = () => {
             <DialogFooter>
               <Button
                 disabled={isPending}
-                className="text-black bg-yellow-400 end hover:bg-yellow-500 focus:bg-yellow-600"
+                size="sm"
+                colorScheme="yellow"
                 type="submit"
               >
                 Add Property
