@@ -175,11 +175,11 @@ export const RegisterForm = () => {
           </Flex>
           <Social />
           <Flex justify="center" alignItems="center">
-            <span className="pt-5 text-sm">
+            <span className="pt-5 text-xs">
               Already have an account?
               <Link href="/login">
-                <Button className="sm" variant="link">
-                  Login →
+                <Button className="sm text-xs" variant="link">
+                  Sign in →
                 </Button>
               </Link>
             </span>

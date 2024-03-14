@@ -142,7 +142,7 @@ export const Contact = () => {
               <Button
                 as="a"
                 href={
-                  "mailto:info@systemname.com?subject=" +
+                  "mailto:hoas.is@gmail.com?subject=" +
                   subject +
                   "&body=" +
                   message +

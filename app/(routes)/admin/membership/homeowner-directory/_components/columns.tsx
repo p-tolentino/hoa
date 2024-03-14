@@ -21,6 +21,7 @@ export type HomeownerColumn = {
   phoneNumber: string;
   birthDay: string;
   address: string;
+  govtId: string;
   role: string;
   bio: string;
   image: string;

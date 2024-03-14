@@ -11,3 +11,16 @@ export const getAllProperties = async () => {
     return null;
   }
 };
+
+export const getProperty = async (value: string) => {
+  try {
+    const info = await db.property.findUnique({
+      where: { id: value },
+    });
+
+    return info;
+  } catch {
+    return null;
+  }
+};
+

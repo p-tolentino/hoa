@@ -23,6 +23,7 @@ import { SettingsForm } from "./_components/settings-form";
 import { getAllProperties } from "@/server/data/property";
 import AddVehicle from "./_components/add-vehicle";
 import { getVehicleById } from "@/server/data/user-info";
+import UploadCard from "@/components/uploading/upload-card";
 
 const Settings = async () => {
   const user = await currentUser();
@@ -94,9 +95,18 @@ const Settings = async () => {
               <SettingsForm initialData={user} properties={properties} />
             </div>
             <Separator className="my-5" />
-            <Flex gap="5rem">
-              <AddVehicle initialData={user} vehicles={vehicles} />
-            </Flex>
+            <div className="flex justify-between">
+              <Flex gap="5rem">
+                <AddVehicle initialData={user} vehicles={vehicles} />
+              </Flex>
+              <Flex gap="5rem">
+                <UploadCard
+                  title="Government-Issued ID"
+                  description="Upload Valid ID to confirm identity and proof of ownership for property selected"
+                  idUrl={user.info.govtId || ""}
+                />
+              </Flex>
+            </div>
           </div>
         </CardContent>
       </Card>

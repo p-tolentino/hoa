@@ -5,13 +5,24 @@ import { ViolationLettersAndNoticesColumn } from "./_components/columns";
 import { getAllViolations } from "@/server/data/violation";
 import { getAllViolationTypes } from "@/server/data/violation-type";
 import { format } from "date-fns";
+import { currentUser } from "@/lib/auth";
 
 export default async function ViolationLettersAndNotices() {
+  const user = await currentUser();
+
+  if (!user) {
+    return null;
+  }
+
   const lettersNotices = await getAllLettersAndNotices();
 
   if (!lettersNotices) {
     return null;
   }
+
+  const orderedLettersNotices = lettersNotices.sort(
+    (a: any, b: any) => b.createdAt - a.createdAt
+  );
 
   const violations = await getAllViolations();
 
@@ -25,8 +36,8 @@ export default async function ViolationLettersAndNotices() {
     return null;
   }
 
-  const formattedData: ViolationLettersAndNoticesColumn[] = lettersNotices.map(
-    (item) => {
+  const formattedData: ViolationLettersAndNoticesColumn[] =
+    orderedLettersNotices.map((item) => {
       const violation = violations.find(
         (violation) => violation.id === item.idToLink
       );
@@ -50,13 +61,16 @@ export default async function ViolationLettersAndNotices() {
         violation: violation!!,
         violationType: violationType!!,
       };
-    }
-  );
+    });
 
   return (
     <div>
       <div className="flex-1 space-y-4">
-        <ViolationLettersAndNoticesClient data={formattedData} />
+        <ViolationLettersAndNoticesClient
+          data={formattedData.filter((data) => {
+            return user.id === data.recipient;
+          })}
+        />
       </div>
     </div>
   );

@@ -32,13 +32,37 @@ export const createAssocDue = async () => {
   await db.userTransaction.create({
     data: {
       addressId: dbUser?.info?.address!!,
-      purpose: "assocDues",
+      purpose: "Association Dues",
       description: "Monthly Dues",
       amount: hoa.fixedDue!!,
     },
   });
 
   return { success: "Association Dues billed successfully" };
+};
+
+export const newUserTransaction = async (values: any) => {
+  const user = await currentUser();
+
+  // No Current User
+  if (!user) {
+    return { error: "Unauthorized" };
+  }
+
+  // Validation if user is in database (not leftover session)
+  const dbUser = await getUserById(user.id);
+
+  if (!dbUser) {
+    return { error: "Unauthorized" };
+  }
+
+  await db.userTransaction.create({
+    data: {
+      ...values,
+    },
+  });
+
+  return { success: "Transaction created successfully" };
 };
 
 export const updateTransaction = async (transactionId: string) => {

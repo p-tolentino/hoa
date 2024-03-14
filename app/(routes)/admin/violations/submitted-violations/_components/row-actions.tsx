@@ -29,13 +29,16 @@ export const RowActions: React.FC<RowActionProps> = ({ data }) => {
   return (
     <Wrap>
       <WrapItem>
-        <Button
-          size="sm"
-          onClick={handleButtonClick}
-          isDisabled={isButtonClicked}
-        >
-          Follow up
-        </Button>
+        {(data.status === "Pending" || data.status === "Under Review") && (
+          <Button
+            size="sm"
+            fontFamily="font.body"
+            onClick={handleButtonClick}
+            isDisabled={isButtonClicked}
+          >
+            Follow up
+          </Button>
+        )}
       </WrapItem>
     </Wrap>
   );

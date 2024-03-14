@@ -15,11 +15,11 @@ import {
   RadioGroup,
   Radio
 } from '@chakra-ui/react'
-import Link from 'next/link'
 import { useState } from 'react'
 import { Separator } from '@/components/ui/separator'
 import { Heading } from '@/components/ui/heading'
 import { AddIcon } from '@chakra-ui/icons'
+import Link from 'next/link'
 
 export default function ReportForm () {
   const title = 'File a Dispute'
@@ -143,7 +143,7 @@ export default function ReportForm () {
     <>
       <Flex justifyContent='space-between'>
         <Heading title={title} description={description} />
-        <Button size='sm' colorScheme='gray' as={Link} href='/admin/disputes'>
+        <Button size='sm' as={Link} href='/admin/disputes'>
           Go Back
         </Button>
       </Flex>

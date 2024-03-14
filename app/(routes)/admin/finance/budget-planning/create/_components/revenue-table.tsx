@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from 'react'
+"use client";
+
+import React, { useEffect, useState } from "react";
 import {
   Table,
   Thead,
@@ -8,193 +10,187 @@ import {
   Td,
   Input,
   VStack,
-  Button
-} from '@chakra-ui/react'
-import { AddIcon, DeleteIcon } from '@chakra-ui/icons'
+} from "@chakra-ui/react";
+import { FormField, FormMessage } from "@/components/ui/form";
+import { useFormContext } from "react-hook-form";
+import { NewBudgetPlanSchema } from "@/server/schemas";
+import * as z from "zod";
 
-interface TableRow {
-  id: number
-  revenue: string
-  currentyearbudget: number
-  yeartodateactuals: number
-}
+const formatNumber = (value: number) => {
+  return value.toLocaleString("en-US", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+};
 
-const initialData: TableRow[] = [
-  {
-    id: 1,
-    revenue: 'Fundraising',
-    currentyearbudget: 25,
-    yeartodateactuals: 10
-  },
-  {
-    id: 2,
-    revenue: 'Association Dues',
-    currentyearbudget: 25,
-    yeartodateactuals: 10
-  },
-  {
-    id: 3,
-    revenue: 'Foundations',
-    currentyearbudget: 25,
-    yeartodateactuals: 10
-  }
-]
-
-const RevenueTable: React.FC = () => {
-  const [data, setData] = useState<TableRow[]>(initialData)
-  const [totals, setTotals] = useState<TableRow>({
-    id: 0,
-    revenue: 'Total Yearly Revenue',
-    currentyearbudget: 0,
-    yeartodateactuals: 0
-  })
+export const RevenueTable = () => {
+  const form = useFormContext<z.infer<typeof NewBudgetPlanSchema>>();
+  const [total, setTotal] = useState<number | null>(null);
 
   useEffect(() => {
-    updateTotals()
-  }, [data])
+    const assocDues =
+      parseFloat(form.getValues("cybAssocDues").toString()) || 0;
+    const tollFees = parseFloat(form.getValues("cybToll").toString()) || 0;
+    const facilityRent =
+      parseFloat(form.getValues("cybFacility").toString()) || 0;
+    const constructFees =
+      parseFloat(form.getValues("cybConstruction").toString()) || 0;
+    const carStickers =
+      parseFloat(form.getValues("cybCarSticker").toString()) || 0;
+    const otherRev = parseFloat(form.getValues("cybOtherRev").toString()) || 0;
 
-  const updateTotals = () => {
-    const total: TableRow = {
-      id: 0,
-      revenue: 'Total Yearly Revenue',
-      currentyearbudget: data.reduce(
-        (sum, row) => sum + parseFloat(row.currentyearbudget.toString()) || 0,
-        0
-      ),
-      yeartodateactuals: data.reduce(
-        (sum, row) => sum + parseFloat(row.yeartodateactuals.toString()) || 0,
-        0
-      )
-    }
-    setTotals(total)
-  }
+    const totalRev =
+      assocDues +
+      tollFees +
+      facilityRent +
+      constructFees +
+      carStickers +
+      otherRev;
 
-  const handleRevenueChange = (id: number, newRevenue: string) => {
-    setData(prevData => {
-      const newData = prevData.map(row =>
-        row.id === id ? { ...row, revenue: newRevenue } : row
-      )
-      updateTotals()
-      return newData
-    })
-  }
-
-  const handleCurrentYearBudgetChange = (
-    id: number,
-    newCurrentYearBudget: number
-  ) => {
-    setData(prevData =>
-      prevData.map(row =>
-        row.id === id
-          ? { ...row, currentyearbudget: newCurrentYearBudget }
-          : row
-      )
-    )
-  }
-
-  const handleYearToDateActualsChange = (
-    id: number,
-    newYearToDateActuals: number
-  ) => {
-    setData(prevData =>
-      prevData.map(row =>
-        row.id === id
-          ? { ...row, yeartodateactuals: newYearToDateActuals }
-          : row
-      )
-    )
-  }
-
-  const handleAddRow = () => {
-    const newRow: TableRow = {
-      id: data.length + 1,
-      revenue: '',
-      currentyearbudget: 0,
-      yeartodateactuals: 0
-    }
-    setData(prevData => [...prevData, newRow])
-  }
-
-  const handleDeleteRow = (id: number) => {
-    setData(prevData => prevData.filter(row => row.id !== id))
-  }
+    setTotal(totalRev);
+    form.setValue("cybTotalYearlyRev", totalRev);
+  }, [
+    [
+      form.watch("cybAssocDues"),
+      form.watch("cybToll"),
+      form.watch("cybFacility"),
+      form.watch("cybConstruction"),
+      form.watch("cybCarSticker"),
+      form.watch("cybOtherRev"),
+    ],
+  ]);
 
   return (
-    <VStack>
-      <Table variant='simple' size='xs' mt='20px'>
-        <Thead bgColor='brand.300'>
-          <Tr h='3rem'>
-            <Th p='1rem' fontSize='sm' fontFamily='font.heading' width='50%'>
+    <VStack mt="1rem">
+      <Table variant="simple" size="xs" mt="20px" w="60vw">
+        <Thead bgColor="brand.300">
+          <Tr h="3rem" fontSize="xs">
+            <Th p="1rem" fontFamily="font.heading">
               Revenue
             </Th>
-            <Th p='1rem' fontSize='xs' fontFamily='font.heading'>
-              Current Year Budget
-            </Th>
-            <Th p='1rem' fontSize='xs' fontFamily='font.heading'>
-              Year to Date Actuals
+            <Th p="1rem" fontFamily="font.heading" w="300px" textAlign="right">
+              Current Year Budget (CYB)
             </Th>
           </Tr>
         </Thead>
         <Tbody>
-          {data.map(row => (
-            <Tr key={row.id} fontFamily='font.body'>
-              <Td>
-                <Input
-                  defaultValue={row.revenue}
-                  onChange={value => handleRevenueChange(row.id, String(value))}
-                ></Input>
-              </Td>
-              <Td>
-                <Input
-                  textAlign='right'
-                  defaultValue={row.currentyearbudget}
-                  onChange={value =>
-                    handleCurrentYearBudgetChange(row.id, Number(value))
-                  }
-                ></Input>
-              </Td>
-              <Td>
-                <Input
-                  textAlign='right'
-                  defaultValue={row.yeartodateactuals}
-                  onChange={value =>
-                    handleYearToDateActualsChange(row.id, Number(value))
-                  }
-                ></Input>
-              </Td>
-              <Td>
-                <Button
-                  onClick={() => handleDeleteRow(row.id)}
-                  colorScheme='red'
-                  size='sm'
-                  ml='1rem'
-                >
-                  <DeleteIcon boxSize={3} />
-                </Button>
-              </Td>
-            </Tr>
-          ))}
-          <Tr h='3rem' key='total' fontFamily='font.body' bg='brand.400'>
-            <Td pl='1rem'>Total Yearly Revenue</Td>
-            <Td pr='1rem' textAlign='right'>
-              {totals.currentyearbudget}
+          <Tr fontFamily="font.body">
+            <Td px="1rem">Association Dues</Td>
+            <Td px="2rem">
+              <FormField
+                control={form.control}
+                name="cybAssocDues"
+                render={({ field }) => (
+                  <>
+                    <Input
+                      type="number"
+                      onChange={(e) =>
+                        field.onChange(parseFloat(e.target.value))
+                      }
+                      value={field.value}
+                      textAlign="right"
+                    />
+                    <FormMessage />
+                  </>
+                )}
+              />
             </Td>
-            <Td pr='1rem' textAlign='right'>
-              {totals.yeartodateactuals}
+          </Tr>
+          <Tr fontFamily="font.body">
+            <Td px="1rem">Toll Fees</Td>
+            <Td px="2rem">
+              <FormField
+                control={form.control}
+                name="cybToll"
+                render={({ field }) => (
+                  <Input
+                    type="number"
+                    textAlign="right"
+                    onChange={(e) => field.onChange(parseFloat(e.target.value))}
+                    value={field.value}
+                  />
+                )}
+              />
+            </Td>
+          </Tr>
+          <Tr fontFamily="font.body">
+            <Td px="1rem">Facility Rentals</Td>
+            <Td px="2rem">
+              <FormField
+                control={form.control}
+                name="cybFacility"
+                render={({ field }) => (
+                  <Input
+                    type="number"
+                    textAlign="right"
+                    onChange={(e) => field.onChange(parseFloat(e.target.value))}
+                    value={field.value}
+                  />
+                )}
+              />
+            </Td>
+          </Tr>
+          <Tr fontFamily="font.body">
+            <Td px="1rem">Renovation and Demolition Fees</Td>
+            <Td px="2rem">
+              <FormField
+                control={form.control}
+                name="cybConstruction"
+                render={({ field }) => (
+                  <Input
+                    type="number"
+                    textAlign="right"
+                    onChange={(e) => field.onChange(parseFloat(e.target.value))}
+                    value={field.value}
+                  />
+                )}
+              />
+            </Td>
+          </Tr>
+          <Tr fontFamily="font.body">
+            <Td px="1rem">Car Sticker Receipts</Td>
+            <Td px="2rem">
+              <FormField
+                control={form.control}
+                name="cybCarSticker"
+                render={({ field }) => (
+                  <Input
+                    type="number"
+                    textAlign="right"
+                    onChange={(e) => field.onChange(parseFloat(e.target.value))}
+                    value={field.value}
+                  />
+                )}
+              />
+            </Td>
+          </Tr>
+          <Tr fontFamily="font.body">
+            <Td px="1rem">Other Revenues</Td>
+            <Td px="2rem">
+              <FormField
+                control={form.control}
+                name="cybOtherRev"
+                render={({ field }) => (
+                  <Input
+                    type="number"
+                    textAlign="right"
+                    onChange={(e) => field.onChange(parseFloat(e.target.value))}
+                    value={field.value}
+                  />
+                )}
+              />
+            </Td>
+          </Tr>
+          <Tr h="3rem" key="total" fontFamily="font.body" bg="brand.400">
+            <Td px="1rem">Total Yearly Revenue</Td>
+            <Td px="3rem" textAlign="right" fontSize="xl" fontWeight="bold">
+              {total !== null ? `₱ ${formatNumber(total)}` : ""}
             </Td>
           </Tr>
         </Tbody>
       </Table>
-      <Button
-        onClick={handleAddRow}
-        size='sm'
-        marginTop='4'
-        fontFamily='font.body'
-      >
-        <AddIcon boxSize={3} mr='5px' /> Add Row
-      </Button>
     </VStack>
-  )
-}
+  );
+};
 
-export default RevenueTable
+export default RevenueTable;

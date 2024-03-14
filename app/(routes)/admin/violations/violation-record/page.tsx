@@ -64,6 +64,7 @@ export default async function Violations() {
           : "",
         step: item.step || 1,
         progress: item.progress || "Step 0",
+        letterSent: item.letterSent || false,
       };
     }
   );

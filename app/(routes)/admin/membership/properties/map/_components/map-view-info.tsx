@@ -7,11 +7,8 @@ import {
   Center,
   Heading,
   SimpleGrid,
-  UnorderedList,
-  Link,
   VStack,
   Text,
-  ListItem,
 } from "@chakra-ui/react";
 
 import {
@@ -41,6 +38,8 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 
 import { FaHouseUser as HouseMember } from "react-icons/fa6";
+import Link from "next/link";
+import GMapView from "./gmap";
 
 interface MapViewInfoProps {
   properties: Property[];
@@ -50,6 +49,30 @@ interface MapViewInfoProps {
 const SelectSchema = z.object({
   address: z.string(),
 });
+
+const requiredDocs = [
+  {
+    title: "Intent to Purchase or Letter of Intent",
+  },
+  {
+    title: "Reservation Letter",
+  },
+  {
+    title: "Contract to Sell",
+  },
+  {
+    title: "Letter of Guarantee",
+  },
+  {
+    title: "Deed of Absolute Sale",
+  },
+  {
+    title: "Certification of Title",
+  },
+  {
+    title: "Tax Declaration",
+  },
+];
 
 export const MapViewInfo: React.FC<MapViewInfoProps> = ({
   properties,
@@ -79,8 +102,6 @@ export const MapViewInfo: React.FC<MapViewInfoProps> = ({
         }
       }
     });
-    form.reset();
-    // TODO: Include documents
   }, [form.watch("address")]);
 
   return (
@@ -93,9 +114,13 @@ export const MapViewInfo: React.FC<MapViewInfoProps> = ({
         minChildWidth={{ md: "50vh", lg: "20vh" }}
       >
         <Center bg="lightgrey" minHeight={"200px"} className="rounded-xl">
-          Insert Google Map here
+          <GMapView
+            properties={properties}
+            selectedProperty={form.watch("address")}
+            users={users}
+          />
         </Center>
-        <Box fontFamily={"font.body"}>
+        <Box>
           <Form {...form}>
             <form>
               <FormField
@@ -140,22 +165,27 @@ export const MapViewInfo: React.FC<MapViewInfoProps> = ({
             spacing={"2rem"}
           >
             <Box>
-              <Heading size={"md"} fontFamily={"font.heading"}>
+              <Heading size={"sm"} fontFamily={"font.heading"}>
                 Household Members
               </Heading>
-              <Text fontSize={"lg"} fontFamily={"font.body"} lineHeight={2}>
-                {/* {`${propertyInfo.occupants || ""}`} */}
+              <Text fontSize={"sm"} fontFamily={"font.body"} lineHeight={2}>
                 <ScrollArea className="h-40 border rounded-md">
                   <div className="p-4">
                     {occupants?.length !== 0 ? (
                       occupants?.map((occupant) => (
-                        <>
-                          <div key={occupant.id} className="flex">
-                            <HouseMember className="mt-2 mr-2" />{" "}
-                            {`${occupant?.info?.firstName} ${occupant?.info?.lastName}`}
+                        <div key={occupant.id}>
+                          <div className="flex justify-between">
+                            <div key={occupant.id} className="flex">
+                              <HouseMember className="mt-2 mr-2" />{" "}
+                              {`${occupant?.info?.firstName} ${occupant?.info?.lastName}`}
+                            </div>
+                            <div className="capitalize">
+                              {`${occupant?.info?.relation.toLowerCase()}`} (
+                              {`${occupant?.info?.type}`})
+                            </div>
                           </div>
                           <Separator className="my-2" />
-                        </>
+                        </div>
                       ))
                     ) : (
                       <span className="text-gray-400">
@@ -166,72 +196,31 @@ export const MapViewInfo: React.FC<MapViewInfoProps> = ({
                 </ScrollArea>
               </Text>
             </Box>
-            <Box>
-              <Heading size={"md"} fontFamily={"font.heading"}>
-                Occupancy Status
-              </Heading>
-              <Text
-                fontSize={"lg"}
-                fontFamily={"font.body"}
-                lineHeight={2}
-                fontWeight="800"
-                className={cn(
-                  occupants && occupants?.length > 0
-                    ? "text-green-700"
+            <Box className="flex justify-between">
+              <Box>
+                <Heading size={"sm"} fontFamily={"font.heading"}>
+                  Occupancy Status
+                </Heading>
+                <Text
+                  fontSize={"md"}
+                  fontFamily={"font.body"}
+                  lineHeight={2}
+                  fontWeight="800"
+                  className={cn(
+                    occupants && occupants?.length > 0
+                      ? "text-orange-500"
+                      : occupants?.length === 0
+                      ? "text-green-700"
+                      : "text-gray-500"
+                  )}
+                >
+                  {occupants && occupants?.length > 0
+                    ? "Occupied"
                     : occupants?.length === 0
-                    ? "text-orange-500"
-                    : "text-black"
-                )}
-              >
-                {occupants && occupants?.length > 0
-                  ? "Occupied"
-                  : occupants?.length === 0
-                  ? "Vacant"
-                  : "-"}
-              </Text>
-            </Box>
-            <Box>
-              <Heading size={"md"} fontFamily={"font.heading"} mb={"1rem"}>
-                Property Documents
-              </Heading>
-              <UnorderedList spacing={2} fontFamily={"font.body"}>
-                <ListItem>
-                  <Link isExternal>
-                    Intent to Purchase or Letter of Intent{" "}
-                    <ExternalLinkIcon mx={"2px"} />
-                  </Link>
-                </ListItem>
-                <ListItem>
-                  <Link isExternal>
-                    Reservation Letter <ExternalLinkIcon mx={"2px"} />
-                  </Link>
-                </ListItem>
-                <ListItem>
-                  <Link isExternal>
-                    Contract to Sell <ExternalLinkIcon mx={"2px"} />
-                  </Link>
-                </ListItem>
-                <ListItem>
-                  <Link isExternal>
-                    Letter of Guarantee <ExternalLinkIcon mx={"2px"} />
-                  </Link>
-                </ListItem>
-                <ListItem>
-                  <Link isExternal>
-                    Deed of Absolute Sale <ExternalLinkIcon mx={"2px"} />
-                  </Link>
-                </ListItem>
-                <ListItem>
-                  <Link isExternal>
-                    Certification of Title <ExternalLinkIcon mx={"2px"} />
-                  </Link>
-                </ListItem>
-                <ListItem>
-                  <Link isExternal>
-                    Tax Declaration <ExternalLinkIcon mx={"2px"} />
-                  </Link>
-                </ListItem>
-              </UnorderedList>
+                    ? "Vacant"
+                    : "-"}
+                </Text>
+              </Box>
             </Box>
           </VStack>
         </Box>

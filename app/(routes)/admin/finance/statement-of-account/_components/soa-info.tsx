@@ -1,6 +1,7 @@
 "use client";
 
 import * as z from "zod";
+import React from "react";
 import { Heading } from "@/components/ui/heading";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -12,8 +13,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-import { Button } from "@/components/ui/button";
-import { Box, Flex, Text, VStack } from "@chakra-ui/react";
+import { Box, Flex, Text, VStack, Button, HStack } from "@chakra-ui/react";
 import { format } from "date-fns";
 
 import SoaTableCategory from "./SoaTableCategory";
@@ -29,6 +29,11 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useEffect } from "react";
+import Link from "next/link";
+
+import { useReactToPrint } from "react-to-print";
+import { useRef } from "react";
+import PDFTable from "@/components/system/PDFTable";
 
 interface SoaInfoProps {
   user: ExtendedUser;
@@ -47,6 +52,14 @@ export const SoaInfo: React.FC<SoaInfoProps> = ({
   transactions,
   allUsers,
 }) => {
+  const componentPDF = useRef<HTMLDivElement | null>(null);
+
+  const generatePDF = useReactToPrint({
+    content: () => componentPDF.current || null,
+    documentTitle: "Admin Directory Report",
+    onAfterPrint: () => alert("Data saved in PDF"),
+  });
+
   const form = useForm<z.infer<typeof SelectSchema>>({
     defaultValues: {
       dueType: "all",
@@ -54,31 +67,31 @@ export const SoaInfo: React.FC<SoaInfoProps> = ({
   });
 
   const assocDues = transactions.filter((transaction) => {
-    if (transaction.purpose === "assocDues") {
+    if (transaction.purpose === "Association Dues") {
       return transaction;
     }
   });
 
   const disputeFees = transactions.filter((transaction) => {
-    if (transaction.purpose === "dispute") {
+    if (transaction.purpose === "Dispute Fees") {
       return transaction;
     }
   });
 
   const violationFees = transactions.filter((transaction) => {
-    if (transaction.purpose === "violation") {
+    if (transaction.purpose === "Violation Fines") {
       return transaction;
     }
   });
 
   const facilityFees = transactions.filter((transaction) => {
-    if (transaction.purpose === "facility") {
+    if (transaction.purpose === "Facility Rentals") {
       return transaction;
     }
   });
 
   const maintenanceFees = transactions.filter((transaction) => {
-    if (transaction.purpose === "maintenance") {
+    if (transaction.purpose === "Repair and Maintenance") {
       return transaction;
     }
   });
@@ -114,34 +127,34 @@ export const SoaInfo: React.FC<SoaInfoProps> = ({
         return unpaidSum;
       })(),
     },
-    {
-      purpose: "Dispute Fees",
-      debit: (() => {
-        let paidSum = 0;
+    // {
+    //   purpose: "Dispute Fees",
+    //   debit: (() => {
+    //     let paidSum = 0;
 
-        disputeFees.forEach((fee) => {
-          if (fee.status === PaymentStatus.PAID) {
-            paidSum += parseFloat(fee.amount.toString().replace(/,/g, ""));
-          }
-        });
+    //     disputeFees.forEach((fee) => {
+    //       if (fee.status === PaymentStatus.PAID) {
+    //         paidSum += parseFloat(fee.amount.toString().replace(/,/g, ""));
+    //       }
+    //     });
 
-        return paidSum;
-      })(),
-      credit: (() => {
-        let unpaidSum = 0;
+    //     return paidSum;
+    //   })(),
+    //   credit: (() => {
+    //     let unpaidSum = 0;
 
-        disputeFees.forEach((fee) => {
-          if (
-            fee.status === PaymentStatus.UNPAID ||
-            fee.status === PaymentStatus.OVERDUE
-          ) {
-            unpaidSum += parseFloat(fee.amount.toString().replace(/,/g, ""));
-          }
-        });
+    //     disputeFees.forEach((fee) => {
+    //       if (
+    //         fee.status === PaymentStatus.UNPAID ||
+    //         fee.status === PaymentStatus.OVERDUE
+    //       ) {
+    //         unpaidSum += parseFloat(fee.amount.toString().replace(/,/g, ""));
+    //       }
+    //     });
 
-        return unpaidSum;
-      })(),
-    },
+    //     return unpaidSum;
+    //   })(),
+    // },
     {
       purpose: "Violation Fees",
       debit: (() => {
@@ -237,6 +250,14 @@ export const SoaInfo: React.FC<SoaInfoProps> = ({
           title={`Statement of Account`}
           description="ABC Homeowners' Association"
         />
+        <HStack>
+          <Button size="sm" colorScheme="yellow" onClick={generatePDF}>
+            Generate PDF
+          </Button>
+          <Button size="sm" as={Link} href="/admin/finance">
+            Go Back
+          </Button>
+        </HStack>
       </div>
       <Separator className="mt-4 mb-6" />
 
@@ -279,15 +300,17 @@ export const SoaInfo: React.FC<SoaInfoProps> = ({
                       <SelectItem value="all" className="font-semibold">
                         Show All
                       </SelectItem>
-                      <SelectItem value="assocDues">
+                      <SelectItem value="Association Dues">
                         Association Dues
                       </SelectItem>
-                      <SelectItem value="dispute">Dispute Fines</SelectItem>
-                      <SelectItem value="violation">Violation Fines</SelectItem>
-                      <SelectItem value="facility">
+                      {/* <SelectItem value="Dispute Fees">Dispute Fees</SelectItem> */}
+                      <SelectItem value="Violation Fines">
+                        Violation Fines
+                      </SelectItem>
+                      <SelectItem value="Facility Rentals">
                         Facility Reservation Fees
                       </SelectItem>
-                      <SelectItem value="maintenance">
+                      <SelectItem value="Repair and Maintenance">
                         Maintenance Fees
                       </SelectItem>
                     </SelectContent>
@@ -300,29 +323,36 @@ export const SoaInfo: React.FC<SoaInfoProps> = ({
         </Form>
 
         <Box mt="15px">
-          {/* SOA Summary Table */}
-          {form.getValues("dueType") === "all" && (
-            <SoaTableSummary
-              data={summarySoa}
-              transactionsToUpdate={transactions}
-            />
-          )}
+          {/* <div className="hidden">
+            <div ref={componentPDF} style={{ width: "100%" }}>
+              <PDFTable />
+            </div>
+          </div> */}
+          <div ref={componentPDF} style={{ width: "100%" }}>
+            {/* SOA Summary Table */}
+            {form.getValues("dueType") === "all" && (
+              <SoaTableSummary
+                data={summarySoa}
+                transactionsToUpdate={transactions}
+              />
+            )}
 
-          {form.getValues("dueType") === "assocDues" && (
-            <SoaTableCategory data={assocDues} users={allUsers} />
-          )}
-          {form.getValues("dueType") === "dispute" && (
+            {form.getValues("dueType") === "Association Dues" && (
+              <SoaTableCategory data={assocDues} users={allUsers} />
+            )}
+            {/* {form.getValues("dueType") === "Dispute Fees" && (
             <SoaTableCategory data={disputeFees} users={allUsers} />
-          )}
-          {form.getValues("dueType") === "violation" && (
-            <SoaTableCategory data={violationFees} users={allUsers} />
-          )}
-          {form.getValues("dueType") === "facility" && (
-            <SoaTableCategory data={facilityFees} users={allUsers} />
-          )}
-          {form.getValues("dueType") === "maintenance" && (
-            <SoaTableCategory data={maintenanceFees} users={allUsers} />
-          )}
+          )} */}
+            {form.getValues("dueType") === "Violation Fines" && (
+              <SoaTableCategory data={violationFees} users={allUsers} />
+            )}
+            {form.getValues("dueType") === "Facility Rentals" && (
+              <SoaTableCategory data={facilityFees} users={allUsers} />
+            )}
+            {form.getValues("dueType") === "Repair and Maintenance" && (
+              <SoaTableCategory data={maintenanceFees} users={allUsers} />
+            )}
+          </div>
         </Box>
       </VStack>
     </>

@@ -61,3 +61,86 @@ export const updateOfficerAssigned = async (
     success: "Officer assigned successfully, violation now under review",
   };
 };
+
+export const updateLetterSent = async (id: string, letterSent: boolean) => {
+  const user = await currentUser();
+
+  // No Current User
+  if (!user) {
+    return { error: "Unauthorized" };
+  }
+
+  // Validation if user is in database (not leftover session)
+  const dbUser = await getUserById(user.id);
+
+  if (!dbUser) {
+    return { error: "Unauthorized" };
+  }
+
+  await db.violation.update({
+    where: { id },
+    data: {
+      letterSent,
+    },
+  });
+
+  return {
+    success: "Officer assigned successfully, violation now under review",
+  };
+};
+
+export const updateStatus = async (id: string, status: string) => {
+  const user = await currentUser();
+
+  // No Current User
+  if (!user) {
+    return { error: "Unauthorized" };
+  }
+
+  // Validation if user is in database (not leftover session)
+  const dbUser = await getUserById(user.id);
+
+  if (!dbUser) {
+    return { error: "Unauthorized" };
+  }
+
+  await db.violation.update({
+    where: { id },
+    data: {
+      status,
+    },
+  });
+
+  return {
+    success: "Officer assigned successfully, violation now under review",
+  };
+};
+
+export const updateClosed = async (id: string) => {
+  const user = await currentUser();
+
+  // No Current User
+  if (!user) {
+    return { error: "Unauthorized" };
+  }
+
+  // Validation if user is in database (not leftover session)
+  const dbUser = await getUserById(user.id);
+
+  if (!dbUser) {
+    return { error: "Unauthorized" };
+  }
+
+  await db.violation.update({
+    where: { id },
+    data: {
+      step: 3,
+      progress: "Step 3: Issue Resolution and Enforcement with Penalty Fee",
+      status: "Settled",
+    },
+  });
+
+  return {
+    success: "Report marked closed.",
+  };
+};

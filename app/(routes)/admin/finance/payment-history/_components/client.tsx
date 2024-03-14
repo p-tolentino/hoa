@@ -1,12 +1,12 @@
 "use client";
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo } from "react";
 import { Heading } from "@/components/ui/heading";
 import { Separator } from "@/components/ui/separator";
 
 import { PaymentHistoryColumn, columns } from "./columns";
 import { DataTable } from "@/components/ui/data-table";
-import { HStack, Spacer } from "@chakra-ui/react";
+import { HStack, Spacer, Button } from "@chakra-ui/react";
 import {
   Select,
   SelectContent,
@@ -16,6 +16,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+import { useReactToPrint } from "react-to-print";
+import { useRef } from "react";
+import PDFTable from "@/components/system/PDFTable";
+import Link from "next/link";
+
 interface PaymentHistoryClientProps {
   data: PaymentHistoryColumn[];
 }
@@ -23,14 +28,24 @@ interface PaymentHistoryClientProps {
 export const PaymentHistoryClient: React.FC<PaymentHistoryClientProps> = ({
   data,
 }) => {
+  const componentPDF = useRef<HTMLDivElement | null>(null);
 
-  const [selectedCategoryFilter, setSelectedCategoryFilter] = useState('showAll');
+  const generatePDF = useReactToPrint({
+    content: () => componentPDF.current || null,
+    documentTitle: "Admin Directory Report",
+    onAfterPrint: () => alert("Data saved in PDF"),
+  });
+
+  const [selectedCategoryFilter, setSelectedCategoryFilter] =
+    useState("showAll");
   const filteredData = useMemo(() => {
-    return data.filter(item => {
+    return data.filter((item) => {
       // Check status filter
 
       // Check category filter
-      const categoryMatch = selectedCategoryFilter === 'showAll' || item.purpose === selectedCategoryFilter; // Assuming 'category' is the correct field
+      const categoryMatch =
+        selectedCategoryFilter === "showAll" ||
+        item.purpose === selectedCategoryFilter; // Assuming 'category' is the correct field
 
       return categoryMatch;
     });
@@ -43,27 +58,40 @@ export const PaymentHistoryClient: React.FC<PaymentHistoryClientProps> = ({
           title="Payment History"
           description={`View your payment history in the Homeowners Association (Total No. of Transactions = ${data.length})`}
         />
+        <HStack>
+          <Button size="sm" colorScheme="yellow" onClick={generatePDF}>
+            Generate PDF
+          </Button>
+          <Button size="sm" as={Link} href="/admin/finance">
+            Go Back
+          </Button>
+        </HStack>
       </div>
       <Separator />
 
       <HStack>
         {/* Select category to show */}
-        <Select value={selectedCategoryFilter} onValueChange={(value) => setSelectedCategoryFilter(value)}>
+        <Select
+          value={selectedCategoryFilter}
+          onValueChange={(value) => setSelectedCategoryFilter(value)}
+        >
           <SelectTrigger className="w-[250px]">
             <SelectValue placeholder="Show All" />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
               <SelectItem value="showAll" className="font-semibold">
-                Show All
+                Show All (Purpose)
               </SelectItem>
-              <SelectItem value="assocDues">Association Dues</SelectItem>
-              <SelectItem value="dispute">Dispute Fines</SelectItem>
-              <SelectItem value="violation">Violation Fines</SelectItem>
-              <SelectItem value="facility">
+              <SelectItem value="Association Dues">Association Dues</SelectItem>
+              <SelectItem value="Dispute Fees">Dispute Fees</SelectItem>
+              <SelectItem value="Violation Fines">Violation Fines</SelectItem>
+              <SelectItem value="Facility Rentals">
                 Facility Reservation Fees
               </SelectItem>
-              <SelectItem value="maintenance">Maintenance Fees</SelectItem>
+              <SelectItem value="Repair and Maintenance">
+                Maintenance Fees
+              </SelectItem>
             </SelectGroup>
           </SelectContent>
         </Select>
@@ -89,7 +117,14 @@ export const PaymentHistoryClient: React.FC<PaymentHistoryClientProps> = ({
       </HStack>
 
       {/* Table */}
-      <DataTable columns={columns} data={filteredData} searchKey="paidBy" />
+      {/* <div className="hidden">
+        <div ref={componentPDF} style={{ width: "100%" }}>
+          <PDFTable />
+        </div>
+      </div> */}
+      <div ref={componentPDF} style={{ width: "100%" }}>
+        <DataTable columns={columns} data={filteredData} searchKey="paidBy" />
+      </div>
     </>
   );
 };
