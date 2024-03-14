@@ -44,13 +44,14 @@ const AdminLayout = async ({ children }: { children: React.ReactNode }) => {
   //   </div>
   // ) :
 
-  const notifications = await getNotificationsByUserId(user.id);
+  const notifications = await getNotificationsByUserId(user?.id);
+
 
   return (
     <Flex>
       <Sidebar
-        notifications={
-          notifications?.sort((a: any, b: any) => b.createdAt - a.createdAt) ||
+        notifications={ notifications ?
+          notifications?.filter(notif => notif.isArchived === false).sort((a: any, b: any) => b.createdAt - a.createdAt) :
           null
         }
       />

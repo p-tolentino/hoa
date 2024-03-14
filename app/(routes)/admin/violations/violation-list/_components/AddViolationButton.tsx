@@ -53,9 +53,9 @@ export default function AddViolation() {
   });
 
   const onSubmit = async (values: ViolationTypeFormValues) => {
-    const existingViolationName = await getViolationTypeByName(values.name);
+    const existingViolationTypeName = await getViolationTypeByName(values.name);
 
-    if (existingViolationName) {
+    if (existingViolationTypeName) {
       console.log("Existing violation name, try a different one");
       toast({
         title: `Violation Type with identifier "${form.watch(
@@ -73,7 +73,7 @@ export default function AddViolation() {
             toast({
               title: `Successfully added violation type "${form.watch(
                 "title"
-              )}" to the list of HOA disputes.`,
+              )}" to the list of HOA violations.`,
               status: "success",
               position: "bottom-right",
               isClosable: true,
@@ -94,14 +94,14 @@ export default function AddViolation() {
       <DialogTrigger asChild>
         <Button size="sm" colorScheme="yellow">
           <AddIcon boxSize={3} mr="10px" />
-          Add Violation
+          Add Violation Type
         </Button>
       </DialogTrigger>
       <DialogContent className="lg:min-w-[800px]">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <DialogHeader>
-              <DialogTitle>Add a Violation</DialogTitle>
+              <DialogTitle>Add a Violation Type</DialogTitle>
               <DialogDescription>
                 Fill up the following fields to add a violation in the list of
                 violations.
@@ -213,7 +213,7 @@ export default function AddViolation() {
             <DialogFooter className="text-right">
               <FormControl>
                 <Button size="sm" colorScheme="yellow" type="submit">
-                  Add Violation
+                  Add Violation Type
                 </Button>
               </FormControl>
             </DialogFooter>

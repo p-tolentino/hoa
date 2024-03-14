@@ -13,7 +13,6 @@ import {
   CardBody,
   Button,
   ButtonGroup,
-  useToast,
 } from "@chakra-ui/react";
 
 import AddViolationButton from "./AddViolationButton";

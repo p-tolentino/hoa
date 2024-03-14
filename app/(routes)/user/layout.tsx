@@ -40,6 +40,7 @@ const UserLayout = ({ children }: { children: React.ReactNode }) => {
     const getNotifs = async () => {
       await getNotificationsByUserId(user.id).then((data) => {
         if (data) {
+          console.log(data)
           setNotifications(data);
         }
       });
@@ -52,7 +53,7 @@ const UserLayout = ({ children }: { children: React.ReactNode }) => {
       <Flex>
         <Sidebar
           notifications={
-            notifications?.sort(
+            notifications?.filter(notif => notif.isArchived === false).sort(
               (a: any, b: any) => b.createdAt - a.createdAt
             ) || null
           }

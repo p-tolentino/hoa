@@ -3,9 +3,9 @@
 import { db } from "@/lib/db";
 import { currentUser } from "@/lib/auth";
 import { getUserById } from "@/server/data/user";
-import { ViolationTypeFormValues } from "@/app/(routes)/admin/violations/violation-list/_components/AddViolationButton";
+import { DisputeTypeFormValues } from "@/app/(routes)/admin/disputes/dispute-list/_components/AddDisputeButton";
 
-export const createViolationType = async (values: ViolationTypeFormValues) => {
+export const createDisputeType = async (values: DisputeTypeFormValues) => {
   const user = await currentUser();
 
   // No Current User
@@ -20,19 +20,19 @@ export const createViolationType = async (values: ViolationTypeFormValues) => {
     return { error: "Unauthorized" };
   }
 
-  await db.violationType.create({
-    data: {
-      ...values,
-      fee: parseFloat(values.fee),
-      deadline: parseInt(values.deadline),
-    },
-  });
+  await db.disputeType.create({
+      data: {
+        ...values,
+      },
+  });  
+  
+  
 
-  return { success: "Created violation type successfully" };
+  return { success: "Created dispute type successfully" };
 };
 
 export const updateViolationType = async (
-  values: ViolationTypeFormValues,
+  values: DisputeTypeFormValues,
   id: string
 ) => {
   const user = await currentUser();
@@ -49,19 +49,17 @@ export const updateViolationType = async (
     return { error: "Unauthorized" };
   }
 
-  await db.violationType.update({
+  await db.disputeType.update({
     where: { id },
     data: {
-      ...values,
-      fee: parseFloat(values.fee),
-      deadline: parseInt(values.deadline),
+      ...values
     },
   });
 
-  return { success: "Updated violation type successfully" };
+  return { success: "Updated dispute type successfully" };
 };
 
-export const deleteViolationType = async (id: string) => {
+export const deleteDisputeType = async (id: string) => {
   const user = await currentUser();
 
   // No Current User
@@ -76,11 +74,11 @@ export const deleteViolationType = async (id: string) => {
     return { error: "Unauthorized" };
   }
 
-  await db.violationType.delete({
+  await db.disputeType.delete({
     where: {
       id,
     },
   });
 
-  return { success: "Violation type deleted successfully" };
+  return { success: "Dispute type deleted successfully" };
 };

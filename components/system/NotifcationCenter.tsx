@@ -104,16 +104,22 @@ export default function NotificationCenter({
         </PopoverTrigger>
         <PopoverContent my="10px" bg="#FBFBFD" borderColor="grey">
           <PopoverArrow />
-          <PopoverCloseButton />
+          <PopoverCloseButton className="text-black"/>
           <PopoverHeader
             color="black"
             fontFamily="font.heading"
             fontWeight="bold"
             p="15px 15px 5px 15px"
           >
+            <div className="flex flex-col">
+
             {title}
+            <span className="text-xs text-gray-500" onClick={()=>{console.log("trigger clear notifs, archive all")}}>Clear all</span>
+            </div>
           </PopoverHeader>
+           
           <PopoverBody h="330px" p="20px">
+          
             <ScrollArea className="h-[300px]">
               <Stack spacing="3" alignItems="center" pb="15px">
                 {notifications.map((notification, index) => {
@@ -180,8 +186,8 @@ export default function NotificationCenter({
                   );
                 })}
               </Stack>
-            </ScrollArea>
-          </PopoverBody>
+            </ScrollArea> 
+          </PopoverBody> 
         </PopoverContent>
       </Popover>
     </div>

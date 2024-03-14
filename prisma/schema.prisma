@@ -271,6 +271,7 @@ model Notification {
   isRead      Boolean
   link        String
   createdAt   DateTime @default(now())
+  isArchived  Boolean  @default(false)
 }
 
 model Notice {
@@ -282,6 +283,13 @@ model Notice {
   sender    String
   createdAt DateTime @default(now())
   idToLink  String
+}
+
+model DisputeType {
+  id          String @id @unique @default(cuid())
+  name        String
+  description String
+  title       String
 }
 
 enum CategoryType {

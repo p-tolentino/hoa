@@ -103,22 +103,6 @@ export function Sidebar({
     },
   ];
 
-  const membershipRoutes = [];
-
-  const financeRoutes = [];
-
-  const communityRoutes = [];
-
-  const disputeRoutes = [];
-
-  const violationRoutes = [];
-
-  const facilityRoutes = [];
-
-  const maintenanceRoutes = [];
-
-  const electionRoutes = [];
-
   const profileRoutes = [
     {
       label: "My Profile",
