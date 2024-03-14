@@ -3,7 +3,20 @@
 import { Box, Text, Flex, Avatar } from "@chakra-ui/react";
 import { TbCurrencyPeso } from "react-icons/tb";
 
-export default function FinanceCard() {
+interface dashboardPoll{
+  count: number
+}
+
+export default function FinanceCard({count}:dashboardPoll) {
+
+  const currencyFormatter = new Intl.NumberFormat('en-PH', {
+    style: 'currency',
+    currency: 'PHP',
+    // Use these options to control the display of the currency
+    minimumFractionDigits: 0, // Avoid showing cents
+    maximumFractionDigits: 0, // Avoid showing cents
+  });
+
   return (
     <Box>
       <Flex
@@ -20,7 +33,7 @@ export default function FinanceCard() {
             Budget
           </Text>
           <Text fontSize="2xl" fontWeight="bold">
-            150K
+            {currencyFormatter.format(count)}
           </Text>
         </Box>
         <Avatar

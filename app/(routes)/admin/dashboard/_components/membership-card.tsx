@@ -3,7 +3,12 @@
 import { Box, Text, Flex, Avatar } from "@chakra-ui/react";
 import { FaUserFriends } from "react-icons/fa";
 
-export default function MembershipCard() {
+interface dashboardPoll{
+  count: number
+}
+
+export default function MembershipCard({count}:dashboardPoll) {
+
   return (
     <Box>
       <Flex
@@ -20,7 +25,7 @@ export default function MembershipCard() {
             Total Homeowners
           </Text>
           <Text fontSize="2xl" fontWeight="bold">
-            220
+            {count}
           </Text>
         </Box>
         <Avatar
