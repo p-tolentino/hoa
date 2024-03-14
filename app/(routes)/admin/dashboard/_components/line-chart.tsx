@@ -114,7 +114,7 @@ componentDidUpdate(prevProps: { financialSummary: any; }) {
   render() {
     return (
       <Box>
-        <Chart options={this.state.options} series={this.state.series} type="line" height={350} />
+        <Chart options={this.state.options} series={this.state.series} type="line" height={350} width={"100%"} />
       </Box>
     );
   }

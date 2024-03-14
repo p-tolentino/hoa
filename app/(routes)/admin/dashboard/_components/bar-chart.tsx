@@ -96,7 +96,7 @@ class BarChart extends React.Component<BarChartProps, BarChartState> {
   render() {
     return (
       <Box>
-        <Chart options={this.state.options} series={this.state.series} type="bar" height={350} />
+        <Chart options={this.state.options} series={this.state.series} type="bar" height={350} width={"100%"} />
         {/* Add pagination buttons if necessary */}
       </Box>
     );

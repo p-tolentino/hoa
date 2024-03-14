@@ -58,3 +58,58 @@ export const getMemberCount = async () => {
       return null;
     }
   };
+
+  export const getDiscussionCount = async () => {
+    const postType = "DISCUSSION"
+
+        const postsCount = await db.post.count({
+          where: { type: postType },
+        });
+    
+        return postsCount
+  };
+
+  export const getBusinessCount = async () => {
+    const postType = "BUSINESS";
+  
+      const postsCount = await db.post.count({
+        where: { type: postType },
+      });
+  
+      return postsCount
+  };
+
+  export const getPosts = async () => {
+    try {
+      const posts = await db.post.findMany();
+  
+      return posts;
+    } catch {
+      return null;
+    }
+  }
+
+  export const getEventCount = async () => {
+      const events = await db.events.count();
+  
+      return events;
+  }
+  export const countUniqueUsersWhoAnsweredPolls = async (): Promise<number> => {
+    try {
+      // Attempt to retrieve unique userIds first
+      const uniqueUserIds = await db.response.findMany({
+        select: {
+          userId: true,
+        },
+        distinct: ['userId'],
+      });
+  
+      // Count the number of unique userIds
+      const uniqueUserCount = uniqueUserIds.length;
+  
+      return uniqueUserCount;
+    } catch (error) {
+      console.error("Error counting unique users who answered polls:", error);
+      return 0;
+    }
+  };

@@ -35,6 +35,10 @@ import { getMemberCount, getHoaFunds,  getViolations} from "@/server/data/dashbo
 /* Graph Fucntions */
 import { getHoaTransactions, getAllViolations } from "@/server/data/dashboard";
 
+/* Community Engagement */
+import { getDiscussionCount, getBusinessCount, getEventCount, countUniqueUsersWhoAnsweredPolls} from "@/server/data/dashboard";
+
+
 interface Transaction {
   dateIssued: Date | string; // Assuming dateIssued could be a Date object or a string
   type: 'REVENUE' | 'EXPENSE';
@@ -70,6 +74,11 @@ export default function ExampleChart() {
   const [violationTypeCounts, setViolationTypeCounts] = useState<ViolationCounts>({});
   const [violationChartData, setViolationChartData] = useState<ViolationChartData>({ series: [], labels: [] });
 
+  const [discussionCount, setDiscussionCount] = useState(0);
+  const [businessCount, setBusinessCount] = useState(0);
+  const [eventCount, setEventCount] = useState(0);
+  const [userPollCount, setUserPollCount] = useState(0);
+
   useEffect(() => {
     const fetchInfo = async () => {
       try {
@@ -100,8 +109,20 @@ export default function ExampleChart() {
         const labels = Object.keys(violationTypeCounts);
         const series = Object.values(violationTypeCounts);
         setViolationChartData({ series, labels });
-          setViolationTypeCounts(violationTypeCounts)
+        setViolationTypeCounts(violationTypeCounts)
         }
+
+        const businessCount = await getBusinessCount();
+        setBusinessCount(businessCount);
+
+        const DiscussCount = await getDiscussionCount();
+        setDiscussionCount(DiscussCount);
+
+        const eventCount = await getEventCount();
+        setEventCount(eventCount);
+
+        const userPollCount = await countUniqueUsersWhoAnsweredPolls();
+        setUserPollCount(userPollCount);
 
       } catch (error) {
         console.error("Failed to fetch member count:", error);
@@ -181,10 +202,10 @@ export default function ExampleChart() {
                 fontFamily="font.heading"
                 fontWeight="semibold"
               >
-                Total Events per Annum
+                Community Engagement
               </CardHeader>
               <CardBody>
-                <CommunityEngagmentCard />
+                <CommunityEngagmentCard discussCount={discussionCount} businessCount={businessCount} eventCount={eventCount} userPollCount={userPollCount}/>
               </CardBody>
             </Card>
           </GridItem>
@@ -210,7 +231,7 @@ export default function ExampleChart() {
                 fontFamily="font.heading"
                 fontWeight="semibold"
               >
-                Dispute Reports per Annum
+                {/* Dispute Reports per Annum */}
               </CardHeader>
               <CardBody>
                 <DisputePieChart />
