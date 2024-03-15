@@ -168,10 +168,11 @@ export default function DisputeResolution ({ hoa }: { hoa: Hoa }) {
                     effectively, the Officer reviews the HOA's rules and
                     regulations indicated in the <DisputeBylaws hoa={hoa} />{' '}
                     before the scheduled meeting date. <br />
-                    *The standard meeting date for disputes is the{' '}
-                    <b>upcoming Saturday</b> for the disputing parties to have
-                    the opportunity to gather necessary evidence to support
-                    their claims. <br />
+                    *The dispute resolution meeting date and time will be
+                    determined by the officer assigned to the violation case. In
+                    most cases, the timeframe will afford the disputing parties
+                    an adequate amount of time to gather necessary evidence to
+                    support their claims. <br />
                     *A notice is issued to all persons involved in the dispute{' '}
                     <b>(1) day</b> prior to the scheduled meeting date.
                   </Text>
