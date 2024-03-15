@@ -1,9 +1,9 @@
-"use client";
+'use client'
 
-import { Badge } from "@/components/ui/badge";
-import { Heading } from "@/components/ui/heading";
-import { Separator } from "@/components/ui/separator";
-import { cn } from "@/lib/utils";
+import { Badge } from '@/components/ui/badge'
+import { Heading } from '@/components/ui/heading'
+import { Separator } from '@/components/ui/separator'
+import { cn } from '@/lib/utils'
 import {
   Step,
   StepDescription,
@@ -30,78 +30,80 @@ import {
   Th,
   Td,
   Stack,
-  Button,
-} from "@chakra-ui/react";
-import { PersonalInfo } from "@prisma/client";
-import { format } from "date-fns";
-import Link from "next/link";
+  Button
+} from '@chakra-ui/react'
+import { PersonalInfo } from '@prisma/client'
+import { format } from 'date-fns'
+import Link from 'next/link'
 
 const processSteps = [
   {
-    title: "Violation Form Submission",
+    title: 'Violation Form Submission',
     description:
-      "Homeowners submit violation reports through the Violation Monitoring module in the MIS.",
+      'Homeowners submit violation reports through the Violation Monitoring module in the MIS.',
     details: [
-      "Homeowners provide details about the alleged violation, including the type of violation, date, and a detailed description of the violation.",
-      "Supporting evidence such as photos or documents may be attached to the violation report.",
-    ],
+      'Homeowners provide details about the alleged violation, including the type of violation, date, and a detailed description of the violation.',
+      'Supporting evidence such as photos or documents may be attached to the violation report.'
+    ]
   },
   {
-    title: "Review by Environment and Security Committee",
+    title: 'Review by Environment and Security Committee',
     description:
-      "The Environment and Security Committee receives and reviews the violation report.",
+      'The Environment and Security Committee receives and reviews the violation report.',
     details: [
-      "The Environment and Security Committee receives the violation report in the MIS and assigns an officer-in-charge to oversee its resolution.",
-      "The Officer-in-Charge makes a decision whether the reported violation is valid and if any action is required.",
-    ],
+      'The Environment and Security Committee receives the violation report in the MIS and assigns an officer to oversee its enforcement if deemed valid and true.',
+      'The Officer assigned makes a decision whether the reported violation is valid and if any action is required.',
+      'Once the reported violation is accepted and valid, the alleged violator receives a letter outlining the nature of the violation, required corrective actions, and a penalty fee.',
+      'The alleged violator is provided with a specified deadline to pay the penalty fee. Prior to that date, they are afforded the chance to lodge an appeal against them in the violation case.'
+    ]
   },
   {
-    title: "Issue Resolution and Enforcement with Penalty Fee",
+    title: 'Violation Enforcement with Penalty Fee',
     description:
-      "The Officer-in-Charge takes appropriate actions based on their decision, including issuing a violation notice to the homeowner.",
+      'The Officer assigned takes appropriate actions based on their decision, including issuing a violation notice to the alleged violator.',
     details: [
-      "The alleged violator receives a notice outlining the nature of the violation, required corrective actions, and a penalty fee.",
-      "The homeowner is informed that the penalty fee is added to their statement of account, which can be accessed via the Finance Management module.",
-    ],
-  },
-];
+      'At this step, it is reasonable to presume that the alleged violator acknowledges the violation as factual and/or has not lodged an appeal.',
+      'The alleged violator is informed that the penalty fee is added to their statement of account, which can be accessed via the Finance Management module.'
+    ]
+  }
+]
 
 interface ViewProgressProps {
-  reportDetails: any;
+  reportDetails: any
 }
 
 export const ViewProgress: React.FC<ViewProgressProps> = ({
-  reportDetails,
+  reportDetails
 }) => {
   const { activeStep, setActiveStep } = useSteps({
     index: reportDetails.violation.step - 1,
-    count: processSteps.length,
-  });
+    count: processSteps.length
+  })
 
   return (
     <div>
-      <Flex justifyContent="space-between">
-        <Flex className="gap-x-4">
+      <Flex justifyContent='space-between'>
+        <Flex className='gap-x-4'>
           <Heading
             title={`#V${reportDetails.violation.number
               .toString()
-              .padStart(4, "0")} - Violation Enforcement Progress`}
+              .padStart(4, '0')} - Violation Enforcement Progress`}
             description="View the progress of your selection violation within the Homeowners' Association"
           />
           <Badge
             className={cn(
-              "w-[max-content] h-[min-content] px-3 py-2 text-center justify-center text-sm",
-              reportDetails.violation.status === "Settled"
-                ? ""
-                : reportDetails.violation.status === "Pending"
-                ? "bg-red-700"
-                : reportDetails.violation.status === "Under Review"
-                ? "bg-yellow-600"
-                : reportDetails.violation.status === "Appealed"
-                ? "bg-green-700"
-                : reportDetails.violation.status === "Invalid"
-                ? "bg-gray-300 text-black"
-                : "display-none"
+              'w-[max-content] h-[min-content] px-3 py-2 text-center justify-center text-sm',
+              reportDetails.violation.status === 'Settled'
+                ? ''
+                : reportDetails.violation.status === 'Pending'
+                ? 'bg-red-700'
+                : reportDetails.violation.status === 'Under Review'
+                ? 'bg-yellow-600'
+                : reportDetails.violation.status === 'Appealed'
+                ? 'bg-green-700'
+                : reportDetails.violation.status === 'Invalid'
+                ? 'bg-gray-300 text-black'
+                : 'display-none'
             )}
           >
             {reportDetails.violation.status}
@@ -109,40 +111,40 @@ export const ViewProgress: React.FC<ViewProgressProps> = ({
         </Flex>
         <Button
           as={Link}
-          href="/admin/violations/submitted-violations"
-          size="sm"
-          _hover={{ textDecoration: "none" }}
+          href='/admin/violations/submitted-violations'
+          size='sm'
+          _hover={{ textDecoration: 'none' }}
         >
           Go Back
         </Button>
       </Flex>
-      <Separator className="mt-4 mb-6" />
+      <Separator className='mt-4 mb-6' />
 
-      <Flex gap={10} h="65vh">
+      <Flex gap={10} h='65vh'>
         <Stepper
           index={activeStep}
-          orientation="vertical"
-          width="min-content"
-          gap="0"
-          colorScheme="yellow"
-          size="md"
-          h="40vh"
+          orientation='vertical'
+          width='min-content'
+          gap='0'
+          colorScheme='yellow'
+          size='md'
+          h='40vh'
         >
           {processSteps.map((step, index) => (
             <Step
               key={index}
               onClick={() => {
-                setActiveStep(index);
+                setActiveStep(index)
                 if (index <= reportDetails.violation.step - 1)
                   // to make uncompleted steps unclickable
-                  setActiveStep(index);
+                  setActiveStep(index)
               }}
             >
               <StepIndicator
                 className={
                   index <= reportDetails.violation.step - 1
-                    ? "text-black"
-                    : "text-gray-300"
+                    ? 'text-black'
+                    : 'text-gray-300'
                 }
               >
                 <StepStatus
@@ -152,9 +154,9 @@ export const ViewProgress: React.FC<ViewProgressProps> = ({
                 />
               </StepIndicator>
               <Box
-                flexShrink="0"
-                fontFamily="font.body"
-                w="10vw"
+                flexShrink='0'
+                fontFamily='font.body'
+                w='10vw'
                 onClick={() => Request}
               >
                 {/* Stepper Number and Title */}
@@ -162,8 +164,8 @@ export const ViewProgress: React.FC<ViewProgressProps> = ({
                   <span
                     className={
                       index <= reportDetails.violation.step - 1
-                        ? "text-black"
-                        : "text-gray-300"
+                        ? 'text-black'
+                        : 'text-gray-300'
                     }
                   >
                     Step {index + 1}
@@ -173,8 +175,8 @@ export const ViewProgress: React.FC<ViewProgressProps> = ({
                   <span
                     className={
                       index <= reportDetails.violation.step - 1
-                        ? "text-black"
-                        : "text-gray-300"
+                        ? 'text-black'
+                        : 'text-gray-300'
                     }
                   >
                     {step.title}
@@ -185,28 +187,28 @@ export const ViewProgress: React.FC<ViewProgressProps> = ({
             </Step>
           ))}
         </Stepper>
-        <Box w="100%">
+        <Box w='100%'>
           <Card
-            shadow="lg"
-            mb="1rem"
-            h="65vh"
-            p="20px 20px 30px 20px"
-            overflowY="auto"
+            shadow='lg'
+            mb='1rem'
+            h='65vh'
+            p='20px 20px 30px 20px'
+            overflowY='auto'
           >
             <CardHeader pb={0}>
               <Text
-                fontSize="sm"
-                fontFamily="font.body"
-                color="brand.500"
-                fontWeight="bold"
+                fontSize='sm'
+                fontFamily='font.body'
+                color='brand.500'
+                fontWeight='bold'
               >
                 Step {activeStep + 1}
               </Text>
-              <Text fontSize="lg" fontFamily="font.heading" fontWeight="bold">
+              <Text fontSize='lg' fontFamily='font.heading' fontWeight='bold'>
                 {/* Step Title */}
                 {processSteps[activeStep].title}
               </Text>
-              <Text fontFamily="font.body" textAlign="justify">
+              <Text fontFamily='font.body' textAlign='justify'>
                 {/* Step Description */}
                 {processSteps[activeStep].description}
               </Text>
@@ -215,7 +217,7 @@ export const ViewProgress: React.FC<ViewProgressProps> = ({
             <CardBody>
               <Stack spacing={5}>
                 {/* Step Details */}
-                <Box fontFamily="font.body" fontSize="sm" textAlign="justify">
+                <Box fontFamily='font.body' fontSize='sm' textAlign='justify'>
                   <Text>Details:</Text>
                   <UnorderedList ml={7}>
                     {processSteps[activeStep].details.map((detail, index) => (
@@ -228,41 +230,41 @@ export const ViewProgress: React.FC<ViewProgressProps> = ({
                 <Flex gap={5}>
                   <TableContainer>
                     <Table
-                      variant="unstyled"
-                      fontFamily="font.body"
-                      size="sm"
-                      w="400px"
+                      variant='unstyled'
+                      fontFamily='font.body'
+                      size='sm'
+                      w='400px'
                     >
                       <Tbody>
                         {/* Step 1 Information Table Part 1 */}
                         {activeStep === 0 && (
                           <>
-                            <Tr whiteSpace="normal">
-                              <Th border="3px double black" w="110px">
+                            <Tr whiteSpace='normal'>
+                              <Th border='3px double black' w='110px'>
                                 Violation Number
                               </Th>
-                              <Td border="3px double black">
+                              <Td border='3px double black'>
                                 #V
                                 {reportDetails.violation.number
                                   .toString()
-                                  .padStart(4, "0")}
+                                  .padStart(4, '0')}
                               </Td>
                             </Tr>
-                            <Tr whiteSpace="normal">
-                              <Th border="3px double black" w="110px">
+                            <Tr whiteSpace='normal'>
+                              <Th border='3px double black' w='110px'>
                                 Submitted By
                               </Th>
-                              <Td border="3px double black">
+                              <Td border='3px double black'>
                                 {reportDetails.submittedBy
                                   ? `${reportDetails.submittedBy.firstName} ${reportDetails.submittedBy.lastName}`
-                                  : ""}
+                                  : ''}
                               </Td>
                             </Tr>
-                            <Tr whiteSpace="normal">
-                              <Th border="3px double black" w="110px">
+                            <Tr whiteSpace='normal'>
+                              <Th border='3px double black' w='110px'>
                                 Person/s Involved
                               </Th>
-                              <Td border="3px double black">
+                              <Td border='3px double black'>
                                 <UnorderedList>
                                   {reportDetails.personsInvolved.map(
                                     (item: PersonalInfo) => (
@@ -278,45 +280,45 @@ export const ViewProgress: React.FC<ViewProgressProps> = ({
                         )}
                         {/* Step 2 Information Table */}
                         {activeStep === 1 && (
-                          <Tr whiteSpace="normal">
-                            <Th border="3px double black" w="110px">
-                              Officer-in-Charge
+                          <Tr whiteSpace='normal'>
+                            <Th border='3px double black' w='110px'>
+                              Officer Assigned
                             </Th>
                             <Td
-                              border="3px double black"
+                              border='3px double black'
                               color={
                                 reportDetails.officerAssigned
-                                  ? "black"
-                                  : "lightgray"
+                                  ? 'black'
+                                  : 'lightgray'
                               }
                               fontStyle={
                                 reportDetails.officerAssigned
-                                  ? "normal"
-                                  : "italic"
+                                  ? 'normal'
+                                  : 'italic'
                               }
                             >
                               {reportDetails.officerAssigned
                                 ? `${reportDetails.officerAssigned.firstName} ${reportDetails.officerAssigned.lastName}`
-                                : "Unassigned"}
+                                : 'Unassigned'}
                             </Td>
                           </Tr>
                         )}
                         {/* Step 5 Information Table */}
                         {activeStep === 2 && (
                           <>
-                            <Tr whiteSpace="normal">
-                              <Th border="3px double black" w="110px">
+                            <Tr whiteSpace='normal'>
+                              <Th border='3px double black' w='110px'>
                                 Violation Type
                               </Th>
-                              <Td border="3px double black">
+                              <Td border='3px double black'>
                                 {reportDetails.violationType.title}
                               </Td>
                             </Tr>
-                            <Tr whiteSpace="normal">
-                              <Th border="3px double black" w="110px">
+                            <Tr whiteSpace='normal'>
+                              <Th border='3px double black' w='110px'>
                                 Penalty Fee
                               </Th>
-                              <Td border="3px double black">
+                              <Td border='3px double black'>
                                 ₱ {reportDetails.violationType.fee}
                               </Td>
                             </Tr>
@@ -330,52 +332,52 @@ export const ViewProgress: React.FC<ViewProgressProps> = ({
                     // Step 1 Information Table Part 2
                     <TableContainer>
                       <Table
-                        variant="unstyled"
-                        fontFamily="font.body"
-                        size="sm"
-                        maxWidth="400px"
+                        variant='unstyled'
+                        fontFamily='font.body'
+                        size='sm'
+                        maxWidth='400px'
                       >
                         <Tbody>
                           <>
-                            <Tr whiteSpace="normal">
-                              <Th border="3px double black" w="110px">
+                            <Tr whiteSpace='normal'>
+                              <Th border='3px double black' w='110px'>
                                 Date Submitted
                               </Th>
-                              <Td border="3px double black">
+                              <Td border='3px double black'>
                                 {reportDetails.violation.createdAt
                                   ? format(
                                       new Date(
                                         reportDetails.violation.createdAt
                                       )
                                         ?.toISOString()
-                                        .split("T")[0],
-                                      "MMMM dd, yyyy"
+                                        .split('T')[0],
+                                      'MMMM dd, yyyy'
                                     )
-                                  : ""}
+                                  : ''}
                               </Td>
                             </Tr>
-                            <Tr whiteSpace="normal">
-                              <Th border="3px double black" w="110px">
+                            <Tr whiteSpace='normal'>
+                              <Th border='3px double black' w='110px'>
                                 Date of Violation
                               </Th>
-                              <Td border="3px double black">
+                              <Td border='3px double black'>
                                 {reportDetails.violation.violationDate
                                   ? format(
                                       new Date(
                                         reportDetails.violation.violationDate
                                       )
                                         ?.toISOString()
-                                        .split("T")[0],
-                                      "MMMM dd, yyyy"
+                                        .split('T')[0],
+                                      'MMMM dd, yyyy'
                                     )
-                                  : ""}
+                                  : ''}
                               </Td>
                             </Tr>
-                            <Tr whiteSpace="normal">
-                              <Th border="3px double black" w="110px">
+                            <Tr whiteSpace='normal'>
+                              <Th border='3px double black' w='110px'>
                                 Violation Type
                               </Th>
-                              <Td border="3px double black">
+                              <Td border='3px double black'>
                                 {reportDetails.violationType.title}
                               </Td>
                             </Tr>
@@ -388,12 +390,12 @@ export const ViewProgress: React.FC<ViewProgressProps> = ({
                 {/* Violation Description */}
                 {activeStep === 0 && (
                   <Text
-                    fontSize="xs"
-                    fontFamily="font.body"
-                    color="grey"
-                    textAlign="justify"
+                    fontSize='xs'
+                    fontFamily='font.body'
+                    color='grey'
+                    textAlign='justify'
                   >
-                    <span className="font-bold">Violation Description:</span>{" "}
+                    <span className='font-bold'>Violation Description:</span>{' '}
                     <br /> {reportDetails.violation.description}
                   </Text>
                 )}
@@ -403,7 +405,7 @@ export const ViewProgress: React.FC<ViewProgressProps> = ({
         </Box>
       </Flex>
     </div>
-  );
-};
+  )
+}
 
-export default ViewProgress;
+export default ViewProgress

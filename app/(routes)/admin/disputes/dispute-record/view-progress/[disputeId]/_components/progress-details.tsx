@@ -273,7 +273,7 @@ export const ProgressDetails: React.FC<ProgressDetailsProps> = ({
                         {activeStep === 1 && (
                           <Tr whiteSpace='normal'>
                             <Th border='3px double black' w='110px'>
-                              Officer-in-Charge
+                              Officer Assigned
                             </Th>
                             <Td
                               border='3px double black'
