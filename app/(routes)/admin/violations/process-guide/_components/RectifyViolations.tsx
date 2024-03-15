@@ -20,13 +20,13 @@ export default function RectifyViolations () {
           Admin and Officer Directory
         </Link>{' '}
         in the Membership module of the MIS. There, they can find the contact
-        information of the Officer-in-Charge overseeing their case. Once the
+        information of the Officer assigned to oversee their case. Once the
         contact details are obtained, the alleged violator should reach out to
-        the Officer-in-Charge to discuss the nature of the violation, understand
-        the corrective actions required, and seek guidance on the resolution
-        process. Open communication and cooperation with the Officer-in-Charge
-        are crucial for addressing the violation promptly and ensuring
-        compliance with HOA rules and regulations.
+        the Officer to discuss the nature of the violation, understand the
+        corrective actions required, and seek guidance on the resolution
+        process. Open communication and cooperation with the Officer are crucial
+        for addressing the violation promptly and ensuring compliance with HOA
+        rules and regulations.
       </Text>
     </div>
   )

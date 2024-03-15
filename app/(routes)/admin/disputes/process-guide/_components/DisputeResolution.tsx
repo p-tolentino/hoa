@@ -172,15 +172,15 @@ export default function DisputeResolution () {
                     <b>upcoming Saturday</b> for the disputing parties to have
                     the opportunity to gather necessary evidence to support
                     their claims. <br />
-                    *A notice is issued to the all persons involved in the
-                    dispute <b>(1) day</b> prior to the scheduled meeting date.
+                    *A notice is issued to all persons involved in the dispute{' '}
+                    <b>(1) day</b> prior to the scheduled meeting date.
                   </Text>
                 )}
                 {activeStep === 2 && (
                   <Text fontSize='xs' fontStyle='italic' color='grey'>
                     *If there is a violation involved, the corresponding penalty
                     fee is added to the dispute parties' statement of account
-                    and they are duly notified. the alleged violator/s can
+                    and they are duly notified. The alleged violator/s can
                     access the procedure on how to{' '}
                     <Link
                       href='#payPenaltyFee'
