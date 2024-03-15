@@ -3,7 +3,6 @@ import { Heading } from "@/components/ui/heading";
 import { Separator } from "@/components/ui/separator";
 import DisputeResolution from "./_components/DisputeResolution";
 import Link from "next/link";
-import { Hoa } from "@prisma/client";
 import { getHoaInfo } from "@/server/data/hoa-info";
 
 export default async function DisputeProcess() {
