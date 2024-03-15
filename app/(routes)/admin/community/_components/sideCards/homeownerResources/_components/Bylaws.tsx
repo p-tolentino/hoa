@@ -1,4 +1,4 @@
-"use client";
+'use client'
 
 import {
   Button,
@@ -11,61 +11,61 @@ import {
   useDisclosure,
   Heading,
   Text,
-  useToast,
-} from "@chakra-ui/react";
-import { Hoa } from "@prisma/client";
+  useToast
+} from '@chakra-ui/react'
+import { Hoa } from '@prisma/client'
 
-import { useRouter } from "next/navigation";
+import { useRouter } from 'next/navigation'
 
-export default function Bylaws({ hoa }: { hoa: Hoa }) {
-  const title = "Homeowners' Association Bylaws";
-  const description = "View the Homeowners' Association Bylaws.";
+export default function Bylaws ({ hoa }: { hoa: Hoa }) {
+  const title = "Homeowners' Association Bylaws"
+  const description = "View the Homeowners' Association Bylaws."
 
-  const toast = useToast();
-  const router = useRouter();
+  const toast = useToast()
+  const router = useRouter()
 
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onOpen, onClose } = useDisclosure()
 
   return (
     <div>
       <Button
-        variant="link"
-        fontFamily="font.body"
-        fontWeight="light"
+        variant='link'
+        fontFamily='font.body'
+        fontWeight='light'
         onClick={() => {
           hoa.byLawsLink
             ? onOpen()
             : toast({
-                title: `HOA By-laws has not been uploaded yet`,
+                title: `HOA Bylaws has not been uploaded yet`,
                 description: `Kindly contact any of the HOA Officers`,
-                status: "info",
-                position: "bottom-right",
-                isClosable: true,
-              });
+                status: 'info',
+                position: 'bottom-right',
+                isClosable: true
+              })
         }}
-        color="black"
-        size="sm"
+        color='black'
+        size='sm'
       >
         {title}
       </Button>
 
-      <Drawer isOpen={isOpen} onClose={onClose} placement="right" size="full">
+      <Drawer isOpen={isOpen} onClose={onClose} placement='right' size='full'>
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
-          <DrawerHeader mt="10px">
-            <Heading size="md" fontFamily="font.heading">
+          <DrawerHeader mt='10px'>
+            <Heading size='md' fontFamily='font.heading'>
               {title}
             </Heading>
-            <Text fontSize="xs">{description}</Text>
+            <Text fontSize='xs'>{description}</Text>
           </DrawerHeader>
           <DrawerBody>
             {hoa.byLawsLink ? (
               <iframe
                 src={hoa.byLawsLink}
-                title="HOA Bylaws"
-                width="100%"
-                height="900px"
+                title='HOA Bylaws'
+                width='100%'
+                height='900px'
               ></iframe>
             ) : (
               <Text>No bylaws available</Text>
@@ -74,5 +74,5 @@ export default function Bylaws({ hoa }: { hoa: Hoa }) {
         </DrawerContent>
       </Drawer>
     </div>
-  );
+  )
 }

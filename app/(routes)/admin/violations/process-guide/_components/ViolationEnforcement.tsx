@@ -28,7 +28,7 @@ export default function ViolationEnforcement () {
     {
       title: 'Violation Form Submission',
       description:
-        'Homeowners submit violation reports through the Violation Monitoring module in the MIS.',
+        'Homeowners submit violation reports through the Violation Enforcement module in the MIS.',
       details: [
         'Homeowners provide details about the alleged violation, including the type of violation, date, and a detailed description of the violation.',
         'Supporting evidence such as photos or documents may be attached to the violation report.'
@@ -39,17 +39,19 @@ export default function ViolationEnforcement () {
       description:
         'The Environment and Security Committee receives and reviews the violation report.',
       details: [
-        'The Environment and Security Committee receives the violation report in the MIS and assigns an officer-in-charge to oversee its resolution.',
-        'The Officer-in-Charge makes a decision whether the reported violation is valid and if any action is required.'
+        'The Environment and Security Committee receives the violation report in the MIS and assigns an officer to oversee its enforcement if deemed valid and true.',
+        'The Officer assigned makes a decision whether the reported violation is valid and if any action is required.',
+        'Once the reported violation is accepted and valid, the alleged violator receives a letter outlining the nature of the violation, required corrective actions, and a penalty fee.',
+        'The alleged violator is provided with a specified deadline to pay the penalty fee. Prior to that date, they are afforded the chance to lodge an appeal against them in the violation case.'
       ]
     },
     {
-      title: 'Issue Resolution and Enforcement with Penalty Fee',
+      title: 'Violation Enforcement with Penalty Fee',
       description:
-        'The Officer-in-Charge takes appropriate actions based on their decision, including issuing a violation notice to the homeowner.',
+        'The Officer assigned takes appropriate actions based on their decision, including issuing a violation notice to the alleged violator.',
       details: [
-        'The alleged violator receives a notice outlining the nature of the violation, required corrective actions, and a penalty fee.',
-        'The homeowner is informed that the penalty fee is added to their statement of account, which can be accessed via the Finance Management module.'
+        'At this step, it is reasonable to presume that the alleged violator acknowledges the violation as factual and/or has not lodged an appeal.',
+        'The alleged violator is informed that the penalty fee is added to their statement of account, which can be accessed via the Finance Management module.'
       ]
     }
   ]
@@ -155,7 +157,7 @@ export default function ViolationEnforcement () {
                     >
                       Submitted Violation Reports
                     </Link>{' '}
-                    in the Violation Monitoring module.
+                    in the Violation Enforcement module.
                     <br />
                     *The upcoming review process and potential follow-up actions
                     can also be accessed by clicking on the Enforcement Progress
@@ -164,18 +166,15 @@ export default function ViolationEnforcement () {
                 )}
                 {activeStep === 1 && (
                   <Text fontSize='xs' fontStyle='italic' color='grey'>
-                    *The assigned Officer-In-Charge validates the violation
-                    report by ensuring it contains sufficient information and
-                    evidence. <br />
-                    *They confirm that the reported issue falls within the
-                    jurisdiction of the HOA's rules and regulations indicated in
-                    the <ViolationBylaws />.
-                  </Text>
-                )}
-                {activeStep === 2 && (
-                  <Text fontSize='xs' fontStyle='italic' color='grey'>
-                    *Homeowners receive notifications on committee decisions and
-                    enforcement actions, including details of the penalty fee.
+                    *The Officer assigned validates the violation report by
+                    ensuring it contains sufficient information and evidence.{' '}
+                    <br />
+                    *The Officer confirms whether or not the reported issue
+                    falls within the jurisdiction of the HOA's rules and
+                    regulations indicated in the <ViolationBylaws />.<br />
+                    *The estimated deadline for the penalty fee is{' '}
+                    <b>two (2) weeks</b> to provide the violator with an
+                    opportunity to address the violation.
                     <br />
                     *The alleged violator can access the procedure on how to{' '}
                     <Link
@@ -185,7 +184,20 @@ export default function ViolationEnforcement () {
                     >
                       rectify the violation
                     </Link>{' '}
-                    and{' '}
+                    in the Violation Process Guide in the Violation Enforcement
+                    module.
+                    <br />
+                    *A notice is issued to the alleged violator{' '}
+                    <b>one (1) day</b> prior to the designated deadline to
+                    ensure they are adequately apprised of their decision.
+                  </Text>
+                )}
+                {activeStep === 2 && (
+                  <Text fontSize='xs' fontStyle='italic' color='grey'>
+                    *The penalty fee is added to the violator's statement of
+                    account and they are duly notified.
+                    <br />
+                    *The procedure on how to{' '}
                     <Link
                       href='#payPenaltyFee'
                       color='blue.500'
@@ -193,8 +205,8 @@ export default function ViolationEnforcement () {
                     >
                       pay the penalty fee
                     </Link>{' '}
-                    in the Violation Process Guide in the Violation Monitoring
-                    module.
+                    can be accessed via the Violation Process Guide in the
+                    Violation Enforcement module.
                   </Text>
                 )}
               </Box>
@@ -211,14 +223,14 @@ export default function ViolationEnforcement () {
           <ListItem>
             Comprehensive records of violation reports, actions taken, and
             penalty fees imposed are maintained.
-            <ListItem>
-              Each violation report is documented, including evidence, committee
-              decisions, enforcement actions, and penalty fee details.
-            </ListItem>
-            <ListItem>
-              Records are kept organized and easily accessible for future
-              reference in a secure system.
-            </ListItem>
+          </ListItem>
+          <ListItem>
+            Each violation report is documented, including evidence, committee
+            decisions, enforcement actions, and penalty fee details.
+          </ListItem>
+          <ListItem>
+            Records are kept organized and easily accessible for future
+            reference in a secure system.
           </ListItem>
         </UnorderedList>
       </Box>
