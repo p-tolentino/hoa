@@ -54,10 +54,10 @@ class ViolationPieChart extends React.Component<
         labels: formattedLabels,
         responsive: [
           {
-            breakpoint: 1450,
+            breakpoint: 800,
             options: {
               chart: {
-                width: 350,
+                width: 200,
               },
               legend: {
                 position: "bottom",
@@ -91,7 +91,7 @@ class ViolationPieChart extends React.Component<
           options={this.state.options}
           series={this.props.series}
           type="pie"
-          height={300}
+          height={250}
           width={"100%"}
         />
       </Box>

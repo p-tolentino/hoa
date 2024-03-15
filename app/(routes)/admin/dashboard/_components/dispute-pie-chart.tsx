@@ -32,10 +32,10 @@ class DisputePieChart extends React.Component<{}, DisputePieChartState> {
         labels: ["one", "two", "three", "four", "five"],
         responsive: [
           {
-            breakpoint: 1450,
+            breakpoint: 800,
             options: {
               chart: {
-                width: 300,
+                width: 200,
               },
               legend: {
                 position: "bottom",
@@ -56,7 +56,7 @@ class DisputePieChart extends React.Component<{}, DisputePieChartState> {
             options={this.state.options}
             series={this.state.series}
             type="pie"
-            height={300}
+            height={250}
             width={"100%"}
           />
         </Box>

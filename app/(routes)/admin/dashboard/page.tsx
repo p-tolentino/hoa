@@ -18,7 +18,11 @@ import { Heading } from "@/components/ui/heading";
 
 import MembershipCard from "./_components/membership-card";
 import FinanceCard from "./_components/finance-card";
-import CommunityEngagmentCard from "./_components/comeng-card";
+import DiscussionCard from "./_components/com-eng-card/discussion-total-post";
+import BusinessCard from "./_components/com-eng-card/business-total-post";
+import EventCard from "./_components/com-eng-card/event-total-post";
+import PollCard from "./_components/com-eng-card/poll-responses";
+// import CommunityEngagmentCard from "./_components/comeng-card";
 import DisputeCard from "./_components/dispute-card";
 import ViolationCard from "./_components/violation-card";
 
@@ -207,7 +211,7 @@ export default function ExampleChart() {
       </Flex>
       <Separator className="mt-4 mb-6" />
 
-      <Grid templateColumns="repeat(5, 1fr)" gap={6}>
+      <Grid templateColumns="repeat(4, 1fr)" gap={6}>
         <GridItem w="100%">
           <MembershipCard count={memberCount} />
         </GridItem>
@@ -220,7 +224,8 @@ export default function ExampleChart() {
         <GridItem w="100%">
           <ViolationCard count={violationCount} />
         </GridItem>
-        <GridItem colSpan={1} rowSpan={2}>
+
+        {/* <GridItem colSpan={1} rowSpan={2}>
           <Card>
             <CardHeader
               fontSize="sm"
@@ -238,7 +243,7 @@ export default function ExampleChart() {
               />
             </CardBody>
           </Card>
-        </GridItem>
+        </GridItem> */}
         <GridItem colSpan={2}>
           <Card>
             <CardHeader
@@ -256,6 +261,34 @@ export default function ExampleChart() {
         <GridItem colSpan={2}>
           <Card>
             <CardHeader
+              fontSize="sm"
+              fontFamily="font.heading"
+              fontWeight="semibold"
+            >
+              Financial Summary: Income & Expenses per Month
+            </CardHeader>
+            <CardBody>
+              <BarChart financialSummary={financialSummary} />
+            </CardBody>
+          </Card>
+        </GridItem>
+
+        <GridItem w="100%">
+          <DiscussionCard discussCount={discussionCount} />
+        </GridItem>
+        <GridItem w="100%">
+          <BusinessCard businessCount={businessCount} />
+        </GridItem>
+        <GridItem w="100%">
+          <EventCard eventCount={eventCount} />
+        </GridItem>
+        <GridItem w="100%">
+          <PollCard userPollCount={userPollCount} />
+        </GridItem>
+
+        <GridItem colSpan={2}>
+          <Card>
+            <CardHeader
               // mb="2.3%"
               fontSize="sm"
               fontFamily="font.heading"
@@ -265,21 +298,6 @@ export default function ExampleChart() {
             </CardHeader>
             <CardBody>
               <DisputePieChart />
-            </CardBody>
-          </Card>
-        </GridItem>
-
-        <GridItem colSpan={2}>
-          <Card>
-            <CardHeader
-              fontSize="sm"
-              fontFamily="font.heading"
-              fontWeight="semibold"
-            >
-              Financial Summary: Income & Expenses per Month
-            </CardHeader>
-            <CardBody>
-              <BarChart financialSummary={financialSummary} />
             </CardBody>
           </Card>
         </GridItem>

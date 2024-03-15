@@ -279,11 +279,11 @@ model Notice {
   type      String
   recipient String
   meetDate  String?
-  meetTime  String?
   venue     String?
   sender    String
   createdAt DateTime @default(now())
   idToLink  String
+  meetTime  String?
 }
 
 model DisputeType {
@@ -294,20 +294,20 @@ model DisputeType {
 }
 
 model Dispute {
-  id                  String   @id @unique @default(cuid())
+  id                String   @id @unique @default(cuid())
   disputeDate       DateTime
-  type                String
-  violationInvolved    String?
-  description         String
-  personsInvolved     String[]
-  status              String?  @default("Pending")                // Pending | Under Review | Resolved | Unresolved
-  officerAssigned     String?
-  createdAt           DateTime @default(now())
-  submittedBy         String
-  number              Int      @default(autoincrement())
-  progress            String   @default("Step 1: Dispute Form Submission")
-  step                Int      @default(1)
-  letterSent          Boolean  @default(false)
+  type              String
+  description       String
+  personsInvolved   String[]
+  status            String?  @default("Pending")
+  officerAssigned   String?
+  createdAt         DateTime @default(now())
+  submittedBy       String
+  number            Int      @default(autoincrement())
+  progress          String   @default("Step 1: Dispute Form Submission")
+  step              Int      @default(1)
+  letterSent        Boolean  @default(false)
+  violationInvolved String?
 }
 
 enum CategoryType {
