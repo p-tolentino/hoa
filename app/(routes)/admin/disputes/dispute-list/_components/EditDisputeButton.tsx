@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import {
   Dialog,
@@ -7,87 +7,176 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger
-} from '@/components/ui/dialog'
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import {
   Input,
   Stack,
   Button,
   FormControl,
   FormLabel,
-  Textarea
-} from '@chakra-ui/react'
-import React, { useState } from 'react'
-import { EditIcon } from '@chakra-ui/icons'
+  Textarea,
+  useToast,
+  FormHelperText,
+} from "@chakra-ui/react";
+import { EditIcon } from "@chakra-ui/icons";
+import { DisputeType } from "@prisma/client";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import {
+  DisputeTypeFormSchema,
+  DisputeTypeFormValues,
+} from "./AddDisputeButton";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { getDisputeTypeByName } from "@/server/data/dispute-type";
+import { updateDisputeType } from "@/server/actions/dispute-type";
+import { Form, FormField } from "@/components/ui/form";
 
 interface EditDisputeButtonProps {
-  title: string
-  description: string
+  dispute: DisputeType;
 }
 
-const EditDisputeButton: React.FC<EditDisputeButtonProps> = ({
-  title: initialTitle,
-  description: initialDescription
-}) => {
-  const [description, setDescription] = useState(initialDescription)
+const EditDisputeButton: React.FC<EditDisputeButtonProps> = ({ dispute }) => {
+  const router = useRouter();
+
+  const form = useForm<DisputeTypeFormValues>({
+    resolver: zodResolver(DisputeTypeFormSchema),
+    defaultValues: {
+      name: dispute.name,
+      title: dispute.title,
+      description: dispute.description,
+    },
+  });
+
+  const onSubmit = async (values: DisputeTypeFormValues) => {
+    const existingDisputeName = await getDisputeTypeByName(values.name);
+
+    if (existingDisputeName && existingDisputeName.id !== dispute.id) {
+      console.log("Existing dispute name, try a different one");
+      toast({
+        title: `Dispute Type with identifier "${form.watch(
+          "name"
+        )}" already exists.`,
+        description: `Existing dispute name (identifier), try a different one`,
+        status: "warning",
+        position: "bottom-right",
+        isClosable: true,
+      });
+    } else {
+      await updateDisputeType(values, dispute.id)
+        .then((data) => {
+          if (data.success) {
+            toast({
+              title: `Successfully edited dispute type "${form.watch(
+                "title"
+              )}" to the list of HOA disputes.`,
+              status: "info",
+              position: "bottom-right",
+              isClosable: true,
+            });
+          }
+        })
+        .then(() => {
+          form.reset();
+          router.refresh();
+        });
+    }
+  };
+
+  const toast = useToast();
 
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button size='sm' mr='5px'>
+        <Button size="sm" mr="5px">
           <EditIcon />
         </Button>
       </DialogTrigger>
-      <DialogContent className='lg:min-w-[800px]'>
-        <form action=''>
-          <DialogHeader>
-            <DialogTitle>Edit a Dispute </DialogTitle>
-            <DialogDescription>
-              You may edit the description of your selected dispute.
-            </DialogDescription>
-          </DialogHeader>
+      <DialogContent className="lg:min-w-[800px]">
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)}>
+            <DialogHeader>
+              <DialogTitle>Edit a Dispute Type</DialogTitle>
+              <DialogDescription>
+                You may edit the description of your selected dispute.
+              </DialogDescription>
+            </DialogHeader>
 
-          {/* Form Content */}
-          <Stack spacing='15px' my='2rem'>
-            {/* Dispute Title */}
-            <FormControl isRequired>
-              <FormLabel fontSize='sm' fontWeight='semibold'>
-                Title:
-              </FormLabel>
-              <Input
-                size='md'
-                fontWeight='semibold'
-                type='string'
-                value={initialTitle}
-                disabled
+            {/* Form Content */}
+            <Stack spacing="15px" my="2rem">
+              {/* Dispute Title */}
+              <FormField
+                control={form.control}
+                name="title"
+                render={({ field }) => (
+                  <FormControl isRequired>
+                    <FormLabel fontSize="sm" fontWeight="semibold">
+                      Dispute Title:
+                    </FormLabel>
+                    <Input
+                      size="md"
+                      fontWeight="semibold"
+                      type="string"
+                      placeholder="Enter a Title"
+                      {...field}
+                    />
+                  </FormControl>
+                )}
               />
-            </FormControl>
 
-            {/* Dispute Description */}
-            <FormControl isRequired>
-              <FormLabel fontSize='sm' fontWeight='semibold'>
-                Description:
-              </FormLabel>
-              <Textarea
-                placeholder='Write something...'
-                fontSize='sm'
-                fontFamily='font.body'
-                maxH='300px'
-                value={description}
-                onChange={e => setDescription(e.target.value)}
-                resize='none'
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormControl isRequired>
+                    <FormLabel fontSize="sm" fontWeight="semibold">
+                      Database Name (Identifier):
+                    </FormLabel>
+                    <Input
+                      size="md"
+                      fontWeight="semibold"
+                      type="string"
+                      placeholder="ex. neighbor"
+                      {...field}
+                    />
+                    <FormHelperText>
+                      A simpler version of the title for easier identification
+                      in the system's database
+                    </FormHelperText>
+                  </FormControl>
+                )}
               />
-            </FormControl>
-          </Stack>
 
-          <DialogFooter>
-            <Button size='sm' colorScheme='yellow' type='submit'>
-              Save Changes
-            </Button>
-          </DialogFooter>
-        </form>
+              {/* Dispute Description */}
+              <FormField
+                control={form.control}
+                name="description"
+                render={({ field }) => (
+                  <FormControl isRequired>
+                    <FormLabel fontSize="sm" fontWeight="semibold">
+                      Description:
+                    </FormLabel>
+                    <Textarea
+                      fontFamily="font.body"
+                      placeholder="Write something..."
+                      fontSize="sm"
+                      resize="none"
+                      {...field}
+                    />
+                  </FormControl>
+                )}
+              />
+            </Stack>
+
+            <DialogFooter>
+              <Button size="sm" colorScheme="yellow" type="submit">
+                Save Changes
+              </Button>
+            </DialogFooter>
+          </form>
+        </Form>
       </DialogContent>
     </Dialog>
-  )
-}
-export default EditDisputeButton
+  );
+};
+export default EditDisputeButton;

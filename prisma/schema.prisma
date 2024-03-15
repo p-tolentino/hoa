@@ -268,7 +268,7 @@ model Notification {
   userId      String[]
   title       String
   description String
-  isRead      Boolean
+  isRead      Boolean  @default(false)
   link        String
   createdAt   DateTime @default(now())
   isArchived  Boolean  @default(false)
@@ -279,6 +279,7 @@ model Notice {
   type      String
   recipient String
   meetDate  String?
+  meetTime  String?
   venue     String?
   sender    String
   createdAt DateTime @default(now())
@@ -290,6 +291,23 @@ model DisputeType {
   name        String
   description String
   title       String
+}
+
+model Dispute {
+  id                  String   @id @unique @default(cuid())
+  disputeDate       DateTime
+  type                String
+  violationInvolved    String?
+  description         String
+  personsInvolved     String[]
+  status              String?  @default("Pending")                // Pending | Under Review | Resolved | Unresolved
+  officerAssigned     String?
+  createdAt           DateTime @default(now())
+  submittedBy         String
+  number              Int      @default(autoincrement())
+  progress            String   @default("Step 1: Dispute Form Submission")
+  step                Int      @default(1)
+  letterSent          Boolean  @default(false)
 }
 
 enum CategoryType {

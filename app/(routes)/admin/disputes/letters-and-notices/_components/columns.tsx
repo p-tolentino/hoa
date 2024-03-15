@@ -1,51 +1,56 @@
-'use client'
+"use client";
 
-import { Text } from '@chakra-ui/react'
-import { ColumnDef } from '@tanstack/react-table'
+import { Text } from "@chakra-ui/react";
+import { Dispute, DisputeType, Violation, ViolationType } from "@prisma/client";
+import { ColumnDef } from "@tanstack/react-table";
 
 export type DisputeLettersAndNoticesColumn = {
-  id: string
-  createdAt: string
-  disputeNumber: string
-  disputeType: string
-  viewDisputeLetterNotice: string
-  // recipient: string,
-  // sender: string,
-  // meetDate?: string,
-  // venue?: string
-}
+  id: string;
+  type: string;
+  recipient: string;
+  meetDate?: string;
+  meetTime?: string;
+  venue?: string;
+  sender: string;
+  createdAt: string;
+  dispute: Dispute;
+  disputeType: DisputeType;
+  violationType: ViolationType;
+};
 
 export const columns: ColumnDef<DisputeLettersAndNoticesColumn>[] = [
   {
-    accessorKey: 'createdAt',
-    header: 'Date Received'
+    accessorKey: "createdAt",
+    header: "Date Received",
   },
   {
-    accessorKey: 'disputeNumber',
-    header: 'Dispute Number',
-    cell: ({ row }) => <Text>{row.original.id}</Text>
+    accessorKey: "disputeNumber",
+    header: "Dispute Number",
+    cell: ({ row }) => (
+      <Text>{`#D${row.original.dispute.number
+        .toString()
+        .padStart(4, "0")}`}</Text>
+    ),
   },
   {
-    accessorKey: 'disputeType',
-    header: 'Dispute Type'
+    accessorKey: "disputeType",
+    header: "Dispute Type",
+    cell: ({ row }) => <span>{row.original.disputeType.title}</span>,
   },
   {
-    accessorKey: 'viewDisputeLetterNotice',
-    header: 'View Dispute Letter/Notice',
+    accessorKey: "viewDisputeLetterNotice",
+    header: "View Dispute Letter/Notice",
     cell: ({ row }) => (
       <a
         href={
-          row.original.viewDisputeLetterNotice.toLowerCase() === 'letter'
-            ? `/admin/disputes/letters-and-notices/letter`
-            : `/admin/disputes/letters-and-notices/notice`
+          row.original.type === "disputeLetter"
+            ? `/admin/disputes/letters-and-notices/letter?noticeId=${row.original.id}&disputeId=${row.original.dispute.id}`
+            : `/admin/disputes/letters-and-notices/notice?noticeId=${row.original.id}&disputeId=${row.original.dispute.id}`
         }
-        className='hover:underline hover:text-blue-500'
+        className="hover:underline hover:text-blue-500"
       >
-        View{' '}
-        <span className='capitalize'>
-          {row.original.viewDisputeLetterNotice.toLowerCase()}
-        </span>
+        View Details
       </a>
-    )
-  }
-]
+    ),
+  },
+];

@@ -41,14 +41,13 @@ export const columns: ColumnDef<ViolationLettersAndNoticesColumn>[] = [
     cell: ({ row }) => (
       <a
         href={
-          row.original.type.toLowerCase() === "letter"
+          row.original.type === "violationLetter"
             ? `/admin/violations/letters-and-notices/letter?letterId=${row.original.id}&violationId=${row.original.violation.id}&violationTypeName=${row.original.violationType.name}`
             : `/admin/violations/letters-and-notices/notice?noticeId=${row.original.id}&violationId=${row.original.violation.id}&violationTypeName=${row.original.violationType.name}`
         }
         className="hover:underline hover:text-blue-500"
       >
-        View{" "}
-        <span className="capitalize">{row.original.type.toLowerCase()}</span>
+        View Details
       </a>
     ),
   },

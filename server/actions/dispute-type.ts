@@ -21,17 +21,15 @@ export const createDisputeType = async (values: DisputeTypeFormValues) => {
   }
 
   await db.disputeType.create({
-      data: {
-        ...values,
-      },
-  });  
-  
-  
+    data: {
+      ...values,
+    },
+  });
 
   return { success: "Created dispute type successfully" };
 };
 
-export const updateViolationType = async (
+export const updateDisputeType = async (
   values: DisputeTypeFormValues,
   id: string
 ) => {
@@ -52,7 +50,7 @@ export const updateViolationType = async (
   await db.disputeType.update({
     where: { id },
     data: {
-      ...values
+      ...values,
     },
   });
 

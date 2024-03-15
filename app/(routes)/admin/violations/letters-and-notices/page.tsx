@@ -1,4 +1,3 @@
-import React from "react";
 import { ViolationLettersAndNoticesClient } from "./_components/client";
 import { getAllLettersAndNotices } from "@/server/data/letter-notice";
 import { ViolationLettersAndNoticesColumn } from "./_components/columns";
@@ -20,9 +19,12 @@ export default async function ViolationLettersAndNotices() {
     return null;
   }
 
-  const orderedLettersNotices = lettersNotices.sort(
-    (a: any, b: any) => b.createdAt - a.createdAt
-  );
+  const orderedLettersNotices = lettersNotices
+    .filter(
+      (item) =>
+        item.type === "violationLetter" || item.type === "violationNotice"
+    )
+    .sort((a: any, b: any) => b.createdAt - a.createdAt);
 
   const violations = await getAllViolations();
 

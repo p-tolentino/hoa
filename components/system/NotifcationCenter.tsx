@@ -13,6 +13,7 @@ import {
   CardBody,
   Stack,
   Text,
+  PopoverFooter,
 } from "@chakra-ui/react";
 
 import { useState } from "react";
@@ -21,7 +22,11 @@ import { ScrollArea } from "../ui/scroll-area";
 import Link from "next/link";
 import { Notification } from "@prisma/client";
 import { format } from "date-fns";
-import { updateIsRead } from "@/server/actions/notification";
+import {
+  archiveNotification,
+  updateIsRead,
+} from "@/server/actions/notification";
+import { Button } from "../ui/button";
 
 interface NotificationCenter {
   isRead: boolean;
@@ -59,6 +64,21 @@ export default function NotificationCenter({
     setUnreadCount(
       updatedNotifications.filter((notification) => !notification.isRead).length
     );
+  };
+
+  const clearNotifications = async () => {
+    notifications.map(async (notification) => {
+      if (notification.isRead) {
+        await archiveNotification(notification.id, true).then((data) => {
+          if (data.success) {
+            console.log(data.success);
+            setNotifications(
+              notifications.filter((item) => item.id !== notification.id)
+            );
+          }
+        });
+      }
+    });
   };
 
   return (
@@ -104,22 +124,17 @@ export default function NotificationCenter({
         </PopoverTrigger>
         <PopoverContent my="10px" bg="#FBFBFD" borderColor="grey">
           <PopoverArrow />
-          <PopoverCloseButton className="text-black"/>
+          <PopoverCloseButton className="mb-10 text-black" />
           <PopoverHeader
             color="black"
             fontFamily="font.heading"
             fontWeight="bold"
             p="15px 15px 5px 15px"
           >
-            <div className="flex flex-col">
-
             {title}
-            <span className="text-xs text-gray-500" onClick={()=>{console.log("trigger clear notifs, archive all")}}>Clear all</span>
-            </div>
           </PopoverHeader>
-           
+
           <PopoverBody h="330px" p="20px">
-          
             <ScrollArea className="h-[300px]">
               <Stack spacing="3" alignItems="center" pb="15px">
                 {notifications.map((notification, index) => {
@@ -127,6 +142,10 @@ export default function NotificationCenter({
 
                   if (notification.type === "violation") {
                     href = `/admin/violations/letters-and-notices`;
+                  }
+
+                  if (notification.type === "dispute") {
+                    href = `/admin/disputes/letters-and-notices`;
                   }
 
                   if (notification.type === "finance") {
@@ -186,8 +205,19 @@ export default function NotificationCenter({
                   );
                 })}
               </Stack>
-            </ScrollArea> 
-          </PopoverBody> 
+            </ScrollArea>
+          </PopoverBody>
+          <PopoverFooter>
+            {notifications && (
+              <Button
+                variant="outline"
+                className="w-full text-sm text-gray-900"
+                onClick={() => clearNotifications()}
+              >
+                Clear read notifications
+              </Button>
+            )}
+          </PopoverFooter>
         </PopoverContent>
       </Popover>
     </div>

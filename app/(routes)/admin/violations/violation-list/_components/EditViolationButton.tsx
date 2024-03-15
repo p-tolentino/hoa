@@ -73,7 +73,7 @@ const EditViolationButton: React.FC<EditViolationButtonProps> = ({
             toast({
               title: `Successfully edited violation type "${form.watch(
                 "title"
-              )}" to the list of HOA disputes.`,
+              )}" to the list of HOA violations.`,
               status: "info",
               position: "bottom-right",
               isClosable: true,

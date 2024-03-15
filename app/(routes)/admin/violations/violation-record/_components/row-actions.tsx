@@ -228,7 +228,6 @@ export const RowActions: React.FC<RowActionProps> = ({ data }) => {
         )}
 
       {/* Status: REVIEW or AWAITING PAYMENT = Button: Mark as Resolved */}
-      {/* // !! ADD CHECKING FOR PROGRESS BEFORE MARKING AS RESOLVED */}
       {data.status === "Under Review" &&
       data.letterSent &&
       data.officerAssigned ===

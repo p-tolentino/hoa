@@ -50,5 +50,30 @@ export const updateIsRead = async (id: string, isRead: boolean) => {
     },
   });
 
-  return { success: "Notification created successfully" };
+  return { success: "Notification updated successfully" };
+};
+
+export const archiveNotification = async (id: string, isArchived: boolean) => {
+  const user = await currentUser();
+
+  // No Current User
+  if (!user) {
+    return { error: "Unauthorized" };
+  }
+
+  // Validation if user is in database (not leftover session)
+  const dbUser = await getUserById(user.id);
+
+  if (!dbUser) {
+    return { error: "Unauthorized" };
+  }
+
+  await db.notification.update({
+    where: { id },
+    data: {
+      isArchived,
+    },
+  });
+
+  return { success: "Notification archived successfully" };
 };

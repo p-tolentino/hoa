@@ -1,71 +1,87 @@
-import React from 'react'
-import { ListOfDisputesClient } from './_components/client'
+import { format } from "date-fns";
+import { ListOfDisputesColumn } from "./_components/columns";
+import { getAllDisputeTypes } from "@/server/data/dispute-type";
+import { getAllUsers } from "@/server/data/user";
+import { currentUser } from "@/lib/auth";
+import { getAllDisputes } from "@/server/data/dispute";
+import { getAllViolationTypes } from "@/server/data/violation-type";
+import { ListOfDisputesClient } from "./_components/client";
 
-export default function Disputes () {
-  const data = [
-    {
-      id: '#D001',
-      number: 1,
-      status: 'Pending',
-      createdAt: 'March 01, 2024',
-      officerAssigned: 'G&A Officer 1',
-      disputeDate: 'MM/DD/YYYY',
-      type: 'Neighbor-to-Neighbor Conflict',
-      description: '',
-      personsInvolved: [''],
-      submittedBy: 'Juan Dela Cruz',
-      step: 1,
-      progress: 'Step 1: Dispute Form Submission'
-    },
-    {
-      id: '#D002',
-      number: 2,
-      status: 'Under Review',
-      createdAt: 'March 01, 2024',
-      officerAssigned: 'G&A Officer 2',
-      disputeDate: 'MM/DD/YYYY',
-      type: 'Neighbor-to-Neighbor Conflict',
-      description: '',
-      personsInvolved: [''],
-      submittedBy: 'Juan Dela Cruz',
-      step: 2,
-      progress: 'Step 2: Review by Grievance and Adjudication Committee'
-    },
-    {
-      id: '#D003',
-      number: 3,
-      status: 'Under Review',
-      createdAt: 'March 01, 2024',
-      officerAssigned: 'G&A Officer 3',
-      disputeDate: 'MM/DD/YYYY',
-      type: 'Neighbor-to-Neighbor Conflict',
-      description: '',
-      personsInvolved: [''],
-      submittedBy: 'Juan Dela Cruz',
-      step: 2,
-      progress: 'Step 2: Review by Grievance and Adjudication Committee'
-    },
-    {
-      id: '#D004',
-      number: 4,
-      status: 'Resolved',
-      createdAt: 'March 01, 2024',
-      officerAssigned: 'G&A Officer 4',
-      disputeDate: 'MM/DD/YYYY',
-      type: 'Neighbor-to-Neighbor Conflict',
-      description: '',
-      personsInvolved: [''],
-      submittedBy: 'Juan Dela Cruz',
-      step: 3,
-      progress: 'Step 3: Dispute Resolution with Corrective Actions'
-    }
-  ]
+export default async function Disputes() {
+  const user = await currentUser();
+  if (!user) {
+    return null;
+  }
+
+  const users = await getAllUsers();
+
+  if (!users) {
+    return null;
+  }
+
+  const disputes = await getAllDisputes();
+
+  if (!disputes) {
+    return null;
+  }
+
+  const disputeTypes = await getAllDisputeTypes();
+
+  if (!disputeTypes) {
+    return null;
+  }
+
+  const violationTypes = await getAllViolationTypes();
+
+  if (!violationTypes) {
+    return null;
+  }
+
+  const formattedDisputes: ListOfDisputesColumn[] = disputes.map((item) => {
+    const officer = users.find((user) => user.id === item.officerAssigned);
+    const submittedBy = users.find((user) => user.id === item.submittedBy);
+    const dispute = disputeTypes.find((type) => type.name === item.type);
+    const violationType = violationTypes.find(
+      (type) => type.name === item.violationInvolved
+    );
+
+    return {
+      id: item.id || "",
+      number: item.number || 0,
+      status: item.status || "",
+      type: dispute?.title || "",
+      createdAt: item.createdAt
+        ? format(
+            new Date(item.createdAt)?.toISOString().split("T")[0],
+            "MMMM dd, yyyy"
+          )
+        : "",
+      disputeDate: item.disputeDate
+        ? format(
+            new Date(item.disputeDate)?.toISOString().split("T")[0],
+            "MMMM dd, yyyy"
+          )
+        : "",
+      personsInvolved: item.personsInvolved || [],
+      officerAssigned: officer
+        ? `${officer.info?.firstName} ${officer.info?.lastName}`
+        : "",
+      description: item.description || "",
+      submittedBy: submittedBy
+        ? `${submittedBy.info?.firstName} ${submittedBy.info?.lastName}`
+        : "",
+      step: item.step || 1,
+      progress: item.progress || "Step 0",
+      letterSent: item.letterSent,
+      violationInvolved: item.violationInvolved ? violationType : null,
+    };
+  });
 
   return (
     <div>
-      <div className='flex-1 space-y-4'>
-        <ListOfDisputesClient data={data} />
+      <div className="flex-1 space-y-4">
+        <ListOfDisputesClient data={formattedDisputes} />
       </div>
     </div>
-  )
+  );
 }
