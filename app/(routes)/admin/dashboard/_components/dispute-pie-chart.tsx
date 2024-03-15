@@ -18,14 +18,24 @@ class DisputePieChart extends React.Component<{}, DisputePieChartState> {
       options: {
         chart: {
           type: "pie",
+          toolbar: {
+            show: true, // Enable toolbar
+            tools: {
+              download: true,
+              selection: true,
+              zoom: true,
+              zoomin: true,
+              zoomout: true,
+            },
+          },
         },
         labels: ["one", "two", "three", "four", "five"],
         responsive: [
           {
-            breakpoint: 480,
+            breakpoint: 1450,
             options: {
               chart: {
-                width: 200,
+                width: 300,
               },
               legend: {
                 position: "bottom",
@@ -46,7 +56,7 @@ class DisputePieChart extends React.Component<{}, DisputePieChartState> {
             options={this.state.options}
             series={this.state.series}
             type="pie"
-            height={250}
+            height={300}
             width={"100%"}
           />
         </Box>
