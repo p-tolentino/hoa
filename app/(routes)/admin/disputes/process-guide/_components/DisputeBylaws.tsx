@@ -1,7 +1,6 @@
 'use client'
 
 import {
-  Button,
   Drawer,
   DrawerBody,
   DrawerHeader,
@@ -10,30 +9,42 @@ import {
   DrawerCloseButton,
   useDisclosure,
   Heading,
-  Text
+  Text,
+  Link,
+  useToast
 } from '@chakra-ui/react'
+import { Hoa } from '@prisma/client'
 
 export default function DisputeBylaws () {
   const title = "Homeowners' Association Bylaws (Dispute Section)"
   const description =
     "View the dispute section of the Homeowners' Association Bylaws."
 
+  let hoa: Hoa | undefined
+  const toast = useToast()
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   return (
-    <div>
-      <Button
-        variant='link'
+    <>
+      <Link
         fontFamily='font.body'
-        fontWeight='light'
-        onClick={() => onOpen()}
-        key='Bylaws'
-        color='black'
+        onClick={() => {
+          hoa?.byLawsLink
+            ? onOpen()
+            : toast({
+                title: 'HOA Bylaws has not been uploaded yet',
+                description: 'Kindly contact any of the Hoa Officers',
+                status: 'info',
+                position: 'bottom-right',
+                isClosable: true
+              })
+        }}
+        color='blue.500'
         size='sm'
         textDecoration='underline'
       >
-        View {title}
-      </Button>
+        Homeowners' Association Bylaws
+      </Link>
 
       <Drawer isOpen={isOpen} onClose={onClose} placement='right' size='xl'>
         <DrawerOverlay />
@@ -46,15 +57,19 @@ export default function DisputeBylaws () {
             <Text fontSize='xs'>{description}</Text>
           </DrawerHeader>
           <DrawerBody>
-            <object
-              data='/documents/HOA-Bylaws-2023.pdf'
-              type='application/pdf'
-              width='100%'
-              height='900px'
-            ></object>
+            {hoa?.byLawsLink ? (
+              <iframe
+                src={hoa.byLawsLink}
+                title='HOA Bylaws (Dispute Section)'
+                width='100%'
+                height='900px'
+              />
+            ) : (
+              <Text fontFamily='font.body'>No bylaws available</Text>
+            )}
           </DrawerBody>
         </DrawerContent>
       </Drawer>
-    </div>
+    </>
   )
 }

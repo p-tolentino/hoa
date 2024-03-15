@@ -39,17 +39,18 @@ export default function DisputeResolution () {
       description:
         'The Grievance and Adjudication Committee receives and reviews the dispute report.',
       details: [
-        'The Grievance and Adjudication Committee receives the dispute report in the MIS and assigns an officer-in-charge to oversee its resolution.',
-        'The Officer-in-Charge contacts the involved parties regarding a scheduled meeting to discuss the ideal approach on how to resolve the dispute.'
+        'The Grievance and Adjudication Committee receives the dispute report in the MIS and assigns an officer to oversee its resolution.',
+        'Each person involved in the dispute receives a letter outlining the nature of the dispute and a scheduled meeting to deliberate on the most effective course of action for its resolution.',
+        'Prior to the meeting date, the disputing parties are responsible to collect additional documents in support of their respective narratives.'
       ]
     },
     {
       title: 'Dispute Resolution with Corrective Actions',
       description:
-        'The Officer-in-Charge takes appropriate actions based on their decision, including issuing a penalty fee to violators if applicable.',
+        'The Officer assigned takes appropriate actions based on their decision, including issuing a penalty fee to violators if applicable.',
       details: [
-        'The involved parties receive letters and notices outlining the nature of the dispute, required corrective actions, and a penalty fee.',
-        'If applicable, the homeowner is informed that the penalty fee is added to their statement of account, which can be accessed via the Finance Management module.'
+        'At this step, it is reasonable to presume that the scheduled dispute resolution meeting has been conducted.',
+        'If applicable, each person involved in the dispute is informed that the penalty fee is added to their statement of account, which can be accessed via the Finance Management module.'
       ]
     }
   ]
@@ -163,26 +164,24 @@ export default function DisputeResolution () {
                 )}
                 {activeStep === 1 && (
                   <Text fontSize='xs' fontStyle='italic' color='grey'>
-                    *The assigned Officer-In-Charge sends a digital meeting
-                    letter containing meeting details to the involved parties.{' '}
-                    <br />
+                    *For the purpose of directing the resolution process more
+                    effectively, the Officer reviews the HOA's rules and
+                    regulations indicated in the <DisputeBylaws /> before the
+                    scheduled meeting date. <br />
+                    *The standard meeting date for disputes is the{' '}
+                    <b>upcoming Saturday</b> for the disputing parties to have
+                    the opportunity to gather necessary evidence to support
+                    their claims. <br />
+                    *A notice is issued to the all persons involved in the
+                    dispute <b>(1) day</b> prior to the scheduled meeting date.
                   </Text>
                 )}
                 {activeStep === 2 && (
                   <Text fontSize='xs' fontStyle='italic' color='grey'>
-                    *Homeowners receive notifications on committee decisions and
-                    required actions.
-                    <br />
-                    *If there is a violation invovled, the alleged violator/s
-                    can access the procedure on how to{' '}
-                    <Link
-                      href='#rectifyDispute'
-                      color='blue.500'
-                      textDecor='underline'
-                    >
-                      rectify the dispute
-                    </Link>{' '}
-                    and{' '}
+                    *If there is a violation involved, the corresponding penalty
+                    fee is added to the dispute parties' statement of account
+                    and they are duly notified. the alleged violator/s can
+                    access the procedure on how to{' '}
                     <Link
                       href='#payPenaltyFee'
                       color='blue.500'
@@ -190,8 +189,15 @@ export default function DisputeResolution () {
                     >
                       pay the penalty fee
                     </Link>{' '}
-                    in the Violation Process Guide in the Violation Monitoring
+                    in the Violation Process Guide in the Violation Enforcement
                     module.
+                    <br />
+                    <br />
+                    <Text fontSize='xs' color='red.700'>
+                      *In such cases where a dispute cannot be resolved through
+                      amicable means with the involvement of the board of
+                      directors, the dispute can be elevated to the barangay.
+                    </Text>
                   </Text>
                 )}
               </Box>
@@ -208,14 +214,14 @@ export default function DisputeResolution () {
           <ListItem>
             Comprehensive records of dispute reports, actions taken, and penalty
             fees imposed are maintained.
-            <ListItem>
-              Each dispute report is documented, including evidence, committee
-              decisions, enforcement actions, and penalty fee details.
-            </ListItem>
-            <ListItem>
-              Records are kept organized and easily accessible for future
-              reference in a secure system.
-            </ListItem>
+          </ListItem>
+          <ListItem>
+            Each dispute report is documented, including evidence, committee
+            decisions, enforcement actions, and penalty fee details.
+          </ListItem>
+          <ListItem>
+            Records are kept organized and easily accessible for future
+            reference in a secure system.
           </ListItem>
         </UnorderedList>
       </Box>
