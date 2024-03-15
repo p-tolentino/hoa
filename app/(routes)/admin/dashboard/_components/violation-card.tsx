@@ -3,7 +3,11 @@
 import { Box, Text, Flex, Avatar } from "@chakra-ui/react";
 import { TbMessageReport } from "react-icons/tb";
 
-export default function ViolationCard() {
+interface dashboardPoll{
+  count: number
+}
+
+export default function ViolationCard({count}:dashboardPoll) {
   return (
     <Box>
       <Flex
@@ -17,10 +21,10 @@ export default function ViolationCard() {
       >
         <Box>
           <Text color="gray.500" textTransform="uppercase" fontSize="xs">
-            Monthly Violations
+            Total Violation Reports (Valid)
           </Text>
           <Text fontSize="2xl" fontWeight="bold">
-            6
+          {count}
           </Text>
         </Box>
         <Avatar
