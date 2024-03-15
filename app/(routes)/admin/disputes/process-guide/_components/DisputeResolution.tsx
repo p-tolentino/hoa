@@ -21,9 +21,9 @@ import {
   Link
 } from '@chakra-ui/react'
 import DisputeBylaws from './DisputeBylaws'
-import React from 'react'
+import { Hoa } from '@prisma/client'
 
-export default function DisputeResolution () {
+export default function DisputeResolution ({ hoa }: { hoa: Hoa }) {
   const processSteps = [
     {
       title: 'Dispute Form Submission',
@@ -166,8 +166,8 @@ export default function DisputeResolution () {
                   <Text fontSize='xs' fontStyle='italic' color='grey'>
                     *For the purpose of directing the resolution process more
                     effectively, the Officer reviews the HOA's rules and
-                    regulations indicated in the <DisputeBylaws /> before the
-                    scheduled meeting date. <br />
+                    regulations indicated in the <DisputeBylaws hoa={hoa} />{' '}
+                    before the scheduled meeting date. <br />
                     *The standard meeting date for disputes is the{' '}
                     <b>upcoming Saturday</b> for the disputing parties to have
                     the opportunity to gather necessary evidence to support

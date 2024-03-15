@@ -3,11 +3,11 @@
 import { Box, Text, Flex, Avatar } from "@chakra-ui/react";
 import { TbReport } from "react-icons/tb";
 
-interface dashboardPoll{
-  count: number
+interface dashboardPoll {
+  count: number;
 }
 
-export default function DisputeCard({count}:dashboardPoll){
+export default function DisputeCard({ count }: dashboardPoll) {
   return (
     <Box>
       <Flex
@@ -20,11 +20,11 @@ export default function DisputeCard({count}:dashboardPoll){
         bg="white"
       >
         <Box>
-          <Text color="gray.500" textTransform="uppercase" fontSize="xs">
-          Total Dispute Reports (Valid)
+          <Text color="gray.500" textTransform="uppercase" fontSize="2xs">
+            Total Dispute Reports (Valid)
           </Text>
           <Text fontSize="2xl" fontWeight="bold">
-          {count}
+            {count}
           </Text>
         </Box>
         <Avatar

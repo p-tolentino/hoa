@@ -25,13 +25,13 @@ interface BarChartState {
 }
 
 function formatYearMonth(yearMonth: string): string {
-  const parts = yearMonth.split('-');
+  const parts = yearMonth.split("-");
   // Ensure parts are converted to numbers where necessary
   const year = Number(parts[0]);
   const month = Number(parts[1]) - 1; // Adjust for 0-indexed months in JavaScript Date
   const date = new Date(year, month);
 
-  return date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+  return date.toLocaleDateString("en-US", { month: "long", year: "numeric" });
 }
 
 class BarChart extends React.Component<BarChartProps, BarChartState> {
@@ -43,10 +43,6 @@ class BarChart extends React.Component<BarChartProps, BarChartState> {
         chart: {
           height: 350,
           type: "bar",
-        },
-        title: {
-          text: "Financial Summary: Income & Expenses per Month",
-          align: "left",
         },
         plotOptions: {
           bar: {
@@ -69,7 +65,10 @@ class BarChart extends React.Component<BarChartProps, BarChartState> {
   }
 
   componentDidUpdate(prevProps: BarChartProps) {
-    if (JSON.stringify(prevProps.financialSummary) !== JSON.stringify(this.props.financialSummary)) {
+    if (
+      JSON.stringify(prevProps.financialSummary) !==
+      JSON.stringify(this.props.financialSummary)
+    ) {
       this.updateChartData();
     }
   }
@@ -80,7 +79,9 @@ class BarChart extends React.Component<BarChartProps, BarChartState> {
     // Prepare data for the chart
     const incomeData = financialSummary.map((item) => item.income);
     const expenseData = financialSummary.map((item) => item.expense);
-    const categories = financialSummary.map((item) => formatYearMonth(item.yearMonth));
+    const categories = financialSummary.map((item) =>
+      formatYearMonth(item.yearMonth)
+    );
 
     this.setState({
       series: [
@@ -96,7 +97,13 @@ class BarChart extends React.Component<BarChartProps, BarChartState> {
   render() {
     return (
       <Box>
-        <Chart options={this.state.options} series={this.state.series} type="bar" height={350} width={"100%"} />
+        <Chart
+          options={this.state.options}
+          series={this.state.series}
+          type="bar"
+          height={250}
+          width={"100%"}
+        />
         {/* Add pagination buttons if necessary */}
       </Box>
     );

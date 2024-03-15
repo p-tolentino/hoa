@@ -23,18 +23,15 @@ interface LineChartState {
   options: ApexOptions;
 }
 
-
 function formatYearMonth(yearMonth: string): string {
-  const parts = yearMonth.split('-');
+  const parts = yearMonth.split("-");
   // Ensure parts are converted to numbers where necessary
   const year = Number(parts[0]);
   const month = Number(parts[1]) - 1; // Adjust for 0-indexed months in JavaScript Date
   const date = new Date(year, month);
 
-  return date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+  return date.toLocaleDateString("en-US", { month: "long", year: "numeric" });
 }
-
-
 
 class LineChart extends React.Component<LineChartProps, LineChartState> {
   state: LineChartState = {
@@ -58,10 +55,6 @@ class LineChart extends React.Component<LineChartProps, LineChartState> {
       stroke: {
         curve: "straight",
       },
-      title: {
-        text: "Financial Summary: Revenue per Month",
-        align: "left",
-      },
       grid: {
         row: {
           colors: ["#f3f3f3", "transparent"],
@@ -77,44 +70,61 @@ class LineChart extends React.Component<LineChartProps, LineChartState> {
   componentDidMount() {
     const { financialSummary } = this.props;
     // Sort financialSummary by yearMonth
-    const sortedFinancialSummary = [...financialSummary].sort((a, b) => a.yearMonth.localeCompare(b.yearMonth));
+    const sortedFinancialSummary = [...financialSummary].sort((a, b) =>
+      a.yearMonth.localeCompare(b.yearMonth)
+    );
 
     const netData = sortedFinancialSummary.map((item) => item.net);
-    const categories = sortedFinancialSummary.map((item) => formatYearMonth(item.yearMonth));
+    const categories = sortedFinancialSummary.map((item) =>
+      formatYearMonth(item.yearMonth)
+    );
 
     this.setState({
+      series: [{ name: "Revenue", data: netData }],
+      options: {
+        ...this.state.options,
+        xaxis: { ...this.state.options.xaxis, categories },
+      },
+    });
+  }
+
+  componentDidUpdate(prevProps: { financialSummary: any }) {
+    // Check if financialSummary prop has changed
+    if (
+      JSON.stringify(prevProps.financialSummary) !==
+      JSON.stringify(this.props.financialSummary)
+    ) {
+      const { financialSummary } = this.props;
+      // Sort financialSummary by yearMonth
+      const sortedFinancialSummary = [...financialSummary].sort((a, b) =>
+        a.yearMonth.localeCompare(b.yearMonth)
+      );
+
+      const netData = sortedFinancialSummary.map((item) => item.net);
+      const categories = sortedFinancialSummary.map((item) =>
+        formatYearMonth(item.yearMonth)
+      );
+
+      this.setState({
         series: [{ name: "Revenue", data: netData }],
         options: {
-            ...this.state.options,
-            xaxis: { ...this.state.options.xaxis, categories },
+          ...this.state.options,
+          xaxis: { ...this.state.options.xaxis, categories },
         },
-    });
-}
-
-componentDidUpdate(prevProps: { financialSummary: any; }) {
-    // Check if financialSummary prop has changed
-    if (JSON.stringify(prevProps.financialSummary) !== JSON.stringify(this.props.financialSummary)) {
-        const { financialSummary } = this.props;
-        // Sort financialSummary by yearMonth
-        const sortedFinancialSummary = [...financialSummary].sort((a, b) => a.yearMonth.localeCompare(b.yearMonth));
-
-        const netData = sortedFinancialSummary.map((item) => item.net);
-        const categories = sortedFinancialSummary.map((item) => formatYearMonth(item.yearMonth));
-
-        this.setState({
-            series: [{ name: "Revenue", data: netData }],
-            options: {
-                ...this.state.options,
-                xaxis: { ...this.state.options.xaxis, categories },
-            },
-        });
+      });
     }
-}
+  }
 
   render() {
     return (
       <Box>
-        <Chart options={this.state.options} series={this.state.series} type="line" height={350} width={"100%"} />
+        <Chart
+          options={this.state.options}
+          series={this.state.series}
+          type="line"
+          height={250}
+          width={"100%"}
+        />
       </Box>
     );
   }
