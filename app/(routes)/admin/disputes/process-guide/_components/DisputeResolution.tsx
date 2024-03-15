@@ -30,7 +30,7 @@ export default function DisputeResolution () {
       description:
         'Homeowners submit dispute reports through the Dispute Resolution module in the MIS.',
       details: [
-        'Homeowners provide details about the dispute, including the type of dispute, date, and a detailed description of the dispute.',
+        'Homeowners provide details about the dispute, including the type of dispute, type of violation (if applicable), date, and a detailed description of the dispute.',
         'Supporting evidence such as photos or documents may be attached to the dispute report.'
       ]
     },
