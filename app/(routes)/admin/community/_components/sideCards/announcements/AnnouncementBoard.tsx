@@ -48,9 +48,9 @@ export default function AnnouncementBoard ({ personalInfo, events, user }: Annou
     // Additional properties and adjustments can be made here as needed
   }));
 
-  const currentMonthEvents = events.filter(event => 
-    isSameMonth(event.date, currentDate)
-  );
+  const currentMonthEvents = events
+    .filter(event => isSameMonth(new Date(event.date), currentDate)) // Ensure we're only dealing with current month's events
+    .sort((a, b) => new Date(a.date).getDate() - new Date(b.date).getDate());
   return (
     <>
       <Card>

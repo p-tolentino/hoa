@@ -215,9 +215,11 @@ export const RowActions: React.FC<RowActionProps> = ({ data }) => {
       {/* Status: PENDING = Button: Take Case */}
       {data.status === "Pending" &&
         user?.info?.committee === "Environment and Security Committee" &&
-        !data.personsInvolved.includes(user.id) &&
-        data.submittedBy !==
-          `${user?.info.firstName} ${user?.info.lastName}` && (
+        !data.personsInvolved.includes(user.id) 
+        //&&
+        //data.submittedBy !==
+        //  `${user?.info.firstName} ${user?.info.lastName}` 
+        && (
           <Button
             size="sm"
             _hover={{ textDecoration: "none" }}

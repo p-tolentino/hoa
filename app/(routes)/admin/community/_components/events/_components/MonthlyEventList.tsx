@@ -39,12 +39,12 @@ export function MonthlyEventList ({ events, user }: EventProps) {
     onOpen()
   }
 
+
   const handleMonthEvents = (monthIndex: number) => {
-    return events.filter(event => {
-      const eventMonth = getMonth(new Date(event.date))
-      return eventMonth === monthIndex
-    })
-  }
+    return events
+      .filter(event => getMonth(new Date(event.date)) === monthIndex)
+      .sort((a, b) => new Date(a.date).getDate() - new Date(b.date).getDate());
+  };
 
   return (
     <div className='px-10'>
