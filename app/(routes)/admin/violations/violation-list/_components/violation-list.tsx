@@ -12,7 +12,14 @@ import {
   CardHeader,
   CardBody,
   Button,
-  ButtonGroup
+  ButtonGroup,
+  TableContainer,
+  Table,
+  Thead,
+  Tr,
+  Th,
+  Tbody,
+  Td
 } from '@chakra-ui/react'
 
 import AddViolationButton from './AddViolationButton'
@@ -33,6 +40,12 @@ export const ViolationList: React.FC<ViolationListProps> = ({ violations }) => {
     "View the list of violations that can be reported within the Homeowners' Association. Corresponding penalties for each violation type is included."
 
   const router = useRouter()
+
+  const feesList = [
+    { level: 'First Offense', fee: '₱ XXX' },
+    { level: 'Second Offense', fee: '₱ XXX' },
+    { level: 'Third Offense', fee: '₱ XXX' }
+  ]
 
   return (
     <>
@@ -83,19 +96,50 @@ export const ViolationList: React.FC<ViolationListProps> = ({ violations }) => {
                         </ButtonGroup>
                       </HStack>
                     </CardHeader>
-                    <CardBody pt={3} minH='100px'>
-                      {/* Violation Description */}
-                      <Text
-                        fontSize='sm'
-                        fontFamily='font.body'
-                        textAlign='justify'
-                      >
-                        {violation.description}
-                      </Text>
-                      {/* Penalty Fee */}
-                      <Text fontSize='xl' fontWeight='bold' mt='1rem'>
-                        ₱ {violation.fee}
-                      </Text>
+                    <CardBody>
+                      <Stack spacing='20px'>
+                        {/* Violation Description */}
+                        <Text
+                          fontSize='sm'
+                          fontFamily='font.body'
+                          textAlign='justify'
+                        >
+                          {violation.description}
+                        </Text>
+                        {/* Violation Levels and Penalty Fees */}
+                        <TableContainer mx='1rem'>
+                          <Table
+                            size='xs'
+                            variant='simple'
+                            fontFamily='font.body'
+                          >
+                            <Thead>
+                              <Tr>
+                                <Th fontSize='xs' fontFamily='font.body'>
+                                  Violation Level
+                                </Th>
+                                <Th
+                                  fontSize='xs'
+                                  fontFamily='font.body'
+                                  textAlign='center'
+                                >
+                                  Penalty Fee
+                                </Th>
+                              </Tr>
+                            </Thead>
+                            <Tbody fontSize='sm' fontFamily='font.body'>
+                              {feesList.map((offense, index) => (
+                                <Tr key={index}>
+                                  {/* Violation Level */}
+                                  <Td pl='0.5rem'>{offense.level}</Td>
+                                  {/* Penalty Fee */}
+                                  <Td textAlign='center'>{offense.fee}</Td>
+                                </Tr>
+                              ))}
+                            </Tbody>
+                          </Table>
+                        </TableContainer>
+                      </Stack>
                     </CardBody>
                   </Stack>
                 </Card>

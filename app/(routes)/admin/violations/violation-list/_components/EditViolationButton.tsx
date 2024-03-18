@@ -1,4 +1,4 @@
-"use client";
+'use client'
 
 import {
   Dialog,
@@ -7,8 +7,8 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+  DialogTrigger
+} from '@/components/ui/dialog'
 import {
   Input,
   Stack,
@@ -18,28 +18,36 @@ import {
   Textarea,
   useToast,
   FormHelperText,
-} from "@chakra-ui/react";
-import { EditIcon } from "@chakra-ui/icons";
-import { ViolationType } from "@prisma/client";
-import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
+  TableContainer,
+  Table,
+  Thead,
+  Tr,
+  Th,
+  Tbody,
+  Td
+} from '@chakra-ui/react'
+import { EditIcon } from '@chakra-ui/icons'
+import { ViolationType } from '@prisma/client'
+import { useRouter } from 'next/navigation'
+import { useForm } from 'react-hook-form'
 import {
   ViolationTypeFormSchema,
-  ViolationTypeFormValues,
-} from "./AddViolationButton";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { getViolationTypeByName } from "@/server/data/violation-type";
-import { updateViolationType } from "@/server/actions/violation-type";
-import { Form, FormField } from "@/components/ui/form";
+  ViolationTypeFormValues
+} from './AddViolationButton'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { getViolationTypeByName } from '@/server/data/violation-type'
+import { updateViolationType } from '@/server/actions/violation-type'
+import { Form, FormField } from '@/components/ui/form'
+import { useState } from 'react'
 
 interface EditViolationButtonProps {
-  violation: ViolationType;
+  violation: ViolationType
 }
 
 const EditViolationButton: React.FC<EditViolationButtonProps> = ({
-  violation,
+  violation
 }) => {
-  const router = useRouter();
+  const router = useRouter()
 
   const form = useForm<ViolationTypeFormValues>({
     resolver: zodResolver(ViolationTypeFormSchema),
@@ -48,55 +56,67 @@ const EditViolationButton: React.FC<EditViolationButtonProps> = ({
       title: violation.title,
       description: violation.description,
       fee: violation.fee.toString(),
-      deadline: violation.deadline.toString(),
-    },
-  });
+      deadline: violation.deadline.toString()
+    }
+  })
+
+  const [feesList, setFeesList] = useState([
+    { level: 'First Offense', fee: '' },
+    { level: 'Second Offense', fee: '' },
+    { level: 'Third Offense', fee: '' }
+  ])
+
+  const handleFeeChange = (index: number, value: string) => {
+    const updatedFeesList = [...feesList]
+    updatedFeesList[index].fee = value
+    setFeesList(updatedFeesList)
+  }
 
   const onSubmit = async (values: ViolationTypeFormValues) => {
-    const existingViolationName = await getViolationTypeByName(values.name);
+    const existingViolationName = await getViolationTypeByName(values.name)
 
     if (existingViolationName && existingViolationName.id !== violation.id) {
-      console.log("Existing violation name, try a different one");
+      console.log('Existing violation name, try a different one')
       toast({
         title: `Violation Type with identifier "${form.watch(
-          "name"
+          'name'
         )}" already exists.`,
         description: `Existing violation name (identifier), try a different one`,
-        status: "warning",
-        position: "bottom-right",
-        isClosable: true,
-      });
+        status: 'warning',
+        position: 'bottom-right',
+        isClosable: true
+      })
     } else {
       await updateViolationType(values, violation.id)
-        .then((data) => {
+        .then(data => {
           if (data.success) {
             toast({
               title: `Successfully edited violation type "${form.watch(
-                "title"
+                'title'
               )}" to the list of HOA violations.`,
-              status: "info",
-              position: "bottom-right",
-              isClosable: true,
-            });
+              status: 'info',
+              position: 'bottom-right',
+              isClosable: true
+            })
           }
         })
         .then(() => {
-          form.reset();
-          router.refresh();
-        });
+          form.reset()
+          router.refresh()
+        })
     }
-  };
+  }
 
-  const toast = useToast();
+  const toast = useToast()
 
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button size="sm" mr="5px">
+        <Button size='sm' mr='5px'>
           <EditIcon />
         </Button>
       </DialogTrigger>
-      <DialogContent className="lg:min-w-[800px]">
+      <DialogContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <DialogHeader>
@@ -106,46 +126,24 @@ const EditViolationButton: React.FC<EditViolationButtonProps> = ({
               </DialogDescription>
             </DialogHeader>
 
-            {/* Form Content */}
-            <Stack spacing="15px" my="2rem">
+            <Stack spacing='20px' my='1.5rem'>
               {/* Violation Title */}
               <FormField
                 control={form.control}
-                name="title"
+                name='title'
                 render={({ field }) => (
-                  <FormControl isRequired>
-                    <FormLabel fontSize="sm" fontWeight="semibold">
-                      Title:
+                  <FormControl>
+                    <FormLabel fontSize='sm' fontWeight='semibold'>
+                      Violation Title:
                     </FormLabel>
                     <Input
-                      size="md"
-                      fontWeight="semibold"
-                      type="string"
+                      isDisabled
+                      size='sm'
+                      fontWeight='semibold'
+                      type='string'
+                      // placeholder='ex. Unauthorized Commercial or Business Activities'
                       {...field}
                     />
-                  </FormControl>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormControl isRequired>
-                    <FormLabel fontSize="sm" fontWeight="semibold">
-                      Database Name (Identifier):
-                    </FormLabel>
-                    <Input
-                      size="md"
-                      fontWeight="semibold"
-                      type="string"
-                      placeholder="ex. commercial"
-                      {...field}
-                    />
-                    <FormHelperText>
-                      A simpler version of the title for easier identification
-                      in the system's database
-                    </FormHelperText>
                   </FormControl>
                 )}
               />
@@ -153,70 +151,122 @@ const EditViolationButton: React.FC<EditViolationButtonProps> = ({
               {/* Violation Description */}
               <FormField
                 control={form.control}
-                name="description"
+                name='description'
                 render={({ field }) => (
-                  <FormControl isRequired>
-                    <FormLabel fontSize="sm" fontWeight="semibold">
+                  <FormControl>
+                    <FormLabel fontSize='sm' fontWeight='semibold'>
                       Description:
                     </FormLabel>
                     <Textarea
-                      placeholder="Write something..."
-                      fontSize="sm"
-                      fontFamily="font.body"
-                      maxH="300px"
+                      fontFamily='font.body'
+                      // placeholder='Write something...'
+                      fontSize='sm'
                       {...field}
-                      resize="none"
+                      resize='none'
                     />
                   </FormControl>
                 )}
               />
 
-              <FormField
-                control={form.control}
-                name="fee"
-                render={({ field }) => (
-                  <FormControl isRequired>
-                    <FormLabel fontSize="sm" fontWeight="semibold">
-                      Penalty Fee:
-                    </FormLabel>
-                    <Input
-                      size="md"
-                      fontWeight="semibold"
-                      type="number"
-                      {...field}
-                    />
-                  </FormControl>
-                )}
-              />
+              {/* Violation Penalty Fee */}
+              {/* <FormField
+                  control={form.control}
+                  name='fee'
+                  render={({ field }) => (
+                    <FormControl>
+                      <FormLabel fontSize='sm' fontWeight='semibold'>
+                        Penalty Fee:
+                      </FormLabel>
+                      <Flex
+                        fontFamily='font.body'
+                        fontSize='md'
+                        alignItems='center'
+                        gap='5px'
+                      >
+                        <Text>₱</Text>
+                        <Input
+                          size='md'
+                          fontWeight='semibold'
+                          placeholder='XXX'
+                          type='number'
+                          textAlign='right'
+                          w='min-content'
+                          {...field}
+                        />
+                      </Flex>
+                    </FormControl>
+                  )}
+                /> */}
 
-              <FormField
-                control={form.control}
-                name="deadline"
-                render={({ field }) => (
-                  <FormControl isRequired>
-                    <FormLabel fontSize="sm" fontWeight="semibold">
-                      Deadline of Payment
-                    </FormLabel>
-                    <Input
-                      size="md"
-                      fontWeight="semibold"
-                      type="number"
-                      {...field}
-                    />
-                  </FormControl>
-                )}
-              />
+              {/* Violation Levels and Penalty Fees*/}
+              <FormControl>
+                <FormLabel fontSize='sm' fontWeight='semibold'>
+                  Violation Levels and Penalty Fees
+                </FormLabel>
+                <TableContainer mx='1rem'>
+                  <Table size='xs' variant='simple' fontFamily='font.body'>
+                    <Thead>
+                      <Tr>
+                        <Th fontSize='xs' fontFamily='font.body'>
+                          Violation Level
+                        </Th>
+                        <Th
+                          fontSize='xs'
+                          fontFamily='font.body'
+                          textAlign='center'
+                        >
+                          Penalty Fee
+                        </Th>
+                      </Tr>
+                    </Thead>
+                    <Tbody fontSize='sm' fontFamily='font.body'>
+                      {feesList.map((offense, index) => (
+                        <Tr key={index}>
+                          {/* Violation Level */}
+                          <Td pl='0.5rem'>{offense.level}</Td>
+                          {/* Penalty Fee */}
+                          <Td textAlign='center'>
+                            ₱{' '}
+                            <Input
+                              type='number'
+                              textAlign='right'
+                              w='8rem'
+                              size='sm'
+                              placeholder='XXX'
+                              value={offense.fee}
+                              onChange={e =>
+                                handleFeeChange(index, e.target.value)
+                              }
+                            />
+                          </Td>
+                        </Tr>
+                      ))}
+                    </Tbody>
+                  </Table>
+                </TableContainer>
+                <FormHelperText
+                  fontFamily='font.body'
+                  fontSize='xs'
+                  textAlign='justify'
+                >
+                  Please enter the corresponding penalty fees for each level of
+                  offense for this violation.
+                </FormHelperText>
+              </FormControl>
             </Stack>
 
-            <DialogFooter>
-              <Button size="sm" colorScheme="yellow" type="submit">
-                Save Changes
-              </Button>
+            <DialogFooter className='text-right'>
+              <FormControl>
+                {/* Save Changes Button */}
+                <Button size='sm' colorScheme='yellow' type='submit'>
+                  Save Changes
+                </Button>
+              </FormControl>
             </DialogFooter>
           </form>
         </Form>
       </DialogContent>
     </Dialog>
-  );
-};
-export default EditViolationButton;
+  )
+}
+export default EditViolationButton
