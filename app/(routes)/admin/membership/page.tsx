@@ -56,7 +56,7 @@ const Membership = async () => {
         description='Navigate through the Membership module'
       />
       <Separator className='mt-4 mb-6' />
-      <SimpleGrid spacing={10} columns={3}>
+      <SimpleGrid spacing={10} columns={{ md: 1, lg: 3 }}>
         {/* User Management */}
         {userManagement.map(categoryData => (
           <ModuleMenuCard

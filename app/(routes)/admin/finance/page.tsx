@@ -69,7 +69,7 @@ export default function FinanceManagementMenu () {
         description='Navigate through the Finance Management module'
       />
       <Separator className='mt-4 mb-6' />
-      <SimpleGrid spacing={10} columns={3}>
+      <SimpleGrid spacing={10} columns={{ md: 1, lg: 3 }}>
         {/* Homeowner Reports */}
         {homeownerReportsMenuCard.map(categoryData => (
           <ModuleMenuCard

@@ -75,7 +75,7 @@ export default function DisputeResolutionMenu () {
         description='Navigate through the Dispute Resolution module'
       />
       <Separator className='mt-4 mb-6' />
-      <SimpleGrid spacing={10} columns={3}>
+      <SimpleGrid spacing={10} columns={{ md: 1, lg: 3 }}>
         {/* Dispute Management */}
         {disputeManagementMenuCard.map((categoryData, index) => (
           <ModuleMenuCard

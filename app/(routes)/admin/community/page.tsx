@@ -1,6 +1,6 @@
 import { Heading } from '@/components/ui/heading'
 import { Separator } from '@/components/ui/separator'
-import { Box, Button, Flex, Text } from '@chakra-ui/react'
+import { Box, Button, Flex, SimpleGrid, Text } from '@chakra-ui/react'
 
 import { currentUser } from '@/lib/auth'
 
@@ -109,6 +109,20 @@ const Community = async () => {
       </Flex>
       <Separator className='mt-4 mb-6' />
 
+      <SimpleGrid
+        columns={{ sm: 1, md: 2 }}
+        spacing={5}
+        mb={5}
+        display={{ sm: 'grid', md: 'grid', lg: 'none' }}
+      >
+        <AnnouncementBoard
+          personalInfo={personalInfo}
+          events={events}
+          user={user.id}
+        />
+        <HomeownerResources hoa={hoa} />
+      </SimpleGrid>
+
       <Flex gap='2rem'>
         <Flex flexGrow={5}>
           <Tabs defaultValue='discussions' className='w-full'>
@@ -132,7 +146,12 @@ const Community = async () => {
             </TabsContent>
           </Tabs>
         </Flex>
-        <Flex flexDir='column' gap='2rem' flexGrow={1}>
+        <Flex
+          flexDir='column'
+          gap='2rem'
+          flexGrow={1}
+          display={{ sm: 'none', md: 'none', lg: 'flex' }}
+        >
           <AnnouncementBoard
             personalInfo={personalInfo}
             events={events}

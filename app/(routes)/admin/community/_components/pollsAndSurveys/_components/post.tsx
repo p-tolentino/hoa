@@ -1,4 +1,4 @@
-"use client";
+'use client'
 
 import {
   Flex,
@@ -8,69 +8,69 @@ import {
   Heading,
   Avatar,
   HStack,
-  Spacer,
-} from "@chakra-ui/react";
-import Answer from "./_answer&report/answer";
-import Report from "./_answer&report/report";
-import { formatDistanceToNowStrict } from "date-fns";
-import { useState } from "react";
-import { getPersonalInfo } from "@/server/data/user-info";
-import { updateStatus } from "@/server/actions/poll";
+  Spacer
+} from '@chakra-ui/react'
+import Answer from './_answer&report/answer'
+import Report from './_answer&report/report'
+import { formatDistanceToNowStrict } from 'date-fns'
+import { useState } from 'react'
+import { getPersonalInfo } from '@/server/data/user-info'
+import { updateStatus } from '@/server/actions/poll'
 
-import { Polls, User } from "@prisma/client";
+import { Polls, User } from '@prisma/client'
 
-import React, { useEffect } from "react";
+import React, { useEffect } from 'react'
 
 interface PollProps {
-  polls: Polls[];
-  user: string;
-  userInfos: UserInfos;
+  polls: Polls[]
+  user: string
+  userInfos: UserInfos
 }
 
 interface UserInfo {
-  lastName: string | null;
-  firstName: string | null;
-  position: string | null;
+  lastName: string | null
+  firstName: string | null
+  position: string | null
 }
 
 interface UserInfos {
-  [userId: string]: UserInfo | null;
+  [userId: string]: UserInfo | null
 }
 
 const Post: React.FC<PollProps> = ({ polls, user, userInfos }) => {
   const categoryColors = {
-    MEETING: "purple.200",
-    ELECTION: "pink.200",
-    INQUIRY: "blue.200",
-    EVENT: "orange.200",
-    FOODANDDRINK: "purple.200",
-    CLOTHING: "pink.200",
-    HOUSEHOLDITEMS: "blue.200",
-    HOMESERVICES: "orange.200",
-    OTHER: "teal.200",
-  };
+    MEETING: 'purple.200',
+    ELECTION: 'pink.200',
+    INQUIRY: 'blue.200',
+    EVENT: 'orange.200',
+    FOODANDDRINK: 'purple.200',
+    CLOTHING: 'pink.200',
+    HOUSEHOLDITEMS: 'blue.200',
+    HOMESERVICES: 'orange.200',
+    OTHER: 'teal.200'
+  }
 
-  const [usersInfo, setUsersInfo] = useState<UserInfos>({});
-  const [postStatus, setPostStatus] = useState("Open");
+  const [usersInfo, setUsersInfo] = useState<UserInfos>({})
+  const [postStatus, setPostStatus] = useState('Open')
 
   useEffect(() => {
-    polls.forEach(async (poll) => {
-      const startDate = new Date(poll.startDate);
-      const endDate = new Date(poll.endDate);
-      const now = new Date();
+    polls.forEach(async poll => {
+      const startDate = new Date(poll.startDate)
+      const endDate = new Date(poll.endDate)
+      const now = new Date()
 
-      let newStatus: "ACTIVE" | "INACTIVE" = "INACTIVE";
+      let newStatus: 'ACTIVE' | 'INACTIVE' = 'INACTIVE'
       if (now >= startDate && now <= endDate) {
-        newStatus = "ACTIVE";
+        newStatus = 'ACTIVE'
       }
 
       if (poll.status !== newStatus) {
-        await updateStatus(poll.id, newStatus);
+        await updateStatus(poll.id, newStatus)
         // Optionally: Set state here to re-render the component or refetch the polls to reflect the update.
         // This will depend on how you manage state in your component.
       }
-    });
-  }, [polls]);
+    })
+  }, [polls])
 
   // useEffect(() => {
   //   const fetchUserInfos = async () => {
@@ -103,56 +103,57 @@ const Post: React.FC<PollProps> = ({ polls, user, userInfos }) => {
 
   return (
     <>
-      {polls.map((poll) => (
-        <Flex p="10px" key={poll.id}>
+      {polls.map(poll => (
+        <Flex p='10px' key={poll.id}>
           <Box
-            w="100%"
-            h="100%"
-            border="1px"
-            borderColor="gray.200"
-            borderRadius="10px"
-            mb="1%"
+            w='100%'
+            h='100%'
+            border='1px'
+            borderColor='gray.200'
+            borderRadius='10px'
+            mb='1%'
           >
             {/* Survey Status */}
             <Box
-              fontSize="xs"
-              w="20%"
-              textAlign="center"
-              ml="20px"
-              fontWeight="bold"
-              bgColor={poll.status == "ACTIVE" ? "green.200" : "red.200"}
+              fontSize='xs'
+              w='max-content'
+              px={2}
+              textAlign='center'
+              ml='20px'
+              fontWeight='bold'
+              bgColor={poll.status == 'ACTIVE' ? 'green.200' : 'red.200'}
             >
               {/* {poll.status} */}
-              {poll.status === "ACTIVE"
-                ? "Active"
+              {poll.status === 'ACTIVE'
+                ? 'Active'
                 : new Date() < new Date(poll.startDate)
-                ? "Inactive - Incoming Poll"
+                ? 'Inactive - Incoming Poll'
                 : new Date() > new Date(poll.endDate)
-                ? "Inactive - Voting Period is Over"
-                : "Inactive"}
+                ? 'Inactive - Voting Period is Over'
+                : 'Inactive'}
             </Box>
-            <Box p="20px">
-              <HStack mb="0.5rem">
+            <Box p='20px'>
+              <HStack mb='0.5rem'>
                 <Stack spacing={0}>
                   {/* Survey Title */}
-                  <Heading size="md" fontFamily="font.heading" mb="1%">
+                  <Heading size='md' fontFamily='font.heading' mb='1%'>
                     {poll.title}
                   </Heading>
                   {/* Survey Duration */}
-                  <Text fontSize="xs">
-                    Duration:{" "}
+                  <Text fontSize='xs'>
+                    Duration:{' '}
                     {poll.startDate
                       ? poll.startDate.toLocaleString()
-                      : "Start date not set"}{" "}
-                    to{" "}
+                      : 'Start date not set'}{' '}
+                    to{' '}
                     {poll.endDate
                       ? poll.endDate.toLocaleString()
-                      : "End date not set"}
+                      : 'End date not set'}
                   </Text>
                 </Stack>
                 <Spacer />
                 {/* Survey Button */}
-                {poll.status == "ACTIVE" ? (
+                {poll.status == 'ACTIVE' ? (
                   <HStack>
                     <Answer poll={poll} user={user} />
                   </HStack>
@@ -162,57 +163,57 @@ const Post: React.FC<PollProps> = ({ polls, user, userInfos }) => {
               </HStack>
 
               {/* Survey Categories */}
-              <HStack mb="2%">
+              <HStack mb='2%'>
                 <Box
                   bg={categoryColors[poll.category]}
-                  fontFamily="font.heading"
-                  fontSize="xs"
-                  fontWeight="semibold"
-                  w="wrap"
-                  p="3px"
-                  pr="8px"
-                  pl="8px"
-                  textAlign="center"
-                  rounded="md"
+                  fontFamily='font.heading'
+                  fontSize='xs'
+                  fontWeight='semibold'
+                  w='wrap'
+                  p='3px'
+                  pr='8px'
+                  pl='8px'
+                  textAlign='center'
+                  rounded='md'
                 >
                   {poll.category}
                 </Box>
               </HStack>
 
               {/* Survey Details */}
-              <Flex gap="0.5rem">
+              <Flex gap='0.5rem'>
                 <Avatar /> {/*default size is medium*/}
                 <Box>
                   <Text
-                    id="name"
-                    fontSize="sm"
-                    fontWeight="bold"
-                    fontFamily="font.body"
+                    id='name'
+                    fontSize='sm'
+                    fontWeight='bold'
+                    fontFamily='font.body'
                   >
                     {userInfos[poll.userId]?.firstName ||
-                      "Fullname is still loading"}
+                      'Fullname is still loading'}
                     {userInfos[poll.userId]?.lastName}
                   </Text>
                   <Text
-                    id="position"
-                    fontSize="sm"
-                    fontWeight="bold"
-                    fontFamily="font.body"
+                    id='position'
+                    fontSize='sm'
+                    fontWeight='bold'
+                    fontFamily='font.body'
                   >
                     {userInfos[poll.userId]?.position ||
-                      "Position is stil loading"}
+                      'Position is stil loading'}
                   </Text>
                   <Text
-                    id="description"
-                    fontSize="sm"
-                    py="10px"
-                    fontFamily="font.body"
+                    id='description'
+                    fontSize='sm'
+                    py='10px'
+                    fontFamily='font.body'
                   >
                     {poll.description}
                   </Text>
                   {/* Date distance */}
-                  <Text fontFamily="font.body" color="grey" fontSize="xs">
-                    Posted {formatDistanceToNowStrict(new Date(poll.createdAt))}{" "}
+                  <Text fontFamily='font.body' color='grey' fontSize='xs'>
+                    Posted {formatDistanceToNowStrict(new Date(poll.createdAt))}{' '}
                     ago
                   </Text>
                 </Box>
@@ -222,6 +223,6 @@ const Post: React.FC<PollProps> = ({ polls, user, userInfos }) => {
         </Flex>
       ))}
     </>
-  );
-};
-export default Post;
+  )
+}
+export default Post
