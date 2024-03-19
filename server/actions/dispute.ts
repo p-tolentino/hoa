@@ -3,6 +3,7 @@
 import { db } from "@/lib/db";
 import { currentUser } from "@/lib/auth";
 import { getUserById } from "@/server/data/user";
+import { ReportStatus } from "@prisma/client";
 
 export const createDispute = async (values: any) => {
   const user = await currentUser();
@@ -51,9 +52,9 @@ export const updateOfficerAssigned = async (
     where: { id },
     data: {
       officerAssigned,
-      status: "Under Review",
-      step: 2,
-      progress: "Step 2: Review by Grievance and Adjudication Committee",
+      status: ReportStatus.PENDING_LETTER_TO_BE_SENT,
+      //step: 2,
+      //progress: "Step 2: Review by Grievance and Adjudication Committee",
     },
   });
 
@@ -89,7 +90,7 @@ export const updateLetterSent = async (id: string, letterSent: boolean) => {
   };
 };
 
-export const updateStatus = async (id: string, status: string) => {
+export const updateStatus = async (id: string, status: ReportStatus) => {
   const user = await currentUser();
 
   // No Current User
@@ -162,7 +163,7 @@ export const updateResolved = async (id: string) => {
   await db.dispute.update({
     where: { id },
     data: {
-      status: "Resolved",
+      status: ReportStatus.CLOSED,
     },
   });
 

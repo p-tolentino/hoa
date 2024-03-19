@@ -23,7 +23,7 @@ export const createTransaction = async (
       description: values.description,
       amount: parseInt(values.amount, 10),
       dateIssued: new Date(values.dateIssued),
-      userId: user.id,
+      submittedBy: user.id,
     },
   });
 
