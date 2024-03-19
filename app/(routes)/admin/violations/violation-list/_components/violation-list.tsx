@@ -26,9 +26,9 @@ import AddViolationButton from './AddViolationButton'
 import EditViolationButton from './EditViolationButton'
 import DeleteViolationButton from './DeleteViolationButton'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import Link from 'next/link'
 import { ViolationType } from '@prisma/client'
 import { useRouter } from 'next/navigation'
+import BackButton from '@/components/system/BackButton'
 
 interface ViolationListProps {
   violations: ViolationType[]
@@ -53,14 +53,7 @@ export const ViolationList: React.FC<ViolationListProps> = ({ violations }) => {
         <Heading title={title} description={description} />
         <Stack direction={{ md: 'column', lg: 'row' }} spacing='3'>
           <AddViolationButton />
-          <Button
-            size='sm'
-            colorScheme='gray'
-            as={Link}
-            href='/admin/violations'
-          >
-            Go Back
-          </Button>
+          <BackButton />
         </Stack>
       </Flex>
       <Separator className='mt-4 mb-6' />

@@ -1,5 +1,6 @@
 'use client'
 
+import BackButton from '@/components/system/BackButton'
 import { Badge } from '@/components/ui/badge'
 import { Heading } from '@/components/ui/heading'
 import { Separator } from '@/components/ui/separator'
@@ -29,9 +30,7 @@ import {
   Tr,
   Th,
   Td,
-  Stack,
-  Button,
-  Link
+  Stack
 } from '@chakra-ui/react'
 import { PersonalInfo } from '@prisma/client'
 import { format } from 'date-fns'
@@ -109,14 +108,7 @@ export const ProgressDetails: React.FC<ProgressDetailsProps> = ({
             {reportDetails.violation.status}
           </Badge>
         </Flex>
-        <Button
-          as={Link}
-          href='/admin/violations/violation-record'
-          size='sm'
-          _hover={{ textDecoration: 'none' }}
-        >
-          Go Back
-        </Button>
+        <BackButton />
       </Flex>
       <Separator className='mt-4 mb-6' />
 
