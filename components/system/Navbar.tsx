@@ -28,6 +28,7 @@ import { useCurrentUser } from "@/hooks/use-current-user";
 import { usePathname } from "next/navigation";
 import NextImage from "next/image";
 import SystemLogo from "@/public/HOAs.is-logo.png";
+import { UserRole } from "@prisma/client";
 
 export const Navbar = () => {
   const user = useCurrentUser();
@@ -55,8 +56,10 @@ export const Navbar = () => {
     },
     {
       label: "Dashboard",
-      href: `/${user?.role.toLowerCase()}/dashboard`,
-      active: pathname === `/${user?.role.toLowerCase()}/dashboard`,
+      href: `/${user?.role !== UserRole.USER ? "admin" : "user"}/dashboard`,
+      active:
+        pathname ===
+        `/${user?.role !== UserRole.USER ? "admin" : "user"}/dashboard`,
       requireAuth: true,
     },
   ];

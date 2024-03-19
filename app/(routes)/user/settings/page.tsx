@@ -103,7 +103,7 @@ const Settings = async () => {
                 <UploadCard
                   title="Government-Issued ID"
                   description="Upload Valid ID to confirm identity and proof of ownership for property selected"
-                  idUrl={user.info.govtId || ""}
+                  idUrl={user?.info?.govtId || ""}
                 />
               </Flex>
             </div>

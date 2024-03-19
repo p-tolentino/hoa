@@ -21,7 +21,8 @@ const UserLayout = ({ children }: { children: React.ReactNode }) => {
     return null;
   }
 
-  const isAdmin = user?.role === UserRole.ADMIN;
+  const isAdmin =
+    user?.role === UserRole.ADMIN || user?.role === UserRole.SUPERUSER;
   const existingUserInfo = user?.info;
   const isMemberInfoPath = pathname === "/user/settings";
   const isApproved = user?.status === Status.ACTIVE;
@@ -40,7 +41,7 @@ const UserLayout = ({ children }: { children: React.ReactNode }) => {
     const getNotifs = async () => {
       await getNotificationsByUserId(user.id).then((data) => {
         if (data) {
-          console.log(data)
+          console.log(data);
           setNotifications(data);
         }
       });
@@ -53,9 +54,9 @@ const UserLayout = ({ children }: { children: React.ReactNode }) => {
       <Flex>
         <Sidebar
           notifications={
-            notifications?.filter(notif => notif.isArchived === false).sort(
-              (a: any, b: any) => b.createdAt - a.createdAt
-            ) || null
+            notifications
+              ?.filter((notif) => notif.isArchived === false)
+              .sort((a: any, b: any) => b.createdAt - a.createdAt) || null
           }
         />
         <Box className="p-10" w="100%">

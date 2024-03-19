@@ -1,27 +1,27 @@
-'use client'
+"use client";
 
-import { cn } from '@/lib/utils'
+import { cn } from "@/lib/utils";
 
 import {
   FiBriefcase,
   FiCalendar,
   FiUserCheck,
   FiUsers,
-  FiMenu
-} from 'react-icons/fi'
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import { TbCurrencyPeso } from 'react-icons/tb'
-import { PiBinocularsBold, PiBroomFill } from 'react-icons/pi'
-import { TfiDashboard as Dashboard } from 'react-icons/tfi'
-import { FaUser as User } from 'react-icons/fa'
-import { RxGear as Gear, RxExit as Exit } from 'react-icons/rx'
-import { LuContact2 as Contact } from 'react-icons/lu'
-import { BsNewspaper } from 'react-icons/bs'
-import { useCurrentUser } from '@/hooks/use-current-user'
-import { LogoutButton } from '../auth/logout-button'
-import { Notification, UserRole } from '@prisma/client'
-import { useState, useEffect } from 'react'
+  FiMenu,
+} from "react-icons/fi";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { TbCurrencyPeso } from "react-icons/tb";
+import { PiBinocularsBold, PiBroomFill } from "react-icons/pi";
+import { TfiDashboard as Dashboard } from "react-icons/tfi";
+import { FaUser as User } from "react-icons/fa";
+import { RxGear as Gear, RxExit as Exit } from "react-icons/rx";
+import { LuContact2 as Contact } from "react-icons/lu";
+import { BsNewspaper } from "react-icons/bs";
+import { useCurrentUser } from "@/hooks/use-current-user";
+import { LogoutButton } from "../auth/logout-button";
+import { Notification, UserRole } from "@prisma/client";
+import { useState, useEffect } from "react";
 import {
   Flex,
   Text,
@@ -33,286 +33,238 @@ import {
   Menu,
   MenuButton,
   Box,
-  Stack
-} from '@chakra-ui/react'
-import { UserButton } from '../auth/user-button'
-import NotificationCenter from './NotifcationCenter'
+  Stack,
+} from "@chakra-ui/react";
+import { UserButton } from "../auth/user-button";
+import NotificationCenter from "./NotifcationCenter";
 
-export function Sidebar ({
-  notifications
+export function Sidebar({
+  notifications,
 }: {
-  notifications: Notification[] | null
+  notifications: Notification[] | null;
 }) {
-  const user = useCurrentUser()
-  const pathname = usePathname()
+  const user = useCurrentUser();
+  const pathname = usePathname();
+  const role = user?.role !== UserRole.USER ? "admin" : "user";
 
   const sidebarRoutes = [
     {
-      label: 'Dashboard',
-      href: `/${user?.role.toLowerCase()}/dashboard`,
+      label: "Dashboard",
+      href: `/${role}/dashboard`,
       icon: Dashboard,
-      active: pathname === `/${user?.role.toLowerCase()}/dashboard`
+      active: pathname === `/${role}/dashboard`,
     },
     {
-      label: 'Membership',
-      href: `/${user?.role.toLowerCase()}/membership`,
+      label: "Membership",
+      href: `/${role}/membership`,
       icon: FiUserCheck,
-      active: pathname.startsWith(`/${user?.role.toLowerCase()}/membership`)
+      active: pathname.startsWith(`/${role}/membership`),
     },
     {
-      label: 'Finance Management',
-      href: `/${user?.role.toLowerCase()}/finance`,
+      label: "Finance Management",
+      href: `/${role}/finance`,
       icon: TbCurrencyPeso,
-      active: pathname.startsWith(`/${user?.role.toLowerCase()}/finance`)
+      active: pathname.startsWith(`/${role}/finance`),
     },
     {
-      label: 'Community Engagement',
-      href: `/${user?.role.toLowerCase()}/community`,
+      label: "Community Engagement",
+      href: `/${role}/community`,
       icon: FiUsers,
-      active: pathname.startsWith(`/${user?.role.toLowerCase()}/community`)
+      active: pathname.startsWith(`/${role}/community`),
     },
     {
-      label: 'Dispute Resolution',
-      href: `/${user?.role.toLowerCase()}/disputes`,
+      label: "Dispute Resolution",
+      href: `/${role}/disputes`,
       icon: FiBriefcase,
-      active: pathname.startsWith(`/${user?.role.toLowerCase()}/disputes`)
+      active: pathname.startsWith(`/${role}/disputes`),
     },
     {
-      label: 'Violation Enforcement',
-      href: `/${user?.role.toLowerCase()}/violations`,
+      label: "Violation Enforcement",
+      href: `/${role}/violations`,
       icon: PiBinocularsBold,
-      active: pathname.startsWith(`/${user?.role.toLowerCase()}/violations`)
+      active: pathname.startsWith(`/${role}/violations`),
     },
     {
-      label: 'Facility Reservation',
-      href: `/${user?.role.toLowerCase()}/facility`,
+      label: "Facility Reservation",
+      href: `/${role}/facility`,
       icon: FiCalendar,
-      active: pathname.startsWith(`/${user?.role.toLowerCase()}/facility`)
+      active: pathname.startsWith(`/${role}/facility`),
     },
     {
-      label: 'Maintenance Handling',
-      href: `/${user?.role.toLowerCase()}/maintenance`,
+      label: "Maintenance Handling",
+      href: `/${role}/maintenance`,
       icon: PiBroomFill,
-      active: pathname.startsWith(`/${user?.role.toLowerCase()}/maintenance`)
+      active: pathname.startsWith(`/${role}/maintenance`),
     },
     {
-      label: 'Election Management',
-      href: `/${user?.role.toLowerCase()}/election`,
+      label: "Election Management",
+      href: `/${role}/election`,
       icon: BsNewspaper,
-      active: pathname.startsWith(`/${user?.role.toLowerCase()}/election`)
-    }
-  ]
+      active: pathname.startsWith(`/${role}/election`),
+    },
+  ];
 
   const profileRoutes = [
     {
-      label: 'My Profile',
-      href: `/${user?.role.toLowerCase()}/profile`,
+      label: "My Profile",
+      href: `/${role}/profile`,
       icon: User,
-      active: pathname === `/${user?.role.toLowerCase()}/profile`
+      active: pathname === `/${role}/profile`,
     },
     {
-      label: 'Settings',
-      href: `/${user?.role.toLowerCase()}/settings`,
+      label: "Settings",
+      href: `/${role}/settings`,
       icon: Gear,
-      active: pathname === `/${user?.role.toLowerCase()}/settings`
-    }
-  ]
+      active: pathname === `/${role}/settings`,
+    },
+  ];
 
   // For responsiveness when window is resized
-  const [sidebarSize, changeSidebarSize] = useState('large')
+  const [sidebarSize, changeSidebarSize] = useState("large");
 
   useEffect(() => {
     const handleResize = () => {
-      const isSmallScreen = window.innerWidth <= 768 // You can adjust the breakpoint (768) as needed
-      changeSidebarSize(isSmallScreen ? 'small' : 'large')
-    }
+      const isSmallScreen = window.innerWidth <= 768; // You can adjust the breakpoint (768) as needed
+      changeSidebarSize(isSmallScreen ? "small" : "large");
+    };
     // Initial check on mount
-    handleResize()
+    handleResize();
     // Event listener for window resize
-    window.addEventListener('resize', handleResize)
+    window.addEventListener("resize", handleResize);
     // Cleanup the event listener on component unmount
     return () => {
-      window.removeEventListener('resize', handleResize)
-    }
-  }, [])
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   return (
     <Flex
-      pos='sticky'
+      pos="sticky"
       top={0}
-      h='100vh'
-      minW={sidebarSize === 'small' ? '75px' : '280px'}
-      flexDir='column'
-      justifyContent='space-between'
-      bgColor={'brand.500'}
-      color={'white'}
+      h="100vh"
+      minW={sidebarSize === "small" ? "75px" : "280px"}
+      flexDir="column"
+      justifyContent="space-between"
+      bgColor={"brand.500"}
+      color={"white"}
       zIndex={3}
     >
       <Flex
-        p={sidebarSize === 'small' ? '17%' : '5%'}
-        flexDir='column'
-        w='100%'
-        alignItems={sidebarSize === 'small' ? 'center' : 'flex-start'}
-        as='nav'
+        p={sidebarSize === "small" ? "17%" : "5%"}
+        flexDir="column"
+        w="100%"
+        alignItems={sidebarSize === "small" ? "center" : "flex-start"}
+        as="nav"
       >
-        {sidebarSize === 'small' ? (
-          <Stack mr='3px'>
+        {sidebarSize === "small" ? (
+          <Stack mr="3px">
             <IconButton
-              background='none'
-              color={'white'}
-              _hover={{ background: 'none' }}
+              background="none"
+              color={"white"}
+              _hover={{ background: "none" }}
               icon={<FiMenu />}
               onClick={() => {
-                if (sidebarSize === 'small') changeSidebarSize('large')
-                else changeSidebarSize('small')
+                if (sidebarSize === "small") changeSidebarSize("large");
+                else changeSidebarSize("small");
               }}
-              aria-label={''}
-              alignSelf={'flex-start'}
+              aria-label={""}
+              alignSelf={"flex-start"}
             />
             <NotificationCenter initialData={notifications || []} />
             <Divider />
           </Stack>
         ) : (
-          <Flex justify='space-between' w='100%'>
+          <Flex justify="space-between" w="100%">
             <IconButton
-              background='none'
-              color={'white'}
-              _hover={{ background: 'none' }}
+              background="none"
+              color={"white"}
+              _hover={{ background: "none" }}
               icon={<FiMenu />}
               onClick={() => {
-                if (sidebarSize === 'small') changeSidebarSize('large')
-                else changeSidebarSize('small')
+                if (sidebarSize === "small") changeSidebarSize("large");
+                else changeSidebarSize("small");
               }}
-              aria-label={''}
-              alignSelf={'flex-start'}
+              aria-label={""}
+              alignSelf={"flex-start"}
             />
             <NotificationCenter initialData={notifications || []} />
           </Flex>
         )}
 
-        {sidebarRoutes.map(route => {
-          if (route.label === 'Membership' && user?.role === UserRole.USER) {
-            ;(route.label = 'Contact Directory'),
-              (route.icon = Contact),
-              (route.href = `/${user.role.toLowerCase()}/membership/admin-directory`)
-
-            return (
-              <Box
-                key={route.label}
-                mt={'1.4rem'}
-                w='100%'
-                alignItems={sidebarSize === 'small' ? 'center' : 'left'}
-                fontSize={'sm'}
-                fontFamily={'font.body'}
+        {sidebarRoutes.map((route) => (
+          <Box
+            key={route.label}
+            mt={"1.4rem"}
+            w="100%"
+            alignItems={sidebarSize === "small" ? "center" : "left"}
+            fontSize={"sm"}
+            fontFamily={"font.body"}
+          >
+            <Menu placement="right" key={route.label}>
+              <Link
+                href={route.href}
+                className={cn(
+                  "p-3 rounded-lg no-underline hover:bg-[#688f6e] hover:text-white transition",
+                  route.active ? "bg-[#F0CB5B]" : "bg-transparent"
+                )}
               >
-                <Menu placement='right' key={route.label}>
-                  <Link
-                    href={route.href}
-                    className={cn(
-                      'p-3 rounded-lg no-underline hover:bg-[#688f6e] hover:text-white transition',
-                      route.active ? 'bg-[#F0CB5B]' : 'bg-transparent'
-                    )}
-                  >
-                    <MenuButton w='100%'>
-                      <Flex>
-                        <Icon
-                          as={route.icon}
-                          fontSize='xl'
-                          color={route.active ? 'black' : 'white'}
-                          className='w-5 h-5'
-                        />
-                        <Text
-                          textAlign={'left'}
-                          ml={5}
-                          display={sidebarSize === 'small' ? 'none' : 'flex'}
-                          color={route.active ? 'black' : 'white'}
-                          fontWeight={route.active ? 'bold' : 'normal'}
-                        >
-                          {route.label}
-                        </Text>
-                      </Flex>
-                    </MenuButton>
-                  </Link>
-                </Menu>
-              </Box>
-            )
-          } else {
-            return (
-              <Box
-                key={route.label}
-                mt={'1.4rem'}
-                w='100%'
-                alignItems={sidebarSize === 'small' ? 'center' : 'left'}
-                fontSize={'sm'}
-                fontFamily={'font.body'}
-              >
-                <Menu placement='right' key={route.label}>
-                  <Link
-                    href={route.href}
-                    className={cn(
-                      'p-3 rounded-lg no-underline hover:bg-[#688f6e] hover:text-white transition',
-                      route.active ? 'bg-[#F0CB5B]' : 'bg-transparent'
-                    )}
-                  >
-                    <MenuButton w='100%'>
-                      <Flex>
-                        <Icon
-                          as={route.icon}
-                          fontSize='xl'
-                          color={route.active ? 'black' : 'white'}
-                          className='w-5 h-5'
-                        />
-                        <Text
-                          textAlign={'left'}
-                          ml={5}
-                          display={sidebarSize === 'small' ? 'none' : 'flex'}
-                          color={route.active ? 'black' : 'white'}
-                          fontWeight={route.active ? 'bold' : 'normal'}
-                        >
-                          {route.label}
-                        </Text>
-                      </Flex>
-                    </MenuButton>
-                  </Link>
-                </Menu>
-              </Box>
-            )
-          }
-        })}
+                <MenuButton w="100%">
+                  <Flex>
+                    <Icon
+                      as={route.icon}
+                      fontSize="xl"
+                      color={route.active ? "black" : "white"}
+                      className="w-5 h-5"
+                    />
+                    <Text
+                      textAlign={"left"}
+                      ml={5}
+                      display={sidebarSize === "small" ? "none" : "flex"}
+                      color={route.active ? "black" : "white"}
+                      fontWeight={route.active ? "bold" : "normal"}
+                    >
+                      {route.label}
+                    </Text>
+                  </Flex>
+                </MenuButton>
+              </Link>
+            </Menu>
+          </Box>
+        ))}
       </Flex>
 
       <Flex
-        p='1rem'
-        flexDir='column'
-        w='100%'
-        alignItems={sidebarSize === 'small' ? 'center' : 'flex-start'}
+        p="1rem"
+        flexDir="column"
+        w="100%"
+        alignItems={sidebarSize === "small" ? "center" : "flex-start"}
         mb={4}
       >
         <Divider
-          display={sidebarSize === 'small' ? 'none' : 'flex'}
-          mt={'1rem'}
+          display={sidebarSize === "small" ? "none" : "flex"}
+          mt={"1rem"}
         />
         <Flex
           mt={4}
-          align='center'
-          display={sidebarSize === 'small' ? 'none' : 'flex'}
+          align="center"
+          display={sidebarSize === "small" ? "none" : "flex"}
         >
           <Avatar
-            size='sm'
-            src={user?.image || ''}
-            bg='yellow.500'
-            icon={<User className='w-4 h-4' />}
+            size="sm"
+            src={user?.image || ""}
+            bg="yellow.500"
+            icon={<User className="w-4 h-4" />}
           />
-          <Flex flexDir='column' ml={4}>
+          <Flex flexDir="column" ml={4}>
             <Heading
-              as='h3'
-              size='sm'
-              fontFamily='font.heading'
-              className='capitalize'
+              as="h3"
+              size="sm"
+              fontFamily="font.heading"
+              className="capitalize"
             >
-              {`${user?.info?.firstName || '-'} ${user?.info?.lastName || ''}`}
+              {`${user?.info?.firstName || "-"} ${user?.info?.lastName || ""}`}
             </Heading>
-            <Text color='brand.300' fontFamily='font.body'>
+            <Text color="brand.300" fontFamily="font.body">
               {user?.role}
             </Text>
           </Flex>
@@ -320,51 +272,47 @@ export function Sidebar ({
 
         <Flex
           mt={3}
-          fontSize={'sm'}
-          display={sidebarSize === 'small' ? 'none' : 'flex'}
+          fontSize={"sm"}
+          display={sidebarSize === "small" ? "none" : "flex"}
         >
-          <Text as={Link} href={`/user/profile`} fontFamily='font.body'>
+          <Text as={Link} href={`/user/profile`} fontFamily="font.body">
             My Profile
           </Text>
         </Flex>
         <Flex
           mt={2}
-          fontSize={'sm'}
-          display={sidebarSize === 'small' ? 'none' : 'flex'}
+          fontSize={"sm"}
+          display={sidebarSize === "small" ? "none" : "flex"}
         >
-          <Text
-            as={Link}
-            href={`/${user?.role.toLowerCase()}/settings`}
-            fontFamily='font.body'
-          >
+          <Text as={Link} href={`/${role}/settings`} fontFamily="font.body">
             Settings
           </Text>
         </Flex>
         <Flex
           mt={2}
-          fontSize={'sm'}
-          display={sidebarSize === 'small' ? 'none' : 'flex'}
+          fontSize={"sm"}
+          display={sidebarSize === "small" ? "none" : "flex"}
         >
           <LogoutButton>
-            <Text fontFamily='font.body'>Logout</Text>
+            <Text fontFamily="font.body">Logout</Text>
           </LogoutButton>
         </Flex>
       </Flex>
 
       <Flex
-        p='1rem'
-        flexDir='column'
-        w='100%'
-        alignItems={sidebarSize === 'small' ? 'center' : 'flex-start'}
+        p="1rem"
+        flexDir="column"
+        w="100%"
+        alignItems={sidebarSize === "small" ? "center" : "flex-start"}
         mb={4}
         mt={4}
-        align='center'
-        display={sidebarSize === 'small' ? 'flex' : 'none'}
+        align="center"
+        display={sidebarSize === "small" ? "flex" : "none"}
       >
         <UserButton />
       </Flex>
     </Flex>
-  )
+  );
 }
 
 /* V2 */
