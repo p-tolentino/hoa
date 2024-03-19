@@ -102,8 +102,4 @@ export const columns: ColumnDef<SubmittedViolationsColumn>[] = [
       </div>
     ),
   },
-  {
-    id: "actions",
-    cell: ({ row }) => <RowActions data={row.original} />,
-  },
 ];

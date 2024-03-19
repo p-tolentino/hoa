@@ -104,10 +104,4 @@ export const columns: ColumnDef<ListOfViolationsColumn>[] = [
       </div>
     ),
   },
-  {
-    accessorKey: "actions",
-    header: "Actions",
-    id: "actions",
-    cell: ({ row }) => <RowActions data={row.original} />,
-  },
 ];

@@ -42,45 +42,29 @@ const EditDisputeButton: React.FC<EditDisputeButtonProps> = ({ dispute }) => {
   const form = useForm<DisputeTypeFormValues>({
     resolver: zodResolver(DisputeTypeFormSchema),
     defaultValues: {
-      name: dispute.name,
       title: dispute.title,
       description: dispute.description,
     },
   });
 
   const onSubmit = async (values: DisputeTypeFormValues) => {
-    const existingDisputeName = await getDisputeTypeByName(values.name);
-
-    if (existingDisputeName && existingDisputeName.id !== dispute.id) {
-      console.log("Existing dispute name, try a different one");
-      toast({
-        title: `Dispute Type with identifier "${form.watch(
-          "name"
-        )}" already exists.`,
-        description: `Existing dispute name (identifier), try a different one`,
-        status: "warning",
-        position: "bottom-right",
-        isClosable: true,
+    await updateDisputeType(values, dispute.id)
+      .then((data) => {
+        if (data.success) {
+          toast({
+            title: `Successfully edited dispute type "${form.watch(
+              "title"
+            )}" to the list of HOA disputes.`,
+            status: "info",
+            position: "bottom-right",
+            isClosable: true,
+          });
+        }
+      })
+      .then(() => {
+        form.reset();
+        router.refresh();
       });
-    } else {
-      await updateDisputeType(values, dispute.id)
-        .then((data) => {
-          if (data.success) {
-            toast({
-              title: `Successfully edited dispute type "${form.watch(
-                "title"
-              )}" to the list of HOA disputes.`,
-              status: "info",
-              position: "bottom-right",
-              isClosable: true,
-            });
-          }
-        })
-        .then(() => {
-          form.reset();
-          router.refresh();
-        });
-    }
   };
 
   const toast = useToast();
@@ -120,29 +104,6 @@ const EditDisputeButton: React.FC<EditDisputeButtonProps> = ({ dispute }) => {
                       placeholder="Enter a Title"
                       {...field}
                     />
-                  </FormControl>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormControl isRequired>
-                    <FormLabel fontSize="sm" fontWeight="semibold">
-                      Database Name (Identifier):
-                    </FormLabel>
-                    <Input
-                      size="md"
-                      fontWeight="semibold"
-                      type="string"
-                      placeholder="ex. neighbor"
-                      {...field}
-                    />
-                    <FormHelperText>
-                      A simpler version of the title for easier identification
-                      in the system's database
-                    </FormHelperText>
                   </FormControl>
                 )}
               />
