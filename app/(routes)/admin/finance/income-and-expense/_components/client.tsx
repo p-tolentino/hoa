@@ -14,7 +14,7 @@ import { Hoa } from "@prisma/client";
 import { useReactToPrint } from "react-to-print";
 import { useRef } from "react";
 import PDFTable from "@/components/system/PDFTable";
-import Link from "next/link";
+import BackButton from "@/components/system/BackButton";
 
 interface TransactionClientProps {
   data: TransactionColumn[];
@@ -51,9 +51,7 @@ export const TransactionClient: React.FC<TransactionClientProps> = ({
             Generate PDF
           </Button>
           <NewTransactionButton currentFunds={hoaInfo.funds} />
-          <Button size="sm" as={Link} href="/admin/finance">
-            Go Back
-          </Button>
+          <BackButton />
         </HStack>
       </div>
       <Separator />

@@ -22,7 +22,7 @@ import { BudgetPlan } from "@prisma/client";
 import { useReactToPrint } from "react-to-print";
 import { useRef } from "react";
 import PDFTable from "@/components/system/PDFTable";
-import Link from "next/link";
+import BackButton from "@/components/system/BackButton";
 
 interface ViewFormProps {
   initialData: BudgetPlan | null;
@@ -51,9 +51,7 @@ export const ViewBudgetPlan: React.FC<ViewFormProps> = ({
           <Button size="sm" colorScheme="yellow" onClick={generatePDF}>
             Generate PDF
           </Button>
-          <Button size="sm" as={Link} href="/admin/finance/budget-planning">
-            Go Back
-          </Button>
+          <BackButton />
         </HStack>
       </Flex>
 

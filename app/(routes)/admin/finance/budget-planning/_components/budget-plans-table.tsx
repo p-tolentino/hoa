@@ -18,6 +18,7 @@ import { Separator } from "@/components/ui/separator";
 import { AddIcon } from "@chakra-ui/icons";
 import Link from "next/link";
 import { BudgetPlan } from "@prisma/client";
+import BackButton from "@/components/system/BackButton";
 
 export const BudgetPlanning = ({
   budgetPlans,
@@ -42,9 +43,7 @@ export const BudgetPlanning = ({
             <AddIcon mr="10px" boxSize={3} />
             <Text fontSize="sm">Create Budget Plan</Text>
           </Button>
-          <Button size="sm" as={Link} href="/admin/finance">
-            Go Back
-          </Button>
+          <BackButton />
         </HStack>
       </Flex>
       <Separator className="mt-2 mb-5" />
