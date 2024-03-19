@@ -23,8 +23,9 @@ export const createViolationType = async (values: ViolationTypeFormValues) => {
   await db.violationType.create({
     data: {
       ...values,
-      fee: parseFloat(values.fee),
-      deadline: parseInt(values.deadline),
+      firstOffenseFee: parseFloat(values.firstOffense),
+      secondOffenseFee: parseFloat(values.secondOffense),
+      thirdOffenseFee: parseFloat(values.thirdOffense),
     },
   });
 
@@ -53,8 +54,9 @@ export const updateViolationType = async (
     where: { id },
     data: {
       ...values,
-      fee: parseFloat(values.fee),
-      deadline: parseInt(values.deadline),
+      firstOffenseFee: parseFloat(values.firstOffense),
+      secondOffenseFee: parseFloat(values.secondOffense),
+      thirdOffenseFee: parseFloat(values.thirdOffense),
     },
   });
 

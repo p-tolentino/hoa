@@ -1,7 +1,6 @@
 'use client'
 
 import { ColumnDef } from '@tanstack/react-table'
-import { RowActions } from './row-actions'
 import { Button } from '@/components/ui/button'
 import { ArrowUpDown } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
@@ -107,9 +106,5 @@ export const columns: ColumnDef<SubmittedViolationsColumn>[] = [
         </p>
       </div>
     )
-  },
-  {
-    id: 'actions',
-    cell: ({ row }) => <RowActions data={row.original} />
   }
 ]

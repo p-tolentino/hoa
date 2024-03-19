@@ -31,7 +31,7 @@ export const createAssocDue = async () => {
 
   await db.userTransaction.create({
     data: {
-      addressId: dbUser?.info?.address!!,
+      soaId: "Sample SOA ID",
       purpose: "Association Dues",
       description: "Monthly Dues",
       amount: hoa.fixedDue!!,
@@ -65,54 +65,54 @@ export const newUserTransaction = async (values: any) => {
   return { success: "Transaction created successfully" };
 };
 
-export const updateTransaction = async (transactionId: string) => {
-  const user = await currentUser();
+// export const updateTransaction = async (transactionId: string) => {
+//   const user = await currentUser();
 
-  // No Current User
-  if (!user) {
-    return { error: "Unauthorized" };
-  }
+//   // No Current User
+//   if (!user) {
+//     return { error: "Unauthorized" };
+//   }
 
-  // Validation if user is in database (not leftover session)
-  const dbUser = await getUserById(user.id);
+//   // Validation if user is in database (not leftover session)
+//   const dbUser = await getUserById(user.id);
 
-  if (!dbUser) {
-    return { error: "Unauthorized" };
-  }
+//   if (!dbUser) {
+//     return { error: "Unauthorized" };
+//   }
 
-  await db.userTransaction.update({
-    where: { id: transactionId },
-    data: {
-      status: PaymentStatus.PAID,
-      datePaid: new Date(),
-      paidBy: dbUser.id,
-    },
-  });
+//   await db.userTransaction.update({
+//     where: { id: transactionId },
+//     data: {
+//       status: PaymentStatus.PAID,
+//       datePaid: new Date(),
+//       paidBy: dbUser.id,
+//     },
+//   });
 
-  return { success: "Payment updated successfully" };
-};
+//   return { success: "Payment updated successfully" };
+// };
 
-export const overdueTransaction = async (transactionId: string) => {
-  const user = await currentUser();
+// export const overdueTransaction = async (transactionId: string) => {
+//   const user = await currentUser();
 
-  // No Current User
-  if (!user) {
-    return { error: "Unauthorized" };
-  }
+//   // No Current User
+//   if (!user) {
+//     return { error: "Unauthorized" };
+//   }
 
-  // Validation if user is in database (not leftover session)
-  const dbUser = await getUserById(user.id);
+//   // Validation if user is in database (not leftover session)
+//   const dbUser = await getUserById(user.id);
 
-  if (!dbUser) {
-    return { error: "Unauthorized" };
-  }
+//   if (!dbUser) {
+//     return { error: "Unauthorized" };
+//   }
 
-  await db.userTransaction.update({
-    where: { id: transactionId },
-    data: {
-      status: PaymentStatus.OVERDUE,
-    },
-  });
+//   await db.userTransaction.update({
+//     where: { id: transactionId },
+//     data: {
+//       status: PaymentStatus.OVERDUE,
+//     },
+//   });
 
-  return { success: "Payment updated successfully" };
-};
+//   return { success: "Payment updated successfully" };
+// };

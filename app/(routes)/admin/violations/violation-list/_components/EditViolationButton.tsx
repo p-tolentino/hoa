@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import {
   Dialog,
@@ -7,8 +7,8 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger
-} from '@/components/ui/dialog'
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import {
   Input,
   Stack,
@@ -24,95 +24,68 @@ import {
   Tr,
   Th,
   Tbody,
-  Td
-} from '@chakra-ui/react'
-import { EditIcon } from '@chakra-ui/icons'
-import { ViolationType } from '@prisma/client'
-import { useRouter } from 'next/navigation'
-import { useForm } from 'react-hook-form'
+  Td,
+} from "@chakra-ui/react";
+import { EditIcon } from "@chakra-ui/icons";
+import { ViolationType } from "@prisma/client";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
 import {
   ViolationTypeFormSchema,
-  ViolationTypeFormValues
-} from './AddViolationButton'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { getViolationTypeByName } from '@/server/data/violation-type'
-import { updateViolationType } from '@/server/actions/violation-type'
-import { Form, FormField } from '@/components/ui/form'
-import { useState } from 'react'
+  ViolationTypeFormValues,
+} from "./AddViolationButton";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { getViolationTypeByName } from "@/server/data/violation-type";
+import { updateViolationType } from "@/server/actions/violation-type";
+import { Form, FormField } from "@/components/ui/form";
+import { useState } from "react";
 
 interface EditViolationButtonProps {
-  violation: ViolationType
+  violation: ViolationType;
 }
 
 const EditViolationButton: React.FC<EditViolationButtonProps> = ({
-  violation
+  violation,
 }) => {
-  const router = useRouter()
+  const router = useRouter();
 
   const form = useForm<ViolationTypeFormValues>({
     resolver: zodResolver(ViolationTypeFormSchema),
     defaultValues: {
-      name: violation.name,
       title: violation.title,
       description: violation.description,
-      fee: violation.fee.toString(),
-      deadline: violation.deadline.toString()
-    }
-  })
-
-  const [feesList, setFeesList] = useState([
-    { level: 'First Offense', fee: '' },
-    { level: 'Second Offense', fee: '' },
-    { level: 'Third Offense', fee: '' }
-  ])
-
-  const handleFeeChange = (index: number, value: string) => {
-    const updatedFeesList = [...feesList]
-    updatedFeesList[index].fee = value
-    setFeesList(updatedFeesList)
-  }
+      firstOffense: violation.firstOffenseFee.toString(),
+      secondOffense: violation.secondOffenseFee.toString(),
+      thirdOffense: violation.thirdOffenseFee.toString(),
+    },
+  });
 
   const onSubmit = async (values: ViolationTypeFormValues) => {
-    const existingViolationName = await getViolationTypeByName(values.name)
-
-    if (existingViolationName && existingViolationName.id !== violation.id) {
-      console.log('Existing violation name, try a different one')
-      toast({
-        title: `Violation Type with identifier "${form.watch(
-          'name'
-        )}" already exists.`,
-        description: `Existing violation name (identifier), try a different one`,
-        status: 'warning',
-        position: 'bottom-right',
-        isClosable: true
+    await updateViolationType(values, violation.id)
+      .then((data) => {
+        if (data.success) {
+          toast({
+            title: `Successfully edited violation type "${form.watch(
+              "title"
+            )}" to the list of HOA violations.`,
+            status: "info",
+            position: "bottom-right",
+            isClosable: true,
+          });
+        }
       })
-    } else {
-      await updateViolationType(values, violation.id)
-        .then(data => {
-          if (data.success) {
-            toast({
-              title: `Successfully edited violation type "${form.watch(
-                'title'
-              )}" to the list of HOA violations.`,
-              status: 'info',
-              position: 'bottom-right',
-              isClosable: true
-            })
-          }
-        })
-        .then(() => {
-          form.reset()
-          router.refresh()
-        })
-    }
-  }
+      .then(() => {
+        form.reset();
+        router.refresh();
+      });
+  };
 
-  const toast = useToast()
+  const toast = useToast();
 
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button size='sm' mr='5px'>
+        <Button size="sm" mr="5px">
           <EditIcon />
         </Button>
       </DialogTrigger>
@@ -126,21 +99,21 @@ const EditViolationButton: React.FC<EditViolationButtonProps> = ({
               </DialogDescription>
             </DialogHeader>
 
-            <Stack spacing='20px' my='1.5rem'>
+            <Stack spacing="20px" my="1.5rem">
               {/* Violation Title */}
               <FormField
                 control={form.control}
-                name='title'
+                name="title"
                 render={({ field }) => (
                   <FormControl>
-                    <FormLabel fontSize='sm' fontWeight='semibold'>
+                    <FormLabel fontSize="sm" fontWeight="semibold">
                       Violation Title:
                     </FormLabel>
                     <Input
                       isDisabled
-                      size='sm'
-                      fontWeight='semibold'
-                      type='string'
+                      size="sm"
+                      fontWeight="semibold"
+                      type="string"
                       // placeholder='ex. Unauthorized Commercial or Business Activities'
                       {...field}
                     />
@@ -151,18 +124,18 @@ const EditViolationButton: React.FC<EditViolationButtonProps> = ({
               {/* Violation Description */}
               <FormField
                 control={form.control}
-                name='description'
+                name="description"
                 render={({ field }) => (
                   <FormControl>
-                    <FormLabel fontSize='sm' fontWeight='semibold'>
+                    <FormLabel fontSize="sm" fontWeight="semibold">
                       Description:
                     </FormLabel>
                     <Textarea
-                      fontFamily='font.body'
+                      fontFamily="font.body"
                       // placeholder='Write something...'
-                      fontSize='sm'
+                      fontSize="sm"
                       {...field}
-                      resize='none'
+                      resize="none"
                     />
                   </FormControl>
                 )}
@@ -200,54 +173,99 @@ const EditViolationButton: React.FC<EditViolationButtonProps> = ({
 
               {/* Violation Levels and Penalty Fees*/}
               <FormControl>
-                <FormLabel fontSize='sm' fontWeight='semibold'>
+                <FormLabel fontSize="sm" fontWeight="semibold">
                   Violation Levels and Penalty Fees
                 </FormLabel>
-                <TableContainer mx='1rem'>
-                  <Table size='xs' variant='simple' fontFamily='font.body'>
+                <TableContainer mx="1rem">
+                  <Table size="xs" variant="simple" fontFamily="font.body">
                     <Thead>
                       <Tr>
-                        <Th fontSize='xs' fontFamily='font.body'>
+                        <Th fontSize="xs" fontFamily="font.body">
                           Violation Level
                         </Th>
                         <Th
-                          fontSize='xs'
-                          fontFamily='font.body'
-                          textAlign='center'
+                          fontSize="xs"
+                          fontFamily="font.body"
+                          textAlign="center"
                         >
                           Penalty Fee
                         </Th>
                       </Tr>
                     </Thead>
-                    <Tbody fontSize='sm' fontFamily='font.body'>
-                      {feesList.map((offense, index) => (
-                        <Tr key={index}>
-                          {/* Violation Level */}
-                          <Td pl='0.5rem'>{offense.level}</Td>
-                          {/* Penalty Fee */}
-                          <Td textAlign='center'>
-                            ₱{' '}
-                            <Input
-                              type='number'
-                              textAlign='right'
-                              w='8rem'
-                              size='sm'
-                              placeholder='XXX'
-                              value={offense.fee}
-                              onChange={e =>
-                                handleFeeChange(index, e.target.value)
-                              }
-                            />
-                          </Td>
-                        </Tr>
-                      ))}
+                    <Tbody fontSize="sm" fontFamily="font.body">
+                      <FormField
+                        control={form.control}
+                        name="firstOffense"
+                        render={({ field }) => (
+                          <Tr>
+                            {/* Violation Level */}
+                            <Td pl="0.5rem">First Offense:</Td>
+                            {/* Penalty Fee */}
+                            <Td textAlign="center">
+                              ₱{" "}
+                              <Input
+                                type="number"
+                                textAlign="right"
+                                w="8rem"
+                                size="sm"
+                                placeholder="XXX"
+                                {...field}
+                              />
+                            </Td>
+                          </Tr>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="secondOffense"
+                        render={({ field }) => (
+                          <Tr>
+                            {/* Violation Level */}
+                            <Td pl="0.5rem">Second Offense:</Td>
+                            {/* Penalty Fee */}
+                            <Td textAlign="center">
+                              ₱{" "}
+                              <Input
+                                type="number"
+                                textAlign="right"
+                                w="8rem"
+                                size="sm"
+                                placeholder="XXX"
+                                {...field}
+                              />
+                            </Td>
+                          </Tr>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="thirdOffense"
+                        render={({ field }) => (
+                          <Tr>
+                            {/* Violation Level */}
+                            <Td pl="0.5rem">Third Offense:</Td>
+                            {/* Penalty Fee */}
+                            <Td textAlign="center">
+                              ₱{" "}
+                              <Input
+                                type="number"
+                                textAlign="right"
+                                w="8rem"
+                                size="sm"
+                                placeholder="XXX"
+                                {...field}
+                              />
+                            </Td>
+                          </Tr>
+                        )}
+                      />
                     </Tbody>
                   </Table>
                 </TableContainer>
                 <FormHelperText
-                  fontFamily='font.body'
-                  fontSize='xs'
-                  textAlign='justify'
+                  fontFamily="font.body"
+                  fontSize="xs"
+                  textAlign="justify"
                 >
                   Please enter the corresponding penalty fees for each level of
                   offense for this violation.
@@ -255,10 +273,10 @@ const EditViolationButton: React.FC<EditViolationButtonProps> = ({
               </FormControl>
             </Stack>
 
-            <DialogFooter className='text-right'>
+            <DialogFooter className="text-right">
               <FormControl>
                 {/* Save Changes Button */}
-                <Button size='sm' colorScheme='yellow' type='submit'>
+                <Button size="sm" colorScheme="yellow" type="submit">
                   Save Changes
                 </Button>
               </FormControl>
@@ -267,6 +285,6 @@ const EditViolationButton: React.FC<EditViolationButtonProps> = ({
         </Form>
       </DialogContent>
     </Dialog>
-  )
-}
-export default EditViolationButton
+  );
+};
+export default EditViolationButton;
