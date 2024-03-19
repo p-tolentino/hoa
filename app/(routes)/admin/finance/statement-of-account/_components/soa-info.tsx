@@ -29,11 +29,11 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useEffect } from "react";
-import Link from "next/link";
 
 import { useReactToPrint } from "react-to-print";
 import { useRef } from "react";
 import PDFTable from "@/components/system/PDFTable";
+import BackButton from "@/components/system/BackButton";
 
 interface SoaInfoProps {
   user: ExtendedUser;
@@ -254,9 +254,7 @@ export const SoaInfo: React.FC<SoaInfoProps> = ({
           <Button size="sm" colorScheme="yellow" onClick={generatePDF}>
             Generate PDF
           </Button>
-          <Button size="sm" as={Link} href="/admin/finance">
-            Go Back
-          </Button>
+          <BackButton />
         </HStack>
       </div>
       <Separator className="mt-4 mb-6" />

@@ -8,11 +8,11 @@ import { ListOfViolationsColumn, columns } from './columns'
 import { DataTable } from '@/components/ui/data-table'
 
 import { Flex, Button, HStack } from '@chakra-ui/react'
-import Link from 'next/link'
 
 import { useReactToPrint } from 'react-to-print'
 import { useRef } from 'react'
 import PDFTable from '@/components/system/PDFTable'
+import BackButton from '@/components/system/BackButton'
 
 interface ListOfViolationsClientProps {
   data: ListOfViolationsColumn[]
@@ -39,9 +39,7 @@ export const ListOfViolationsClient: React.FC<ListOfViolationsClientProps> = ({
           <Button size='sm' colorScheme='yellow' onClick={generatePDF}>
             Generate PDF
           </Button>
-          <Button size='sm' as={Link} href='/admin/violations'>
-            Go Back
-          </Button>
+          <BackButton />
         </HStack>
       </Flex>
       <Separator />

@@ -1,5 +1,6 @@
 "use client";
 
+import BackButton from "@/components/system/BackButton";
 import { Badge } from "@/components/ui/badge";
 import { Heading } from "@/components/ui/heading";
 import { Separator } from "@/components/ui/separator";
@@ -116,14 +117,7 @@ export const ViewProgress: React.FC<ViewProgressProps> = ({
             {reportDetails.violation.status}
           </Badge>
         </Flex>
-        <Button
-          as={Link}
-          href="/admin/violations/submitted-violations"
-          size="sm"
-          _hover={{ textDecoration: "none" }}
-        >
-          Go Back
-        </Button>
+        <BackButton />
       </Flex>
       <Separator className="mt-4 mb-6" />
 

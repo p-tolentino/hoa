@@ -13,7 +13,6 @@ import {
   Select,
   Flex,
 } from "@chakra-ui/react";
-import Link from "next/link";
 import { startTransition, useEffect, useState } from "react";
 import { Separator } from "@/components/ui/separator";
 import { Heading } from "@/components/ui/heading";
@@ -26,6 +25,7 @@ import { createViolation } from "@/server/actions/violation";
 import { PersonalInfo, ViolationType } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { useCurrentUser } from "@/hooks/use-current-user";
+import BackButton from "@/components/system/BackButton";
 
 const ViolationFormSchema = z.object({
   violationDate: z.string(),
@@ -88,7 +88,7 @@ export const ReportForm: React.FC<ReportFormProps> = ({
   const form = useForm<ViolationFormValues>({
     resolver: zodResolver(ViolationFormSchema),
     defaultValues: {
-      violationDate: undefined,
+      violationDate: "",
       type: "",
       description: "",
     },
@@ -119,9 +119,7 @@ export const ReportForm: React.FC<ReportFormProps> = ({
     <>
       <Flex justifyContent="space-between">
         <Heading title={title} description={description} />
-        <Button size="sm" colorScheme="gray" as={Link} href="/admin/violations">
-          Go Back
-        </Button>
+        <BackButton />
       </Flex>
       <Separator className="mt-4 mb-6" />
 
@@ -151,8 +149,7 @@ export const ReportForm: React.FC<ReportFormProps> = ({
                       fontSize="sm"
                       fontFamily="font.body"
                       w="max-content"
-                      value={field.value}
-                      onChange={field.onChange}
+                      {...field}
                     />
                   </FormControl>
                 )}

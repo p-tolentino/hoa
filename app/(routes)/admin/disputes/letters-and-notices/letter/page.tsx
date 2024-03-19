@@ -11,6 +11,7 @@ import {
   ListItem,
 } from "@chakra-ui/react";
 import Link from "next/link";
+import BackButton from "@/components/system/BackButton";
 import { format, addDays } from "date-fns";
 
 export default function DisputeMeetingLetter() {
@@ -44,9 +45,7 @@ export default function DisputeMeetingLetter() {
   return (
     <div>
       <Box textAlign="right">
-        <Button as={Link} href="/admin/disputes/letters-and-notices" size="sm">
-          Go Back
-        </Button>
+        <BackButton />
       </Box>
       <Center flexDir="column">
         <>

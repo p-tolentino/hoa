@@ -1,415 +1,164 @@
 "use client";
 
+import BackButton from "@/components/system/BackButton";
 import { Badge } from "@/components/ui/badge";
 import { Heading } from "@/components/ui/heading";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
-import {
-  Step,
-  StepDescription,
-  StepIcon,
-  StepIndicator,
-  StepNumber,
-  StepSeparator,
-  StepStatus,
-  StepTitle,
-  Stepper,
-  useSteps,
-  Card,
-  CardBody,
-  Box,
-  Flex,
-  Text,
-  UnorderedList,
-  ListItem,
-  CardHeader,
-  TableContainer,
-  Table,
-  Tbody,
-  Tr,
-  Th,
-  Td,
-  Stack,
-  Button,
-  Link,
-} from "@chakra-ui/react";
-import { PersonalInfo } from "@prisma/client";
-import { format } from "date-fns";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Flex } from "@chakra-ui/react";
+import StepCard from "./step-card";
 
-interface ProgressDetailsProps {
+interface ViewProgressProps {
   reportDetails: any;
 }
 
-export const ProgressDetails: React.FC<ProgressDetailsProps> = ({
+export const ProgressDetails: React.FC<ViewProgressProps> = ({
   reportDetails,
 }) => {
   const processSteps = [
     {
-      title: "Violation Form Submission",
+      value: "step1",
+      title: " Violation Form Submission",
       description:
-        "Homeowners submit violation reports through the Violation Monitoring module in the MIS.",
+        "Homeowners submit violation reports through the Violation Enforcement module in the MIS.",
       details: [
-        "Homeowners provide details about the alleged violation, including the type of violation, date, and a detailed description of the violation.",
+        "Homeowners provide details about the type of violation, date, and a detailed description of the violation.",
         "Supporting evidence such as photos or documents may be attached to the violation report.",
       ],
     },
     {
-      title: "Review by Environment and Security Committee",
+      value: "step2",
+      title: "Review by Environment & Security Committee",
       description:
         "The Environment and Security Committee receives and reviews the violation report.",
       details: [
-        "The Environment and Security Committee receives the violation report in the MIS and assigns an officer to oversee its enforcement if deemed valid and true.",
-        "The Officer assigned makes a decision whether the reported violation is valid and if any action is required.",
-        "Once the reported violation is accepted and valid, the alleged violator receives a letter outlining the nature of the violation, required corrective actions, and a penalty fee.",
-        "The alleged violator is provided with a specified deadline to pay the penalty fee. Prior to that date, they are afforded the chance to lodge an appeal against them in the violation case.",
+        "The Environment and Security Committee assesses the validity of the reported violation based on the community rules and regulations.",
+        "The result of the assessment will provide the list of key activities to be followed by the officer assigned to oversee the violation case, including the expected accomplishment date of each activity.",
       ],
     },
     {
+      value: "step3",
+      title: "Assign Officer to Oversee Violation Case",
+      description:
+        "An officer is designated to oversee the enforcement of the violation case.",
+      details: [
+        "The designated officer of the violation case will be a member of the Environment and Security Committee.",
+        "The officer reviews the timeline of the violation enforcement key activities provided by the committee and makes necessary preparations.",
+      ],
+    },
+    {
+      value: "step4",
+      title: "Send out Violation Letters",
+      description:
+        "The violator(s) are informed of the violation through official violation letters.",
+      details: [
+        "The designated officer sends violation letters to the alleged violator(s) via the MIS.",
+        "The violation letter outlines the nature of the violation, required corrective actions, and the corresponding penalty fee.",
+        "The violator(s) are given a deadline before the penalty fee is applied on their statement of account.",
+      ],
+    },
+    {
+      value: "step5",
+      title: "Negotiations to Appeal Violation Case",
+      description:
+        "The violator has the opportunity to negotiate or appeal the violation case before the specified deadline to pay the penalty fee.",
+      details: [
+        "The designated officer communicates with the alleged violator(s) to discuss the violation and potential resolutions.",
+        "Negotiations may involve addressing misunderstandings, providing explanations, or reaching a settlement agreement.",
+        "The designated officer submits progress reports outlining the activities performed until the violation case reaches its resolution and/or enforcement.",
+      ],
+    },
+    {
+      value: "step6",
       title: "Violation Enforcement with Penalty Fee",
       description:
-        "The Officer assigned takes appropriate actions based on their decision, including issuing a violation notice to the alleged violator.",
+        "The designated officer initiates enforcement measures according to HOA guidelines, such as issuing fines or penalties.",
       details: [
-        "At this step, it is reasonable to presume that the alleged violator acknowledges the violation as factual and/or has not lodged an appeal.",
-        "The alleged violator is informed that the penalty fee is added to their statement of account, which can be accessed via the Finance Management module.",
+        "If the violation is not resolved or appealed successfully, enforcement actions are taken, potentially including penalty fees.",
+        "The violator(s) are informed that the penalty fee is added to their statement of account, which can be accessed via the Finance Management module.",
       ],
     },
   ];
 
-  const { activeStep, setActiveStep } = useSteps({
-    index: reportDetails.violation.step - 1,
-    count: processSteps.length,
-  });
+  const tempViolation = {
+    step: 6,
+    number: 1,
+    status: "Closed; Penalty Fee in SOA",
+    submittedBy: "Submitter",
+    personsInvolved: ["person1", "person2"],
+    officerAssigned: "Officer",
+    violationType: "Parking",
+    violationFee: "P 100",
+    createdAt: "Date created",
+    violationDate: "Violation Date",
+    violationDescription: "Violation Description",
+  };
 
   return (
     <div>
       <Flex justifyContent="space-between">
-        <Flex className="gap-x-4">
+        <Flex gap={5}>
           <Heading
-            title={`#V${reportDetails.violation.number
+            title={`#V${tempViolation.number
               .toString()
               .padStart(4, "0")} - Violation Enforcement Progress`}
             description="View the progress of a selected violation case within the Homeowners' Association."
           />
+          {/* Status */}
           <Badge
             className={cn(
-              "w-[max-content] h-[min-content] px-3 py-2 text-center justify-center text-sm",
-              reportDetails.violation.status === "For Review"
-                ? "bg-yellow-700"
-                : reportDetails.violation.status === "Invalid"
-                ? "bg-red-800"
-                : reportDetails.violation.status === "For Assignment"
-                ? "bg-yellow-800"
-                : reportDetails.violation.status === "Pending Violation Letter"
-                ? "bg-orange-800"
-                : reportDetails.violation.status === "Negotiating (Letter Sent)"
-                ? "bg-blue-900"
-                : reportDetails.violation.status === "Closed" &&
-                  reportDetails.violation.reasonToClose ===
-                    "Penalty Fee Charged to SOA"
-                ? ""
-                : reportDetails.violation.status === "Closed" &&
-                  reportDetails.violation.reasonToClose === "Appealed"
-                ? "bg-green-700"
-                : "display-none"
+              "w-[max-content] h-[min-content] px-3 py-2 text-center justify-center text-sm"
+              // reportDetails.violation.status === "For Review"
+              //   ? "bg-yellow-700"
+              //   : reportDetails.violation.status === "Invalid"
+              //   ? "bg-red-800"
+              //   : reportDetails.violation.status === "For Assignment"
+              //   ? "bg-yellow-800"
+              //   : reportDetails.violation.status === "Pending Violation Letter"
+              //   ? "bg-orange-800"
+              //   : reportDetails.violation.status === "Negotiating (Letter Sent)"
+              //   ? "bg-blue-900"
+              //   : reportDetails.violation.status === "Closed" &&
+              //     reportDetails.violation.reasonToClose ===
+              //       "Penalty Fee Charged to SOA"
+              //   ? ""
+              //   : reportDetails.violation.status === "Closed" &&
+              //     reportDetails.violation.reasonToClose === "Appealed"
+              //   ? "bg-green-700"
+              //   : "display-none"
             )}
           >
-            {reportDetails.violation.status}
+            {tempViolation.status}
           </Badge>
         </Flex>
-        <Button
-          as={Link}
-          href="/admin/violations/violation-record"
-          size="sm"
-          _hover={{ textDecoration: "none" }}
-        >
-          Go Back
-        </Button>
+        <BackButton />
       </Flex>
       <Separator className="mt-4 mb-6" />
 
-      <Flex gap={10} h="65vh">
-        <Stepper
-          index={activeStep}
-          orientation="vertical"
-          width="min-content"
-          gap="0"
-          colorScheme="yellow"
-          size="md"
-          h="40vh"
-        >
+      <Tabs defaultValue={"step" + tempViolation.step} className="w-full">
+        <TabsList className="grid w-full grid-cols-6">
           {processSteps.map((step, index) => (
-            <Step
-              key={index}
-              onClick={() => {
-                if (index <= reportDetails.violation.step - 1)
-                  // to make uncompleted steps unclickable
-                  setActiveStep(index);
-              }}
+            <TabsTrigger
+              key={step.value}
+              value={step.value}
+              disabled={index >= tempViolation.step} // to make uncompleted steps unclickable
             >
-              <StepIndicator
-                className={
-                  index <= reportDetails.violation.step - 1
-                    ? "text-black"
-                    : "text-gray-300"
-                }
-              >
-                <StepStatus
-                  complete={<StepIcon />}
-                  incomplete={<StepNumber />}
-                  active={<StepNumber />}
-                />
-              </StepIndicator>
-              <Box
-                flexShrink="0"
-                fontFamily="font.body"
-                w="10vw"
-                onClick={() => Request}
-              >
-                {/* Stepper Number and Title */}
-                <StepTitle>
-                  <span
-                    className={
-                      index <= reportDetails.violation.step - 1
-                        ? "text-black"
-                        : "text-gray-300"
-                    }
-                  >
-                    Step {index + 1}
-                  </span>
-                </StepTitle>
-                <StepDescription>
-                  <span
-                    className={
-                      index <= reportDetails.violation.step - 1
-                        ? "text-black"
-                        : "text-gray-300"
-                    }
-                  >
-                    {step.title}
-                  </span>
-                </StepDescription>
-              </Box>
-              <StepSeparator />
-            </Step>
+              Step {index + 1}
+            </TabsTrigger>
           ))}
-        </Stepper>
-        <Box w="100%">
-          <Card
-            shadow="lg"
-            mb="1rem"
-            h="65vh"
-            p="20px 20px 30px 20px"
-            overflowY="auto"
-          >
-            <CardHeader pb={0}>
-              <Text
-                fontSize="sm"
-                fontFamily="font.body"
-                color="brand.500"
-                fontWeight="bold"
-              >
-                Step {activeStep + 1}
-              </Text>
-              <Text fontSize="lg" fontFamily="font.heading" fontWeight="bold">
-                {/* Step Title */}
-                {processSteps[activeStep].title}
-              </Text>
-              <Text fontFamily="font.body" textAlign="justify">
-                {/* Step Description */}
-                {processSteps[activeStep].description}
-              </Text>
-            </CardHeader>
-            <Card />
-            <CardBody>
-              <Stack spacing={5}>
-                {/* Step Details */}
-                <Box fontFamily="font.body" fontSize="sm" textAlign="justify">
-                  <Text>Details:</Text>
-                  <UnorderedList ml={7}>
-                    {processSteps[activeStep].details.map((detail, index) => (
-                      <ListItem key={index}>{detail}</ListItem>
-                    ))}
-                  </UnorderedList>
-                </Box>
-
-                {/* INFORMATION TABLES */}
-                <Flex gap={5}>
-                  <TableContainer>
-                    <Table
-                      variant="unstyled"
-                      fontFamily="font.body"
-                      size="sm"
-                      w="400px"
-                    >
-                      <Tbody>
-                        {/* Step 1 Information Table Part 1 */}
-                        {activeStep === 0 && (
-                          <>
-                            <Tr whiteSpace="normal">
-                              <Th border="3px double black" w="110px">
-                                Violation Number
-                              </Th>
-                              <Td border="3px double black">
-                                #V
-                                {reportDetails.violation.number
-                                  .toString()
-                                  .padStart(4, "0")}
-                              </Td>
-                            </Tr>
-                            <Tr whiteSpace="normal">
-                              <Th border="3px double black" w="110px">
-                                Submitted By
-                              </Th>
-                              <Td border="3px double black">
-                                {reportDetails.submittedBy
-                                  ? `${reportDetails.submittedBy.firstName} ${reportDetails.submittedBy.lastName}`
-                                  : ""}
-                              </Td>
-                            </Tr>
-                            <Tr whiteSpace="normal">
-                              <Th border="3px double black" w="110px">
-                                Person/s Involved
-                              </Th>
-                              <Td border="3px double black">
-                                <UnorderedList>
-                                  {reportDetails.personsInvolved.map(
-                                    (item: PersonalInfo) => (
-                                      <ListItem key={item.id}>
-                                        {item.firstName} {item.lastName}
-                                      </ListItem>
-                                    )
-                                  )}
-                                </UnorderedList>
-                              </Td>
-                            </Tr>
-                          </>
-                        )}
-                        {/* Step 2 Information Table */}
-                        {activeStep === 1 && (
-                          <Tr whiteSpace="normal">
-                            <Th border="3px double black" w="110px">
-                              Officer Assigned
-                            </Th>
-                            <Td
-                              border="3px double black"
-                              color={
-                                reportDetails.officerAssigned
-                                  ? "black"
-                                  : "lightgray"
-                              }
-                              fontStyle={
-                                reportDetails.officerAssigned
-                                  ? "normal"
-                                  : "italic"
-                              }
-                            >
-                              {reportDetails.officerAssigned
-                                ? `${reportDetails.officerAssigned.firstName} ${reportDetails.officerAssigned.lastName}`
-                                : "Unassigned"}
-                            </Td>
-                          </Tr>
-                        )}
-                        {/* Step 5 Information Table */}
-                        {activeStep === 2 && (
-                          <>
-                            <Tr whiteSpace="normal">
-                              <Th border="3px double black" w="110px">
-                                Violation Type
-                              </Th>
-                              <Td border="3px double black">
-                                {reportDetails.violationType.title}
-                              </Td>
-                            </Tr>
-                            <Tr whiteSpace="normal">
-                              <Th border="3px double black" w="110px">
-                                Penalty Fee
-                              </Th>
-                              <Td border="3px double black">
-                                ₱ {reportDetails.violationType.fee}
-                              </Td>
-                            </Tr>
-                          </>
-                        )}
-                      </Tbody>
-                    </Table>
-                  </TableContainer>
-
-                  {activeStep === 0 && (
-                    // Step 1 Information Table Part 2
-                    <TableContainer>
-                      <Table
-                        variant="unstyled"
-                        fontFamily="font.body"
-                        size="sm"
-                        maxWidth="400px"
-                      >
-                        <Tbody>
-                          <>
-                            <Tr whiteSpace="normal">
-                              <Th border="3px double black" w="110px">
-                                Date Submitted
-                              </Th>
-                              <Td border="3px double black">
-                                {reportDetails.violation.createdAt
-                                  ? format(
-                                      new Date(
-                                        reportDetails.violation.createdAt
-                                      )
-                                        ?.toISOString()
-                                        .split("T")[0],
-                                      "MMMM dd, yyyy"
-                                    )
-                                  : ""}
-                              </Td>
-                            </Tr>
-                            <Tr whiteSpace="normal">
-                              <Th border="3px double black" w="110px">
-                                Date of Violation
-                              </Th>
-                              <Td border="3px double black">
-                                {reportDetails.violation.violationDate
-                                  ? format(
-                                      new Date(
-                                        reportDetails.violation.violationDate
-                                      )
-                                        ?.toISOString()
-                                        .split("T")[0],
-                                      "MMMM dd, yyyy"
-                                    )
-                                  : ""}
-                              </Td>
-                            </Tr>
-                            <Tr whiteSpace="normal">
-                              <Th border="3px double black" w="110px">
-                                Violation Type
-                              </Th>
-                              <Td border="3px double black">
-                                {reportDetails.violationType.title}
-                              </Td>
-                            </Tr>
-                          </>
-                        </Tbody>
-                      </Table>
-                    </TableContainer>
-                  )}
-                </Flex>
-                {/* Violation Description */}
-                {activeStep === 0 && (
-                  <Text
-                    fontSize="xs"
-                    fontFamily="font.body"
-                    color="grey"
-                    textAlign="justify"
-                  >
-                    <span className="font-bold">Violation Description:</span>{" "}
-                    <br /> {reportDetails.violation.description}
-                  </Text>
-                )}
-              </Stack>
-            </CardBody>
-          </Card>
-        </Box>
-      </Flex>
+        </TabsList>
+        {processSteps.map((step, index) => (
+          <TabsContent key={step.value} value={step.value}>
+            <StepCard
+              key={step.value}
+              stepIndex={index}
+              processSteps={processSteps}
+              tempViolation={tempViolation}
+            />
+          </TabsContent>
+        ))}
+      </Tabs>
     </div>
   );
 };

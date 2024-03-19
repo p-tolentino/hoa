@@ -19,7 +19,7 @@ import {
 import { useReactToPrint } from "react-to-print";
 import { useRef } from "react";
 import PDFTable from "@/components/system/PDFTable";
-import Link from "next/link";
+import BackButton from "@/components/system/BackButton";
 
 interface PaymentRecordClientProps {
   data: PaymentRecordColumn[];
@@ -66,9 +66,7 @@ export const PaymentRecordClient: React.FC<PaymentRecordClientProps> = ({
           <Button size="sm" colorScheme="yellow" onClick={generatePDF}>
             Generate PDF
           </Button>
-          <Button size="sm" as={Link} href="/admin/finance">
-            Go Back
-          </Button>
+          <BackButton />
         </HStack>
       </div>
       <Separator />

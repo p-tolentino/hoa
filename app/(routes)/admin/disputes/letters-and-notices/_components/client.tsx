@@ -8,7 +8,7 @@ import { DisputeLettersAndNoticesColumn, columns } from "./columns";
 import { DataTable } from "@/components/ui/data-table";
 
 import { Flex, Button, HStack } from "@chakra-ui/react";
-import Link from "next/link";
+import BackButton from "@/components/system/BackButton";
 
 import { useReactToPrint } from "react-to-print";
 import { useRef } from "react";
@@ -39,9 +39,7 @@ export const DisputeLettersAndNoticesClient: React.FC<
           <Button size="sm" colorScheme="yellow" onClick={generatePDF}>
             Generate PDF
           </Button>
-          <Button size="sm" as={Link} href="/admin/disputes">
-            Go Back
-          </Button>
+          <BackButton />
         </HStack>
       </Flex>
       <Separator />

@@ -29,6 +29,7 @@ import { getViolationTypeByName } from "@/server/data/violation-type";
 import { getViolationById } from "@/server/data/violation";
 import { getDisputeById } from "@/server/data/dispute";
 import { getDisputeTypeByName } from "@/server/data/dispute-type";
+import BackButton from "@/components/system/BackButton";
 
 export default function DisputeMeetingNotice() {
   const meetingDetails = {
@@ -122,9 +123,7 @@ export default function DisputeMeetingNotice() {
   ) : (
     <div>
       <Box textAlign="right">
-        <Button as={Link} href="/admin/disputes/letters-and-notices" size="sm">
-          Go Back
-        </Button>
+        <BackButton />
       </Box>
       <Center flexDir="column">
         <>

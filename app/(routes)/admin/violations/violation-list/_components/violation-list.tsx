@@ -22,13 +22,13 @@ import {
   Td,
 } from "@chakra-ui/react";
 
-import AddViolationButton from "./AddViolationButton";
-import EditViolationButton from "./EditViolationButton";
-import DeleteViolationButton from "./DeleteViolationButton";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import Link from "next/link";
-import { ViolationType } from "@prisma/client";
-import { useRouter } from "next/navigation";
+import AddViolationButton from './AddViolationButton'
+import EditViolationButton from './EditViolationButton'
+import DeleteViolationButton from './DeleteViolationButton'
+import { ScrollArea } from '@/components/ui/scroll-area'
+import { ViolationType } from '@prisma/client'
+import { useRouter } from 'next/navigation'
+import BackButton from '@/components/system/BackButton'
 
 interface ViolationListProps {
   violations: ViolationType[];
@@ -54,37 +54,24 @@ export const ViolationList: React.FC<ViolationListProps> = ({ violations }) => {
         <Heading title={title} description={description} />
         <Stack direction={{ md: "column", lg: "row" }} spacing="3">
           <AddViolationButton />
-          <Button
-            size="sm"
-            colorScheme="gray"
-            as={Link}
-            href="/admin/violations"
-          >
-            Go Back
-          </Button>
+          <BackButton />
         </Stack>
       </Flex>
-      <Separator className="mt-4 mb-6" />
-      <Flex gap={10} mr={5}>
-        <Flex flexGrow={3}>
-          <ScrollArea className="h-[75vh] pr-5">
-            <SimpleGrid columns={{ md: 1, lg: 3 }} spacing={5} px={2}>
-              {violations.map((violation) => (
-                <Card key={violation.title} pb={3}>
-                  <Stack>
-                    <CardHeader pb="0">
-                      <HStack justifyContent="space-between" align="end">
-                        {/* Violation Title */}
-                        <Text
-                          size="md"
-                          fontWeight="bold"
-                          fontFamily="font.heading"
-                        >
-                          {violation.title}
-                        </Text>
+      <Separator className='mt-4 mb-6' />
 
-                        <ButtonGroup>
-                          <EditViolationButton violation={violation} />
+      <ScrollArea className='h-[75vh] pr-5'>
+        <SimpleGrid columns={{ md: 1, lg: 3 }} spacing={5} px={2}>
+          {violations.map(violation => (
+            <Card key={violation.id} pb={3}>
+              <CardHeader pb='0'>
+                <HStack justifyContent='space-between' align='end'>
+                  {/* Violation Title */}
+                  <Text size='md' fontWeight='bold' fontFamily='font.heading'>
+                    {violation.title}
+                  </Text>
+
+                  <ButtonGroup>
+                    <EditViolationButton violation={violation} />
 
                           <DeleteViolationButton
                             violation={violation}

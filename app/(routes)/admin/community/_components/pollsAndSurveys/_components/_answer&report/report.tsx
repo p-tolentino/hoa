@@ -8,7 +8,15 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Stack, Text, Box, Divider, Progress, Button } from "@chakra-ui/react";
+import {
+  Stack,
+  Text,
+  Box,
+  Divider,
+  Progress,
+  Button,
+  Flex,
+} from "@chakra-ui/react";
 
 import React, { useEffect, useState } from "react";
 import {
@@ -16,6 +24,10 @@ import {
   getOptionResponseCount,
 } from "@/server/data/polls";
 import { Polls, User } from "@prisma/client";
+
+import { useReactToPrint } from "react-to-print";
+import { useRef } from "react";
+import PDFReport from "./report-pdf";
 
 interface PollProps {
   poll: Polls;
@@ -41,9 +53,17 @@ interface PollDetails {
   questions: Question[];
 }
 
-export default function Answer({ poll, user }: PollProps) {
+export default function Report({ poll, user }: PollProps) {
   const [pollDetails, setPollDetails] = useState<Question[] | null>(null);
   const [isLoading, setIsLoading] = useState(true); // State to track loading
+
+  const componentPDF = useRef<HTMLDivElement | null>(null);
+
+  const generatePDF = useReactToPrint({
+    content: () => componentPDF.current || null,
+    documentTitle: "Polls & Surveys Report",
+    onAfterPrint: () => alert("Data saved in PDF"),
+  });
 
   useEffect(() => {
     const fetchPollDetailsAndCounts = async () => {
@@ -86,9 +106,26 @@ export default function Answer({ poll, user }: PollProps) {
           <Text>Loading...</Text>
         ) : (
           <>
+            <div className="hidden">
+              <div ref={componentPDF} style={{ width: "100%" }}>
+                <PDFReport />
+              </div>
+            </div>
             <DialogHeader>
-              <DialogTitle>Report</DialogTitle>
-              <DialogDescription>View the results.</DialogDescription>
+              <Flex justifyContent="space-between">
+                <Stack direction="column" alignItems="flex-start">
+                  <DialogTitle>Report</DialogTitle>
+                  <DialogDescription>View the results.</DialogDescription>
+                </Stack>
+                <Button
+                  mr="5%"
+                  size="xs"
+                  colorScheme="yellow"
+                  onClick={generatePDF}
+                >
+                  Generate PDF
+                </Button>
+              </Flex>
             </DialogHeader>
 
             {/* Form Content */}

@@ -12,7 +12,7 @@ import {
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { TbCurrencyPeso } from "react-icons/tb";
-import { PiBinocularsBold, PiBroomFill } from "react-icons/pi";
+import { PiBinocularsBold } from "react-icons/pi";
 import { TfiDashboard as Dashboard } from "react-icons/tfi";
 import { FaUser as User } from "react-icons/fa";
 import { RxGear as Gear, RxExit as Exit } from "react-icons/rx";
@@ -90,12 +90,6 @@ export function Sidebar({
       icon: FiCalendar,
       active: pathname.startsWith(`/${role}/facility`),
     },
-    // {
-    //   label: "Maintenance Handling",
-    //   href: `/${role}/maintenance`,
-    //   icon: PiBroomFill,
-    //   active: pathname.startsWith(`/${role}/maintenance`),
-    // },
     {
       label: "Election Management",
       href: `/${role}/election`,

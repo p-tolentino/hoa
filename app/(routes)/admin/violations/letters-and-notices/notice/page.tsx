@@ -3,7 +3,6 @@
 import {
   Box,
   Text,
-  Button,
   Center,
   Stack,
   Flex,
@@ -11,7 +10,6 @@ import {
   ListItem,
   Spinner
 } from '@chakra-ui/react'
-import Link from 'next/link'
 import { format, addDays } from 'date-fns'
 import { useSearchParams } from 'next/navigation'
 import { useEffect, useState, useTransition } from 'react'
@@ -20,6 +18,7 @@ import { Notice, PersonalInfo, Violation, ViolationType } from '@prisma/client'
 import { getInfoById } from '@/server/data/user-info'
 import { getViolationTypeByName } from '@/server/data/violation-type'
 import { getViolationById } from '@/server/data/violation'
+import BackButton from '@/components/system/BackButton'
 
 export default function ViolationNotice () {
   const searchParams = useSearchParams()
@@ -85,13 +84,7 @@ export default function ViolationNotice () {
   ) : (
     <div>
       <Box textAlign='right'>
-        <Button
-          as={Link}
-          href='/admin/violations/letters-and-notices'
-          size='sm'
-        >
-          Go Back
-        </Button>
+        <BackButton />
       </Box>
       <Center flexDir='column'>
         <>
