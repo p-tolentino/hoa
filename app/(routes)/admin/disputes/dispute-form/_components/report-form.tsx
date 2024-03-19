@@ -15,7 +15,6 @@ import {
   RadioGroup,
   Radio,
 } from "@chakra-ui/react";
-import Link from "next/link";
 import { startTransition, useEffect, useState } from "react";
 import { Separator } from "@/components/ui/separator";
 import { Heading } from "@/components/ui/heading";
@@ -29,6 +28,7 @@ import { useRouter } from "next/navigation";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { createDispute } from "@/server/actions/dispute";
 import { createNotification } from "@/server/actions/notification";
+import BackButton from "@/components/system/BackButton";
 
 const DisputeFormSchema = z.object({
   disputeDate: z.string(),
@@ -131,9 +131,7 @@ export const ReportForm: React.FC<ReportFormProps> = ({
     <>
       <Flex justifyContent="space-between">
         <Heading title={title} description={description} />
-        <Button size="sm" as={Link} href="/admin/disputes">
-          Go Back
-        </Button>
+        <BackButton />
       </Flex>
       <Separator className="mt-4 mb-6" />
 
