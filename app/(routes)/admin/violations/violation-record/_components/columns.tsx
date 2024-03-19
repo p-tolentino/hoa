@@ -58,7 +58,6 @@ export const columns: ColumnDef<ListOfViolationsColumn>[] = [
             : 'display-none'
         )}
       >
-        {' '}
         {row.getValue('status')}
       </Badge>
     )

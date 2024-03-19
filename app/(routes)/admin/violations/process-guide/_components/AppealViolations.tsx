@@ -11,7 +11,7 @@ export default function AppealViolations () {
         </Text>
       </Box>
       <Text textAlign='justify' fontFamily='font.body' fontSize='sm'>
-        To rectify a violation, the violator(s) should first access the{' '}
+        To appeal to a violation, the violator(s) should first access the{' '}
         <Link
           href='/admin/membership/admin-directory'
           color='blue.500'

@@ -11,15 +11,15 @@ export default function PayPenaltyFee () {
         </Text>
       </Box>
       <Text textAlign='justify' fontFamily='font.body' fontSize='sm'>
-        To pay the penalty fee associated with the violation, the alleged
-        violator should navigate to the Finance Management module within the
-        MIS. In this module, they can access their{' '}
+        To pay the penalty fee associated with the violation, the violator(s)
+        should navigate to the Finance Management module within the MIS. In this
+        module, they can access their{' '}
         <Link
           href='/admin/finance/statement-of-account'
           color='blue.500'
           textDecor='underline'
         >
-          statement of account
+          Statement of Account
         </Link>
         , which provides a detailed overview of their financial transactions
         with the HOA. Once the violator(s) locates the penalty fee within their
