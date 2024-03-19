@@ -15,10 +15,10 @@ export const getTransactionByStatus = async (status: PaymentStatus) => {
   }
 };
 
-export const getTransactionByAddress = async (id: string) => {
+export const getTransactionByAddress = async (addressId: string) => {
   try {
     const transactions = await db.userTransaction.findMany({
-      where: { addressId: id },
+      where: { addressId },
     });
 
     return transactions;
@@ -37,10 +37,10 @@ export const getAllTransactions = async () => {
   }
 };
 
-export const getPersonalAddress = async (id: string) => {
+export const getPersonalAddress = async (userId: string) => {
   try {
     const personal = await db.personalInfo.findFirst({
-      where: { userId: id },
+      where: { userId },
     });
 
     return personal;
@@ -49,10 +49,10 @@ export const getPersonalAddress = async (id: string) => {
   }
 };
 
-export const getPersonalInfo = async (id: string) => {
+export const getPersonalInfo = async (userId: string) => {
   try {
     const personal = await db.personalInfo.findFirst({
-      where: { userId: id },
+      where: { userId },
     });
 
     return personal;

@@ -37,9 +37,9 @@ import { useRouter } from "next/navigation";
 export const ViolationTypeFormSchema = z.object({
   title: z.string(),
   description: z.string(),
-  firstOffense: z.string(),
-  secondOffense: z.string(),
-  thirdOffense: z.string(),
+  firstOffenseFee: z.string(),
+  secondOffenseFee: z.string(),
+  thirdOffenseFee: z.string(),
 });
 
 export type ViolationTypeFormValues = z.infer<typeof ViolationTypeFormSchema>;
@@ -52,9 +52,9 @@ export default function AddViolation() {
     defaultValues: {
       title: "",
       description: "",
-      firstOffense: "",
-      secondOffense: "",
-      thirdOffense: "",
+      firstOffenseFee: "",
+      secondOffenseFee: "",
+      thirdOffenseFee: "",
     },
   });
 
@@ -194,7 +194,7 @@ export default function AddViolation() {
                     <Tbody fontSize="sm" fontFamily="font.body">
                       <FormField
                         control={form.control}
-                        name="firstOffense"
+                        name="firstOffenseFee"
                         render={({ field }) => (
                           <Tr>
                             {/* Violation Level */}
@@ -216,7 +216,7 @@ export default function AddViolation() {
                       />
                       <FormField
                         control={form.control}
-                        name="secondOffense"
+                        name="secondOffenseFee"
                         render={({ field }) => (
                           <Tr>
                             {/* Violation Level */}
@@ -238,7 +238,7 @@ export default function AddViolation() {
                       />
                       <FormField
                         control={form.control}
-                        name="thirdOffense"
+                        name="thirdOffenseFee"
                         render={({ field }) => (
                           <Tr>
                             {/* Violation Level */}

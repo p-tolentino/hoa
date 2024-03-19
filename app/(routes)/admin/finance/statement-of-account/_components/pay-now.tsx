@@ -43,7 +43,7 @@ import { RiGoogleLine as GCash } from "react-icons/ri";
 import { PiBirdBold as Maya } from "react-icons/pi";
 import { FaRegCreditCard as Card } from "react-icons/fa";
 import { UserTransaction } from "@prisma/client";
-import { updateTransaction } from "@/server/actions/user-transactions";
+//import { updateTransaction } from "@/server/actions/user-transactions";
 import { Spinner } from "@chakra-ui/react";
 
 const PaymentFormSchema = z.object({
@@ -187,21 +187,21 @@ export const PayNow = ({
 
   const onSubmit = async () => {
     startTransition(() => {
-      transactionsToUpdate.map((transaction) => {
-        updateTransaction(transaction.id)
-          .then((data) => {
-            if (data.success) {
-              update();
-              form.reset();
-              router.refresh();
-              console.log(data.success);
-              setOpen(false);
-            }
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      });
+      // transactionsToUpdate.map((transaction) => {
+      //   updateTransaction(transaction.id)
+      //     .then((data) => {
+      //       if (data.success) {
+      //         update();
+      //         form.reset();
+      //         router.refresh();
+      //         console.log(data.success);
+      //         setOpen(false);
+      //       }
+      //     })
+      //     .catch((error) => {
+      //       console.log(error);
+      //     });
+      // });
     });
   };
 

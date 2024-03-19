@@ -50,15 +50,8 @@ export const ReportForm: React.FC<ReportFormProps> = ({
   const description =
     "Fill out the Violation Form to formally request a violation review from the Homeowners' Association.";
 
-  const [allUsers, setUsers] = useState<PersonalInfo[] | []>([]);
   const [personsInvolved, setPersonsInvolved] = useState([""]);
   const [filesUploaded, setFilesUploaded] = useState([""]);
-
-  useEffect(() => {
-    if (users) {
-      setUsers(users);
-    }
-  }, []);
 
   const addPersonInput = () => {
     setPersonsInvolved([...personsInvolved, ""]);
@@ -95,7 +88,7 @@ export const ReportForm: React.FC<ReportFormProps> = ({
   const form = useForm<ViolationFormValues>({
     resolver: zodResolver(ViolationFormSchema),
     defaultValues: {
-      violationDate: "",
+      violationDate: undefined,
       type: "",
       description: "",
     },
@@ -158,7 +151,8 @@ export const ReportForm: React.FC<ReportFormProps> = ({
                       fontSize="sm"
                       fontFamily="font.body"
                       w="max-content"
-                      {...field}
+                      value={field.value}
+                      onChange={field.onChange}
                     />
                   </FormControl>
                 )}
@@ -184,7 +178,7 @@ export const ReportForm: React.FC<ReportFormProps> = ({
                         Select a violation type
                       </option>
                       {violationTypes.map((violation) => (
-                        <option key={violation.id} value={violation.name}>
+                        <option key={violation.id} value={violation.id}>
                           {violation.title}
                         </option>
                       ))}

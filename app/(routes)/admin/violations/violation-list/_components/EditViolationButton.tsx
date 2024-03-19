@@ -35,10 +35,8 @@ import {
   ViolationTypeFormValues,
 } from "./AddViolationButton";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { getViolationTypeByName } from "@/server/data/violation-type";
 import { updateViolationType } from "@/server/actions/violation-type";
 import { Form, FormField } from "@/components/ui/form";
-import { useState } from "react";
 
 interface EditViolationButtonProps {
   violation: ViolationType;
@@ -54,9 +52,9 @@ const EditViolationButton: React.FC<EditViolationButtonProps> = ({
     defaultValues: {
       title: violation.title,
       description: violation.description,
-      firstOffense: violation.firstOffenseFee.toString(),
-      secondOffense: violation.secondOffenseFee.toString(),
-      thirdOffense: violation.thirdOffenseFee.toString(),
+      firstOffenseFee: violation.firstOffenseFee.toString(),
+      secondOffenseFee: violation.secondOffenseFee.toString(),
+      thirdOffenseFee: violation.thirdOffenseFee.toString(),
     },
   });
 
@@ -110,7 +108,6 @@ const EditViolationButton: React.FC<EditViolationButtonProps> = ({
                       Violation Title:
                     </FormLabel>
                     <Input
-                      isDisabled
                       size="sm"
                       fontWeight="semibold"
                       type="string"
@@ -195,7 +192,7 @@ const EditViolationButton: React.FC<EditViolationButtonProps> = ({
                     <Tbody fontSize="sm" fontFamily="font.body">
                       <FormField
                         control={form.control}
-                        name="firstOffense"
+                        name="firstOffenseFee"
                         render={({ field }) => (
                           <Tr>
                             {/* Violation Level */}
@@ -217,7 +214,7 @@ const EditViolationButton: React.FC<EditViolationButtonProps> = ({
                       />
                       <FormField
                         control={form.control}
-                        name="secondOffense"
+                        name="secondOffenseFee"
                         render={({ field }) => (
                           <Tr>
                             {/* Violation Level */}
@@ -239,7 +236,7 @@ const EditViolationButton: React.FC<EditViolationButtonProps> = ({
                       />
                       <FormField
                         control={form.control}
-                        name="thirdOffense"
+                        name="thirdOffenseFee"
                         render={({ field }) => (
                           <Tr>
                             {/* Violation Level */}

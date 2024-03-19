@@ -12,13 +12,11 @@ export const getAllNotifications = async () => {
   }
 };
 
-export const getNotificationsByUserId = async (userId: string) => {
+export const getNotificationsByUserId = async (recipient: string) => {
   try {
     const notification = await db.notification.findMany({
       where: {
-        userId: {
-          has: userId,
-        },
+        recipient,
       },
     });
 

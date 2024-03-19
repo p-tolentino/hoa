@@ -101,9 +101,7 @@ export const ViewInfo: React.FC<ViewInfoProps> = ({ data }) => {
                       {data.name}
                     </Heading>
                     <Box fontFamily="font.body">
-                      <Text fontSize="24px">
-                        {data.role} | {data.position}
-                      </Text>
+                      <Text fontSize="24px">{data.position}</Text>
                       <Text fontSize="sm" lineHeight="0.5" mt="1rem">
                         Status:
                       </Text>

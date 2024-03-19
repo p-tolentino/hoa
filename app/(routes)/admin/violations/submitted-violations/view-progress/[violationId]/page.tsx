@@ -19,7 +19,7 @@ export const ViolationProgressPage = async ({
 
   const violationType = await db.violationType.findFirst({
     where: {
-      name: violation?.type,
+      id: violation?.type,
     },
   });
 
@@ -49,8 +49,16 @@ export const ViolationProgressPage = async ({
     violation.personsInvolved.some((person) => person === info.userId)
   );
 
+  const status = {
+    FOR_REVIEW: "For Review",
+    FOR_ASSIGNMENT: "For Officer Assignment",
+    PENDING_LETTER_TO_BE_SENT: "Pending Letter To Be Sent",
+    NEGOTIATING: "Negotiating",
+    CLOSED: "Closed",
+  };
+
   const reportDetails = {
-    violation: violation,
+    violation: { ...violation, status: status[violation.status] },
     violationType: violationType,
     officerAssigned: officerAssigned ? officerAssigned : null,
     submittedBy: submittedBy,

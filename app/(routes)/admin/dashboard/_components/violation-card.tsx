@@ -21,7 +21,7 @@ export default function ViolationCard({ count }: dashboardPoll) {
       >
         <Box>
           <Text color="gray.500" textTransform="uppercase" fontSize="2xs">
-            Total Violation Reports (Valid)
+            Total (Valid) Violation Reports
           </Text>
           <Text fontSize="2xl" fontWeight="bold">
             {count}

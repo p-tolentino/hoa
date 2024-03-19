@@ -56,10 +56,14 @@ export const Navbar = () => {
     },
     {
       label: "Dashboard",
-      href: `/${user?.role !== UserRole.USER ? "admin" : "user"}/dashboard`,
+      href: `/${
+        user?.role !== UserRole.USER ? "admin/dashboard" : "user/membership"
+      }`,
       active:
         pathname ===
-        `/${user?.role !== UserRole.USER ? "admin" : "user"}/dashboard`,
+        `/${
+          user?.role !== UserRole.USER ? "admin/dashboard" : "user/membership"
+        }`,
       requireAuth: true,
     },
   ];

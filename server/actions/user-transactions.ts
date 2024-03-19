@@ -35,6 +35,7 @@ export const createAssocDue = async () => {
       purpose: "Association Dues",
       description: "Monthly Dues",
       amount: hoa.fixedDue!!,
+      addressId: dbUser.info?.address,
     },
   });
 

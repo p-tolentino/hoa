@@ -162,7 +162,7 @@ export const RowActions: React.FC<RowActionProps> = ({ data }) => {
         addressId: userInfos?.find((info) => info.userId === person)?.address,
         purpose: "violation",
         description: violation?.title,
-        amount: violation?.fee,
+        amount: violation?.firstOffenseFee, //!! EDIT BASED ON VIOLATION RECORD
       };
 
       await newUserTransaction(feeData).then((data) => {
@@ -215,11 +215,10 @@ export const RowActions: React.FC<RowActionProps> = ({ data }) => {
       {/* Status: PENDING = Button: Take Case */}
       {data.status === "Pending" &&
         user?.info?.committee === "Environment and Security Committee" &&
-        !data.personsInvolved.includes(user.id) 
-        //&&
-        //data.submittedBy !==
-        //  `${user?.info.firstName} ${user?.info.lastName}` 
-        && (
+        !data.personsInvolved.includes(user.id) && (
+          //&&
+          //data.submittedBy !==
+          //  `${user?.info.firstName} ${user?.info.lastName}`
           <Button
             size="sm"
             _hover={{ textDecoration: "none" }}
@@ -269,7 +268,8 @@ export const RowActions: React.FC<RowActionProps> = ({ data }) => {
                       fontWeight="bold"
                       className="text-red-700"
                     >
-                      ₱ {violation?.fee}
+                      ₱ {violation?.firstOffenseFee}{" "}
+                      {/*//!! EDIT BASED ON VIOLATION RECORD */}
                     </Text>
                   </HStack>
                 </Box>

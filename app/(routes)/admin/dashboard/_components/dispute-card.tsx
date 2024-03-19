@@ -21,7 +21,7 @@ export default function DisputeCard({ count }: dashboardPoll) {
       >
         <Box>
           <Text color="gray.500" textTransform="uppercase" fontSize="2xs">
-            Total Dispute Reports (Valid)
+            Total (Resolved) Dispute Reports
           </Text>
           <Text fontSize="2xl" fontWeight="bold">
             {count}

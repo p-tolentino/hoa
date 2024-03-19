@@ -26,7 +26,7 @@ import {
 import { createNotice } from "@/server/actions/letter-notice";
 import { createNotification } from "@/server/actions/notification";
 import { useEffect, useState } from "react";
-import { PersonalInfo, ViolationType } from "@prisma/client";
+import { PersonalInfo, ReportStatus, ViolationType } from "@prisma/client";
 import { getAllInfo } from "@/server/data/user-info";
 import { newUserTransaction } from "@/server/actions/user-transactions";
 import { getViolationTypeByTitle } from "@/server/data/violation-type";
@@ -156,12 +156,12 @@ export const RowActions: React.FC<RowActionProps> = ({ data }) => {
         // });
 
         // !! Bill to Address of Person Involved + Notification
-
+        // !! EDIT FEE BASED ON VIOLATION RECORD
         const feeData = {
           addressId: userInfos?.find((info) => info.userId === person)?.address,
           purpose: "violation",
           description: violation?.title,
-          amount: violation?.fee,
+          amount: violation?.firstOffenseFee,
         };
 
         await newUserTransaction(feeData).then((data) => {
@@ -392,19 +392,22 @@ export const RowActions: React.FC<RowActionProps> = ({ data }) => {
                     <AlertDialogAction
                       className="bg-green-700 hover:bg-green-900"
                       onClick={() => {
-                        updateStatus(data.id, "Unresolved").then((res) => {
-                          if (res.success) {
-                            toast({
-                              title: `Marked the violation #D${data.number
-                                .toString()
-                                .padStart(4, "0")} as Unresolved.`,
-                              status: "success",
-                              position: "bottom-right",
-                              isClosable: true,
-                            });
-                            router.refresh();
+                        //!! EDIT BASED ON PROCESS
+                        updateStatus(data.id, ReportStatus.CLOSED).then(
+                          (res) => {
+                            if (res.success) {
+                              toast({
+                                title: `Marked the violation #D${data.number
+                                  .toString()
+                                  .padStart(4, "0")} as Unresolved.`,
+                                status: "success",
+                                position: "bottom-right",
+                                isClosable: true,
+                              });
+                              router.refresh();
+                            }
                           }
-                        });
+                        );
                       }}
                     >
                       Continue

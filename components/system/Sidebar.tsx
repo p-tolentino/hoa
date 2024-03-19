@@ -90,12 +90,12 @@ export function Sidebar({
       icon: FiCalendar,
       active: pathname.startsWith(`/${role}/facility`),
     },
-    {
-      label: "Maintenance Handling",
-      href: `/${role}/maintenance`,
-      icon: PiBroomFill,
-      active: pathname.startsWith(`/${role}/maintenance`),
-    },
+    // {
+    //   label: "Maintenance Handling",
+    //   href: `/${role}/maintenance`,
+    //   icon: PiBroomFill,
+    //   active: pathname.startsWith(`/${role}/maintenance`),
+    // },
     {
       label: "Election Management",
       href: `/${role}/election`,
@@ -191,46 +191,51 @@ export function Sidebar({
           </Flex>
         )}
 
-        {sidebarRoutes.map((route) => (
-          <Box
-            key={route.label}
-            mt={"1.4rem"}
-            w="100%"
-            alignItems={sidebarSize === "small" ? "center" : "left"}
-            fontSize={"sm"}
-            fontFamily={"font.body"}
-          >
-            <Menu placement="right" key={route.label}>
-              <Link
-                href={route.href}
-                className={cn(
-                  "p-3 rounded-lg no-underline hover:bg-[#688f6e] hover:text-white transition",
-                  route.active ? "bg-[#F0CB5B]" : "bg-transparent"
-                )}
-              >
-                <MenuButton w="100%">
-                  <Flex>
-                    <Icon
-                      as={route.icon}
-                      fontSize="xl"
-                      color={route.active ? "black" : "white"}
-                      className="w-5 h-5"
-                    />
-                    <Text
-                      textAlign={"left"}
-                      ml={5}
-                      display={sidebarSize === "small" ? "none" : "flex"}
-                      color={route.active ? "black" : "white"}
-                      fontWeight={route.active ? "bold" : "normal"}
-                    >
-                      {route.label}
-                    </Text>
-                  </Flex>
-                </MenuButton>
-              </Link>
-            </Menu>
-          </Box>
-        ))}
+        {sidebarRoutes.map((route) => {
+          if (route.label === "Dashboard" && role === "user") {
+            return null;
+          }
+          return (
+            <Box
+              key={route.label}
+              mt={"1.4rem"}
+              w="100%"
+              alignItems={sidebarSize === "small" ? "center" : "left"}
+              fontSize={"sm"}
+              fontFamily={"font.body"}
+            >
+              <Menu placement="right" key={route.label}>
+                <Link
+                  href={route.href}
+                  className={cn(
+                    "p-3 rounded-lg no-underline hover:bg-[#688f6e] hover:text-white transition",
+                    route.active ? "bg-[#F0CB5B]" : "bg-transparent"
+                  )}
+                >
+                  <MenuButton w="100%">
+                    <Flex>
+                      <Icon
+                        as={route.icon}
+                        fontSize="xl"
+                        color={route.active ? "black" : "white"}
+                        className="w-5 h-5"
+                      />
+                      <Text
+                        textAlign={"left"}
+                        ml={5}
+                        display={sidebarSize === "small" ? "none" : "flex"}
+                        color={route.active ? "black" : "white"}
+                        fontWeight={route.active ? "bold" : "normal"}
+                      >
+                        {route.label}
+                      </Text>
+                    </Flex>
+                  </MenuButton>
+                </Link>
+              </Menu>
+            </Box>
+          );
+        })}
       </Flex>
 
       <Flex
@@ -265,7 +270,7 @@ export function Sidebar({
               {`${user?.info?.firstName || "-"} ${user?.info?.lastName || ""}`}
             </Heading>
             <Text color="brand.300" fontFamily="font.body">
-              {user?.role}
+              {user?.info?.position}
             </Text>
           </Flex>
         </Flex>

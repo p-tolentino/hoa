@@ -74,6 +74,7 @@ model MonthlySoa {
   transactions  String[]
   total         Float
   paidAmount    Float
+  balance       Float
   status        PaymentStatus @default(UNPAID)
 }
 
@@ -84,6 +85,10 @@ model UserTransaction {
   description String
   amount      Int
   createdAt   DateTime      @default(now())
+  status      PaymentStatus @default(UNPAID)  // !! MAYBE REMOVE IN FUTURE DEVELOPMENT OF FINANCE
+  datePaid    DateTime?                       // !! MAYBE REMOVE IN FUTURE DEVELOPMENT OF FINANCE
+  paidBy      String?                         // !! MAYBE REMOVE IN FUTURE DEVELOPMENT OF FINANCE
+  addressId   String?                         // !! MAYBE REMOVE IN FUTURE DEVELOPMENT OF FINANCE     
 }
 
 model HoaTransaction {
@@ -271,6 +276,7 @@ model Violation {
   step            Int             @default(2)
   letterSent      Boolean         @default(false)
   reasonToClose   String?
+  updatedAt       DateTime        @updatedAt @default(now())
 }
 
 model ViolationReview {
@@ -368,11 +374,11 @@ model DisputeAssessment {
 }
 
 enum ReportStatus {
-  FOR_REVIEW                        @map("For Review")
-  FOR_ASSIGNMENT                    @map("For Officer Assignment")
-  PENDING_LETTER_TO_BE_SENT         @map("Pending Letter To Be Sent")
-  NEGOTIATING                       @map("Negotiating")
-  CLOSED                            @map("Closed")
+  FOR_REVIEW                @map(name: "For Review")
+  FOR_ASSIGNMENT            @map(name: "For Officer Assignment")
+  PENDING_LETTER_TO_BE_SENT @map(name: "Pending Letter To Be Sent")
+  NEGOTIATING               @map(name: "Negotiating")
+  CLOSED                    @map(name: "Closed")
 }
 
 enum Priority {

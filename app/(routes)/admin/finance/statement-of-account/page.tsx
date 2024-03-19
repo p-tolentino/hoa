@@ -4,10 +4,7 @@ import { getPropertyById } from "@/server/data/user-info";
 import { getTransactionByAddress } from "@/server/data/user-transactions";
 import { getAllUsers } from "@/server/data/user";
 import { addDays } from "date-fns";
-import {
-  createAssocDue,
-  overdueTransaction,
-} from "@/server/actions/user-transactions";
+import { createAssocDue } from "@/server/actions/user-transactions";
 import { PaymentStatus } from "@prisma/client";
 
 const StatementOfAccount = async () => {
@@ -32,7 +29,8 @@ const StatementOfAccount = async () => {
   const existingAssocDuesBill = transactions.find((transaction) => {
     return (
       transaction.purpose === "Association Dues" &&
-      transaction.createdAt.getMonth() + 1 === new Date().getMonth() + 1
+      transaction.createdAt.getMonth() + 1 === new Date().getMonth() + 1 &&
+      transaction.addressId === user?.info?.address
     );
   });
 
@@ -44,14 +42,14 @@ const StatementOfAccount = async () => {
     });
   }
 
-  transactions.map((transaction) => {
-    const deadline = addDays(new Date(transaction.createdAt), 30);
+  // transactions.map((transaction) => {
+  //   const deadline = addDays(new Date(transaction.createdAt), 30);
 
-    if (transaction.status === PaymentStatus.UNPAID && new Date() > deadline) {
-      transaction.status = PaymentStatus.OVERDUE;
-      overdueTransaction(transaction.id);
-    }
-  });
+  //   if (transaction.status === PaymentStatus.UNPAID && new Date() > deadline) {
+  //     transaction.status = PaymentStatus.OVERDUE;
+  //     overdueTransaction(transaction.id);
+  //   }
+  // });
 
   const updatedTransactions = await getTransactionByAddress(
     user?.info?.address
