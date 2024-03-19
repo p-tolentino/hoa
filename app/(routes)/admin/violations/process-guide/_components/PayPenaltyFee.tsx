@@ -22,11 +22,11 @@ export default function PayPenaltyFee () {
           statement of account
         </Link>
         , which provides a detailed overview of their financial transactions
-        with the HOA. Once the alleged violator locates the penalty fee within
-        their statement of account, they can proceed to make the payment using
-        the available payment options. This straightforward process ensures that
-        the penalty fee is settled efficiently, contributing to the resolution
-        of the violation and maintaining compliance with HOA regulations.
+        with the HOA. Once the violator(s) locates the penalty fee within their
+        statement of account, they can proceed to make the payment using the
+        available payment options. This straightforward process ensures that the
+        penalty fee is settled efficiently, contributing to the resolution of
+        the violation and maintaining compliance with HOA regulations.
       </Text>
     </div>
   )
