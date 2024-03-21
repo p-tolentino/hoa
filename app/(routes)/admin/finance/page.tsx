@@ -27,8 +27,8 @@ export default function FinanceManagementMenu () {
       category_users: 'the Association Treasurer',
       category_buttons: [
         {
-          text: 'Income & Expense Management',
-          href: '/admin/finance/income-and-expense',
+          text: 'Revenue & Expense Management',
+          href: '/admin/finance/revenue-and-expense',
           description:
             "Enter the organization's revenues and expenditures, and access its reports."
         },
