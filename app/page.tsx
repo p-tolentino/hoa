@@ -18,9 +18,9 @@ export default async function Home() {
 
   return (
     <>
-      <Navbar />
-      <Homepage />;
-      <Footer />
+      <Navbar existingHoa={existingHoaInfo} />
+      <Homepage existingHoa={existingHoaInfo} />;
+      <Footer existingHoa={existingHoaInfo} />
     </>
   );
 }
