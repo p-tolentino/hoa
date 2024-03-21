@@ -38,6 +38,9 @@ import {
   SelectValue
 } from '@/components/ui/select'
 import Link from 'next/link'
+import { report } from 'process'
+import { format } from 'date-fns'
+import { PersonalInfo } from '@prisma/client'
 
 interface ProcessStep {
   value: string
@@ -64,12 +67,14 @@ interface StepCardProps {
   stepIndex: number
   processSteps: ProcessStep[]
   tempViolation: TempViolation
+  reportDetails: any
 }
 
 export default function StepCard ({
   stepIndex,
   processSteps,
-  tempViolation
+  tempViolation,
+  reportDetails
 }: StepCardProps) {
   const caseActivities = [
     {
@@ -280,7 +285,7 @@ export default function StepCard ({
                         </Th>
                         <Td border='3px double black'>
                           #V
-                          {tempViolation.number.toString().padStart(4, '0')}
+                          {reportDetails.violation.number.toString().padStart(4, '0')}
                         </Td>
                       </Tr>
                       <Tr whiteSpace='normal'>
@@ -288,8 +293,8 @@ export default function StepCard ({
                           Submitted By
                         </Th>
                         <Td border='3px double black'>
-                          {tempViolation.submittedBy
-                            ? `${tempViolation.submittedBy}`
+                          {reportDetails.submittedBy
+                            ? `${reportDetails.submittedBy.firstName} ${reportDetails.submittedBy.lastName}`
                             : ''}
                         </Td>
                       </Tr>
@@ -299,9 +304,9 @@ export default function StepCard ({
                         </Th>
                         <Td border='3px double black'>
                           <UnorderedList>
-                            {tempViolation.personsInvolved.map(
-                              (person, index) => (
-                                <ListItem key={index}>{person}</ListItem>
+                            {reportDetails.personsInvolved.map(
+                              (person: PersonalInfo, index: number) => (
+                                <ListItem key={index}>{person.firstName} {person.lastName}</ListItem>
                               )
                             )}
                           </UnorderedList>
@@ -318,14 +323,14 @@ export default function StepCard ({
                       <Td
                         border='3px double black'
                         color={
-                          tempViolation.officerAssigned ? 'black' : 'lightgray'
+                          reportDetails.officerAssigned ? 'black' : 'lightgray'
                         }
                         fontStyle={
-                          tempViolation.officerAssigned ? 'normal' : 'italic'
+                          reportDetails.officerAssigned ? 'normal' : 'italic'
                         }
                       >
-                        {tempViolation.officerAssigned
-                          ? `${tempViolation.officerAssigned}`
+                        {reportDetails.officerAssigned
+                          ? `${reportDetails.officerAssigned.firstName} ${reportDetails.officerAssigned.lastName}`
                           : 'Unassigned'}
                       </Td>
                     </Tr>
@@ -338,7 +343,7 @@ export default function StepCard ({
                           Violation Type
                         </Th>
                         <Td border='3px double black'>
-                          {tempViolation.violationType}
+                          {reportDetails.violationType.title}
                         </Td>
                       </Tr>
                       <Tr whiteSpace='normal'>
@@ -346,7 +351,7 @@ export default function StepCard ({
                           Penalty Fee
                         </Th>
                         <Td border='3px double black'>
-                          ₱ {tempViolation.violationFee}
+                          ₱ {reportDetails.violationType.firstOffenseFee} {/*!! CHANGE BASED ON RECORD */}
                         </Td>
                       </Tr>
                     </>
@@ -371,15 +376,14 @@ export default function StepCard ({
                           Date Submitted
                         </Th>
                         <Td border='3px double black'>
-                          {/* {tempViolation.createdAt
+                          {reportDetails.violation.createdAt
                                   ? format(
-                                      new Date(tempViolation.createdAt)
+                                      new Date(reportDetails.violation.createdAt)
                                         ?.toISOString()
                                         .split('T')[0],
                                       'MMMM dd, yyyy'
                                     )
-                                  : ''} */}
-                          {tempViolation.createdAt}
+                                  : ''}
                         </Td>
                       </Tr>
                       <Tr whiteSpace='normal'>
@@ -387,15 +391,14 @@ export default function StepCard ({
                           Date of Violation
                         </Th>
                         <Td border='3px double black'>
-                          {/* {tempViolation.violationDate
+                        {reportDetails.violation.violationDate
                                   ? format(
-                                      new Date(tempViolation.violationDate)
+                                      new Date(reportDetails.violation.violationDate)
                                         ?.toISOString()
                                         .split('T')[0],
                                       'MMMM dd, yyyy'
                                     )
-                                  : ''} */}
-                          {tempViolation.violationDate}
+                                  : ''}
                         </Td>
                       </Tr>
                       <Tr whiteSpace='normal'>
@@ -403,7 +406,7 @@ export default function StepCard ({
                           Violation Type
                         </Th>
                         <Td border='3px double black'>
-                          {tempViolation.violationType}
+                          {reportDetails.violationType.title}
                         </Td>
                       </Tr>
                     </>
@@ -422,7 +425,7 @@ export default function StepCard ({
               mt={5}
             >
               <span className='font-bold'>Violation Description:</span> <br />{' '}
-              {tempViolation.violationDescription}
+              {reportDetails.violation.description}
             </Text>
           )}
         </>

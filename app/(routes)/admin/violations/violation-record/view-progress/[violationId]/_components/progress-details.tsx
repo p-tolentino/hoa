@@ -84,7 +84,7 @@ export const ProgressDetails: React.FC<ViewProgressProps> = ({
   const tempViolation = {
     step: 6,
     number: 1,
-    status: "Closed; Penalty Fee in SOA",
+    status: "Closed",
     submittedBy: "Submitter",
     personsInvolved: ["person1", "person2"],
     officerAssigned: "Officer",
@@ -93,6 +93,7 @@ export const ProgressDetails: React.FC<ViewProgressProps> = ({
     createdAt: "Date created",
     violationDate: "Violation Date",
     violationDescription: "Violation Description",
+    reasonToClose: "Penalty Fee Charged to SOA"
   };
 
   return (
@@ -100,7 +101,7 @@ export const ProgressDetails: React.FC<ViewProgressProps> = ({
       <Flex justifyContent="space-between">
         <Flex gap={5}>
           <Heading
-            title={`#V${tempViolation.number
+            title={`#V${reportDetails.violation.number
               .toString()
               .padStart(4, "0")} - Violation Enforcement Progress`}
             description="View the progress of a selected violation case within the Homeowners' Association."
@@ -108,35 +109,35 @@ export const ProgressDetails: React.FC<ViewProgressProps> = ({
           {/* Status */}
           <Badge
             className={cn(
-              "w-[max-content] h-[min-content] px-3 py-2 text-center justify-center text-sm"
-              // reportDetails.violation.status === "For Review"
-              //   ? "bg-yellow-700"
-              //   : reportDetails.violation.status === "Invalid"
-              //   ? "bg-red-800"
-              //   : reportDetails.violation.status === "For Assignment"
-              //   ? "bg-yellow-800"
-              //   : reportDetails.violation.status === "Pending Violation Letter"
-              //   ? "bg-orange-800"
-              //   : reportDetails.violation.status === "Negotiating (Letter Sent)"
-              //   ? "bg-blue-900"
-              //   : reportDetails.violation.status === "Closed" &&
-              //     reportDetails.violation.reasonToClose ===
-              //       "Penalty Fee Charged to SOA"
-              //   ? ""
-              //   : reportDetails.violation.status === "Closed" &&
-              //     reportDetails.violation.reasonToClose === "Appealed"
-              //   ? "bg-green-700"
-              //   : "display-none"
+              "w-[max-content] h-[min-content] px-3 py-2 text-center justify-center text-sm",
+              reportDetails.violation.status === "For Review"
+                ? "bg-yellow-700"
+                : reportDetails.violation.status === "Invalid"
+                ? "bg-red-800"
+                : reportDetails.violation.status === "For Assignment"
+                ? "bg-yellow-800"
+                : reportDetails.violation.status === "Pending Violation Letter"
+                ? "bg-orange-800"
+                : reportDetails.violation.status === "Negotiating (Letter Sent)"
+                ? "bg-blue-900"
+                : reportDetails.violation.status === "Closed" &&
+                  reportDetails.violation.reasonToClose ===
+                    "Penalty Fee Charged to SOA"
+                ? ""
+                : reportDetails.violation.status === "Closed" &&
+                  reportDetails.violation.reasonToClose === "Appealed"
+                ? "bg-green-700"
+                : "display-none"
             )}
           >
-            {tempViolation.status}
+            {reportDetails.violation.status}{reportDetails.violation.reasonToClose && ` - ${reportDetails.violation.reasonToClose}`}
           </Badge>
         </Flex>
         <BackButton />
       </Flex>
       <Separator className="mt-4 mb-6" />
 
-      <Tabs defaultValue={"step" + tempViolation.step} className="w-full">
+      <Tabs defaultValue={"step" + reportDetails.violation.step} className="w-full">
         <TabsList className="grid w-full grid-cols-6">
           {processSteps.map((step, index) => (
             <TabsTrigger
@@ -155,6 +156,7 @@ export const ProgressDetails: React.FC<ViewProgressProps> = ({
               stepIndex={index}
               processSteps={processSteps}
               tempViolation={tempViolation}
+              reportDetails={reportDetails}
             />
           </TabsContent>
         ))}

@@ -145,13 +145,10 @@ export const ViolationList: React.FC<ViolationListProps> = ({ violations }) => {
                         </TableContainer>
                       </Stack>
                     </CardBody>
-                  </Stack>
                 </Card>
               ))}
             </SimpleGrid>
           </ScrollArea>
-        </Flex>
-      </Flex>
     </>
   );
 };

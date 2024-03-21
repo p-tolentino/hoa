@@ -292,9 +292,12 @@ model ViolationProgress {
   id            String   @id @unique @default(cuid())
   violationId   String
   activity      String
+  title         String
   description   String
   document      String?
+  deadline      DateTime
   dateSubmitted DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
 
 model Notification {
