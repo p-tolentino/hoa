@@ -167,11 +167,7 @@ export default function WriteReviewResults () {
                             </Th>
                             <Th px='10px'>
                               {/* Add Row Button */}
-                              <Button
-                                size='xs'
-                                colorScheme='yellow'
-                                onClick={handleAddRow}
-                              >
+                              <Button size='xs' onClick={handleAddRow}>
                                 <AddIcon />
                               </Button>
                             </Th>

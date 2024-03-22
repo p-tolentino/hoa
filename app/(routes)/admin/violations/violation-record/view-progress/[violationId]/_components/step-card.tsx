@@ -32,6 +32,7 @@ import { PersonalInfo } from '@prisma/client'
 import WriteReviewResults from './write-review-results'
 import ViewProgressReport from './view-progress-report'
 import ProgressReportForm from './progress-report-form'
+import ViewReviewResults from './view-review-results'
 
 interface ProcessStep {
   value: string
@@ -283,221 +284,21 @@ export default function StepCard ({
               </Box>
 
               {/* If a review has been made */}
-              {/* <Flex>
-                <Box w='40%'>
-                  <Box>
-                    <Text
-                      fontWeight='semibold'
-                      fontFamily='font.heading'
-                      lineHeight={1}
-                    >
-                      Key Activities
-                    </Text>
-                    <Text fontFamily='font.body' fontSize='sm' color='grey'>
-                      Date created: March 22, 2024
-                    </Text>
-                  </Box>
-                  <Stepper
-                    index={activeStep}
-                    orientation='vertical'
-                    w='max-content'
-                    h='50vh'
-                    p='1.5rem'
-                    gap='0'
-                    colorScheme='yellow'
-                    size='md'
-                    overflowY='auto'
-                  >
-                    {keyActivities.map((activity, index) => (
-                      <Step key={index}>
-                        <StepIndicator>
-                          <StepStatus
-                            complete={<StepIcon />}
-                            incomplete={<StepNumber />}
-                            active={<StepNumber />}
-                          />
-                        </StepIndicator>
-                        <Box fontFamily='font.body' w='10vw'>
-                          <StepTitle>{activity.title}</StepTitle>
-                          <StepDescription className='text-xs'>
-                            {activity.dueDate}
-                          </StepDescription>
-                        </Box>
-                        <StepSeparator />
-                      </Step>
-                    ))}
-                  </Stepper>
-                </Box>
-                <Box>
-                  <Box>
-                    <Text
-                      fontWeight='semibold'
-                      fontFamily='font.heading'
-                      lineHeight={1}
-                    >
-                      Officer Assigned
-                    </Text>
-                    <Text fontFamily='font.body' fontSize='sm' color='grey'>
-                      Date assigned: March 22, 2024
-                    </Text>
-                  </Box>
-                  <Stack w='400px' spacing='0.5rem' pt='1.5rem'>
-                    <TableContainer>
-                      <Table
-                        variant='unstyled'
-                        fontFamily='font.body'
-                        size='sm'
-                        w='400px'
-                      >
-                        <Tbody>
-                          <Tr whiteSpace='normal'>
-                            <Th border='3px double black' w='110px'>
-                              Officer Assigned
-                            </Th>
-                            <Td
-                              border='3px double black'
-                              color={
-                                reportDetails.officerAssigned
-                                  ? 'black'
-                                  : 'lightgray'
-                              }
-                              fontStyle={
-                                reportDetails.officerAssigned
-                                  ? 'normal'
-                                  : 'italic'
-                              }
-                            >
-                              {reportDetails.officerAssigned
-                                ? `${reportDetails.officerAssigned.firstName} ${reportDetails.officerAssigned.lastName}`
-                                : 'Unassigned'}
-                            </Td>
-                          </Tr>
-                        </Tbody>
-                      </Table>
-                    </TableContainer>
-                    <Text
-                      fontSize='sm'
-                      fontFamily='font.body'
-                      textAlign='justify'
-                    >
-                      This officer has been assigned to oversee this case
-                      exclusively. They are the sole authorized individual to
-                      provide progress reports regarding this case.
-                    </Text>
-                  </Stack>
-                </Box>
-              </Flex> */}
+              {/* <ViewReviewResults
+                keyActivities={keyActivities}
+                activeStep={activeStep}
+                reportDetails={reportDetails}
+              /> */}
             </Box>
           )}
 
           {/* Step 3 Content */}
           {stepIndex === 2 && (
-            <Box>
-              <Flex>
-                <Box w='40%'>
-                  <Box>
-                    <Text
-                      fontWeight='semibold'
-                      fontFamily='font.heading'
-                      lineHeight={1}
-                    >
-                      Key Activities
-                    </Text>
-                    <Text fontFamily='font.body' fontSize='sm' color='grey'>
-                      Date created: March 22, 2024
-                    </Text>
-                  </Box>
-                  <Stepper
-                    index={activeStep}
-                    orientation='vertical'
-                    w='max-content'
-                    h='50vh'
-                    p='1.5rem'
-                    gap='0'
-                    colorScheme='yellow'
-                    size='md'
-                    overflowY='auto'
-                  >
-                    {keyActivities.map((activity, index) => (
-                      <Step key={index}>
-                        <StepIndicator>
-                          <StepStatus
-                            complete={<StepIcon />}
-                            incomplete={<StepNumber />}
-                            active={<StepNumber />}
-                          />
-                        </StepIndicator>
-                        <Box fontFamily='font.body' w='10vw'>
-                          <StepTitle>{activity.title}</StepTitle>
-                          <StepDescription className='text-xs'>
-                            {activity.dueDate}
-                          </StepDescription>
-                        </Box>
-                        <StepSeparator />
-                      </Step>
-                    ))}
-                  </Stepper>
-                </Box>
-                <Box>
-                  <Box>
-                    <Text
-                      fontWeight='semibold'
-                      fontFamily='font.heading'
-                      lineHeight={1}
-                    >
-                      Officer Assigned
-                    </Text>
-                    <Text fontFamily='font.body' fontSize='sm' color='grey'>
-                      Date assigned: March 22, 2024
-                    </Text>
-                  </Box>
-                  <Stack w='400px' spacing='0.5rem' pt='1.5rem'>
-                    <TableContainer>
-                      <Table
-                        variant='unstyled'
-                        fontFamily='font.body'
-                        size='sm'
-                        w='400px'
-                      >
-                        <Tbody>
-                          <Tr whiteSpace='normal'>
-                            <Th border='3px double black' w='110px'>
-                              Officer Assigned
-                            </Th>
-                            <Td
-                              border='3px double black'
-                              color={
-                                reportDetails.officerAssigned
-                                  ? 'black'
-                                  : 'lightgray'
-                              }
-                              fontStyle={
-                                reportDetails.officerAssigned
-                                  ? 'normal'
-                                  : 'italic'
-                              }
-                            >
-                              {reportDetails.officerAssigned
-                                ? `${reportDetails.officerAssigned.firstName} ${reportDetails.officerAssigned.lastName}`
-                                : 'Unassigned'}
-                            </Td>
-                          </Tr>
-                        </Tbody>
-                      </Table>
-                    </TableContainer>
-                    <Text
-                      fontSize='sm'
-                      fontFamily='font.body'
-                      textAlign='justify'
-                    >
-                      This officer has been assigned to oversee this case
-                      exclusively. They are the sole authorized individual to
-                      provide progress reports regarding this case.
-                    </Text>
-                  </Stack>
-                </Box>
-              </Flex>
-            </Box>
+            <ViewReviewResults
+              keyActivities={keyActivities}
+              activeStep={activeStep}
+              reportDetails={reportDetails}
+            />
           )}
 
           {/* Step 5 Content */}
@@ -524,7 +325,7 @@ export default function StepCard ({
                   h='50vh'
                   p='1.5rem'
                   gap='0'
-                  colorScheme='yellow'
+                  colorScheme='green'
                   size='md'
                   overflowY='auto'
                 >

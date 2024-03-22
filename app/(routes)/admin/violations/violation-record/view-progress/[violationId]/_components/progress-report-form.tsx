@@ -70,8 +70,9 @@ export default function ProgressReportForm ({
           fontSize='sm'
           fontFamily='font.body'
           placeholder='Write something...'
-          height='30vh'
+          height='20vh'
           resize='none'
+          overflowY='auto'
         ></Textarea>
         <ButtonGroup>
           <Button type='submit' colorScheme='yellow' size='sm' w='min-content'>
