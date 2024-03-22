@@ -364,6 +364,7 @@ model DisputeOfficerActivity {
   disputeId     String
   title         String
   deadline      DateTime
+  isDone        Boolean
 }
 model DisputeProgress {
   id            String   @id @unique @default(cuid())
