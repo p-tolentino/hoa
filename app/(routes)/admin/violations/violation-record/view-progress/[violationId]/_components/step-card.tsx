@@ -96,7 +96,7 @@ export default function StepCard ({
   })
 
   return (
-    <Card shadow='lg' my='1.5rem' h='66vh' p='10px 10px 20px 10px'>
+    <Card shadow='lg' my='1.5rem' h='62vh' p='10px 10px 20px 10px'>
       <CardHeader pb={0}>
         <Text
           fontSize='sm'
@@ -117,7 +117,7 @@ export default function StepCard ({
       </CardHeader>
       <Card />
       <CardBody pt={2}>
-        <Box overflowY='auto' h='50vh'>
+        <Box overflowY='auto' h='42vh'>
           <Box
             fontFamily='font.body'
             fontSize='sm'
@@ -269,7 +269,7 @@ export default function StepCard ({
             <Box>
               {/* If a review has NOT been made */}
               <Box
-                h='32vh'
+                h='24vh'
                 border='1px solid lightgray'
                 borderRadius={5}
                 p={3}
