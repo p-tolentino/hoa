@@ -23,26 +23,15 @@ import {
   StepTitle,
   Stepper,
   useSteps,
-  Textarea,
-  Button,
   Stack,
-  Input,
-  Center,
-  ButtonGroup
+  Center
 } from '@chakra-ui/react'
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from '@/components/ui/select'
-import Link from 'next/link'
 import { report } from 'process'
 import { format } from 'date-fns'
 import { PersonalInfo } from '@prisma/client'
 import WriteReviewResults from './write-review-results'
+import ViewProgressReport from './view-progress-report'
+import ProgressReportForm from './progress-report-form'
 
 interface ProcessStep {
   value: string
@@ -78,7 +67,7 @@ export default function StepCard ({
   tempViolation,
   reportDetails
 }: StepCardProps) {
-  const caseActivities = [
+  const keyActivities = [
     {
       title: 'activityTitle1',
       dueDate: 'activityDueDate1',
@@ -103,7 +92,7 @@ export default function StepCard ({
 
   const { activeStep } = useSteps({
     index: 0,
-    count: caseActivities.length
+    count: keyActivities.length
   })
 
   return (
@@ -319,7 +308,7 @@ export default function StepCard ({
                     size='md'
                     overflowY='auto'
                   >
-                    {caseActivities.map((activity, index) => (
+                    {keyActivities.map((activity, index) => (
                       <Step key={index}>
                         <StepIndicator>
                           <StepStatus
@@ -429,7 +418,7 @@ export default function StepCard ({
                     size='md'
                     overflowY='auto'
                   >
-                    {caseActivities.map((activity, index) => (
+                    {keyActivities.map((activity, index) => (
                       <Step key={index}>
                         <StepIndicator>
                           <StepStatus
@@ -539,7 +528,7 @@ export default function StepCard ({
                   size='md'
                   overflowY='auto'
                 >
-                  {caseActivities.map((activity, index) => (
+                  {keyActivities.map((activity, index) => (
                     <Step key={index}>
                       <StepIndicator>
                         <StepStatus
@@ -549,12 +538,8 @@ export default function StepCard ({
                         />
                       </StepIndicator>
                       <Box fontFamily='font.body' w='10vw'>
-                        <StepTitle
-                          as={Link}
-                          href=''
-                          className='text-blue-500 hover:underline'
-                        >
-                          {activity.title}
+                        <StepTitle>
+                          <ViewProgressReport activityTitle={activity.title} />
                         </StepTitle>
                         <StepDescription className='text-xs'>
                           {activity.dueDate}
@@ -568,74 +553,7 @@ export default function StepCard ({
                 </Stepper>
               </Box>
               {/* Progress Report Form */}
-              <form>
-                <Stack spacing='15px'>
-                  <Box>
-                    <Text
-                      fontWeight='semibold'
-                      fontFamily='font.heading'
-                      lineHeight={1}
-                    >
-                      Write a progress report
-                    </Text>
-                    <Text fontFamily='font.body' fontSize='sm'>
-                      Write a progress report for an activity to demonstrate
-                      that it is being completed by the due date.
-                    </Text>
-                  </Box>
-                  <Flex justifyContent='space-between' gap={5}>
-                    <Input
-                      type='string'
-                      fontSize='md'
-                      fontFamily='font.body'
-                      fontWeight='semibold'
-                      placeholder='Enter a progress title'
-                    />
-                    <Select>
-                      <SelectTrigger>
-                        <SelectValue placeholder='Select activity' />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectGroup>
-                          {caseActivities.map((activity, index) => (
-                            <SelectItem
-                              key={'activity' + index}
-                              value={'activity' + index}
-                            >
-                              {activity.title}
-                            </SelectItem>
-                          ))}
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
-                  </Flex>
-                  <Textarea
-                    fontSize='sm'
-                    fontFamily='font.body'
-                    placeholder='Write something...'
-                    height='30vh'
-                    resize='none'
-                  ></Textarea>
-                  <ButtonGroup>
-                    <Button
-                      type='submit'
-                      colorScheme='yellow'
-                      size='sm'
-                      w='min-content'
-                    >
-                      Submit as Sub-Activity
-                    </Button>
-                    <Button
-                      type='submit'
-                      colorScheme='green'
-                      size='sm'
-                      w='min-content'
-                    >
-                      Submit & Mark Case as Closed
-                    </Button>
-                  </ButtonGroup>
-                </Stack>
-              </form>
+              <ProgressReportForm keyActivities={keyActivities} />
             </Flex>
           )}
 
