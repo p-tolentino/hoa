@@ -127,6 +127,11 @@ const Facility = () => {
               </Box>
             ))}
           </Stack>
+          <Box mt={5} textAlign="center">
+            <Button size="sm" type="submit" colorScheme="yellow">
+              Confirm Reservation
+            </Button>
+          </Box>
         </Box>
         <Box
           bg="gray"

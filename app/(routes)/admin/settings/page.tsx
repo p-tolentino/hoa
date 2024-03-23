@@ -1,6 +1,6 @@
 import { Heading } from "@/components/ui/heading";
 import { Separator } from "@/components/ui/separator";
-import { Stack, Button, Text, Input, HStack } from "@chakra-ui/react";
+import { Stack, Button, Text, Input, HStack, Box } from "@chakra-ui/react";
 import {
   Dialog,
   DialogContent,
@@ -56,41 +56,62 @@ const Settings = async ({ hoa }: { hoa: Hoa }) => {
             placeholder="Homeowners Association Contact Number"
           />
         </HStack>
-        <HStack gap={5}>
-          <Text fontSize="sm" fontWeight="semibold">
-            Funds:
+        <Stack spacing={1}>
+          <HStack gap={5}>
+            <Text fontSize="sm" fontWeight="semibold">
+              Funds:
+            </Text>
+            <Input
+              w="30%"
+              size="sm"
+              type="number"
+              fontFamily="font.body"
+              placeholder="Php 1,000,000.00"
+            />
+          </HStack>
+          <Text fontSize="sm" fontFamily="font.body">
+            The homeowners association funds will be reflected in the finance
+            management feature, specifically in the income and expense
+            management page.
           </Text>
-          <Input
-            w="30%"
-            size="sm"
-            type="number"
-            fontFamily="font.body"
-            placeholder="Php 1,000,000.00"
-          />
-        </HStack>
-        <HStack gap={5}>
-          <Text fontSize="sm" fontWeight="semibold">
-            Upload Homeowners' Association Bylaws:
+        </Stack>
+        <Stack spacing={1}>
+          <HStack gap={5}>
+            <Text fontSize="sm" fontWeight="semibold">
+              Upload Homeowners' Association Bylaws:
+            </Text>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button w="10%" size="xs" fontWeight="semibold">
+                  Upload Bylaws
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>
+                    Upload Homeowners' Association Bylaws
+                  </DialogTitle>
+                  <DialogDescription>
+                    "Upload the latest Homeowners' Association Bylaws for
+                    members to view."
+                  </DialogDescription>
+                </DialogHeader>
+                {/* File input */}
+                <PdfUpload hoa={hoa} />
+              </DialogContent>
+            </Dialog>
+          </HStack>
+          <Text fontSize="sm" fontFamily="font.body">
+            The uploaded homeowners association bylaws will be displayed in the
+            community engagement feature, enabling homeowners to have access on
+            the bylaws.
           </Text>
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button w="10%" size="xs" fontWeight="semibold">
-                Upload Bylaws
-              </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Upload Homeowners' Association Bylaws</DialogTitle>
-                <DialogDescription>
-                  "Upload the latest Homeowners' Association Bylaws for members
-                  to view."
-                </DialogDescription>
-              </DialogHeader>
-              {/* File input */}
-              <PdfUpload hoa={hoa} />
-            </DialogContent>
-          </Dialog>
-        </HStack>
+        </Stack>
+        <Box mt={5} textAlign="center">
+          <Button size="sm" type="submit" colorScheme="yellow">
+            Save Changes
+          </Button>
+        </Box>
       </Stack>
     </div>
   );
