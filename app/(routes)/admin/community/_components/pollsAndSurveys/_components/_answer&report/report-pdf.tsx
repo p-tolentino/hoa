@@ -13,9 +13,16 @@ import {
 export default function PDFReport() {
   return (
     <Box p="5%">
-      <Stack spacing={3}>
-        <Heading size="md">Homeowners Association Name</Heading>
-        <Stack>
+      <Stack spacing={8}>
+        <Stack spacing={1}>
+          <Heading size="md" fontFamily="font.heading">
+            Homeowners Association Name
+          </Heading>
+          <Heading fontSize="xs" fontFamily="font.heading">
+            Contact Number: 09123456789
+          </Heading>
+        </Stack>
+        <Stack spacing={1}>
           <Heading size="sm">Polls & Survey Report</Heading>
           <Text fontSize="sm">View the results of the poll or survey.</Text>
         </Stack>

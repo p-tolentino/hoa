@@ -15,11 +15,16 @@ export default function PDFTable() {
   return (
     <>
       <Box p="5%">
-        <Stack spacing={3}>
-          <Heading fontSize="md" fontFamily="font.heading">
-            Homeowners Association Name
-          </Heading>
-          <Stack>
+        <Stack spacing={8}>
+          <Stack spacing={1}>
+            <Heading fontSize="md" fontFamily="font.heading">
+              Homeowners Association Name
+            </Heading>
+            <Heading fontSize="xs" fontFamily="font.heading">
+              Contact Number: 09123456789
+            </Heading>
+          </Stack>
+          <Stack spacing={1}>
             <Heading fontSize="sm" fontFamily="font.heading">
               Homeowners Directory Report
             </Heading>
