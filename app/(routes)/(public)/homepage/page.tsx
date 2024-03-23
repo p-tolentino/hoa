@@ -5,8 +5,13 @@ import { About } from "./_components/about";
 import { Contact } from "./_components/contact";
 import { RegisterHOA } from "./_components/register-hoa";
 import PublicLayout from "../../layout";
+import { Hoa } from "@prisma/client";
 
-export default function Homepage() {
+interface HomeProps {
+  existingHoa: Hoa | null;
+}
+
+export const Homepage: React.FC<HomeProps> = ({ existingHoa }) => {
   return (
     <PublicLayout>
       <Box id="about">
@@ -39,9 +44,11 @@ export default function Homepage() {
           </Flex>
         </Center>
         <About />
-        <RegisterHOA />
+        {!existingHoa && <RegisterHOA />}
         <Contact />
       </Box>
     </PublicLayout>
   );
-}
+};
+
+export default Homepage;

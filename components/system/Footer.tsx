@@ -5,8 +5,13 @@ import { EmailIcon } from "@chakra-ui/icons";
 import Link from "next/link";
 import NextImage from "next/image";
 import SystemLogo from "@/public/HOAs.is-logo.png";
+import { Hoa } from "@prisma/client";
 
-export const Footer = () => {
+interface FooterProps {
+  existingHoa: Hoa | null;
+}
+
+export const Footer: React.FC<FooterProps> = ({ existingHoa }) => {
   return (
     <Flex
       as="nav"
@@ -45,7 +50,7 @@ export const Footer = () => {
           HOME
         </Text>
         <Link href="/">ABOUT</Link>
-        <Link href="/#registerHOA">REGISTER HOA</Link>
+        {!existingHoa && <Link href="/#registerHOA">REGISTER HOA</Link>}
         <Link href="/#contactUs">CONTACT US</Link>
       </Flex>
       <Spacer />

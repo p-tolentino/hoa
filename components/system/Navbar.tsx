@@ -28,9 +28,13 @@ import { useCurrentUser } from "@/hooks/use-current-user";
 import { usePathname } from "next/navigation";
 import NextImage from "next/image";
 import SystemLogo from "@/public/HOAs.is-logo.png";
-import { UserRole } from "@prisma/client";
+import { Hoa, UserRole } from "@prisma/client";
 
-export const Navbar = () => {
+interface NavbarProps {
+  existingHoa: Hoa | null;
+}
+
+export const Navbar: React.FC<NavbarProps> = ({ existingHoa }) => {
   const user = useCurrentUser();
 
   const pathname = usePathname();
@@ -107,13 +111,17 @@ export const Navbar = () => {
             {navRoutes.map((route) => {
               if (!user && route.requireAuth) {
                 return null;
-              } else {
-                return (
-                  <Link key={route.href} href={route.href}>
-                    <MenuItem>{route.label}</MenuItem>
-                  </Link>
-                );
               }
+
+              if (route.label === "Register HOA" && existingHoa) {
+                return null;
+              }
+
+              return (
+                <Link key={route.href} href={route.href}>
+                  <MenuItem>{route.label}</MenuItem>
+                </Link>
+              );
             })}
             <Divider />
             {!user ? (
@@ -139,33 +147,37 @@ export const Navbar = () => {
           {navRoutes.map((route) => {
             if (!user && route.requireAuth) {
               return null;
-            } else {
-              return (
-                <Link
-                  key={route.href}
-                  href={route.href}
+            }
+
+            if (route.label === "Register HOA" && existingHoa) {
+              return null;
+            }
+
+            return (
+              <Link
+                key={route.href}
+                href={route.href}
+                className={cn(
+                  "flex justify-between transition-colors no-underline",
+                  route.active
+                    ? "text-[#F0CB5B]"
+                    : "text-white hover:text-[#F0CB5B]"
+                )}
+              >
+                <Button
+                  variant="link"
                   className={cn(
-                    "flex justify-between transition-colors no-underline",
+                    "justify-start w-full",
                     route.active
                       ? "text-[#F0CB5B]"
                       : "text-white hover:text-[#F0CB5B]"
                   )}
+                  style={{ textDecoration: "none" }}
                 >
-                  <Button
-                    variant="link"
-                    className={cn(
-                      "justify-start w-full",
-                      route.active
-                        ? "text-[#F0CB5B]"
-                        : "text-white hover:text-[#F0CB5B]"
-                    )}
-                    style={{ textDecoration: "none" }}
-                  >
-                    {route.label}
-                  </Button>
-                </Link>
-              );
-            }
+                  {route.label}
+                </Button>
+              </Link>
+            );
           })}
         </HStack>
       </Show>
