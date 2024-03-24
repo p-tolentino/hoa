@@ -33,6 +33,7 @@ import WriteReviewResults from './write-review-results'
 import ViewProgressReport from './view-progress-report'
 import ProgressReportForm from './progress-report-form'
 import ViewReviewResults from './view-review-results'
+import WriteFinalAssessment from './write-final-assessment'
 
 interface ProcessStep {
   value: string
@@ -278,7 +279,7 @@ export default function StepCard ({
                 flex={3}
               >
                 <WriteReviewResults />
-                <Center color='gray' h='70%' fontFamily='font.body'>
+                <Center color='gray' h='50%' fontFamily='font.body'>
                   No results to show.
                 </Center>
               </Box>
@@ -361,7 +362,23 @@ export default function StepCard ({
           {/* Step 6 Content */}
           {stepIndex === 5 && (
             <Box>
-              <Box>
+              {/* If a final assessment has NOT been made */}
+              <Box
+                h='24vh'
+                border='1px solid lightgray'
+                borderRadius={5}
+                p={3}
+                overflowY='auto'
+                flex={3}
+              >
+                <WriteFinalAssessment />
+                <Center color='gray' h='50%' fontFamily='font.body'>
+                  No results to show.
+                </Center>
+              </Box>
+
+              {/* If a final assessment has been made */}
+              {/* <Box>
                 <Text
                   fontWeight='semibold'
                   fontFamily='font.heading'
@@ -372,7 +389,7 @@ export default function StepCard ({
                 <Text fontFamily='font.body' fontSize='sm' color='grey'>
                   Date enforced: March 22, 2024
                 </Text>
-              </Box>
+              
               <Stack w='400px' spacing='0.5rem' pt='1.5rem'>
                 <TableContainer>
                   <Table
@@ -395,14 +412,14 @@ export default function StepCard ({
                           Penalty Fee
                         </Th>
                         <Td border='3px double black'>
-                          ₱ {reportDetails.violationType.firstOffenseFee}{' '}
-                          {/*!! CHANGE BASED ON RECORD */}
+                          ₱ {reportDetails.violationType.firstOffenseFee}
                         </Td>
                       </Tr>
                     </Tbody>
                   </Table>
                 </TableContainer>
               </Stack>
+            </Box> */}
             </Box>
           )}
         </Box>
