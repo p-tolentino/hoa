@@ -181,6 +181,7 @@ model Post {
   type        PostType
   title       String
   description String
+  mediaLink    String?
   status      Status       @default(PENDING)
   createdAt   DateTime     @default(now())
   comments    Comment[]

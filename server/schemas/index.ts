@@ -166,6 +166,7 @@ export const NewPostSchema = z.object({
     required_error: "Please specify the category",
   }),
   description: z.string(),
+  media:z.string(),
 });
 
 export const NewBudgetPlanSchema = z.object({

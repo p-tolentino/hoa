@@ -21,6 +21,7 @@ export const createPost = async(values: z.infer<typeof NewPostSchema>) => {
             type: values.type as PostType,
             title: values.title,
             description: values.description,
+            mediaLink: values.media,
         }
     })
     return { success: "Post successfully Created" };

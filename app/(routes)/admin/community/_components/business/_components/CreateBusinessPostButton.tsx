@@ -43,6 +43,9 @@ import { createPost } from "@/server/actions/post";
 import { cn } from "@/lib/utils";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import UploadCard from "@/components/uploading/upload-card";
+import { UploadDropzone } from "@/lib/utils";
+import FileUploadField from './FileUploadField'; // Adjust the import path as needed
 
 type PostFormValues = z.infer<typeof NewPostSchema>;
 
@@ -58,6 +61,7 @@ function CreateBusinessPostButton() {
       title: "" || undefined,
       category: "" || undefined,
       description: "" || undefined,
+      media:"" || undefined,
     },
   });
 
@@ -165,6 +169,9 @@ function CreateBusinessPostButton() {
                   />
                 </Stack>
               </Box>
+
+              <FileUploadField/>
+              
             </Stack>
             <DialogFooter>
               <Button size="sm" colorScheme="yellow" type="submit">

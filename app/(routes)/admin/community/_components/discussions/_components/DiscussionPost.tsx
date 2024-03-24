@@ -27,6 +27,8 @@ import {
 } from "@/server/actions/post";
 
 import React, { useEffect, useState } from "react";
+import { Image, Link } from "@chakra-ui/react";
+
 
 interface PostProps {
   posts: Post[];
@@ -134,6 +136,10 @@ const DiscussionPost: React.FC<PostProps> = ({ posts, user, userInfos }) => {
     }
   };
 
+  const isPdf = (url: string) => {
+    return url.toLowerCase().endsWith('.pdf');
+  };
+
   return (
     <>
       {posts.map((post) => (
@@ -208,10 +214,24 @@ const DiscussionPost: React.FC<PostProps> = ({ posts, user, userInfos }) => {
                 >
                   {post.description}
                 </Text>
+
+                {/*show media here */}
+                {/* Media Display */}
+            {post.mediaLink && (
+              <Box mt="4">
+                {isPdf(post.mediaLink) ? (
+                  <Link href={post.mediaLink} isExternal color="blue.500">
+                    View PDF
+                  </Link>
+                ) : (
+                  <Image src={post.mediaLink} alt="Post media" maxH="400px" objectFit="cover" borderRadius="md" />
+                )}
+              </Box>
+            )}
+
                 {/* Date distance */}
                 <Text fontFamily="font.body" color="grey" fontSize="xs">
-                  Posted {formatDistanceToNowStrict(new Date(post.createdAt))}
-                  ago
+                  Posted {formatDistanceToNowStrict(new Date(post.createdAt))} ago
                 </Text>
                 {/* Discussion Post Actions */}
                 <ButtonGroup size="xs" mt="1rem">
