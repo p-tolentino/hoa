@@ -122,7 +122,7 @@ export default function ViolationEnforcement ({ hoa }: { hoa: Hoa }) {
           </ListItem>
           <ListItem>
             Records are kept organized and easily accessible for future
-            reference in a secure system.
+            reference in the MIS.
           </ListItem>
         </UnorderedList>
       </Box>
