@@ -6,7 +6,8 @@ import {
   Box,
   UnorderedList,
   ListItem,
-  Link
+  Link,
+  Divider
 } from '@chakra-ui/react'
 import { Hoa } from '@prisma/client'
 import ViolationBylaws from './ViolationBylaws'
@@ -33,7 +34,7 @@ export default function StepCard ({
     <Card
       shadow='lg'
       my='1.5rem'
-      h='40vh'
+      h='48vh'
       p='10px 10px 20px 10px'
       overflowY='auto'
     >
@@ -54,9 +55,9 @@ export default function StepCard ({
           {/* Step Description */}
           {processSteps[stepIndex].description}
         </Text>
+        <Divider mt='0.5rem' />
       </CardHeader>
-      <Card />
-      <CardBody>
+      <CardBody pt={2}>
         <Box fontFamily='font.body' fontSize='sm' textAlign='justify'>
           <Text>Details:</Text>
           <UnorderedList mb='1rem' ml={7}>

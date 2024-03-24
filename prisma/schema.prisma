@@ -274,27 +274,27 @@ model Violation {
   number          Int          @default(autoincrement())
   progress        String       @default("Step 2: Review by Environment & Security Committee")
   step            Int          @default(2)
-  committeeReview String?
   letterSent      Boolean      @default(false)
-  finalReview     String?
   reasonToClose   String?
   updatedAt       DateTime     @default(now()) @updatedAt
+  committeeReview String?
+  finalReview     String?
 }
 
 model ViolationOfficerActivity {
-  id            String     @id @unique @default(cuid())
-  violationId   String
-  title         String
-  deadline      DateTime
+  id          String   @id @unique @default(cuid())
+  violationId String
+  title       String
+  deadline    DateTime
 }
 
 model ViolationProgress {
   id            String   @id @unique @default(cuid())
   activity      String
-  title         String
   description   String
   document      String?
   dateSubmitted DateTime @default(now())
+  title         String
 }
 
 model Notification {
@@ -345,7 +345,6 @@ model Dispute {
   type             String
   description      String
   personComplained String
-  document         String?
   status           ReportStatus @default(FOR_REVIEW)
   priority         Priority
   officerAssigned  String?
@@ -354,26 +353,29 @@ model Dispute {
   number           Int          @default(autoincrement())
   progress         String       @default("Step 2: Review by Grievance & Adjudication Committee")
   step             Int          @default(2)
-  committeeReview String?
-  letterSent      Boolean      @default(false)
-  finalReview     String?
-  reasonToClose   String?
-  updatedAt       DateTime     @default(now()) @updatedAt
+  letterSent       Boolean      @default(false)
+  reasonToClose    String?
+  committeeReview  String?
+  document         String?
+  finalReview      String?
+  updatedAt        DateTime     @default(now()) @updatedAt
 }
+
 model DisputeOfficerActivity {
-  id            String     @id @unique @default(cuid())
-  disputeId     String
-  title         String
-  deadline      DateTime
-  isDone        Boolean
+  id        String   @id @unique @default(cuid())
+  disputeId String
+  title     String
+  deadline  DateTime
+  isDone    Boolean
 }
+
 model DisputeProgress {
   id            String   @id @unique @default(cuid())
   activity      String
-  title         String
+  dateSubmitted DateTime @default(now())
   description   String
   document      String?
-  dateSubmitted DateTime @default(now())
+  title         String
 }
 
 enum ReportStatus {
