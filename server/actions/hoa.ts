@@ -3,6 +3,10 @@
 import { db } from "@/lib/db";
 import { currentUser } from "@/lib/auth";
 import { getUserById } from "@/server/data/user";
+import { getHoaInfo } from "@/server/data/hoa-info";
+import { Hoa } from "@prisma/client";
+import { newHoaSchema } from "@/server/schemas";
+import * as z from "zod";
 
 export const generateHoa = async () => {
   // const user = await currentUser();
@@ -23,6 +27,7 @@ export const generateHoa = async () => {
     data: {
       name: "Sample HOA",
       startingFunds: 10000,
+      contactNumber:999999,
       funds: 10000,
       fixedDue: 500,
       lotSizeDue: 600,
@@ -33,8 +38,43 @@ export const generateHoa = async () => {
   return { success: "Generated sample HOA successfully" };
 };
 
-export const updateByLaws = async (id: string, byLawsLink: string) => {
+export const createHoa = async (data: z.infer<typeof newHoaSchema>) => {
+
+  const existingHoa = await db.hoa.findFirst();
+
+  if (existingHoa) {
+    // An HOA entry exists, so we update it
+    const result = await db.hoa.update({
+      where: { id: existingHoa.id }, // Use the existing entry's ID for the update
+      data: {
+        name: data.name,
+        contactNumber: Number(data.contactNumber),
+        startingFunds: Number(data.funds),
+        funds: Number(data.funds),
+        // Add other fields as needed
+      },
+    });
+
+  return { success: "HOA entry updated successfully", details: result };
+  } else {
+    // No HOA entry exists, so we create a new one
+    const result = await db.hoa.create({
+      data: {
+        name: data.name,
+        contactNumber:  Number(data.contactNumber),
+        startingFunds: Number(data.funds),
+        funds: Number(data.funds),
+        // Add other required fields for creation
+      },
+    });
+
+    return { success: "HOA entry created successfully", details: result };
+  }
+};
+
+export const updateByLaws = async (link: string) => {
   const user = await currentUser();
+  const hoaInfo = await getHoaInfo()
 
   // No Current User
   if (!user) {
@@ -49,9 +89,9 @@ export const updateByLaws = async (id: string, byLawsLink: string) => {
   }
 
   await db.hoa.update({
-    where: { id },
+    where: { id: hoaInfo?.id},
     data: {
-      byLawsLink,
+      byLawsLink: link,
     },
   });
 

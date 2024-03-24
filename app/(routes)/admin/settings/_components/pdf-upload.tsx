@@ -6,15 +6,30 @@ import { Hoa } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
+import { useState, useEffect } from "react";
+import { getHoaInfo } from "@/server/data/hoa-info";
 
-export const PdfUpload = ({ hoa }: { hoa: Hoa }) => {
+export const PdfUpload = () => {
   const router = useRouter();
   const { update } = useSession();
   const [isPending, startTransition] = useTransition();
 
+  // const [usersInfo, setUsersInfo] = useState<Hoa | null>();
+
+  // useEffect(() => {
+  //   const fetchHoaInfo = async () => {
+  //     try {
+  //     const hoaInfo = await getHoaInfo()
+  //     setUsersInfo(hoaInfo); 
+  //   }catch (error){
+  //     console.error("Failed to fetch data:", error);
+  //   }};
+  //   fetchHoaInfo();
+  // }, []); 
+
   const onSubmit = async (pdfUrl: string) => {
     startTransition(() => {
-      updateByLaws(hoa.id, pdfUrl).then((data) => {
+      updateByLaws(pdfUrl).then((data) => {
         if (data.success) {
           console.log(data.success);
         }

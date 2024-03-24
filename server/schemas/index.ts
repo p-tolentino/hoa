@@ -243,3 +243,9 @@ export const newEventSchema = z.object({
   venue: z.string(),
   description: z.string(),
 })
+
+export const newHoaSchema = z.object({
+  name: z.string(),
+  contactNumber: z.string(),
+  funds: z.string(),
+})

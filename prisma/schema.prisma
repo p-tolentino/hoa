@@ -11,6 +11,7 @@ datasource db {
 model Hoa {
   id            String  @id @default(cuid())
   name          String
+  contactNumber Int
   startingFunds Int
   funds         Int
   fixedDue      Int?
