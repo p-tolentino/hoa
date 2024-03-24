@@ -24,7 +24,8 @@ import {
   Stepper,
   useSteps,
   Stack,
-  Center
+  Center,
+  Divider
 } from '@chakra-ui/react'
 import { report } from 'process'
 import { format } from 'date-fns'
@@ -33,6 +34,7 @@ import WriteReviewResults from './write-review-results'
 import ViewProgressReport from './view-progress-report'
 import ProgressReportForm from './progress-report-form'
 import ViewReviewResults from './view-review-results'
+import WriteFinalAssessment from './write-final-assessment'
 
 interface ProcessStep {
   value: string
@@ -115,8 +117,8 @@ export default function StepCard ({
           {/* Step Description */}
           {processSteps[stepIndex].description}
         </Text>
+        <Divider mt='0.5rem' />
       </CardHeader>
-      <Card />
       <CardBody pt={2}>
         <Box overflowY='auto' h='42vh'>
           <Box
@@ -149,7 +151,7 @@ export default function StepCard ({
                   Date received: March 22, 2024
                 </Text>
               </Box>
-              <Flex gap={5} pt='1.5rem'>
+              <Flex gap={5} pt='1rem'>
                 <TableContainer>
                   <Table
                     variant='unstyled'
@@ -278,7 +280,7 @@ export default function StepCard ({
                 flex={3}
               >
                 <WriteReviewResults />
-                <Center color='gray' h='70%' fontFamily='font.body'>
+                <Center color='gray' h='50%' fontFamily='font.body'>
                   No results to show.
                 </Center>
               </Box>
@@ -323,7 +325,7 @@ export default function StepCard ({
                   orientation='vertical'
                   w='max-content'
                   h='50vh'
-                  p='1.5rem'
+                  p='1rem'
                   gap='0'
                   colorScheme='green'
                   size='md'
@@ -361,48 +363,102 @@ export default function StepCard ({
           {/* Step 6 Content */}
           {stepIndex === 5 && (
             <Box>
-              <Box>
-                <Text
-                  fontWeight='semibold'
-                  fontFamily='font.heading'
-                  lineHeight={1}
-                >
-                  Violation Enforcement Information
-                </Text>
-                <Text fontFamily='font.body' fontSize='sm' color='grey'>
-                  Date enforced: March 22, 2024
-                </Text>
-              </Box>
-              <Stack w='400px' spacing='0.5rem' pt='1.5rem'>
-                <TableContainer>
-                  <Table
-                    variant='unstyled'
-                    fontFamily='font.body'
-                    size='sm'
-                    w='400px'
+              {/* If a final assessment has NOT been made */}
+              {/* <Box
+                h='24vh'
+                border='1px solid lightgray'
+                borderRadius={5}
+                p={3}
+                overflowY='auto'
+                flex={3}
+              >
+                <WriteFinalAssessment />
+                <Center color='gray' h='50%' fontFamily='font.body'>
+                  No results to show.
+                </Center>
+              </Box> */}
+
+              {/* If a final assessment has been made */}
+              <Flex gap={10}>
+                <Box>
+                  <Text
+                    fontWeight='semibold'
+                    fontFamily='font.heading'
+                    lineHeight={1}
                   >
-                    <Tbody>
-                      <Tr whiteSpace='normal'>
-                        <Th border='3px double black' w='110px'>
-                          Violation Type
-                        </Th>
-                        <Td border='3px double black'>
-                          {reportDetails.violationType.title}
-                        </Td>
-                      </Tr>
-                      <Tr whiteSpace='normal'>
-                        <Th border='3px double black' w='110px'>
-                          Penalty Fee
-                        </Th>
-                        <Td border='3px double black'>
-                          ₱ {reportDetails.violationType.firstOffenseFee}{' '}
-                          {/*!! CHANGE BASED ON RECORD */}
-                        </Td>
-                      </Tr>
-                    </Tbody>
-                  </Table>
-                </TableContainer>
-              </Stack>
+                    Violation Case: Review Results
+                  </Text>
+                  <Text fontFamily='font.body' fontSize='sm' color='grey'>
+                    Date created: March 22, 2024
+                  </Text>
+                  <Box
+                    h='18vh'
+                    border='1px solid lightgray'
+                    borderRadius={5}
+                    p={3}
+                    overflowY='auto'
+                    flex={3}
+                    mt='1rem'
+                    w='600px'
+                  >
+                    <Text
+                      fontFamily='font.body'
+                      fontSize='sm'
+                      textAlign='justify'
+                    >
+                      Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                      Nemo atque maxime nostrum voluptatum mollitia natus a
+                      aspernatur corrupti molestias asperiores quia fugit, sint
+                      repudiandae odit laborum alias earum modi sequi quod
+                      illum, necessitatibus dolores. Voluptatum qui odio ratione
+                      omnis ea?
+                    </Text>
+                  </Box>
+                </Box>
+
+                {/* only if violation case is CONCLUDED with penalty fee */}
+                <Box>
+                  <Text
+                    fontWeight='semibold'
+                    fontFamily='font.heading'
+                    lineHeight={1}
+                  >
+                    Violation Enforcement Information
+                  </Text>
+                  <Text fontFamily='font.body' fontSize='sm' color='grey'>
+                    Date enforced: March 22, 2024
+                  </Text>
+                  <Stack w='400px' spacing='0.5rem' pt='1rem'>
+                    <TableContainer>
+                      <Table
+                        variant='unstyled'
+                        fontFamily='font.body'
+                        size='sm'
+                        w='400px'
+                      >
+                        <Tbody>
+                          <Tr whiteSpace='normal'>
+                            <Th border='3px double black' w='110px'>
+                              Violation Type
+                            </Th>
+                            <Td border='3px double black'>
+                              {reportDetails.violationType.title}
+                            </Td>
+                          </Tr>
+                          <Tr whiteSpace='normal'>
+                            <Th border='3px double black' w='110px'>
+                              Penalty Fee
+                            </Th>
+                            <Td border='3px double black'>
+                              ₱ {reportDetails.violationType.firstOffenseFee}
+                            </Td>
+                          </Tr>
+                        </Tbody>
+                      </Table>
+                    </TableContainer>
+                  </Stack>
+                </Box>
+              </Flex>
             </Box>
           )}
         </Box>

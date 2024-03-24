@@ -86,7 +86,7 @@ export default function ViolationEnforcement ({ hoa }: { hoa: Hoa }) {
 
       <Tabs defaultValue='step1' className='w-full'>
         <>
-          <TabsList className='grid w-full grid-cols-6'>
+          <TabsList key='violationStepTabs' className='grid w-full grid-cols-6'>
             {processSteps.map((step, index) => (
               <TabsTrigger key={step.value} value={step.value}>
                 Step {index + 1}
@@ -94,7 +94,7 @@ export default function ViolationEnforcement ({ hoa }: { hoa: Hoa }) {
             ))}
           </TabsList>
           {processSteps.map((step, index) => (
-            <TabsContent value={step.value}>
+            <TabsContent key={step.value} value={step.value}>
               <StepCard
                 key={step.value}
                 stepIndex={index}

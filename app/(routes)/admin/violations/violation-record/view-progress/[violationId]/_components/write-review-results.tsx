@@ -79,27 +79,39 @@ export default function WriteReviewResults () {
           <Stack spacing='15px' my='1.5rem'>
             <Stack>
               <Text fontSize='sm' fontFamily='font.body'>
-                What is the committee's verdict in this violation case?
+                What is the committee's verdict for this violation case?
               </Text>
               <RadioGroup
                 defaultValue=''
                 size='sm'
-                colorScheme='yellow'
-                ml='0.5rem'
                 value={selectedOption}
                 onChange={handleRadioChange}
               >
-                <Stack direction='column' fontFamily='font.body'>
-                  <Radio value='VALID'>
-                    The violation case is{' '}
-                    <span className='font-bold'>VALID</span> and requires
-                    immediate actions.
-                  </Radio>
-                  <Radio value='INVALID'>
-                    The violation case is{' '}
-                    <span className='font-bold'>INVALID</span> due to the lack
-                    of sufficient evidence.
-                  </Radio>
+                <Stack
+                  direction='column'
+                  fontFamily='font.body'
+                  textAlign='justify'
+                >
+                  <Box
+                    pl='0.5rem'
+                    bg={selectedOption === 'VALID' ? 'yellow.100' : ''}
+                  >
+                    <Radio value='VALID' colorScheme='yellow'>
+                      The violation case is{' '}
+                      <span className='font-bold'>VALID</span> and requires
+                      immediate actions.
+                    </Radio>
+                  </Box>
+                  <Box
+                    pl='0.5rem'
+                    bg={selectedOption === 'INVALID' ? 'red.100' : ''}
+                  >
+                    <Radio value='INVALID' colorScheme='red'>
+                      The violation case is{' '}
+                      <span className='font-bold'>INVALID</span> due to the lack
+                      of sufficient evidence.
+                    </Radio>
+                  </Box>
                 </Stack>
               </RadioGroup>
             </Stack>
