@@ -121,10 +121,27 @@ export default function ViewReviewResults ({
                         : 'Unassigned'}
                     </Td>
                   </Tr>
+                  {reportDetails.officerAssigned && (
+                    <Tr whiteSpace='normal'>
+                      <Th border='3px double black' w='110px'>
+                        Case Priority
+                      </Th>
+                      <Td
+                        border='3px double black'
+                        color={
+                          reportDetails.priority === 'URGENT' ? 'red' : 'black'
+                        }
+                      >
+                        {reportDetails.priority
+                          ? `${reportDetails.priority}`
+                          : 'N/A'}
+                      </Td>
+                    </Tr>
+                  )}
                 </Tbody>
               </Table>
             </TableContainer>
-            <Text fontSize='sm' fontFamily='font.body' textAlign='justify'>
+            <Text fontSize='xs' fontFamily='font.body' textAlign='justify'>
               This officer has been assigned to oversee this case exclusively.
               They are the sole authorized individual to provide progress
               reports regarding this case.

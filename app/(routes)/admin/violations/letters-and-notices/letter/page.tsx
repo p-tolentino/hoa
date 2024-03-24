@@ -99,8 +99,8 @@ export default function ViolationLetter () {
             fontWeight='bold'
             fontFamily='font.heading'
           >
-            {`#V${violation?.number.toString().padStart(4, '0')}`} Violation
-            Letter 📩
+            `#V${violation?.number.toString().padStart(4, '0')} Violation
+            Letter: ${violationType?.title} 📩`
           </Text>
           <Box borderWidth='1px' p={10} borderRadius='md' w='60vw'>
             <Stack spacing={5} fontFamily='font.body' fontSize='md'>

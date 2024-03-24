@@ -25,7 +25,8 @@ import {
   useSteps,
   Stack,
   Center,
-  Divider
+  Divider,
+  Link
 } from '@chakra-ui/react'
 import { report } from 'process'
 import { format } from 'date-fns'
@@ -35,6 +36,7 @@ import ViewProgressReport from './view-progress-report'
 import ProgressReportForm from './progress-report-form'
 import ViewReviewResults from './view-review-results'
 import WriteFinalAssessment from './write-final-assessment'
+import WriteViolationLetter from './write-violation-letter'
 
 interface ProcessStep {
   value: string
@@ -301,6 +303,35 @@ export default function StepCard ({
               activeStep={activeStep}
               reportDetails={reportDetails}
             />
+          )}
+
+          {/* Step 4 Content */}
+          {stepIndex === 3 && (
+            <Box>
+              {/* If a violation letter has NOT been made */}
+              <Box
+                h='24vh'
+                border='1px solid lightgray'
+                borderRadius={5}
+                p={3}
+                overflowY='auto'
+                flex={3}
+              >
+                <WriteViolationLetter reportDetails={reportDetails} />
+                <Center color='gray' h='50%' fontFamily='font.body'>
+                  No results to show.
+                </Center>
+              </Box>
+
+              {/* If a violation letter has been made */}
+              {/* <Link color='blue.500' fontFamily='font.body'>
+                [Download] #V
+                {reportDetails.violation.number
+                  .toString()
+                  .padStart(4, '0')}{' '}
+                Violation Letter: {reportDetails.violationType.title}
+              </Link> */}
+            </Box>
           )}
 
           {/* Step 5 Content */}
