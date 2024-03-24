@@ -43,10 +43,16 @@ export default function AnnouncementBoard ({ personalInfo, events, user }: Annou
     const birthDate = typeof info.birthDay === 'string' ? new Date(info.birthDay) : info.birthDay;
     
     return getMonth(birthDate) === currentMonth;
-  }).map((celebrant) => ({
-    name: `${celebrant.firstName} ${celebrant.lastName}`.trim(),
-    // Additional properties and adjustments can be made here as needed
-  }));
+  }).map((celebrant) => {
+    const birthDate = typeof celebrant.birthDay === 'string' ? new Date(celebrant.birthDay) : celebrant.birthDay;
+    const birthDay = birthDate?.getDate(); // Get the day of the month
+    return {
+      name: `${celebrant.firstName} ${celebrant.lastName}`.trim(),
+      birthDay, // Save the day of the month for later display
+      // Additional properties and adjustments can be made here as needed
+    };
+  });
+  
 
   const currentMonthEvents = events
     .filter(event => isSameMonth(new Date(event.date), currentDate)) // Ensure we're only dealing with current month's events
@@ -80,7 +86,7 @@ export default function AnnouncementBoard ({ personalInfo, events, user }: Annou
                       <Flex key={index} align='center' gap='1rem'>
                         {/* <Avatar name={celebrant.name} src={celebrant.avatar} />
                         <Link fontSize='sm' href={celebrant.profileLink}> */}
-                          {celebrant.name}
+                          {celebrant.birthDay} - {celebrant.name}
                         {/* </Link> */}
                       </Flex>
                     ))}

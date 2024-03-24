@@ -72,35 +72,6 @@ const Post: React.FC<PollProps> = ({ polls, user, userInfos }) => {
     })
   }, [polls])
 
-  // useEffect(() => {
-  //   const fetchUserInfos = async () => {
-  //     // Extract unique userIds from polls to avoid redundant fetches
-  //     const uniqueUserIds = Array.from(
-  //       new Set(polls.map((poll) => poll.userId))
-  //     );
-
-  //     // Fetch user info for each unique userId
-  //     const userInfoPromises = uniqueUserIds.map(async (userId) => {
-  //       const userInfo = await getPersonalInfo(userId);
-  //       return { userId, userInfo };
-  //     });
-
-  //     // Resolve all promises and update state
-  //     const userInfosArray = await Promise.all(userInfoPromises);
-  //     const userInfosObj = userInfosArray.reduce<UserInfos>(
-  //       (acc, { userId, userInfo }) => {
-  //         acc[userId] = userInfo;
-  //         return acc;
-  //       },
-  //       {}
-  //     );
-
-  //     setUsersInfo(userInfosObj);
-  //   };
-
-  //   fetchUserInfos();
-  // }, [polls]);
-
   return (
     <>
       {polls.map(poll => (
@@ -153,13 +124,13 @@ const Post: React.FC<PollProps> = ({ polls, user, userInfos }) => {
                 </Stack>
                 <Spacer />
                 {/* Survey Button */}
-                {poll.status == 'ACTIVE' ? (
-                  <HStack>
+                {poll.status == 'ACTIVE' ? 
+                ( <HStack>
                     <Answer poll={poll} user={user} />
-                  </HStack>
-                ) : (
-                  <Report poll={poll} user={user} />
-                )}
+                  </HStack> )
+                  : new Date() > new Date(poll.startDate) && new Date() > new Date(poll.endDate) ? (
+                    <Report poll={poll} user={user} />
+                  ) : null}
               </HStack>
 
               {/* Survey Categories */}
