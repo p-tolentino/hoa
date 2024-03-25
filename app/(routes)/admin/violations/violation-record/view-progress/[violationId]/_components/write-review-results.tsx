@@ -17,6 +17,8 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select'
+import { db } from '@/lib/db'
+import { createOfficerTasks, updateViolation } from '@/server/actions/violation'
 import { AddIcon, DeleteIcon } from '@chakra-ui/icons'
 import {
   Button,
@@ -37,11 +39,15 @@ import {
   Tr,
   Box
 } from '@chakra-ui/react'
-import { useState } from 'react'
+import { PersonalInfo, ReportStatus, Violation } from '@prisma/client'
+import { useEffect, useState } from 'react'
 
-export default function WriteReviewResults () {
+export default function WriteReviewResults ({violation, committee}:{violation: Violation, committee: PersonalInfo[]}) {
   const [isOpen, setIsOpen] = useState(false) // Dialog open state
   const [selectedOption, setSelectedOption] = useState('')
+  const [selectedMember, setSelectedMember] = useState('')
+  const [assessment, setAssessment] = useState('')
+
   const [keyActivities, setKeyActivities] = useState([
     { activity: '', dueDate: '' }
   ])
@@ -59,6 +65,44 @@ export default function WriteReviewResults () {
     updatedActivities.splice(index, 1)
     setKeyActivities(updatedActivities)
   }
+
+  const onSubmit = async () => {
+    const valid = {
+      committeeReview: selectedOption,
+      status: ReportStatus.PENDING_LETTER_TO_BE_SENT,
+      officerAssigned: selectedMember,
+      progress: "Step 3: Assign Officer to Oversee Violation Case",
+      step: 3
+    }
+
+    const invalid = {
+      committeeReview: selectedOption,
+      status: ReportStatus.CLOSED,
+      finalReview: assessment,
+      reasonToClose: 'Insufficient Evidence'
+    }
+
+    if(selectedOption === 'VALID'){
+      await updateViolation(violation.id, valid).then((data) => console.log(data.success))
+      await keyActivities.map((activity) => {
+        const data = {
+          violationId: violation.id,
+          title: activity.activity,
+          deadline: new Date(activity.dueDate)
+        }
+      createOfficerTasks(data).then((data) => console.log(data))
+      })
+    } else if (selectedOption === 'INVALID'){
+      await updateViolation(violation.id, invalid).then((data) => console.log(data.success))
+    }
+
+    setIsOpen(false)
+  }
+
+  useEffect(() => {
+    console.log(keyActivities)
+  }, [keyActivities])
+
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
@@ -130,21 +174,18 @@ export default function WriteReviewResults () {
                         oversee the resolution of this violation case.
                       </Text>
                     </Box>
-                    <Select>
+                    <Select value={selectedMember} onValueChange={setSelectedMember}>
                       <SelectTrigger className='w-[100%]'>
-                        <SelectValue placeholder='Select an officer' />
+                        <SelectValue placeholder='Select committee member' />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectGroup>
-                          <SelectItem value='e&s1'>
-                            E&S1 Lastname, Firstname
+                          {committee.map((member) => 
+                          <SelectItem key={member.id} value={member.id}>
+                            {member.firstName} {member.lastName}
                           </SelectItem>
-                          <SelectItem value='e&s2'>
-                            E&S2 Lastname, Firstname
-                          </SelectItem>
-                          <SelectItem value='e&s3'>
-                            E&S3 Lastname, Firstname
-                          </SelectItem>
+                          )}
+                          
                         </SelectGroup>
                       </SelectContent>
                     </Select>
@@ -248,15 +289,17 @@ export default function WriteReviewResults () {
                   placeholder='Provide a brief explanation for the invalidity of this violation case to the homeowner who filed the report...'
                   height='30vh'
                   resize='none'
+                  value={assessment}
+                  onChange={(e) => setAssessment(e.target.value)}
                 />
               </Stack>
             )}
           </Stack>
           <DialogFooter>
-            {/* FINISH REVIEW: when INVALID option is clicked */}
+            {/* FINISH REVIEW: when VALID option is clicked */}
             {selectedOption === 'VALID' && (
-              <Button size='sm' colorScheme='yellow' type='submit'>
-                Finish Review
+              <Button size='sm' colorScheme='yellow' type='button' onClick={() => onSubmit()}>
+                Submit Review
               </Button>
             )}
             {/* CLOSE VIOLATION CASE: when INVALID option is clicked */}

@@ -74,6 +74,12 @@ export default async function SubmittedDisputes() {
       progress: item.progress || "Step 0",
       letterSent: item.letterSent,
       //violationInvolved: item.violationInvolved ? violationType : null,
+      updatedAt: item.updatedAt
+      ? format(
+          new Date(item.updatedAt)?.toISOString().split("T")[0],
+          "MMMM dd, yyyy"
+        )
+      : "",
     };
   });
 

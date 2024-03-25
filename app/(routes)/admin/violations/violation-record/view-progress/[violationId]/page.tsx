@@ -49,6 +49,8 @@ export const ViolationProgressPage = async ({
     violation.personsInvolved.some((person) => person === info.userId)
   );
 
+  const committeeMembers = infos.filter((info) => info.committee === "Environment & Security Committee")
+
   const status = {
     FOR_REVIEW: "For Review",
     FOR_ASSIGNMENT: "For Officer Assignment",
@@ -63,6 +65,7 @@ export const ViolationProgressPage = async ({
     officerAssigned: officerAssigned ? officerAssigned : null,
     submittedBy: submittedBy,
     personsInvolved: updatedPersons,
+    committee: committeeMembers,
   };
 
   return (

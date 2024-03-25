@@ -45,31 +45,15 @@ interface ProcessStep {
   details: string[]
 }
 
-interface TempViolation {
-  step: number
-  number: number
-  status: string
-  submittedBy: string
-  personsInvolved: string[]
-  officerAssigned: string
-  violationType: string
-  violationFee: string
-  createdAt: string
-  violationDate: string
-  violationDescription: string
-}
-
 interface StepCardProps {
   stepIndex: number
   processSteps: ProcessStep[]
-  tempViolation: TempViolation
   reportDetails: any
 }
 
 export default function StepCard ({
   stepIndex,
   processSteps,
-  tempViolation,
   reportDetails
 }: StepCardProps) {
   const keyActivities = [
@@ -281,7 +265,7 @@ export default function StepCard ({
                 overflowY='auto'
                 flex={3}
               >
-                <WriteReviewResults />
+                <WriteReviewResults violation={reportDetails.violation} committee={reportDetails.committee}/>
                 <Center color='gray' h='50%' fontFamily='font.body'>
                   No results to show.
                 </Center>

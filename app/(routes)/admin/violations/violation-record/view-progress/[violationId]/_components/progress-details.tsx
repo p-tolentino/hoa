@@ -155,7 +155,6 @@ export const ProgressDetails: React.FC<ViewProgressProps> = ({
               key={step.value}
               stepIndex={index}
               processSteps={processSteps}
-              tempViolation={tempViolation}
               reportDetails={reportDetails}
             />
           </TabsContent>
