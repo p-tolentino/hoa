@@ -40,10 +40,10 @@ export default async function Disputes() {
   const formattedDisputes: ListOfDisputesColumn[] = disputes.map((item) => {
     const officer = users.find((user) => user.id === item.officerAssigned);
     const submittedBy = users.find((user) => user.id === item.submittedBy);
-    const dispute = disputeTypes.find((type) => type.name === item.type);
-    const violationType = violationTypes.find(
-      (type) => type.name === item.violationInvolved
-    );
+    const dispute = disputeTypes.find((type) => type.id === item.type);
+    // const violationType = violationTypes.find(
+    //   (type) => type.name === item.violationInvolved
+    // );
 
     return {
       id: item.id || "",
@@ -62,7 +62,7 @@ export default async function Disputes() {
             "MMMM dd, yyyy"
           )
         : "",
-      personsInvolved: item.personsInvolved || [],
+      personsInvolved: item.personComplained || "",
       officerAssigned: officer
         ? `${officer.info?.firstName} ${officer.info?.lastName}`
         : "",
@@ -73,7 +73,14 @@ export default async function Disputes() {
       step: item.step || 1,
       progress: item.progress || "Step 0",
       letterSent: item.letterSent,
-      violationInvolved: item.violationInvolved ? violationType : null,
+      updatedAt: item.updatedAt
+      ? format(
+          new Date(item.updatedAt)?.toISOString().split("T")[0],
+          "MMMM dd, yyyy"
+        )
+      : "",
+      reasonToClose: item.reasonToClose || "",
+      //violationInvolved: item.violationInvolved ? violationType : null,
     };
   });
 

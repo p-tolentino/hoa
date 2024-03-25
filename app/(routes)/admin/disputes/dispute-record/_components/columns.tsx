@@ -15,10 +15,10 @@ export type ListOfDisputesColumn = {
   createdAt: string
   officerAssigned: string
   disputeDate: string
-  violationInvolved: ViolationType | undefined | null
+  //violationInvolved: ViolationType | undefined | null
   type: string
   description: string
-  personsInvolved: string[]
+  personsInvolved: string | null
   submittedBy: string
   step: number
   progress: string

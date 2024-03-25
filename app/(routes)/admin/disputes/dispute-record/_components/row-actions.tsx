@@ -50,11 +50,11 @@ export const RowActions: React.FC<RowActionProps> = ({ data }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if (data.violationInvolved) {
-          await getViolationTypeByTitle(data.violationInvolved?.title).then(
-            (violation) => setViolation(violation)
-          );
-        }
+        // if (data.violationInvolved) {
+        //   await getViolationTypeByTitle(data.violationInvolved?.title).then(
+        //     (violation) => setViolation(violation)
+        //   );
+        // }
 
         await getAllInfo().then((infos) => {
           setUserInfos(infos);
@@ -100,10 +100,10 @@ export const RowActions: React.FC<RowActionProps> = ({ data }) => {
       link: data.id,
     };
 
-    data.personsInvolved.map(async (person) => {
+    
       const noticeData = {
         ...noticeValues,
-        recipient: person,
+        recipient: data.personsInvolved,
       };
 
       await createNotice(noticeData).then(async (res) => {
@@ -116,7 +116,7 @@ export const RowActions: React.FC<RowActionProps> = ({ data }) => {
           });
         }
       });
-    });
+    
 
     await createNotification(notifData).then((data) => {
       if (data.success) {
@@ -135,8 +135,6 @@ export const RowActions: React.FC<RowActionProps> = ({ data }) => {
     {
       /**&& applyViolationFee === true */
     }
-    if (data.violationInvolved) {
-      data.personsInvolved.map(async (person) => {
         // !! Send Notice
         // const noticeValues = {
         //   type: "NOTICE",
@@ -158,7 +156,7 @@ export const RowActions: React.FC<RowActionProps> = ({ data }) => {
         // !! Bill to Address of Person Involved + Notification
         // !! EDIT FEE BASED ON VIOLATION RECORD
         const feeData = {
-          addressId: userInfos?.find((info) => info.userId === person)?.address,
+          addressId: userInfos?.find((info) => info.userId === data.personsInvolved)?.address,
           purpose: "violation",
           description: violation?.title,
           amount: violation?.firstOffenseFee,
@@ -169,7 +167,7 @@ export const RowActions: React.FC<RowActionProps> = ({ data }) => {
             console.log(data.success);
           }
         });
-      });
+    
 
       const notifPaymentData = {
         type: "finance",
@@ -184,7 +182,7 @@ export const RowActions: React.FC<RowActionProps> = ({ data }) => {
           console.log(data.success);
         }
       });
-    }
+    
 
     // Update Progress and Mark Closed
     await updateResolved(data.id).then((data) => {
@@ -227,7 +225,7 @@ export const RowActions: React.FC<RowActionProps> = ({ data }) => {
       {/* Status: PENDING = Button: Take Case */}
       {data.status === "Pending" &&
         user?.info?.committee === "Grievance and Adjudication Committee" &&
-        !data.personsInvolved.includes(user.id) &&
+        data.personsInvolved !== user.id &&
         data.submittedBy !==
           `${user?.info.firstName} ${user?.info.lastName}` && (
           <Button
