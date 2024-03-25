@@ -31,8 +31,12 @@ import {
 import { report } from 'process'
 import { format } from 'date-fns'
 import { PersonalInfo } from '@prisma/client'
+import WriteReviewResults from './write-review-results'
 import ViewProgressReport from './view-progress-report'
+import ProgressReportForm from './progress-report-form'
 import ViewReviewResults from './view-review-results'
+import WriteFinalAssessment from './write-final-assessment'
+import WriteDisputeLetter from './write-dispute-letter'
 
 interface ProcessStep {
   value: string
@@ -41,31 +45,31 @@ interface ProcessStep {
   details: string[]
 }
 
-interface TempViolation {
+interface TempDispute {
   step: number
   number: number
   status: string
   submittedBy: string
-  personsInvolved: string[]
+  personComplained: string
   officerAssigned: string
-  violationType: string
-  violationFee: string
+  disputeType: string
   createdAt: string
-  violationDate: string
-  violationDescription: string
+  disputeDate: string
+  disputeDescription: string
+  reasonToClose: string
 }
 
 interface StepCardProps {
   stepIndex: number
   processSteps: ProcessStep[]
-  tempViolation: TempViolation
+  tempDispute: TempDispute
   reportDetails: any
 }
 
 export default function StepCard ({
   stepIndex,
   processSteps,
-  tempViolation,
+  tempDispute,
   reportDetails
 }: StepCardProps) {
   const keyActivities = [
@@ -143,7 +147,7 @@ export default function StepCard ({
                   fontFamily='font.heading'
                   lineHeight={1}
                 >
-                  Violation Form Contents
+                  Dispute Form Contents
                 </Text>
                 <Text fontFamily='font.body' fontSize='sm' color='grey'>
                   Date received: March 22, 2024
@@ -160,11 +164,11 @@ export default function StepCard ({
                     <Tbody>
                       <Tr whiteSpace='normal'>
                         <Th border='3px double black' w='110px'>
-                          Violation Number
+                          Dispute Number
                         </Th>
                         <Td border='3px double black'>
                           #V
-                          {reportDetails.violation.number
+                          {reportDetails.dispute.number
                             .toString()
                             .padStart(4, '0')}
                         </Td>
@@ -184,15 +188,9 @@ export default function StepCard ({
                           Person/s Involved
                         </Th>
                         <Td border='3px double black'>
-                          <UnorderedList>
-                            {reportDetails.personsInvolved.map(
-                              (person: PersonalInfo, index: number) => (
-                                <ListItem key={index}>
-                                  {person.firstName} {person.lastName}
-                                </ListItem>
-                              )
-                            )}
-                          </UnorderedList>
+                          {reportDetails.personComplained
+                            ? `${reportDetails.personComplained}`
+                            : ''}
                         </Td>
                       </Tr>
                     </Tbody>
@@ -212,9 +210,9 @@ export default function StepCard ({
                             Date Submitted
                           </Th>
                           <Td border='3px double black'>
-                            {reportDetails.violation.createdAt
+                            {reportDetails.dispute.createdAt
                               ? format(
-                                  new Date(reportDetails.violation.createdAt)
+                                  new Date(reportDetails.dispute.createdAt)
                                     ?.toISOString()
                                     .split('T')[0],
                                   'MMMM dd, yyyy'
@@ -224,14 +222,12 @@ export default function StepCard ({
                         </Tr>
                         <Tr whiteSpace='normal'>
                           <Th border='3px double black' w='110px'>
-                            Date of Violation
+                            Date of Dispute
                           </Th>
                           <Td border='3px double black'>
-                            {reportDetails.violation.violationDate
+                            {reportDetails.dispute.disputeDate
                               ? format(
-                                  new Date(
-                                    reportDetails.violation.violationDate
-                                  )
+                                  new Date(reportDetails.dispute.disputeDate)
                                     ?.toISOString()
                                     .split('T')[0],
                                   'MMMM dd, yyyy'
@@ -241,10 +237,10 @@ export default function StepCard ({
                         </Tr>
                         <Tr whiteSpace='normal'>
                           <Th border='3px double black' w='110px'>
-                            Violation Type
+                            Dispute Type
                           </Th>
                           <Td border='3px double black'>
-                            {reportDetails.violationType.title}
+                            {reportDetails.dispute.type}
                           </Td>
                         </Tr>
                       </>
@@ -259,8 +255,8 @@ export default function StepCard ({
                 textAlign='justify'
                 mt={5}
               >
-                <span className='font-bold'>Violation Description:</span> <br />{' '}
-                {reportDetails.violation.description}
+                <span className='font-bold'>Dispute Description:</span> <br />{' '}
+                {reportDetails.dispute.description}
               </Text>
             </Box>
           )}
@@ -277,6 +273,7 @@ export default function StepCard ({
                 overflowY='auto'
                 flex={3}
               >
+                <WriteReviewResults />
                 <Center color='gray' h='50%' fontFamily='font.body'>
                   No results to show.
                 </Center>
@@ -303,7 +300,7 @@ export default function StepCard ({
           {/* Step 4 Content */}
           {stepIndex === 3 && (
             <Box>
-              {/* If a violation letter has NOT been made */}
+              {/* If a dispute letter has NOT been made */}
               <Box
                 h='24vh'
                 border='1px solid lightgray'
@@ -312,18 +309,19 @@ export default function StepCard ({
                 overflowY='auto'
                 flex={3}
               >
+                <WriteDisputeLetter reportDetails={reportDetails} />
                 <Center color='gray' h='50%' fontFamily='font.body'>
                   No results to show.
                 </Center>
               </Box>
 
-              {/* If a violation letter has been made */}
+              {/* If a dispute letter has been made */}
               {/* <Link color='blue.500' fontFamily='font.body'>
                 [Download] #V
-                {reportDetails.violation.number
+                {reportDetails.dispute.number
                   .toString()
                   .padStart(4, '0')}{' '}
-                Violation Letter: {reportDetails.violationType.title}
+                Dispute Letter: {reportDetails.disputeType.title}
               </Link> */}
             </Box>
           )}
@@ -380,6 +378,8 @@ export default function StepCard ({
                   ))}
                 </Stepper>
               </Box>
+              {/* Progress Report Form */}
+              <ProgressReportForm keyActivities={keyActivities} />
             </Flex>
           )}
 
@@ -387,7 +387,7 @@ export default function StepCard ({
           {stepIndex === 5 && (
             <Box>
               {/* If a final assessment has NOT been made */}
-              <Box
+              {/* <Box
                 h='24vh'
                 border='1px solid lightgray'
                 borderRadius={5}
@@ -395,20 +395,21 @@ export default function StepCard ({
                 overflowY='auto'
                 flex={3}
               >
+                <WriteFinalAssessment />
                 <Center color='gray' h='50%' fontFamily='font.body'>
                   No results to show.
                 </Center>
-              </Box>
+              </Box> */}
 
               {/* If a final assessment has been made */}
               <Flex gap={10}>
-                {/* <Box>
+                <Box>
                   <Text
                     fontWeight='semibold'
                     fontFamily='font.heading'
                     lineHeight={1}
                   >
-                    Violation Case: Review Results
+                    Dispute Case: Review Results
                   </Text>
                   <Text fontFamily='font.body' fontSize='sm' color='grey'>
                     Date created: March 22, 2024
@@ -436,16 +437,16 @@ export default function StepCard ({
                       omnis ea?
                     </Text>
                   </Box>
-                </Box> */}
+                </Box>
 
-                {/* only if violation case is CONCLUDED with penalty fee */}
-                {/* <Box>
+                {/* only if dispute case is CONCLUDED with penalty fee */}
+                <Box>
                   <Text
                     fontWeight='semibold'
                     fontFamily='font.heading'
                     lineHeight={1}
                   >
-                    Violation Enforcement Information
+                    Dispute Resolution Information
                   </Text>
                   <Text fontFamily='font.body' fontSize='sm' color='grey'>
                     Date enforced: March 22, 2024
@@ -461,10 +462,10 @@ export default function StepCard ({
                         <Tbody>
                           <Tr whiteSpace='normal'>
                             <Th border='3px double black' w='110px'>
-                              Violation Type
+                              Dispute Type
                             </Th>
                             <Td border='3px double black'>
-                              {reportDetails.violationType.title}
+                              {reportDetails.dispute.type}
                             </Td>
                           </Tr>
                           <Tr whiteSpace='normal'>
@@ -472,22 +473,14 @@ export default function StepCard ({
                               Reason to Close
                             </Th>
                             <Td border='3px double black'>
-                              {reportDetails.violation.reasonToClose}
-                            </Td>
-                          </Tr>
-                          <Tr whiteSpace='normal'>
-                            <Th border='3px double black' w='110px'>
-                              Penalty Fee
-                            </Th>
-                            <Td border='3px double black'>
-                              ₱ {reportDetails.violationType.firstOffenseFee}
+                              {reportDetails.reasonToClose}
                             </Td>
                           </Tr>
                         </Tbody>
                       </Table>
                     </TableContainer>
                   </Stack>
-                </Box> */}
+                </Box>
               </Flex>
             </Box>
           )}

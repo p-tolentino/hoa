@@ -478,6 +478,14 @@ export default function StepCard ({
                           </Tr>
                           <Tr whiteSpace='normal'>
                             <Th border='3px double black' w='110px'>
+                              Reason to Close
+                            </Th>
+                            <Td border='3px double black'>
+                              {reportDetails.violation.reasonToClose}
+                            </Td>
+                          </Tr>
+                          <Tr whiteSpace='normal'>
+                            <Th border='3px double black' w='110px'>
                               Penalty Fee
                             </Th>
                             <Td border='3px double black'>
