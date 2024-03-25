@@ -19,7 +19,7 @@ export const DisputeProgressPage = async ({
 
   const disputeType = await db.disputeType.findFirst({
     where: {
-      name: dispute?.type,
+      id: dispute?.type,
     },
   });
 
@@ -46,23 +46,23 @@ export const DisputeProgressPage = async ({
   }
 
   const updatedPersons = infos.filter((info) =>
-    dispute.personsInvolved.some((person) => person === info.userId)
+    dispute.personComplained === info.userId
   );
 
-  let violationType;
+  // let violationType;
 
-  if (dispute.violationInvolved) {
-    violationType = await db.violationType.findFirst({
-      where: {
-        name: dispute?.violationInvolved,
-      },
-    });
-  }
+  // if (dispute.violationInvolved) {
+  //   violationType = await db.violationType.findFirst({
+  //     where: {
+  //       name: dispute?.violationInvolved,
+  //     },
+  //   });
+  // }
 
   const reportDetails = {
     dispute: dispute,
     disputeType: disputeType,
-    violationType: violationType || null,
+    //violationType: violationType || null,
     officerAssigned: officerAssigned ? officerAssigned : null,
     submittedBy: submittedBy,
     personsInvolved: updatedPersons,

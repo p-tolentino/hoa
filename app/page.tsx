@@ -7,12 +7,12 @@ import { generateHoa } from "@/server/actions/hoa";
 export default async function Home() {
   const existingHoaInfo = await getHoaInfo();
 
-  if (!existingHoaInfo) {
-    console.log("No existing HOA; Generating...");
-    await generateHoa().then((data) => {
-      console.log(data.success);
-    });
-  }
+  // if (!existingHoaInfo) {
+  //   console.log("No existing HOA; Generating...");
+  //   await generateHoa().then((data) => {
+  //     console.log(data.success);
+  //   });
+  // }
 
   // TODO: Automate generation of properties if(!properties), provide .json file for values
 
