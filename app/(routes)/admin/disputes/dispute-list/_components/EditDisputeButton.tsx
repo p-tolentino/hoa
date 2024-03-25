@@ -1,4 +1,4 @@
-"use client";
+'use client'
 
 import {
   Dialog,
@@ -7,8 +7,8 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+  DialogTrigger
+} from '@/components/ui/dialog'
 import {
   Input,
   Stack,
@@ -17,66 +17,66 @@ import {
   FormLabel,
   Textarea,
   useToast,
-  FormHelperText,
-} from "@chakra-ui/react";
-import { EditIcon } from "@chakra-ui/icons";
-import { DisputeType } from "@prisma/client";
-import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
+  FormHelperText
+} from '@chakra-ui/react'
+import { EditIcon } from '@chakra-ui/icons'
+import { DisputeType } from '@prisma/client'
+import { useRouter } from 'next/navigation'
+import { useForm } from 'react-hook-form'
 import {
   DisputeTypeFormSchema,
-  DisputeTypeFormValues,
-} from "./AddDisputeButton";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { getDisputeTypeByName } from "@/server/data/dispute-type";
-import { updateDisputeType } from "@/server/actions/dispute-type";
-import { Form, FormField } from "@/components/ui/form";
+  DisputeTypeFormValues
+} from './AddDisputeButton'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { getDisputeTypeByName } from '@/server/data/dispute-type'
+import { updateDisputeType } from '@/server/actions/dispute-type'
+import { Form, FormField } from '@/components/ui/form'
 
 interface EditDisputeButtonProps {
-  dispute: DisputeType;
+  dispute: DisputeType
 }
 
 const EditDisputeButton: React.FC<EditDisputeButtonProps> = ({ dispute }) => {
-  const router = useRouter();
+  const router = useRouter()
 
   const form = useForm<DisputeTypeFormValues>({
     resolver: zodResolver(DisputeTypeFormSchema),
     defaultValues: {
       title: dispute.title,
-      description: dispute.description,
-    },
-  });
+      description: dispute.description
+    }
+  })
 
   const onSubmit = async (values: DisputeTypeFormValues) => {
     await updateDisputeType(values, dispute.id)
-      .then((data) => {
+      .then(data => {
         if (data.success) {
           toast({
             title: `Successfully edited dispute type "${form.watch(
-              "title"
+              'title'
             )}" to the list of HOA disputes.`,
-            status: "info",
-            position: "bottom-right",
-            isClosable: true,
-          });
+            status: 'info',
+            position: 'bottom-right',
+            isClosable: true
+          })
         }
       })
       .then(() => {
-        form.reset();
-        router.refresh();
-      });
-  };
+        form.reset()
+        router.refresh()
+      })
+  }
 
-  const toast = useToast();
+  const toast = useToast()
 
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button size="sm" mr="5px">
+        <Button size='xs' mr='5px'>
           <EditIcon />
         </Button>
       </DialogTrigger>
-      <DialogContent className="lg:min-w-[800px]">
+      <DialogContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <DialogHeader>
@@ -87,21 +87,22 @@ const EditDisputeButton: React.FC<EditDisputeButtonProps> = ({ dispute }) => {
             </DialogHeader>
 
             {/* Form Content */}
-            <Stack spacing="15px" my="2rem">
+            <Stack spacing='15px' my='2rem'>
               {/* Dispute Title */}
               <FormField
                 control={form.control}
-                name="title"
+                name='title'
                 render={({ field }) => (
-                  <FormControl isRequired>
-                    <FormLabel fontSize="sm" fontWeight="semibold">
+                  <FormControl isReadOnly>
+                    <FormLabel fontSize='sm' fontWeight='semibold'>
                       Dispute Title:
                     </FormLabel>
                     <Input
-                      size="md"
-                      fontWeight="semibold"
-                      type="string"
-                      placeholder="Enter a Title"
+                      size='md'
+                      fontWeight='semibold'
+                      type='string'
+                      placeholder='Enter a Title'
+                      color='grey'
                       {...field}
                     />
                   </FormControl>
@@ -111,17 +112,17 @@ const EditDisputeButton: React.FC<EditDisputeButtonProps> = ({ dispute }) => {
               {/* Dispute Description */}
               <FormField
                 control={form.control}
-                name="description"
+                name='description'
                 render={({ field }) => (
                   <FormControl isRequired>
-                    <FormLabel fontSize="sm" fontWeight="semibold">
+                    <FormLabel fontSize='sm' fontWeight='semibold'>
                       Description:
                     </FormLabel>
                     <Textarea
-                      fontFamily="font.body"
-                      placeholder="Write something..."
-                      fontSize="sm"
-                      resize="none"
+                      fontFamily='font.body'
+                      placeholder='Write something...'
+                      fontSize='sm'
+                      resize='none'
                       {...field}
                     />
                   </FormControl>
@@ -130,7 +131,7 @@ const EditDisputeButton: React.FC<EditDisputeButtonProps> = ({ dispute }) => {
             </Stack>
 
             <DialogFooter>
-              <Button size="sm" colorScheme="yellow" type="submit">
+              <Button size='sm' colorScheme='yellow' type='submit'>
                 Save Changes
               </Button>
             </DialogFooter>
@@ -138,6 +139,6 @@ const EditDisputeButton: React.FC<EditDisputeButtonProps> = ({ dispute }) => {
         </Form>
       </DialogContent>
     </Dialog>
-  );
-};
-export default EditDisputeButton;
+  )
+}
+export default EditDisputeButton
