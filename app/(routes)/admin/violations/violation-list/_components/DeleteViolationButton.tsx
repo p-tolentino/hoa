@@ -7,29 +7,29 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import { Button, useToast } from "@chakra-ui/react";
-import { DeleteIcon } from "@chakra-ui/icons"; // Import the DeleteIcon
-import { ViolationType } from "@prisma/client";
-import { deleteViolationType } from "@/server/actions/violation-type";
+  AlertDialogTrigger
+} from '@/components/ui/alert-dialog'
+import { Button, useToast } from '@chakra-ui/react'
+import { DeleteIcon } from '@chakra-ui/icons' // Import the DeleteIcon
+import { ViolationType } from '@prisma/client'
+import { deleteViolationType } from '@/server/actions/violation-type'
 
 interface DeleteViolationButtonProps {
-  violation: ViolationType;
-  continueDeletion: (confirmed: boolean) => void;
+  violation: ViolationType
+  continueDeletion: (confirmed: boolean) => void
 }
 
 const DeleteViolationButton: React.FC<DeleteViolationButtonProps> = ({
   violation,
-  continueDeletion,
+  continueDeletion
 }) => {
-  const toast = useToast();
+  const toast = useToast()
 
   return (
     <div>
       <AlertDialog>
         <AlertDialogTrigger asChild>
-          <Button key={violation.id} size="sm" mr="10px" colorScheme="red">
+          <Button key={violation.id} size='xs' mr='10px' colorScheme='red'>
             <DeleteIcon />
           </Button>
         </AlertDialogTrigger>
@@ -38,32 +38,32 @@ const DeleteViolationButton: React.FC<DeleteViolationButtonProps> = ({
             <AlertDialogTitle>Delete Violation Type</AlertDialogTitle>
             <AlertDialogDescription>
               Are you sure that you want to delete the violation type: <br />
-              <span className="font-semibold">{violation.title}</span>?
+              <span className='font-semibold'>{violation.title}</span>?
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel
-              className="mt-0 hover:bg-gray-100"
+              className='mt-0 hover:bg-gray-100'
               onClick={() => continueDeletion(false)}
             >
               Cancel
             </AlertDialogCancel>
             <AlertDialogAction
-              className="bg-red-500 hover:bg-red-600"
+              className='bg-red-500 hover:bg-red-600'
               onClick={() => {
-                deleteViolationType(violation.id).then((data) => {
+                deleteViolationType(violation.id).then(data => {
                   if (data.success) {
-                    continueDeletion(true);
+                    continueDeletion(true)
                     toast({
                       title: `Successfully deleted violation type: `,
                       description: `${violation.title}`,
-                      status: "success",
-                      position: "bottom-right",
+                      status: 'success',
+                      position: 'bottom-right',
                       isClosable: true,
-                      colorScheme: "red",
-                    });
+                      colorScheme: 'red'
+                    })
                   }
-                });
+                })
               }}
             >
               Continue
@@ -72,7 +72,7 @@ const DeleteViolationButton: React.FC<DeleteViolationButtonProps> = ({
         </AlertDialogContent>
       </AlertDialog>
     </div>
-  );
-};
+  )
+}
 
-export default DeleteViolationButton;
+export default DeleteViolationButton

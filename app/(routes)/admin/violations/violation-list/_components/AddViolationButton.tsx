@@ -1,4 +1,4 @@
-"use client";
+'use client'
 
 import {
   Dialog,
@@ -7,8 +7,8 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+  DialogTrigger
+} from '@/components/ui/dialog'
 import {
   Input,
   Stack,
@@ -24,67 +24,67 @@ import {
   Tr,
   Th,
   Tbody,
-  Td,
-} from "@chakra-ui/react";
-import { AddIcon } from "@chakra-ui/icons";
-import * as z from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Form, FormField } from "@/components/ui/form";
-import { createViolationType } from "@/server/actions/violation-type";
-import { useRouter } from "next/navigation";
+  Td
+} from '@chakra-ui/react'
+import { AddIcon } from '@chakra-ui/icons'
+import * as z from 'zod'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Form, FormField } from '@/components/ui/form'
+import { createViolationType } from '@/server/actions/violation-type'
+import { useRouter } from 'next/navigation'
 
 export const ViolationTypeFormSchema = z.object({
   title: z.string(),
   description: z.string(),
   firstOffenseFee: z.string(),
   secondOffenseFee: z.string(),
-  thirdOffenseFee: z.string(),
-});
+  thirdOffenseFee: z.string()
+})
 
-export type ViolationTypeFormValues = z.infer<typeof ViolationTypeFormSchema>;
+export type ViolationTypeFormValues = z.infer<typeof ViolationTypeFormSchema>
 
-export default function AddViolation() {
-  const router = useRouter();
+export default function AddViolation () {
+  const router = useRouter()
 
   const form = useForm<ViolationTypeFormValues>({
     resolver: zodResolver(ViolationTypeFormSchema),
     defaultValues: {
-      title: "",
-      description: "",
-      firstOffenseFee: "",
-      secondOffenseFee: "",
-      thirdOffenseFee: "",
-    },
-  });
+      title: '',
+      description: '',
+      firstOffenseFee: '',
+      secondOffenseFee: '',
+      thirdOffenseFee: ''
+    }
+  })
 
   const onSubmit = async (values: ViolationTypeFormValues) => {
     await createViolationType(values)
-      .then((data) => {
+      .then(data => {
         if (data.success) {
           toast({
             title: `Successfully added violation type "${form.watch(
-              "title"
+              'title'
             )}" to the list of HOA violations.`,
-            status: "success",
-            position: "bottom-right",
-            isClosable: true,
-          });
+            status: 'success',
+            position: 'bottom-right',
+            isClosable: true
+          })
         }
       })
       .then(() => {
-        form.reset();
-        router.refresh();
-      });
-  };
+        form.reset()
+        router.refresh()
+      })
+  }
 
-  const toast = useToast();
+  const toast = useToast()
 
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button size="sm" colorScheme="yellow">
-          <AddIcon boxSize={3} mr="10px" />
+        <Button size='sm' colorScheme='yellow'>
+          <AddIcon boxSize={3} mr='10px' />
           Add Violation Type
         </Button>
       </DialogTrigger>
@@ -99,21 +99,21 @@ export default function AddViolation() {
               </DialogDescription>
             </DialogHeader>
 
-            <Stack spacing="20px" my="1.5rem">
+            <Stack spacing='20px' my='1.5rem'>
               {/* Violation Title */}
               <FormField
                 control={form.control}
-                name="title"
+                name='title'
                 render={({ field }) => (
                   <FormControl isRequired>
-                    <FormLabel fontSize="sm" fontWeight="semibold">
+                    <FormLabel fontSize='sm' fontWeight='semibold'>
                       Violation Title:
                     </FormLabel>
                     <Input
-                      size="sm"
-                      fontWeight="semibold"
-                      type="string"
-                      placeholder="ex. Unauthorized Commercial or Business Activities"
+                      size='sm'
+                      fontWeight='semibold'
+                      type='string'
+                      placeholder='ex. Unauthorized Commercial or Business Activities'
                       {...field}
                     />
                   </FormControl>
@@ -123,91 +123,75 @@ export default function AddViolation() {
               {/* Violation Description */}
               <FormField
                 control={form.control}
-                name="description"
+                name='description'
                 render={({ field }) => (
                   <FormControl isRequired>
-                    <FormLabel fontSize="sm" fontWeight="semibold">
+                    <FormLabel fontSize='sm' fontWeight='semibold'>
                       Description:
                     </FormLabel>
                     <Textarea
-                      fontFamily="font.body"
-                      placeholder="Write something..."
-                      fontSize="sm"
+                      fontFamily='font.body'
+                      placeholder='Write something...'
+                      fontSize='sm'
                       {...field}
-                      resize="none"
+                      resize='none'
                     />
                   </FormControl>
                 )}
               />
 
-              {/* Violation Penalty Fee */}
-              {/* <FormField
-                  control={form.control}
-                  name='fee'
-                  render={({ field }) => (
-                    <FormControl isRequired>
-                      <FormLabel fontSize='sm' fontWeight='semibold'>
-                        Penalty Fee:
-                      </FormLabel>
-                      <Flex
-                        fontFamily='font.body'
-                        fontSize='md'
-                        alignItems='center'
-                        gap='5px'
-                      >
-                        <Text>₱</Text>
-                        <Input
-                          size='md'
-                          fontWeight='semibold'
-                          placeholder='XXX'
-                          type='number'
-                          textAlign='right'
-                          w='min-content'
-                          {...field}
-                        />
-                      </Flex>
-                    </FormControl>
-                  )}
-                /> */}
-
               {/* Violation Levels and Penalty Fees*/}
               <FormControl isRequired>
-                <FormLabel fontSize="sm" fontWeight="semibold">
+                <FormLabel fontSize='sm' fontWeight='semibold'>
                   Violation Levels and Penalty Fees
                 </FormLabel>
-                <TableContainer mx="1rem">
-                  <Table size="xs" variant="simple" fontFamily="font.body">
+                <TableContainer mx='1rem'>
+                  <Table
+                    size='xs'
+                    variant='simple'
+                    fontFamily='font.body'
+                    cellPadding={5}
+                  >
                     <Thead>
                       <Tr>
-                        <Th fontSize="xs" fontFamily="font.body">
+                        <Th fontSize='xs' fontFamily='font.body'>
                           Violation Level
                         </Th>
                         <Th
-                          fontSize="xs"
-                          fontFamily="font.body"
-                          textAlign="center"
+                          fontSize='xs'
+                          fontFamily='font.body'
+                          textAlign='center'
                         >
                           Penalty Fee
                         </Th>
                       </Tr>
                     </Thead>
-                    <Tbody fontSize="sm" fontFamily="font.body">
+                    <Tbody fontSize='sm' fontFamily='font.body'>
                       <FormField
                         control={form.control}
-                        name="firstOffenseFee"
+                        name='firstOffenseFee'
                         render={({ field }) => (
                           <Tr>
                             {/* Violation Level */}
-                            <Td pl="0.5rem">First Offense:</Td>
+                            <Td pl='0.5rem' lineHeight={1}>
+                              <span className='font-semibold'>
+                                First Offense:
+                              </span>
+                              <br />
+                              <span className='text-[10px]'>
+                                Initial violation of community rules or
+                                regulations.
+                              </span>
+                            </Td>
                             {/* Penalty Fee */}
-                            <Td textAlign="center">
-                              ₱{" "}
+                            <Td textAlign='center'>
+                              ₱{' '}
                               <Input
-                                type="number"
-                                textAlign="right"
-                                w="8rem"
-                                size="sm"
-                                placeholder="XXX"
+                                type='number'
+                                textAlign='right'
+                                w='8rem'
+                                size='sm'
+                                placeholder='XXX'
                                 {...field}
                               />
                             </Td>
@@ -216,20 +200,29 @@ export default function AddViolation() {
                       />
                       <FormField
                         control={form.control}
-                        name="secondOffenseFee"
+                        name='secondOffenseFee'
                         render={({ field }) => (
                           <Tr>
                             {/* Violation Level */}
-                            <Td pl="0.5rem">Second Offense:</Td>
+                            <Td pl='0.5rem' lineHeight={1}>
+                              <span className='font-semibold'>
+                                Second Offense:
+                              </span>
+                              <br />
+                              <span className='text-[10px]'>
+                                Repeated violation after a warning or previous
+                                penalty.
+                              </span>
+                            </Td>
                             {/* Penalty Fee */}
-                            <Td textAlign="center">
-                              ₱{" "}
+                            <Td textAlign='center'>
+                              ₱{' '}
                               <Input
-                                type="number"
-                                textAlign="right"
-                                w="8rem"
-                                size="sm"
-                                placeholder="XXX"
+                                type='number'
+                                textAlign='right'
+                                w='8rem'
+                                size='sm'
+                                placeholder='XXX'
                                 {...field}
                               />
                             </Td>
@@ -238,20 +231,29 @@ export default function AddViolation() {
                       />
                       <FormField
                         control={form.control}
-                        name="thirdOffenseFee"
+                        name='thirdOffenseFee'
                         render={({ field }) => (
                           <Tr>
                             {/* Violation Level */}
-                            <Td pl="0.5rem">Third Offense:</Td>
+                            <Td pl='0.5rem' lineHeight={1}>
+                              <span className='font-semibold'>
+                                Third Offense:
+                              </span>
+                              <br />
+                              <span className='text-[10px]'>
+                                Persistent violation despite prior warnings or
+                                penalties.
+                              </span>
+                            </Td>
                             {/* Penalty Fee */}
-                            <Td textAlign="center">
-                              ₱{" "}
+                            <Td textAlign='center'>
+                              ₱{' '}
                               <Input
-                                type="number"
-                                textAlign="right"
-                                w="8rem"
-                                size="sm"
-                                placeholder="XXX"
+                                type='number'
+                                textAlign='right'
+                                w='8rem'
+                                size='sm'
+                                placeholder='XXX'
                                 {...field}
                               />
                             </Td>
@@ -262,9 +264,9 @@ export default function AddViolation() {
                   </Table>
                 </TableContainer>
                 <FormHelperText
-                  fontFamily="font.body"
-                  fontSize="xs"
-                  textAlign="justify"
+                  fontFamily='font.body'
+                  fontSize='xs'
+                  textAlign='justify'
                 >
                   Please enter the corresponding penalty fees for each level of
                   offense for this violation.
@@ -272,10 +274,10 @@ export default function AddViolation() {
               </FormControl>
             </Stack>
 
-            <DialogFooter className="text-right">
+            <DialogFooter className='text-right'>
               <FormControl>
                 {/* Submit Button */}
-                <Button size="sm" colorScheme="yellow" type="submit">
+                <Button size='sm' colorScheme='yellow' type='submit'>
                   Add Violation Type
                 </Button>
               </FormControl>
@@ -284,5 +286,5 @@ export default function AddViolation() {
         </Form>
       </DialogContent>
     </Dialog>
-  );
+  )
 }
