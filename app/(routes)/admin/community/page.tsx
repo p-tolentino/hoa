@@ -139,7 +139,7 @@ const Community = async () => {
               <BusinessForumCard posts={filteredPosts2} user={user.id} />
             </TabsContent>
             <TabsContent value='pollsAndSurveys'>
-              <PollsAndSurveysCard polls={polls} user={user.id} />
+              <PollsAndSurveysCard polls={polls} user={user.id} hoaInfo={hoa} />
             </TabsContent>
             <TabsContent value='events'>
               <EventsCard events={events} user={user.id} />

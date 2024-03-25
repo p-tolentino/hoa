@@ -10,58 +10,68 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
+import React from "react";
+import { getHoaInfo } from "@/server/data/hoa-info";
+import { Hoa } from "@prisma/client";
+import { DataTable } from "@/components/ui/data-table";
 
-export default function PDFTable() {
+interface TableColumn {
+  header: string;
+  accessor: string; // key from the data object
+}
+
+interface PDFTableProps<T> {
+  data: any[];
+  columns: TableColumn[];
+  reportTitle: string;
+  reportSubtitle: string;
+  hoaInfo: Hoa;
+}
+
+export default function PDFTable<T>({ data, columns, reportTitle, reportSubtitle, hoaInfo }: PDFTableProps<T>) {
+  const currentDate = new Date().toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+
   return (
     <>
       <Box p="5%">
         <Stack spacing={8}>
           <Stack spacing={1}>
             <Heading fontSize="md" fontFamily="font.heading">
-              Homeowners Association Name
+              {hoaInfo?.name}
             </Heading>
             <Heading fontSize="xs" fontFamily="font.heading">
-              Contact Number: 09123456789
+              Contact Number: {hoaInfo?.contactNumber}
             </Heading>
+            <Heading fontSize="xs" fontFamily="font.heading">
+          Date Generated: {currentDate}
+          </Heading>
           </Stack>
           <Stack spacing={1}>
             <Heading fontSize="sm" fontFamily="font.heading">
-              Homeowners Directory Report
+              {reportTitle}
             </Heading>
-            <Text fontSize="sm">View the Homeowners Directory.</Text>
+            <Text fontSize="sm">{reportSubtitle}</Text>
           </Stack>
           <Table variant="striped">
             <Thead>
-              <Th>Position</Th>
-              <Th>Name</Th>
-              <Th>Contact Number</Th>
-              <Th>House No. & Street</Th>
-              <Th>Email Address</Th>
+              <Tr>
+                {columns.map((column) => (
+                  <Th key={column.accessor}>{column.header}</Th>
+                ))}
+              </Tr>
             </Thead>
             <Tbody>
-              <Tr fontSize="xs">
-                <Td>Member</Td>
-                <Td>Juan M. Dela Cruz</Td>
-                <Td>99596608231</Td>
-                <Td>Sample Address</Td>
-                <Td>user1@envsec.com</Td>
-              </Tr>
-
-              <Tr fontSize="xs">
-                <Td>Member</Td>
-                <Td>Mark Garcia</Td>
-                <Td>09059099345</Td>
-                <Td>Sample Address</Td>
-                <Td>user2@envsec.com</Td>
-              </Tr>
-
-              <Tr fontSize="xs">
-                <Td>Member</Td>
-                <Td>James Gonzales</Td>
-                <Td>09175660423</Td>
-                <Td>Sample Address</Td>
-                <Td>user3@envsec.com</Td>
-              </Tr>
+              {data.map((item, index) => (
+                <Tr fontSize="xs" key={index}>
+                  {columns.map((column) => (
+                    <Td key={column.accessor}>{item[column.accessor]}</Td>
+                  ))}
+                </Tr>
+              ))}
             </Tbody>
           </Table>
         </Stack>

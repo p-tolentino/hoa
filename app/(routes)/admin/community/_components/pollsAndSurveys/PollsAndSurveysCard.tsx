@@ -23,13 +23,14 @@ import Post from './_components/post'
 import Create from './_components/create'
 import { useState } from 'react'
 
-import { Polls, User } from '@prisma/client'
+import { Polls, User, Hoa } from '@prisma/client'
 import { getPersonalInfo } from "@/server/data/user-info";
 import { useEffect } from "react";
 
 interface PollProps {
   polls: Polls[]
   user: string
+  hoaInfo: Hoa
 }
 
 interface UserInfo {
@@ -42,7 +43,7 @@ interface UserInfos {
   [userId: string]: UserInfo | null;
 }
 
-export default function PollsAndSurveysCard ({ polls, user }: PollProps) {
+export default function PollsAndSurveysCard ({ polls, user, hoaInfo }: PollProps) {
   const [selectedCategory, setSelectedCategory] = useState('showAll')
   const [selectedStatus, setSelectedStatus] = useState('All')
   const [searchInput, setSearchInput] = useState('')
@@ -158,7 +159,7 @@ export default function PollsAndSurveysCard ({ polls, user }: PollProps) {
           <ScrollArea
             style={{ maxHeight: 'calc(70vh - 180px)', overflowY: 'auto' }}
           >
-            <Post polls={filteredPolls} user={user}  userInfos={usersInfo}/>
+            <Post polls={filteredPolls} user={user}  userInfos={usersInfo} hoaInfo={hoaInfo}/>
           </ScrollArea>
         </CardContent>
       </Card>

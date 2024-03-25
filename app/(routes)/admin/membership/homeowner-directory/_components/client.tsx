@@ -32,32 +32,50 @@ import {
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
-import { Property } from "@prisma/client";
+import { Hoa, Property } from "@prisma/client";
 import { Button, HStack } from "@chakra-ui/react";
 import { VscRefresh as Refresh } from "react-icons/vsc";
+import { getHoaInfo } from "@/server/data/hoa-info";
 
 interface HomeownersClientProps {
   data: HomeownerColumn[];
   properties: Property[];
+  hoaInfo: Hoa;
 }
 const SelectSchema = z.object({
   address: z.string(),
 });
 
+interface TableColumn {
+  header: string;
+  accessor: string;
+}
+
 export const HomeownersClient: React.FC<HomeownersClientProps> = ({
   data,
   properties,
+  hoaInfo,
 }) => {
   const { update } = useSession();
   const [occupants, setOccupants] = useState<HomeownerColumn[]>(data);
 
+  /* Code for PDF Generation */
+
+  const otherDataColumns: TableColumn[] = [
+    { header: 'Status', accessor: 'status' },
+    { header: 'Position', accessor: 'position' },
+    { header: 'Name', accessor: 'name' },
+    { header: 'Email', accessor: 'email' },
+    // Add more columns as needed
+  ];
   const componentPDF = useRef<HTMLDivElement | null>(null);
 
   const generatePDF = useReactToPrint({
     content: () => componentPDF.current || null,
     documentTitle: "Homeowner Directory Report",
-    onAfterPrint: () => alert("Data saved in PDF"),
+    // onAfterPrint: () => alert("Data saved in PDF"),
   });
+  /* end of PDF Generation code */
 
   const form = useForm<z.infer<typeof SelectSchema>>({
     defaultValues: {
@@ -141,10 +159,20 @@ export const HomeownersClient: React.FC<HomeownersClientProps> = ({
           />
         </form>
       </Form>
+
       <div className="hidden">
         <div ref={componentPDF} style={{ width: "100%" }}>
-          <PDFTable />
+        {hoaInfo && (
+        <PDFTable 
+          data={form.watch("address") !== "" ? occupants : data}
+          columns={otherDataColumns} 
+          reportTitle="Homeowner Directory Report"
+          reportSubtitle="View list of registered homeowners" 
+          hoaInfo={hoaInfo}
+        />
+        )}
         </div>
+        
       </div>
       <DataTable
         columns={columns}
