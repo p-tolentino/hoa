@@ -17,28 +17,32 @@ import ViewTotalTable from "./totals-view";
 import { getBudget } from "@/server/data/budget-plan";
 
 import { useEffect, useState } from "react";
-import { BudgetPlan } from "@prisma/client";
+import { BudgetPlan, Hoa } from "@prisma/client";
 
 import { useReactToPrint } from "react-to-print";
 import { useRef } from "react";
 import PDFTable from "@/components/system/PDFTable";
 import BackButton from "@/components/system/BackButton";
+import PdfView from "./pdf-view";
 
 interface ViewFormProps {
   initialData: BudgetPlan | null;
   previous: BudgetPlan | null;
+  hoaInfo: Hoa;
 }
 
 export const ViewBudgetPlan: React.FC<ViewFormProps> = ({
   initialData,
   previous,
+  hoaInfo,
 }) => {
+  const documentTitle = `Budget Plan of ${initialData?.forYear} Report`;
   const componentPDF = useRef<HTMLDivElement | null>(null);
 
   const generatePDF = useReactToPrint({
     content: () => componentPDF.current || null,
-    documentTitle: "Budget Plan of (year) Report",
-    onAfterPrint: () => alert("Data saved in PDF"),
+    documentTitle: documentTitle,
+    //onAfterPrint: () => alert("Data saved in PDF"),
   });
   return (
     <>
@@ -68,19 +72,19 @@ export const ViewBudgetPlan: React.FC<ViewFormProps> = ({
             fontFamily="font.heading"
             fontWeight="semibold"
           >
-            Fiscal Year:
+            Calendar Year:
           </Text>
           <Text>{initialData?.forYear}</Text>
         </HStack>
       </Flex>
 
       {/* Budget Planning Table */}
-      {/* <div className="hidden">
+       <div className="hidden">
         <div ref={componentPDF} style={{ width: "100%" }}>
-          <PDFTable />
+      <PdfView initialData={initialData} previous={previous} hoaInfo={hoaInfo} title={documentTitle}/>
         </div>
-      </div> */}
-      <div ref={componentPDF} style={{ width: "100%" }}>
+      </div> 
+      <div style={{ width: "100%" }}>
         <ViewRevenueTable plan={initialData} previous={previous} />
         <ViewExpenseTable plan={initialData} previous={previous} />
         <ViewTotalTable plan={initialData} previous={previous} />

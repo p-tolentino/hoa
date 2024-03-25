@@ -26,6 +26,7 @@ const formatNumber = (value: number) => {
 export const ExpenseTable = () => {
   const form = useFormContext<z.infer<typeof NewBudgetPlanSchema>>();
   const [total, setTotal] = useState<number | null>(null);
+  const selectedYear = form.watch("forYear"); // This watches the `forYear` field
 
   useEffect(() => {
     const salaryBenefits =
@@ -86,7 +87,7 @@ export const ExpenseTable = () => {
               Expenses
             </Th>
             <Th p="1rem" fontFamily="font.heading" w="300px" textAlign="right">
-              Current Year Budget (CYB)
+            Year Budget for {selectedYear}
             </Th>
           </Tr>
         </Thead>
@@ -99,11 +100,17 @@ export const ExpenseTable = () => {
                 name="cybSalariesBenefits"
                 render={({ field }) => (
                   <Input
-                    type="number"
-                    textAlign="right"
-                    onChange={(e) => field.onChange(parseFloat(e.target.value))}
-                    value={field.value}
-                  />
+                  type="number"
+                  min="0" // Ensures that the browser enforces a minimum value of 0
+                  onChange={(e) => {
+                    const value = parseFloat(e.target.value);
+                    if (value >= 0) {
+                      field.onChange(value);
+                    }
+                  }}
+                  value={field.value}
+                  textAlign="right"
+                />
                 )}
               />
             </Td>
@@ -116,11 +123,17 @@ export const ExpenseTable = () => {
                 name="cybUtilities"
                 render={({ field }) => (
                   <Input
-                    type="number"
-                    textAlign="right"
-                    onChange={(e) => field.onChange(parseFloat(e.target.value))}
-                    value={field.value}
-                  />
+                  type="number"
+                  min="0" // Ensures that the browser enforces a minimum value of 0
+                  onChange={(e) => {
+                    const value = parseFloat(e.target.value);
+                    if (value >= 0) {
+                      field.onChange(value);
+                    }
+                  }}
+                  value={field.value}
+                  textAlign="right"
+                />
                 )}
               />
             </Td>
@@ -133,11 +146,17 @@ export const ExpenseTable = () => {
                 name="cybOfficeSupplies"
                 render={({ field }) => (
                   <Input
-                    type="number"
-                    textAlign="right"
-                    onChange={(e) => field.onChange(parseFloat(e.target.value))}
-                    value={field.value}
-                  />
+                  type="number"
+                  min="0" // Ensures that the browser enforces a minimum value of 0
+                  onChange={(e) => {
+                    const value = parseFloat(e.target.value);
+                    if (value >= 0) {
+                      field.onChange(value);
+                    }
+                  }}
+                  value={field.value}
+                  textAlign="right"
+                />
                 )}
               />
             </Td>
@@ -150,11 +169,17 @@ export const ExpenseTable = () => {
                 name="cybRepairMaintenance"
                 render={({ field }) => (
                   <Input
-                    type="number"
-                    textAlign="right"
-                    onChange={(e) => field.onChange(parseFloat(e.target.value))}
-                    value={field.value}
-                  />
+                  type="number"
+                  min="0" // Ensures that the browser enforces a minimum value of 0
+                  onChange={(e) => {
+                    const value = parseFloat(e.target.value);
+                    if (value >= 0) {
+                      field.onChange(value);
+                    }
+                  }}
+                  value={field.value}
+                  textAlign="right"
+                />
                 )}
               />
             </Td>
@@ -167,11 +192,17 @@ export const ExpenseTable = () => {
                 name="cybDonations"
                 render={({ field }) => (
                   <Input
-                    type="number"
-                    textAlign="right"
-                    onChange={(e) => field.onChange(parseFloat(e.target.value))}
-                    value={field.value}
-                  />
+                  type="number"
+                  min="0" // Ensures that the browser enforces a minimum value of 0
+                  onChange={(e) => {
+                    const value = parseFloat(e.target.value);
+                    if (value >= 0) {
+                      field.onChange(value);
+                    }
+                  }}
+                  value={field.value}
+                  textAlign="right"
+                />
                 )}
               />
             </Td>
@@ -184,11 +215,17 @@ export const ExpenseTable = () => {
                 name="cybFurnituresFixtures"
                 render={({ field }) => (
                   <Input
-                    type="number"
-                    textAlign="right"
-                    onChange={(e) => field.onChange(parseFloat(e.target.value))}
-                    value={field.value}
-                  />
+                  type="number"
+                  min="0" // Ensures that the browser enforces a minimum value of 0
+                  onChange={(e) => {
+                    const value = parseFloat(e.target.value);
+                    if (value >= 0) {
+                      field.onChange(value);
+                    }
+                  }}
+                  value={field.value}
+                  textAlign="right"
+                />
                 )}
               />
             </Td>
@@ -202,11 +239,17 @@ export const ExpenseTable = () => {
                 name="cybRepresentation"
                 render={({ field }) => (
                   <Input
-                    type="number"
-                    textAlign="right"
-                    onChange={(e) => field.onChange(parseFloat(e.target.value))}
-                    value={field.value}
-                  />
+                  type="number"
+                  min="0" // Ensures that the browser enforces a minimum value of 0
+                  onChange={(e) => {
+                    const value = parseFloat(e.target.value);
+                    if (value >= 0) {
+                      field.onChange(value);
+                    }
+                  }}
+                  value={field.value}
+                  textAlign="right"
+                />
                 )}
               />
             </Td>
@@ -219,11 +262,17 @@ export const ExpenseTable = () => {
                 name="cybLegalProfessionalFees"
                 render={({ field }) => (
                   <Input
-                    type="number"
-                    textAlign="right"
-                    onChange={(e) => field.onChange(parseFloat(e.target.value))}
-                    value={field.value}
-                  />
+                  type="number"
+                  min="0" // Ensures that the browser enforces a minimum value of 0
+                  onChange={(e) => {
+                    const value = parseFloat(e.target.value);
+                    if (value >= 0) {
+                      field.onChange(value);
+                    }
+                  }}
+                  value={field.value}
+                  textAlign="right"
+                />
                 )}
               />
             </Td>
@@ -236,11 +285,17 @@ export const ExpenseTable = () => {
                 name="cybAdministrativeCosts"
                 render={({ field }) => (
                   <Input
-                    type="number"
-                    textAlign="right"
-                    onChange={(e) => field.onChange(parseFloat(e.target.value))}
-                    value={field.value}
-                  />
+  type="number"
+  min="0" // Ensures that the browser enforces a minimum value of 0
+  onChange={(e) => {
+    const value = parseFloat(e.target.value);
+    if (value >= 0) {
+      field.onChange(value);
+    }
+  }}
+  value={field.value}
+  textAlign="right"
+/>
                 )}
               />
             </Td>
@@ -253,11 +308,17 @@ export const ExpenseTable = () => {
                 name="cybOtherExp"
                 render={({ field }) => (
                   <Input
-                    type="number"
-                    textAlign="right"
-                    onChange={(e) => field.onChange(parseFloat(e.target.value))}
-                    value={field.value}
-                  />
+                  type="number"
+                  min="0" // Ensures that the browser enforces a minimum value of 0
+                  onChange={(e) => {
+                    const value = parseFloat(e.target.value);
+                    if (value >= 0) {
+                      field.onChange(value);
+                    }
+                  }}
+                  value={field.value}
+                  textAlign="right"
+                />
                 )}
               />
             </Td>

@@ -13,6 +13,8 @@ const formatNumber = (value: number) => {
 
 export const TotalTable = () => {
   const form = useFormContext<z.infer<typeof NewBudgetPlanSchema>>();
+  const selectedYear = form.watch("forYear"); // This watches the `forYear` field
+
   const [totals, setTotals] = useState({
     totalRev: 0,
     totalExp: 0,
@@ -38,7 +40,7 @@ export const TotalTable = () => {
         <Tr h="2rem">
           <Th p="1rem"></Th>
           <Th p="1rem" w="300px" fontFamily="font.heading" textAlign="right">
-            Current Year Budget (CYB)
+          Year Budget for {selectedYear}
           </Th>
           {/* <Th
             p="1rem"

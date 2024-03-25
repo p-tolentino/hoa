@@ -3,6 +3,7 @@ import ViewBudgetPlan from "./_components/view-budget-plan";
 import { getAllTransactions } from "@/server/data/user-transactions";
 import { HoaTransactionType, PaymentStatus } from "@prisma/client";
 import { getHoaTransactions } from "@/server/data/hoa-transactions";
+import { getHoaInfo } from "@/server/data/hoa-info";
 
 const ViewPage = async ({ params }: { params: { planId: string } }) => {
   const plan = await db.budgetPlan.findUnique({
@@ -16,6 +17,11 @@ const ViewPage = async ({ params }: { params: { planId: string } }) => {
       forYear: plan!!.forYear - 1,
     },
   });
+
+  const hoaInfo = await getHoaInfo();
+  if (!hoaInfo) {
+    return null;
+  }
 
   const userPayments = await (
     await getAllTransactions()
@@ -257,7 +263,7 @@ const ViewPage = async ({ params }: { params: { planId: string } }) => {
   return (
     <div className="flex-col">
       <div className="flex-1 p-4 space-y-4">
-        <ViewBudgetPlan initialData={plan} previous={prevPlan} />
+        <ViewBudgetPlan initialData={plan} previous={prevPlan} hoaInfo={hoaInfo} />
       </div>
     </div>
   );

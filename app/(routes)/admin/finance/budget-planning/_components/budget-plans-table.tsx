@@ -57,7 +57,7 @@ export const BudgetPlanning = ({
                 Budget Plan Title
               </Th>
               <Th p="1rem" fontFamily="font.heading">
-                Fiscal Year
+                Calendar Year
               </Th>
               <Th p="1rem"></Th>
             </Tr>

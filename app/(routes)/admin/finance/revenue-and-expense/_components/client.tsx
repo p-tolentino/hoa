@@ -21,16 +21,33 @@ interface TransactionClientProps {
   hoaInfo: Hoa;
 }
 
+interface TableColumn {
+  header: string;
+  accessor: string;
+}
+
 export const TransactionClient: React.FC<TransactionClientProps> = ({
   data,
   hoaInfo,
 }) => {
+
+  const otherDataColumns: TableColumn[] = [
+    { header: 'Date Issued', accessor: 'dateIssued' },
+    { header: 'Type', accessor: 'type' },
+    { header: 'Purpose', accessor: 'purpose' },
+    { header: 'Amount', accessor: 'amount' },
+    //{ header: 'Description', accessor: 'description' },
+    { header: 'Date Submitted', accessor: 'dateSubmitted' },
+    { header: 'Recorded By', accessor: 'recordedBy' },
+    // Add more columns as needed
+  ];
+
   const componentPDF = useRef<HTMLDivElement | null>(null);
 
   const generatePDF = useReactToPrint({
     content: () => componentPDF.current || null,
     documentTitle: "Revenue and Expense Report",
-    onAfterPrint: () => alert("Data saved in PDF"),
+    //onAfterPrint: () => alert("Data saved in PDF"),
   });
 
   return (
@@ -55,12 +72,21 @@ export const TransactionClient: React.FC<TransactionClientProps> = ({
         </HStack>
       </div>
       <Separator />
-      {/* <div className="hidden">
+      <div className="hidden">
         <div ref={componentPDF} style={{ width: "100%" }}>
-          <PDFTable />
+        {hoaInfo && (
+        <PDFTable 
+          data={data}
+          columns={otherDataColumns} 
+          reportTitle="Revenue & Expense Transactions Report"
+          reportSubtitle="View the list of all revenue and expenses transactions within the Homeowners' Association.          " 
+          hoaInfo={hoaInfo}
+          funds={hoaInfo.funds}
+        />
+        )}
         </div>
-      </div> */}
-      <div ref={componentPDF} style={{ width: "100%" }}>
+      </div> 
+      <div style={{ width: "100%" }}>
         <DataTable columns={columns} data={data} searchKey="purpose" />
       </div>
     </>

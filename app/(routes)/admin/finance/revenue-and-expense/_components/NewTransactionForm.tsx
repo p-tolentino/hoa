@@ -216,15 +216,36 @@ export default function NewTransactionForm({
 
         {/* Amount */}
         <FormField
-          control={form.control}
-          name="amount"
-          render={({ field }) => (
-            <FormControl isRequired fontFamily={"font.body"} mt="25px">
-              <FormLabel>Amount:</FormLabel>
-              <Input {...field} type="number" placeholder="XXXXX" min={1} />
-            </FormControl>
-          )}
-        />
+  control={form.control}
+  name="amount"
+  render={({ field }) => (
+    <FormControl isRequired fontFamily={"font.body"} mt="25px">
+      <FormLabel>Amount:</FormLabel>
+      <Input
+        {...field}
+        type="number"
+        placeholder="Enter amount"
+        min={0} // Ensures that the browser enforces a minimum value of 0
+        onChange={(e) => {
+          // Prevents input of negative numbers
+          const value = parseFloat(e.target.value);
+          if (!isNaN(value) && value >= 0) {
+            field.onChange(value.toString()); // Ensures the value is a string if needed
+          } else if (e.target.value === '') {
+            // Allows clearing the field
+            field.onChange('');
+          }
+        }}
+        value={field.value}
+      />
+      {form.formState.errors.amount && (
+        <FormErrorMessage>
+          {form.formState.errors.amount.message}
+        </FormErrorMessage>
+      )}
+    </FormControl>
+  )}
+/>
 
         {/* Description */}
         <FormField

@@ -26,12 +26,11 @@ export const createBudgetPlan = async (
     return { error: "Unauthorized" };
   }
 
-  if (user.role !== UserRole.ADMIN) {
+  if (user.role === UserRole.USER) {
     return { error: "Unauthorized: User role" };
   }
 
-  const existingPlan = await getBudgetPlanByYear(new Date().getFullYear());
-
+  const existingPlan = await getBudgetPlanByYear(values.forYear);
   if (existingPlan) {
     return { error: "Something went wrong." };
   }

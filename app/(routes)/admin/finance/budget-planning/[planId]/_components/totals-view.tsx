@@ -21,7 +21,7 @@ export const ViewTotalTable = ({
         <Tr h="2rem">
           <Th p="1rem" w="20%"></Th>
           <Th p="1rem" w="300px" fontFamily="font.heading" textAlign="right">
-            Current Year Budget (CYB)
+          Year Budget for {plan?.forYear}
           </Th>
           <Th p="1rem" w="300px" fontFamily="font.heading" textAlign="right">
             Year to Date Actuals (YTD-A)

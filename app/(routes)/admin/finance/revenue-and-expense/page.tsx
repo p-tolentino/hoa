@@ -5,7 +5,7 @@ import { TransactionColumn } from "./_components/columns";
 import { currentUser } from "@/lib/auth";
 import { getHoaTransactions } from "@/server/data/hoa-transactions";
 import { getHoaInfo } from "@/server/data/hoa-info";
-import { getUserById } from "@/server/data/user";
+import { getPersonalInfo } from "@/server/data/user-info";
 
 const RevenueExpense = async () => {
   const user = await currentUser();
@@ -25,11 +25,11 @@ const RevenueExpense = async () => {
 
   const formattedRecordsPromise: Promise<TransactionColumn>[] =
     transactions.map(async (item) => {
-      const issuedBy = await getUserById(item.userId);
+      const issuedBy = await getPersonalInfo(item.submittedBy);
 
       return {
         id: item.id,
-        recordedBy: issuedBy?.info?.lastName || "",
+        recordedBy: `${issuedBy?.lastName} ${issuedBy?.firstName}`.trim(),
         dateSubmitted: item.createdAt
           ? format(
               new Date(item.createdAt).toISOString().split("T")[0],

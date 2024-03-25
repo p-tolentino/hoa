@@ -12,10 +12,11 @@ export const getAllBudgetPlans = async () => {
   }
 };
 
-export const getBudgetPlanByYear = async (forYear: number) => {
+export const getBudgetPlanByYear = async (year: number) => {
   try {
     const plan = await db.budgetPlan.findFirst({
-      where: { forYear },
+      where: { 
+        forYear: year },
     });
 
     return plan;

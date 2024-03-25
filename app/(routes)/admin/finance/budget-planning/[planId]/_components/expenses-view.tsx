@@ -24,7 +24,7 @@ export const ViewExpenseTable = ({
               Expenses
             </Th>
             <Th p="1rem" fontFamily="font.heading" w="300px" textAlign="right">
-              Current Year Budget (CYB)
+              Year Budget for {plan?.forYear}
             </Th>
             <Th p="1rem" fontFamily="font.heading" w="300px" textAlign="right">
               Year to Date Actuals (YTD-A)
