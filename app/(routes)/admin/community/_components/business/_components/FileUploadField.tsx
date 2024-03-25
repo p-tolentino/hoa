@@ -1,20 +1,20 @@
-import React from 'react';
-import { Box, FormControl, FormLabel, useToast } from '@chakra-ui/react';
-import { useFormContext } from 'react-hook-form';
+import React from "react";
+import { Box, FormControl, FormLabel, useToast } from "@chakra-ui/react";
+import { useFormContext } from "react-hook-form";
 import { UploadDropzone } from "@/lib/utils";
-import { Json } from '@uploadthing/shared';
-import { UploadThingError } from 'uploadthing/server';
+import { Json } from "@uploadthing/shared";
+import { UploadThingError } from "uploadthing/server";
 
 const FileUploadField = () => {
   const { setValue } = useFormContext();
   const toast = useToast();
 
   const handleUploadComplete = (url: string) => {
-    setValue('media', url, { shouldValidate: true });
+    setValue("media", url, { shouldValidate: true });
     toast({
-      title: 'Upload successful',
-      description: 'Your file has been uploaded successfully.',
-      status: 'success',
+      title: "Upload successful",
+      description: "Your file has been uploaded successfully.",
+      status: "success",
       duration: 5000,
       isClosable: true,
     });
@@ -22,9 +22,9 @@ const FileUploadField = () => {
 
   const handleUploadError = (error: UploadThingError<Json>) => {
     toast({
-      title: 'Upload failed',
+      title: "Upload failed",
       description: `File upload failed: ${error.message}`,
-      status: 'error',
+      status: "error",
       duration: 5000,
       isClosable: true,
     });
@@ -32,11 +32,14 @@ const FileUploadField = () => {
 
   return (
     <Box py="10px">
-      <FormControl isRequired>
-        <FormLabel fontSize="sm" fontWeight="semibold">Upload File</FormLabel>
+      <FormControl>
+        <FormLabel fontSize="sm" fontWeight="semibold">
+          Upload File
+        </FormLabel>
         <UploadDropzone
           appearance={{
-            button: "ut-uploading:cursor-not-allowed rounded-r-none bg-[#e6c45e] text-black bg-none after:bg-[#dbac1d]",
+            button:
+              "ut-uploading:cursor-not-allowed rounded-r-none bg-[#e6c45e] text-black bg-none after:bg-[#dbac1d]",
             label: { color: "#ffaa00" },
             uploadIcon: { color: "#355E3B" },
           }}

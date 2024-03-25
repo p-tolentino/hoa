@@ -131,7 +131,7 @@ const BusinessPost: React.FC<PostProps> = ({ posts, user }) => {
   };
 
   const isPdf = (url: string) => {
-    return url.toLowerCase().endsWith('.pdf');
+    return url.toLowerCase().endsWith(".pdf");
   };
 
   return (
@@ -206,16 +206,28 @@ const BusinessPost: React.FC<PostProps> = ({ posts, user }) => {
 
                 {/* Media Display */}
                 {post.mediaLink && (
-              <Box mt="4">
-                {isPdf(post.mediaLink) ? (
-                  <Link href={post.mediaLink} isExternal color="blue.500">
-                    View PDF
-                  </Link>
-                ) : (
-                  <Image src={post.mediaLink} alt="Post media" maxH="400px" objectFit="cover" borderRadius="md" />
+                  <Box mt="4">
+                    {isPdf(post.mediaLink) ? (
+                      <Link
+                        href={post.mediaLink}
+                        isExternal
+                        color="blue.500"
+                        fontFamily="font.body"
+                        fontSize="sm"
+                      >
+                        View PDF
+                      </Link>
+                    ) : (
+                      <Image
+                        src={post.mediaLink}
+                        alt="Post media"
+                        maxH="400px"
+                        objectFit="cover"
+                        borderRadius="md"
+                      />
+                    )}
+                  </Box>
                 )}
-              </Box>
-            )}
 
                 {/* Date distance */}
                 <Text fontFamily="font.body" color="grey" fontSize="xs">
