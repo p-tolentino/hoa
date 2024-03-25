@@ -47,7 +47,7 @@ export default function ViewReviewResults ({
                 fontFamily='font.heading'
                 lineHeight={1}
               >
-                Violation Case: Review Results
+                Dispute Case: Review Results
               </Text>
               <Text fontFamily='font.body' fontSize='sm' color='grey'>
                 Date created: March 22, 2024
