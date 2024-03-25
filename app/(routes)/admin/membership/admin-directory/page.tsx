@@ -5,6 +5,7 @@ import { AdminColumn } from "./_components/columns";
 import { currentUser } from "@/lib/auth";
 import { getAllUsers } from "@/server/data/user";
 import { UserRole } from "@prisma/client";
+import { getHoaInfo } from "@/server/data/hoa-info";
 
 const Admins = async () => {
   const user = await currentUser();
@@ -15,6 +16,11 @@ const Admins = async () => {
   const users = await getAllUsers();
 
   if (!users) {
+    return null;
+  }
+
+  const hoaInfo = await getHoaInfo();
+  if (!hoaInfo) {
     return null;
   }
 
@@ -48,7 +54,7 @@ const Admins = async () => {
   return (
     <div className="flex">
       <div className="flex-1 space-y-4">
-        <AdminsClient data={admins} />
+        <AdminsClient data={admins} hoaInfo={hoaInfo}/>
       </div>
     </div>
   );

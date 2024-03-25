@@ -9,17 +9,57 @@ import {
   Heading,
   HStack,
 } from "@chakra-ui/react";
+import { Polls, User, Hoa } from "@prisma/client";
+import React from "react";
 
-export default function PDFReport() {
+// Assuming PollDetails includes the `poll` object structure
+interface PollProps {
+  poll: Polls;
+  pollDetail: Question[]; // Assuming questions are part of poll details
+  hoaInfo: Hoa;
+}
+
+interface Option {
+  id: string;
+  text: string;
+  count: number;
+}
+
+interface Question {
+  id: string;
+  text: string;
+  options: Option[];
+}
+
+interface PollDetails {
+  id: string;
+  title: string;
+  description: string;
+  questions: Question[];
+}
+
+
+export default function PDFReport({ poll, pollDetail, hoaInfo }: PollProps) {
+
+  const currentDate = new Date().toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+
+
   return (
     <Box p="5%">
       <Stack spacing={8}>
         <Stack spacing={1}>
           <Heading size="md" fontFamily="font.heading">
-            Homeowners Association Name
+            {hoaInfo.name}
           </Heading>
           <Heading fontSize="xs" fontFamily="font.heading">
-            Contact Number: 09123456789
+            Contact Number: {hoaInfo.contactNumber}
+          </Heading>
+          <Heading fontSize="xs" fontFamily="font.heading">
+          Date Generated: {currentDate}
           </Heading>
         </Stack>
         <Stack spacing={1}>
@@ -28,52 +68,58 @@ export default function PDFReport() {
         </Stack>
       </Stack>
 
-      {/* Form Content */}
-      <Stack mt="3%">
-        <HStack>
-          <Text fontSize="md" fontWeight="semibold">
-            Title:
-          </Text>
-          <Text fontSize="md" fontFamily="font.body">
-            title here
-          </Text>
-        </HStack>
-        <HStack>
-          <Text fontSize="md" fontWeight="semibold">
-            Description:
-          </Text>
-          <Text fontSize="md" fontFamily="font.body">
-            description here
-          </Text>
-        </HStack>
-        <Divider />
+   {/* Form Content */}
+   <Stack spacing="15px">
+              <Text fontSize="sm" fontWeight="semibold">
+                Title: {poll.title}
+              </Text>
+              <Text fontSize="sm" fontWeight="semibold">
+                Description: {poll.description}
+              </Text>
+              <Divider />
 
-        {/* Poll Result */}
-        <Box p="10px" maxH="300px" overflowY="auto">
-          <Stack spacing="15px">
-            <Text fontSize="sm" fontWeight="semibold">
-              Question 1:
-            </Text>
-            <Text fontSize="sm" fontFamily="font.body">
-              What lunch meal do you prefer for the Easter Egg Hunt event?
-            </Text>
-            <Box>
-              <Text fontSize="sm" fontFamily="font.body">
-                Option 1: Mcdonalds - Votes: 1
-              </Text>
-              <Progress mb="2%" colorScheme="yellow" size="sm" value={100} />
-              <Text fontSize="sm" fontFamily="font.body">
-                Option 2: Jollibee - Votes: 0
-              </Text>
-              <Progress mb="2%" colorScheme="yellow" size="sm" value={0} />
-              <Text fontSize="sm" fontFamily="font.body">
-                Option 3: KFC - Votes: 0
-              </Text>
-              <Progress mb="2%" colorScheme="yellow" size="sm" value={0} />
-            </Box>
-          </Stack>
-        </Box>
-      </Stack>
+              {/* Poll Result */}
+              <Box p="10px" maxH="300px" overflowY="auto">
+                <Stack spacing="15px">
+                  {pollDetail &&
+                    pollDetail.map((question, questionIndex) => (
+                      <React.Fragment key={question.id}>
+                        <Text fontSize="sm" fontWeight="semibold">
+                          Question {questionIndex + 1}:
+                        </Text>
+                        <Text fontSize="sm" fontFamily="font.body">
+                          {question.text}
+                        </Text>
+                        {question.options.map((option, optionIndex) => {
+                          // Calculate the total count for the question to use for percentage calculation
+                          const totalCountForQuestion = question.options.reduce(
+                            (acc, curr) => acc + curr.count,
+                            0
+                          );
+                          const percentage =
+                            totalCountForQuestion > 0
+                              ? (option.count / totalCountForQuestion) * 100
+                              : 0;
+
+                          return (
+                            <Box key={option.id}>
+                              <Text fontSize="sm" fontFamily="font.body">
+                                Option {optionIndex + 1}: {option.text} - Votes:{" "}
+                                {option.count}
+                              </Text>
+                              <Progress
+                                colorScheme="yellow"
+                                size="sm"
+                                value={percentage}
+                              />
+                            </Box>
+                          );
+                        })}
+                      </React.Fragment>
+                    ))}
+                </Stack>
+              </Box>
+            </Stack>
     </Box>
   );
 }

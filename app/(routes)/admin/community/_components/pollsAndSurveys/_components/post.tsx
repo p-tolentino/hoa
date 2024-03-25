@@ -17,7 +17,7 @@ import { useState } from 'react'
 import { getPersonalInfo } from '@/server/data/user-info'
 import { updateStatus } from '@/server/actions/poll'
 
-import { Polls, User } from '@prisma/client'
+import { Polls, User, Hoa } from '@prisma/client'
 
 import React, { useEffect } from 'react'
 
@@ -25,6 +25,7 @@ interface PollProps {
   polls: Polls[]
   user: string
   userInfos: UserInfos
+  hoaInfo: Hoa
 }
 
 interface UserInfo {
@@ -37,7 +38,7 @@ interface UserInfos {
   [userId: string]: UserInfo | null
 }
 
-const Post: React.FC<PollProps> = ({ polls, user, userInfos }) => {
+const Post: React.FC<PollProps> = ({ polls, user, userInfos, hoaInfo }) => {
   const categoryColors = {
     MEETING: 'purple.200',
     ELECTION: 'pink.200',
@@ -129,7 +130,7 @@ const Post: React.FC<PollProps> = ({ polls, user, userInfos }) => {
                     <Answer poll={poll} user={user} />
                   </HStack> )
                   : new Date() > new Date(poll.startDate) && new Date() > new Date(poll.endDate) ? (
-                    <Report poll={poll} user={user} />
+                    <Report poll={poll} user={user} hoaInfo={hoaInfo}/>
                   ) : null}
               </HStack>
 
