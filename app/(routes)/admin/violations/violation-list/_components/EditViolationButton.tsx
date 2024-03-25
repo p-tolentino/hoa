@@ -1,4 +1,4 @@
-"use client";
+'use client'
 
 import {
   Dialog,
@@ -7,8 +7,8 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+  DialogTrigger
+} from '@/components/ui/dialog'
 import {
   Input,
   Stack,
@@ -24,28 +24,28 @@ import {
   Tr,
   Th,
   Tbody,
-  Td,
-} from "@chakra-ui/react";
-import { EditIcon } from "@chakra-ui/icons";
-import { ViolationType } from "@prisma/client";
-import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
+  Td
+} from '@chakra-ui/react'
+import { EditIcon } from '@chakra-ui/icons'
+import { ViolationType } from '@prisma/client'
+import { useRouter } from 'next/navigation'
+import { useForm } from 'react-hook-form'
 import {
   ViolationTypeFormSchema,
-  ViolationTypeFormValues,
-} from "./AddViolationButton";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { updateViolationType } from "@/server/actions/violation-type";
-import { Form, FormField } from "@/components/ui/form";
+  ViolationTypeFormValues
+} from './AddViolationButton'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { updateViolationType } from '@/server/actions/violation-type'
+import { Form, FormField } from '@/components/ui/form'
 
 interface EditViolationButtonProps {
-  violation: ViolationType;
+  violation: ViolationType
 }
 
 const EditViolationButton: React.FC<EditViolationButtonProps> = ({
-  violation,
+  violation
 }) => {
-  const router = useRouter();
+  const router = useRouter()
 
   const form = useForm<ViolationTypeFormValues>({
     resolver: zodResolver(ViolationTypeFormSchema),
@@ -54,36 +54,36 @@ const EditViolationButton: React.FC<EditViolationButtonProps> = ({
       description: violation.description,
       firstOffenseFee: violation.firstOffenseFee.toString(),
       secondOffenseFee: violation.secondOffenseFee.toString(),
-      thirdOffenseFee: violation.thirdOffenseFee.toString(),
-    },
-  });
+      thirdOffenseFee: violation.thirdOffenseFee.toString()
+    }
+  })
 
   const onSubmit = async (values: ViolationTypeFormValues) => {
     await updateViolationType(values, violation.id)
-      .then((data) => {
+      .then(data => {
         if (data.success) {
           toast({
             title: `Successfully edited violation type "${form.watch(
-              "title"
+              'title'
             )}" to the list of HOA violations.`,
-            status: "info",
-            position: "bottom-right",
-            isClosable: true,
-          });
+            status: 'info',
+            position: 'bottom-right',
+            isClosable: true
+          })
         }
       })
       .then(() => {
-        form.reset();
-        router.refresh();
-      });
-  };
+        form.reset()
+        router.refresh()
+      })
+  }
 
-  const toast = useToast();
+  const toast = useToast()
 
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button size="sm" mr="5px">
+        <Button size='xs' mr='5px'>
           <EditIcon />
         </Button>
       </DialogTrigger>
@@ -97,21 +97,21 @@ const EditViolationButton: React.FC<EditViolationButtonProps> = ({
               </DialogDescription>
             </DialogHeader>
 
-            <Stack spacing="20px" my="1.5rem">
+            <Stack spacing='20px' my='1.5rem'>
               {/* Violation Title */}
               <FormField
                 control={form.control}
-                name="title"
+                name='title'
                 render={({ field }) => (
-                  <FormControl>
-                    <FormLabel fontSize="sm" fontWeight="semibold">
+                  <FormControl isReadOnly>
+                    <FormLabel fontSize='sm' fontWeight='semibold'>
                       Violation Title:
                     </FormLabel>
                     <Input
-                      size="sm"
-                      fontWeight="semibold"
-                      type="string"
-                      // placeholder='ex. Unauthorized Commercial or Business Activities'
+                      size='sm'
+                      fontWeight='semibold'
+                      type='string'
+                      color='grey'
                       {...field}
                     />
                   </FormControl>
@@ -121,91 +121,75 @@ const EditViolationButton: React.FC<EditViolationButtonProps> = ({
               {/* Violation Description */}
               <FormField
                 control={form.control}
-                name="description"
+                name='description'
                 render={({ field }) => (
                   <FormControl>
-                    <FormLabel fontSize="sm" fontWeight="semibold">
+                    <FormLabel fontSize='sm' fontWeight='semibold'>
                       Description:
                     </FormLabel>
                     <Textarea
-                      fontFamily="font.body"
+                      fontFamily='font.body'
                       // placeholder='Write something...'
-                      fontSize="sm"
+                      fontSize='sm'
                       {...field}
-                      resize="none"
+                      resize='none'
                     />
                   </FormControl>
                 )}
               />
 
-              {/* Violation Penalty Fee */}
-              {/* <FormField
-                  control={form.control}
-                  name='fee'
-                  render={({ field }) => (
-                    <FormControl>
-                      <FormLabel fontSize='sm' fontWeight='semibold'>
-                        Penalty Fee:
-                      </FormLabel>
-                      <Flex
-                        fontFamily='font.body'
-                        fontSize='md'
-                        alignItems='center'
-                        gap='5px'
-                      >
-                        <Text>₱</Text>
-                        <Input
-                          size='md'
-                          fontWeight='semibold'
-                          placeholder='XXX'
-                          type='number'
-                          textAlign='right'
-                          w='min-content'
-                          {...field}
-                        />
-                      </Flex>
-                    </FormControl>
-                  )}
-                /> */}
-
               {/* Violation Levels and Penalty Fees*/}
               <FormControl>
-                <FormLabel fontSize="sm" fontWeight="semibold">
+                <FormLabel fontSize='sm' fontWeight='semibold'>
                   Violation Levels and Penalty Fees
                 </FormLabel>
-                <TableContainer mx="1rem">
-                  <Table size="xs" variant="simple" fontFamily="font.body">
+                <TableContainer mx='1rem'>
+                  <Table
+                    size='xs'
+                    variant='simple'
+                    fontFamily='font.body'
+                    cellPadding={5}
+                  >
                     <Thead>
                       <Tr>
-                        <Th fontSize="xs" fontFamily="font.body">
+                        <Th fontSize='xs' fontFamily='font.body'>
                           Violation Level
                         </Th>
                         <Th
-                          fontSize="xs"
-                          fontFamily="font.body"
-                          textAlign="center"
+                          fontSize='xs'
+                          fontFamily='font.body'
+                          textAlign='center'
                         >
                           Penalty Fee
                         </Th>
                       </Tr>
                     </Thead>
-                    <Tbody fontSize="sm" fontFamily="font.body">
+                    <Tbody fontSize='sm' fontFamily='font.body'>
                       <FormField
                         control={form.control}
-                        name="firstOffenseFee"
+                        name='firstOffenseFee'
                         render={({ field }) => (
                           <Tr>
                             {/* Violation Level */}
-                            <Td pl="0.5rem">First Offense:</Td>
+                            <Td pl='0.5rem' lineHeight={1}>
+                              <span className='font-semibold'>
+                                First Offense:
+                              </span>
+                              <br />
+                              <span className='text-[10px]'>
+                                Initial violation of community rules or
+                                regulations.
+                              </span>
+                            </Td>
                             {/* Penalty Fee */}
-                            <Td textAlign="center">
-                              ₱{" "}
+                            <Td textAlign='center'>
+                              ₱{' '}
                               <Input
-                                type="number"
-                                textAlign="right"
-                                w="8rem"
-                                size="sm"
-                                placeholder="XXX"
+                                type='number'
+                                textAlign='right'
+                                w='8rem'
+                                size='sm'
+                                placeholder='XXX'
                                 {...field}
                               />
                             </Td>
@@ -214,20 +198,29 @@ const EditViolationButton: React.FC<EditViolationButtonProps> = ({
                       />
                       <FormField
                         control={form.control}
-                        name="secondOffenseFee"
+                        name='secondOffenseFee'
                         render={({ field }) => (
                           <Tr>
                             {/* Violation Level */}
-                            <Td pl="0.5rem">Second Offense:</Td>
+                            <Td pl='0.5rem' lineHeight={1}>
+                              <span className='font-semibold'>
+                                Second Offense:
+                              </span>
+                              <br />
+                              <span className='text-[10px]'>
+                                Repeated violation after a warning or previous
+                                penalty.
+                              </span>
+                            </Td>
                             {/* Penalty Fee */}
-                            <Td textAlign="center">
-                              ₱{" "}
+                            <Td textAlign='center'>
+                              ₱{' '}
                               <Input
-                                type="number"
-                                textAlign="right"
-                                w="8rem"
-                                size="sm"
-                                placeholder="XXX"
+                                type='number'
+                                textAlign='right'
+                                w='8rem'
+                                size='sm'
+                                placeholder='XXX'
                                 {...field}
                               />
                             </Td>
@@ -236,20 +229,29 @@ const EditViolationButton: React.FC<EditViolationButtonProps> = ({
                       />
                       <FormField
                         control={form.control}
-                        name="thirdOffenseFee"
+                        name='thirdOffenseFee'
                         render={({ field }) => (
                           <Tr>
                             {/* Violation Level */}
-                            <Td pl="0.5rem">Third Offense:</Td>
+                            <Td pl='0.5rem' lineHeight={1}>
+                              <span className='font-semibold'>
+                                Third Offense:
+                              </span>
+                              <br />
+                              <span className='text-[10px]'>
+                                Persistent violation despite prior warnings or
+                                penalties.
+                              </span>
+                            </Td>
                             {/* Penalty Fee */}
-                            <Td textAlign="center">
-                              ₱{" "}
+                            <Td textAlign='center'>
+                              ₱{' '}
                               <Input
-                                type="number"
-                                textAlign="right"
-                                w="8rem"
-                                size="sm"
-                                placeholder="XXX"
+                                type='number'
+                                textAlign='right'
+                                w='8rem'
+                                size='sm'
+                                placeholder='XXX'
                                 {...field}
                               />
                             </Td>
@@ -260,9 +262,9 @@ const EditViolationButton: React.FC<EditViolationButtonProps> = ({
                   </Table>
                 </TableContainer>
                 <FormHelperText
-                  fontFamily="font.body"
-                  fontSize="xs"
-                  textAlign="justify"
+                  fontFamily='font.body'
+                  fontSize='xs'
+                  textAlign='justify'
                 >
                   Please enter the corresponding penalty fees for each level of
                   offense for this violation.
@@ -270,10 +272,10 @@ const EditViolationButton: React.FC<EditViolationButtonProps> = ({
               </FormControl>
             </Stack>
 
-            <DialogFooter className="text-right">
+            <DialogFooter className='text-right'>
               <FormControl>
                 {/* Save Changes Button */}
-                <Button size="sm" colorScheme="yellow" type="submit">
+                <Button size='sm' colorScheme='yellow' type='submit'>
                   Save Changes
                 </Button>
               </FormControl>
@@ -282,6 +284,6 @@ const EditViolationButton: React.FC<EditViolationButtonProps> = ({
         </Form>
       </DialogContent>
     </Dialog>
-  );
-};
-export default EditViolationButton;
+  )
+}
+export default EditViolationButton
