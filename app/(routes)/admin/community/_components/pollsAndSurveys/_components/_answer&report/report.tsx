@@ -23,7 +23,7 @@ import {
   getQuestionsAndOptionsByPollId,
   getOptionResponseCount,
 } from "@/server/data/polls";
-import { Polls, User } from "@prisma/client";
+import { Polls, User, Hoa } from "@prisma/client";
 
 import { useReactToPrint } from "react-to-print";
 import { useRef } from "react";
@@ -32,6 +32,7 @@ import PDFReport from "./report-pdf";
 interface PollProps {
   poll: Polls;
   user: string;
+  hoaInfo: Hoa;
 }
 
 interface Option {
@@ -53,7 +54,7 @@ interface PollDetails {
   questions: Question[];
 }
 
-export default function Report({ poll, user }: PollProps) {
+export default function Report({ poll, user, hoaInfo }: PollProps) {
   const [pollDetails, setPollDetails] = useState<Question[] | null>(null);
   const [isLoading, setIsLoading] = useState(true); // State to track loading
 
@@ -62,7 +63,7 @@ export default function Report({ poll, user }: PollProps) {
   const generatePDF = useReactToPrint({
     content: () => componentPDF.current || null,
     documentTitle: "Polls & Surveys Report",
-    onAfterPrint: () => alert("Data saved in PDF"),
+    //onAfterPrint: () => alert("Data saved in PDF"),
   });
 
   useEffect(() => {
@@ -108,7 +109,12 @@ export default function Report({ poll, user }: PollProps) {
           <>
             <div className="hidden">
               <div ref={componentPDF} style={{ width: "100%" }}>
-                <PDFReport />
+                {pollDetails &&
+                <PDFReport 
+                poll={poll}
+                pollDetail={pollDetails}
+                hoaInfo={hoaInfo}/>
+                }
               </div>
             </div>
             <DialogHeader>

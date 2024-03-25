@@ -5,6 +5,8 @@ import { HomeownerColumn } from "./_components/columns";
 import { currentUser } from "@/lib/auth";
 import { getAllUsers } from "@/server/data/user";
 import { getAllProperties } from "@/server/data/property";
+import { getHoaInfo } from "@/server/data/hoa-info";
+
 
 const Homeowners = async () => {
   const user = await currentUser();
@@ -21,6 +23,11 @@ const Homeowners = async () => {
   const properties = await getAllProperties();
 
   if (!properties) {
+    return null;
+  }
+
+  const hoaInfo = await getHoaInfo();
+  if (!hoaInfo) {
     return null;
   }
 
@@ -51,7 +58,7 @@ const Homeowners = async () => {
   return (
     <div className="flex">
       <div className="flex-1 space-y-4">
-        <HomeownersClient data={formattedUsers} properties={properties} />
+        <HomeownersClient data={formattedUsers} properties={properties} hoaInfo={hoaInfo}/>
       </div>
     </div>
   );
