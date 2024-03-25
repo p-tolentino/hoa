@@ -31,12 +31,8 @@ import {
 import { report } from 'process'
 import { format } from 'date-fns'
 import { PersonalInfo } from '@prisma/client'
-import WriteReviewResults from './write-review-results'
 import ViewProgressReport from './view-progress-report'
-import ProgressReportForm from './progress-report-form'
 import ViewReviewResults from './view-review-results'
-import WriteFinalAssessment from './write-final-assessment'
-import WriteDisputeLetter from './write-dispute-letter'
 
 interface ProcessStep {
   value: string
@@ -273,7 +269,6 @@ export default function StepCard ({
                 overflowY='auto'
                 flex={3}
               >
-                <WriteReviewResults />
                 <Center color='gray' h='50%' fontFamily='font.body'>
                   No results to show.
                 </Center>
@@ -309,7 +304,6 @@ export default function StepCard ({
                 overflowY='auto'
                 flex={3}
               >
-                <WriteDisputeLetter reportDetails={reportDetails} />
                 <Center color='gray' h='50%' fontFamily='font.body'>
                   No results to show.
                 </Center>
@@ -378,8 +372,6 @@ export default function StepCard ({
                   ))}
                 </Stepper>
               </Box>
-              {/* Progress Report Form */}
-              <ProgressReportForm keyActivities={keyActivities} />
             </Flex>
           )}
 

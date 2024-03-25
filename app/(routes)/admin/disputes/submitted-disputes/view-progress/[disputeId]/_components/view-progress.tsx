@@ -1,431 +1,171 @@
-"use client";
+'use client'
 
-import { Badge } from "@/components/ui/badge";
-import { Heading } from "@/components/ui/heading";
-import { Separator } from "@/components/ui/separator";
-import { cn } from "@/lib/utils";
-import {
-  Step,
-  StepDescription,
-  StepIcon,
-  StepIndicator,
-  StepNumber,
-  StepSeparator,
-  StepStatus,
-  StepTitle,
-  Stepper,
-  useSteps,
-  Card,
-  CardBody,
-  Box,
-  Flex,
-  Text,
-  UnorderedList,
-  ListItem,
-  CardHeader,
-  TableContainer,
-  Table,
-  Tbody,
-  Tr,
-  Th,
-  Td,
-  Stack,
-  Button,
-} from "@chakra-ui/react";
-import Link from "next/link";
-import { PersonalInfo } from "@prisma/client";
-import { format } from "date-fns";
-import BackButton from "@/components/system/BackButton";
+import BackButton from '@/components/system/BackButton'
+import { Badge } from '@/components/ui/badge'
+import { Heading } from '@/components/ui/heading'
+import { Separator } from '@/components/ui/separator'
+import { cn } from '@/lib/utils'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Flex } from '@chakra-ui/react'
+import StepCard from './step-card'
 
 interface ViewProgressProps {
-  reportDetails: any;
+  reportDetails: any
 }
 
-export const ViewProgress: React.FC<ViewProgressProps> = ({
-  reportDetails,
+export const ProgressDetails: React.FC<ViewProgressProps> = ({
+  reportDetails
 }) => {
   const processSteps = [
     {
-      title: "Dispute Form Submission",
+      value: 'step1',
+      title: ' Dispute Form Submission',
       description:
-        "Homeowners submit dispute reports through the Dispute Resolution module in the MIS.",
+        'Homeowners submit dispute reports through the Dispute Resolution module in the MIS.',
       details: [
-        "Homeowners provide details about the dispute, including the type of dispute, type of violation (if applicable), date, and a detailed description of the dispute.",
-        "Supporting evidence such as photos or documents may be attached to the dispute report.",
-      ],
+        'Homeowners provide details about the type of dispute, date, and a detailed description of the dispute.',
+        'Supporting evidence such as photos or documents may be attached to the dispute report.'
+      ]
     },
     {
-      title: "Review by Grievance and Adjudication Committee",
+      value: 'step2',
+      title: 'Review by Grievance and Adjudication Committee',
       description:
-        "The Grievance and Adjudication Committee receives and reviews the dispute report.",
+        'The Grievance and Adjudication Committee receives and reviews the dispute report.',
       details: [
-        "The Grievance and Adjudication Committee receives the dispute report in the MIS and assigns an officer to oversee its resolution.",
-        "Each person involved in the dispute receives a letter outlining the nature of the dispute and a scheduled meeting to deliberate on the most effective course of action for its resolution.",
-        "Prior to the meeting date, the disputing parties are responsible to collect additional documents in support of their respective narratives.",
-      ],
+        'The Grievance and Adjudication Committee assesses the report and conducts an assessment to determine corrective actions.',
+        'The result of the assessment will provide the list of key activities to be followed by the officer assigned to oversee the dispute case, including the expected accomplishment date of each activity.'
+      ]
     },
     {
-      title: "Dispute Resolution with Corrective Actions",
+      value: 'step3',
+      title: 'Assign Officer to Oversee Dispute Case',
       description:
-        "The Officer assigned takes appropriate actions based on their decision, including issuing a penalty fee to violators if applicable.",
+        'An officer is designated to oversee the resolution of the dispute case.',
       details: [
-        "At this step, it is reasonable to presume that the scheduled dispute resolution meeting has been conducted.",
-        "If applicable, each person involved in the dispute is informed that the penalty fee is added to their statement of account, which can be accessed via the Finance Management module.",
-      ],
+        'The designated officer of the dispute case will be a member of the Grievance and Adjudication Committee.',
+        'The officer reviews the timeline of the dispute resolution key activities provided by the committee and makes necessary preparations.'
+      ]
     },
-  ];
-  // Temporary Data
-  const temp = {
-    id: "#D002",
-    number: 2,
-    status: "Under Review",
-    createdAt: "March 01, 2024",
-    officerAssigned: "G&A Officer 2",
-    disputeDate: "MM/DD/YYYY",
-    type: "Neighbor-to-Neighbor Conflict",
-    description: "Lorem ipsum",
-    violation: {
-      type: "Parking",
-      penaltyFee: "500",
+    {
+      value: 'step4',
+      title: 'Send out Dispute Letters',
+      description:
+        'The complainee(s) are informed of the dispute through official dispute letters.',
+      details: [
+        'The designated officer sends dispute letters to the complainee(s) via the MIS.',
+        'The dispute letter outlines the nature of the dispute and the scheduled meeting details to deliberate on the most effective course of action for its resolution.'
+      ]
     },
-    personsInvolved: [""],
-    submittedBy: "Juan Dela Cruz",
-    step: 2,
-    progress: "Step 2: Review by Grievance and Adjudication Committee",
-  };
+    {
+      value: 'step5',
+      title: 'Discussions and Activities for Resolution',
+      description:
+        'The complainee(s) and the assigned officer engage in discussions and activities aimed at resolving the dispute.',
+      details: [
+        'The designated officer communicates with the complainee(s) to discuss the dispute and potential resolutions.',
+        'Activities may include mediation sessions, arbitration, or other conflict resolution methods as deemed appropriate.',
+        'The designated officer submits progress reports outlining the activities performed until the dispute case reaches its resolution.'
+      ]
+    },
+    {
+      value: 'step6',
+      title: 'Dispute Resolution with Corrective Actions',
+      description:
+        'The designated officer ensures that the agreed-upon resolution is carried out.',
+      details: [
+        'Upon reaching a resolution, the dispute is officially resolved, and corrective actions are implemented if necessary.',
+        'If the dispute is not resolved successfully, the dispute case is elevated to the barangay.'
+      ]
+    }
+  ]
 
-  const { activeStep, setActiveStep } = useSteps({
-    index: reportDetails.dispute.step - 1,
-    count: processSteps.length,
-  });
+  const tempDispute = {
+    step: 6,
+    number: 1,
+    status: 'Closed',
+    submittedBy: 'Submitter',
+    personComplained: 'Complainee',
+    officerAssigned: 'Officer',
+    disputeType: 'Parking',
+    createdAt: 'Date created',
+    disputeDate: 'Dispute Date',
+    disputeDescription: 'Dispute Description',
+    reasonToClose: 'Resolved'
+  }
 
   return (
     <div>
-      <Flex justifyContent="space-between">
-        <Flex className="gap-x-4">
+      <Flex justifyContent='space-between'>
+        <Flex gap={5}>
           <Heading
-            title={`#D${reportDetails.dispute.number
+            title={`#V${reportDetails.dispute.number
               .toString()
-              .padStart(4, "0")} - Dispute Resolution Progress`}
+              .padStart(4, '0')} - Dispute Resolution Progress`}
             description="View the progress of a selected dispute case within the Homeowners' Association."
           />
+          {/* Status */}
           <Badge
             className={cn(
-              "w-[max-content] h-[min-content] px-3 py-2 text-center justify-center text-sm",
-              reportDetails.dispute.status === "Resolved"
-                ? "bg-green-700"
-                : reportDetails.dispute.status === "Pending"
-                ? "bg-red-700"
-                : reportDetails.dispute.status === "Under Review"
-                ? "bg-yellow-600"
-                : reportDetails.dispute.status === "Unresolved"
-                ? "bg-gray-300 text-black"
-                : "display-none"
+              'w-[max-content] h-[min-content] px-3 py-2 text-center justify-center text-sm',
+              reportDetails.dispute.status === 'For Review'
+                ? 'bg-yellow-700'
+                : reportDetails.dispute.status === 'Invalid'
+                ? 'bg-red-800'
+                : reportDetails.dispute.status === 'For Assignment'
+                ? 'bg-yellow-800'
+                : reportDetails.dispute.status === 'Pending Dispute Letter'
+                ? 'bg-orange-800'
+                : reportDetails.dispute.status === 'Negotiating (Letter Sent)'
+                ? 'bg-blue-900'
+                : reportDetails.dispute.status === 'Closed' &&
+                  reportDetails.dispute.reasonToClose ===
+                    'Penalty Fee Charged to SOA'
+                ? ''
+                : reportDetails.dispute.status === 'Closed' &&
+                  reportDetails.dispute.reasonToClose === 'Appealed'
+                ? 'bg-green-700'
+                : 'display-none'
             )}
           >
             {reportDetails.dispute.status}
+            {reportDetails.dispute.reasonToClose &&
+              ` - ${reportDetails.dispute.reasonToClose}`}
           </Badge>
         </Flex>
         <BackButton />
       </Flex>
-      <Separator className="mt-4 mb-6" />
+      <Separator className='mt-4 mb-6' />
 
-      <Flex gap={10} h="65vh">
-        <Stepper
-          index={activeStep}
-          orientation="vertical"
-          width="min-content"
-          gap="0"
-          colorScheme="yellow"
-          size="md"
-          h="40vh"
-        >
+      <Tabs
+        defaultValue={'step' + reportDetails.dispute.step}
+        className='w-full'
+      >
+        <TabsList className='grid w-full grid-cols-6'>
           {processSteps.map((step, index) => (
-            <Step
-              key={index}
-              onClick={() => {
-                if (index <= reportDetails.dispute.step - 1)
-                  // to make uncompleted steps unclickable
-                  setActiveStep(index);
-              }}
+            <TabsTrigger
+              key={step.value}
+              value={step.value}
+              disabled={index >= tempDispute.step} // to make uncompleted steps unclickable
             >
-              <StepIndicator
-                className={
-                  index <= reportDetails.dispute.step - 1
-                    ? "text-black"
-                    : "text-gray-300"
-                }
-              >
-                <StepStatus
-                  complete={<StepIcon />}
-                  incomplete={<StepNumber />}
-                  active={<StepNumber />}
-                />
-              </StepIndicator>
-              <Box
-                flexShrink="0"
-                fontFamily="font.body"
-                w="10vw"
-                onClick={() => Request}
-              >
-                {/* Stepper Number and Title */}
-                <StepTitle>
-                  <span
-                    className={
-                      index <= reportDetails.dispute.step - 1
-                        ? "text-black"
-                        : "text-gray-300"
-                    }
-                  >
-                    Step {index + 1}
-                  </span>
-                </StepTitle>
-                <StepDescription>
-                  <span
-                    className={
-                      index <= reportDetails.dispute.step - 1
-                        ? "text-black"
-                        : "text-gray-300"
-                    }
-                  >
-                    {step.title}
-                  </span>
-                </StepDescription>
-              </Box>
-              <StepSeparator />
-            </Step>
+              Step {index + 1}
+            </TabsTrigger>
           ))}
-        </Stepper>
-        <Box w="100%">
-          <Card
-            shadow="lg"
-            mb="1rem"
-            h="65vh"
-            p="20px 20px 30px 20px"
-            overflowY="auto"
-          >
-            <CardHeader pb={0}>
-              <Text
-                fontSize="sm"
-                fontFamily="font.body"
-                color="brand.500"
-                fontWeight="bold"
-              >
-                Step {activeStep + 1}
-              </Text>
-              <Text fontSize="lg" fontFamily="font.heading" fontWeight="bold">
-                {/* Step Title */}
-                {processSteps[activeStep].title}
-              </Text>
-              <Text fontFamily="font.body" textAlign="justify">
-                {/* Step Description */}
-                {processSteps[activeStep].description}
-              </Text>
-            </CardHeader>
-            <Card />
-            <CardBody>
-              <Stack spacing={5}>
-                {/* Step Details */}
-                <Box fontFamily="font.body" fontSize="sm" textAlign="justify">
-                  <Text>Details:</Text>
-                  <UnorderedList ml={7}>
-                    {processSteps[activeStep].details.map((detail, index) => (
-                      <ListItem key={index}>{detail}</ListItem>
-                    ))}
-                  </UnorderedList>
-                </Box>
-
-                {/* INFORMATION TABLES */}
-                <Flex gap={5}>
-                  <TableContainer>
-                    <Table
-                      variant="unstyled"
-                      fontFamily="font.body"
-                      size="sm"
-                      w="400px"
-                    >
-                      <Tbody>
-                        {/* Step 1 Information Table Part 1 */}
-                        {activeStep === 0 && (
-                          <>
-                            <Tr whiteSpace="normal">
-                              <Th border="3px double black" w="110px">
-                                Dispute Number
-                              </Th>
-                              <Td border="3px double black">
-                                #D
-                                {reportDetails.dispute.number
-                                  .toString()
-                                  .padStart(4, "0")}
-                              </Td>
-                            </Tr>
-                            <Tr whiteSpace="normal">
-                              <Th border="3px double black" w="110px">
-                                Submitted By
-                              </Th>
-                              <Td border="3px double black">
-                                {reportDetails.submittedBy
-                                  ? `${reportDetails.submittedBy.firstName} ${reportDetails.submittedBy.lastName}`
-                                  : ""}
-                              </Td>
-                            </Tr>
-                            <Tr whiteSpace="normal">
-                              <Th border="3px double black" w="110px">
-                                Person/s Involved
-                              </Th>
-                              <Td border="3px double black">
-                                <UnorderedList>
-                                  {reportDetails.personsInvolved.map(
-                                    (item: PersonalInfo) => (
-                                      <ListItem key={item.id}>
-                                        {item.firstName} {item.lastName}
-                                      </ListItem>
-                                    )
-                                  )}
-                                </UnorderedList>
-                              </Td>
-                            </Tr>
-                          </>
-                        )}
-                        {/* Step 2 Information Table */}
-                        {activeStep === 1 && (
-                          <Tr whiteSpace="normal">
-                            <Th border="3px double black" w="110px">
-                              Officer Assigned
-                            </Th>
-                            <Td
-                              border="3px double black"
-                              color={
-                                reportDetails.officerAssigned
-                                  ? "black"
-                                  : "lightgray"
-                              }
-                              fontStyle={
-                                reportDetails.officerAssigned
-                                  ? "normal"
-                                  : "italic"
-                              }
-                            >
-                              {reportDetails.officerAssigned
-                                ? `${reportDetails.officerAssigned.firstName} ${reportDetails.officerAssigned.lastName}`
-                                : "Unassigned"}
-                            </Td>
-                          </Tr>
-                        )}
-                        {/* Step 5 Information Table */}
-                        {activeStep === 2 && (
-                          <>
-                            <Tr whiteSpace="normal">
-                              <Th border="3px double black" w="110px">
-                                Dispute Type
-                              </Th>
-                              <Td border="3px double black">
-                                {reportDetails.disputeType.title}
-                              </Td>
-                            </Tr>
-                            <Tr whiteSpace="normal">
-                              <Th border="3px double black" w="110px">
-                                Violation Type
-                              </Th>
-                              <Td border="3px double black">
-                                {reportDetails.violationType
-                                  ? reportDetails.violationType.title
-                                  : "N/A"}
-                              </Td>
-                            </Tr>
-                            <Tr whiteSpace="normal">
-                              <Th border="3px double black" w="110px">
-                                Penalty Fee
-                              </Th>
-                              <Td border="3px double black">
-                                {reportDetails.violationType
-                                  ? `₱ ${reportDetails.violationType.fee}`
-                                  : "N/A"}
-                              </Td>
-                            </Tr>
-                          </>
-                        )}
-                      </Tbody>
-                    </Table>
-                  </TableContainer>
-
-                  {activeStep === 0 && (
-                    // Step 1 Information Table Part 2
-                    <TableContainer>
-                      <Table
-                        variant="unstyled"
-                        fontFamily="font.body"
-                        size="sm"
-                        maxWidth="400px"
-                      >
-                        <Tbody>
-                          <>
-                            <Tr whiteSpace="normal">
-                              <Th border="3px double black" w="110px">
-                                Date Submitted
-                              </Th>
-                              <Td border="3px double black">
-                                {reportDetails.dispute.createdAt
-                                  ? format(
-                                      new Date(reportDetails.dispute.createdAt)
-                                        ?.toISOString()
-                                        .split("T")[0],
-                                      "MMMM dd, yyyy"
-                                    )
-                                  : ""}
-                              </Td>
-                            </Tr>
-                            <Tr whiteSpace="normal">
-                              <Th border="3px double black" w="110px">
-                                Date of Dispute
-                              </Th>
-                              <Td border="3px double black">
-                                {reportDetails.dispute.disputeDate
-                                  ? format(
-                                      new Date(
-                                        reportDetails.dispute.disputeDate
-                                      )
-                                        ?.toISOString()
-                                        .split("T")[0],
-                                      "MMMM dd, yyyy"
-                                    )
-                                  : ""}
-                              </Td>
-                            </Tr>
-                            <Tr whiteSpace="normal">
-                              <Th border="3px double black" w="110px">
-                                Dispute Type
-                              </Th>
-                              <Td border="3px double black">
-                                {reportDetails.disputeType.title}
-                              </Td>
-                            </Tr>
-                          </>
-                        </Tbody>
-                      </Table>
-                    </TableContainer>
-                  )}
-                </Flex>
-                {/* Dispute Description */}
-                {activeStep === 0 && (
-                  <Text
-                    fontSize="xs"
-                    fontFamily="font.body"
-                    color="grey"
-                    textAlign="justify"
-                  >
-                    <span className="font-bold">Dispute Description:</span>{" "}
-                    <br />
-                    {reportDetails.dispute.description}
-                  </Text>
-                )}
-              </Stack>
-            </CardBody>
-          </Card>
-        </Box>
-      </Flex>
+        </TabsList>
+        {processSteps.map((step, index) => (
+          <TabsContent key={step.value} value={step.value}>
+            <StepCard
+              key={step.value}
+              stepIndex={index}
+              processSteps={processSteps}
+              tempDispute={tempDispute}
+              reportDetails={reportDetails}
+            />
+          </TabsContent>
+        ))}
+      </Tabs>
     </div>
-  );
-};
+  )
+}
 
-export default ViewProgress;
+export default ProgressDetails
