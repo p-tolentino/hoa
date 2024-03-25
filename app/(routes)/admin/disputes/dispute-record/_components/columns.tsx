@@ -106,7 +106,7 @@ export const columns: ColumnDef<ListOfDisputesColumn>[] = [
     cell: ({ row }) => (
       <div>
         <a
-          href={`/admin/disputes/dispute-record/view-progress/${row.original.id}`}
+          href={`/admin/disputes/dispute-record/view-progress/testDisputeFrontend`}
           className='text-sm hover:underline hover:text-blue-500'
         >
           {row.original.progress}
