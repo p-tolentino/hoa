@@ -15,10 +15,10 @@ export type ListOfDisputesColumn = {
   createdAt: string
   officerAssigned: string
   disputeDate: string
-  violationInvolved: ViolationType | undefined | null
+  //violationInvolved: ViolationType | undefined | null
   type: string
   description: string
-  personsInvolved: string[]
+  personsInvolved: string | null
   submittedBy: string
   step: number
   progress: string
@@ -106,7 +106,7 @@ export const columns: ColumnDef<ListOfDisputesColumn>[] = [
     cell: ({ row }) => (
       <div>
         <a
-          href={`/admin/disputes/dispute-record/view-progress/${row.original.id}`}
+          href={`/admin/disputes/dispute-record/view-progress/testDisputeFrontend`}
           className='text-sm hover:underline hover:text-blue-500'
         >
           {row.original.progress}
