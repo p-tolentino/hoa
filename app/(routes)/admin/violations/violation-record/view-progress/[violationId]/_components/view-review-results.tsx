@@ -25,18 +25,10 @@ import {
 import { ViolationOfficerActivity } from "@prisma/client";
 import { format } from "date-fns";
 
-type KeyActivities = {
-  title: string;
-  dueDate: string;
-  datePerformed: string;
-}[];
-
 export default function ViewReviewResults({
-  keyActivities,
   activeStep,
   reportDetails,
 }: {
-  keyActivities: KeyActivities;
   activeStep: number;
   reportDetails: any;
 }) {
@@ -65,14 +57,14 @@ export default function ViewReviewResults({
                   : ""}
               </Text>
             </Box>
-            <Link
+            {/* <Link
               href="#keyActivities"
               fontSize="sm"
               fontFamily="font.body"
               color="blue.500"
             >
               View Key Activities
-            </Link>
+            </Link> */}
           </Flex>
           <Box
             h="18vh"

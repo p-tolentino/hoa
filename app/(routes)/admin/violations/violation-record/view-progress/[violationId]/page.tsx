@@ -80,6 +80,7 @@ export const ViolationProgressPage = async ({
       (a, b) => new Date(b.deadline).getDate() - new Date(a.deadline).getDate()
     ),
     progressReports: progressReports,
+    userInfos: infos,
   };
 
   return (

@@ -41,6 +41,7 @@ import ProgressReportForm from "./progress-report-form";
 import ViewReviewResults from "./view-review-results";
 import WriteFinalAssessment from "./write-final-assessment";
 import WriteViolationLetter from "./write-violation-letter";
+import { useCurrentUser } from "@/hooks/use-current-user";
 
 interface ProcessStep {
   value: string;
@@ -60,32 +61,10 @@ export default function StepCard({
   processSteps,
   reportDetails,
 }: StepCardProps) {
-  const keyActivities = [
-    {
-      title: "activityTitle1",
-      dueDate: "activityDueDate1",
-      datePerformed: "activityDatePerformed1",
-    },
-    {
-      title: "activityTitle2",
-      dueDate: "activityDueDate2",
-      datePerformed: "activityDatePerformed2",
-    },
-    {
-      title: "activityTitle3",
-      dueDate: "activityDueDate3",
-      datePerformed: "activityDatePerformed3",
-    },
-    {
-      title: "activityTitle4",
-      dueDate: "activityDueDate4",
-      datePerformed: "activityDatePerformed4",
-    },
-  ];
-
+  const user = useCurrentUser();
   const { activeStep } = useSteps({
     index: 0,
-    count: keyActivities.length,
+    count: reportDetails.officerActivities.length,
   });
 
   return (
@@ -295,10 +274,12 @@ export default function StepCard({
                   overflowY="auto"
                   flex={3}
                 >
-                  <WriteReviewResults
-                    violation={reportDetails.violation}
-                    committee={reportDetails.committee}
-                  />
+                  {reportDetails.violation.officerAssigned === user?.id && (
+                    <WriteReviewResults
+                      violation={reportDetails.violation}
+                      committee={reportDetails.committee}
+                    />
+                  )}
                   <Center color="gray" h="50%" fontFamily="font.body">
                     No results to show.
                   </Center>
@@ -310,7 +291,6 @@ export default function StepCard({
           {/* Step 3 Content */}
           {stepIndex === 2 && (
             <ViewReviewResults
-              keyActivities={keyActivities}
               activeStep={activeStep}
               reportDetails={reportDetails}
             />
@@ -336,7 +316,9 @@ export default function StepCard({
                   overflowY="auto"
                   flex={3}
                 >
-                  <WriteViolationLetter reportDetails={reportDetails} />
+                  {reportDetails.violation.officerAssigned === user?.id && (
+                    <WriteViolationLetter reportDetails={reportDetails} />
+                  )}
                   <Center color="gray" h="50%" fontFamily="font.body">
                     No results to show.
                   </Center>
@@ -364,7 +346,11 @@ export default function StepCard({
                 </Box>
                 <Stepper
                   index={activeStep}
-                  orientation="vertical"
+                  orientation={
+                    reportDetails.violation.officerAssigned === user?.id
+                      ? "vertical"
+                      : "horizontal"
+                  }
                   w="max-content"
                   h="max-content"
                   p="1rem"
@@ -415,9 +401,11 @@ export default function StepCard({
                 </Stepper>
               </Box>
               {/* Progress Report Form */}
-              <ProgressReportForm
-                keyActivities={reportDetails.officerActivities}
-              />
+              {reportDetails.violation.officerAssigned === user?.id && (
+                <ProgressReportForm
+                  keyActivities={reportDetails.officerActivities}
+                />
+              )}
             </Flex>
           )}
 
@@ -535,7 +523,7 @@ export default function StepCard({
                   overflowY="auto"
                   flex={3}
                 >
-                  <WriteFinalAssessment violation={reportDetails.violation} />
+                  <WriteFinalAssessment reportDetails={reportDetails} />
                   <Center color="gray" h="50%" fontFamily="font.body">
                     No results to show.
                   </Center>
