@@ -44,6 +44,7 @@ export default async function SubmittedViolations() {
         FOR_ASSIGNMENT: "For Officer Assignment",
         PENDING_LETTER_TO_BE_SENT: "Pending Letter To Be Sent",
         NEGOTIATING: "Negotiating",
+        FOR_FINAL_REVIEW: "For Final Review",
         CLOSED: "Closed",
       };
 

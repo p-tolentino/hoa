@@ -81,21 +81,6 @@ export const ProgressDetails: React.FC<ViewProgressProps> = ({
     },
   ];
 
-  const tempViolation = {
-    step: 6,
-    number: 1,
-    status: "Closed",
-    submittedBy: "Submitter",
-    personsInvolved: ["person1", "person2"],
-    officerAssigned: "Officer",
-    violationType: "Parking",
-    violationFee: "P 100",
-    createdAt: "Date created",
-    violationDate: "Violation Date",
-    violationDescription: "Violation Description",
-    reasonToClose: "Penalty Fee Charged to SOA"
-  };
-
   return (
     <div>
       <Flex justifyContent="space-between">
@@ -116,7 +101,7 @@ export const ProgressDetails: React.FC<ViewProgressProps> = ({
                 ? "bg-red-800"
                 : reportDetails.violation.status === "For Assignment"
                 ? "bg-yellow-800"
-                : reportDetails.violation.status === "Pending Violation Letter"
+                : reportDetails.violation.status === "Pending Letter To Be Sent"
                 ? "bg-orange-800"
                 : reportDetails.violation.status === "Negotiating (Letter Sent)"
                 ? "bg-blue-900"
@@ -127,23 +112,31 @@ export const ProgressDetails: React.FC<ViewProgressProps> = ({
                 : reportDetails.violation.status === "Closed" &&
                   reportDetails.violation.reasonToClose === "Appealed"
                 ? "bg-green-700"
-                : "display-none"
+                : ""
             )}
           >
-            {reportDetails.violation.status}{reportDetails.violation.reasonToClose && ` - ${reportDetails.violation.reasonToClose}`}
+            {reportDetails.violation.status}
+            {reportDetails.violation.reasonToClose &&
+              ` - ${reportDetails.violation.reasonToClose}`}
           </Badge>
         </Flex>
         <BackButton />
       </Flex>
       <Separator className="mt-4 mb-6" />
 
-      <Tabs defaultValue={"step" + reportDetails.violation.step} className="w-full">
+      <Tabs
+        defaultValue={"step" + reportDetails.violation.step}
+        className="w-full"
+      >
         <TabsList className="grid w-full grid-cols-6">
           {processSteps.map((step, index) => (
             <TabsTrigger
               key={step.value}
               value={step.value}
-              disabled={index >= tempViolation.step} // to make uncompleted steps unclickable
+              disabled={index > reportDetails.violation.step} // to make uncompleted steps unclickable
+              className={cn(
+                index > reportDetails.violation.step && "cursor-not-allowed"
+              )}
             >
               Step {index + 1}
             </TabsTrigger>

@@ -52,7 +52,7 @@ export const columns: ColumnDef<ListOfViolationsColumn>[] = [
             ? "bg-red-800"
             : row.getValue("status") === "For Assignment"
             ? "bg-yellow-800"
-            : row.getValue("status") === "Pending Violation Letter"
+            : row.getValue("status") === "Pending Letter To Be Sent"
             ? "bg-orange-800"
             : row.getValue("status") === "Negotiating (Letter Sent)"
             ? "bg-blue-900"
@@ -62,7 +62,7 @@ export const columns: ColumnDef<ListOfViolationsColumn>[] = [
             : row.getValue("status") === "Closed" &&
               row.original.reasonToClose === "Appealed"
             ? "bg-green-700"
-            : "display-none"
+            : ""
         )}
       >
         {row.getValue("status")}{" "}

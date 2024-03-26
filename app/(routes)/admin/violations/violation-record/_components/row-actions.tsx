@@ -15,10 +15,7 @@ import {
 
 import { ListOfViolationsColumn } from "./columns";
 import { useEffect, useState } from "react";
-import {
-  getViolationTypeByName,
-  getViolationTypeByTitle,
-} from "@/server/data/violation-type";
+import { getViolationTypeByTitle } from "@/server/data/violation-type";
 import { PersonalInfo, ViolationType } from "@prisma/client";
 import {
   updateClosed,

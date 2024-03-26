@@ -1,10 +1,11 @@
 import { ViolationLettersAndNoticesClient } from "./_components/client";
-import { getAllLettersAndNotices } from "@/server/data/letter-notice";
+import { getAllLetters, getLetterByUserId } from "@/server/data/letter-notice";
 import { ViolationLettersAndNoticesColumn } from "./_components/columns";
 import { getAllViolations } from "@/server/data/violation";
 import { getAllViolationTypes } from "@/server/data/violation-type";
 import { format } from "date-fns";
 import { currentUser } from "@/lib/auth";
+import { LetterNoticeType } from "@prisma/client";
 
 export default async function ViolationLettersAndNotices() {
   const user = await currentUser();
@@ -13,17 +14,14 @@ export default async function ViolationLettersAndNotices() {
     return null;
   }
 
-  const lettersNotices = await getAllLettersAndNotices();
+  const letters = await getLetterByUserId(user.id);
 
-  if (!lettersNotices) {
+  if (!letters) {
     return null;
   }
 
-  const orderedLettersNotices = lettersNotices
-    .filter(
-      (item) =>
-        item.type === "violationLetter" || item.type === "violationNotice"
-    )
+  const orderedLetters = letters
+    .filter((item) => item.type === LetterNoticeType.VIOLATION)
     .sort((a: any, b: any) => b.createdAt - a.createdAt);
 
   const violations = await getAllViolations();
@@ -38,20 +36,25 @@ export default async function ViolationLettersAndNotices() {
     return null;
   }
 
-  const formattedData: ViolationLettersAndNoticesColumn[] =
-    orderedLettersNotices.map((item) => {
+  const formattedData: ViolationLettersAndNoticesColumn[] = orderedLetters.map(
+    (item) => {
       const violation = violations.find(
         (violation) => violation.id === item.idToLink
       );
       const violationType = violationTypes.find(
-        (type) => type.name === violation?.type
+        (type) => type.id === violation?.type
       );
 
       return {
         id: item.id || "",
         type: item.type || "",
         recipient: item.recipient || "",
-        meetDate: item.meetDate ? item.meetDate : "",
+        meetDate: item.meetDate
+          ? format(
+              new Date(item.meetDate)?.toISOString().split("T")[0],
+              "MMMM dd, yyyy"
+            )
+          : "",
         venue: item.venue ? item.venue : "",
         sender: item.sender || "",
         createdAt: item.createdAt
@@ -63,16 +66,13 @@ export default async function ViolationLettersAndNotices() {
         violation: violation!!,
         violationType: violationType!!,
       };
-    });
+    }
+  );
 
   return (
     <div>
       <div className="flex-1 space-y-4">
-        <ViolationLettersAndNoticesClient
-          data={formattedData.filter((data) => {
-            return user.id === data.recipient;
-          })}
-        />
+        <ViolationLettersAndNoticesClient data={formattedData} />
       </div>
     </div>
   );

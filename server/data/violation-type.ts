@@ -12,6 +12,20 @@ export const getAllViolationTypes = async () => {
   }
 };
 
+export const getViolationTypeById = async (id: string) => {
+  try {
+    const violation = await db.violationType.findFirst({
+      where: {
+        id,
+      },
+    });
+
+    return violation;
+  } catch {
+    return null;
+  }
+};
+
 export const getViolationTypeByTitle = async (title: string) => {
   try {
     const violation = await db.violationType.findFirst({

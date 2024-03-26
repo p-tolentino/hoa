@@ -188,11 +188,68 @@ export const createOfficerTasks = async (values: any) => {
 
   await db.violationOfficerActivity.createMany({
     data: {
-      ...values
+      ...values,
     },
   });
 
   return {
     success: "Tasks successfully created.",
   };
-}
+};
+
+export const createViolationProgressReport = async (values: any) => {
+  const user = await currentUser();
+
+  // No Current User
+  if (!user) {
+    return { error: "Unauthorized" };
+  }
+
+  // Validation if user is in database (not leftover session)
+  const dbUser = await getUserById(user.id);
+
+  if (!dbUser) {
+    return { error: "Unauthorized" };
+  }
+
+  await db.violationProgress.createMany({
+    data: {
+      ...values,
+    },
+  });
+
+  return {
+    success: "Progress report for violation successfully created.",
+  };
+};
+
+export const updateViolationOfficerTask = async (
+  id: string,
+  isDone: boolean
+) => {
+  const user = await currentUser();
+
+  // No Current User
+  if (!user) {
+    return { error: "Unauthorized" };
+  }
+
+  // Validation if user is in database (not leftover session)
+  const dbUser = await getUserById(user.id);
+
+  if (!dbUser) {
+    return { error: "Unauthorized" };
+  }
+
+  await db.violationOfficerActivity.update({
+    where: { id },
+    data: {
+      isDone,
+      dateCompleted: new Date(),
+    },
+  });
+
+  return {
+    success: "Officer activity marked done.",
+  };
+};

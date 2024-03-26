@@ -1,6 +1,10 @@
 import { db } from "@/lib/db";
 import { getAllInfo } from "@/server/data/user-info";
 import ViewProgress from "./_components/view-progress";
+import {
+  getAllProgressReports,
+  getViolationOfficerActivitiesById,
+} from "@/server/data/violation";
 
 export const ViolationProgressPage = async ({
   params,
@@ -49,11 +53,18 @@ export const ViolationProgressPage = async ({
     violation.personsInvolved.some((person) => person === info.userId)
   );
 
+  const officerActivities = await getViolationOfficerActivitiesById(
+    violation?.id
+  );
+
+  const progressReports = await getAllProgressReports();
+
   const status = {
     FOR_REVIEW: "For Review",
     FOR_ASSIGNMENT: "For Officer Assignment",
     PENDING_LETTER_TO_BE_SENT: "Pending Letter To Be Sent",
-    NEGOTIATING: "Negotiating",
+    NEGOTIATING: "Negotiating (Letter Sent)",
+    FOR_FINAL_REVIEW: "For Final Review",
     CLOSED: "Closed",
   };
 
@@ -63,6 +74,10 @@ export const ViolationProgressPage = async ({
     officerAssigned: officerAssigned ? officerAssigned : null,
     submittedBy: submittedBy,
     personsInvolved: updatedPersons,
+    officerActivities: officerActivities?.sort(
+      (a, b) => new Date(b.deadline).getDate() - new Date(a.deadline).getDate()
+    ),
+    progressReports: progressReports,
   };
 
   return (

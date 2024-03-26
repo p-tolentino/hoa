@@ -33,18 +33,14 @@ export const columns: ColumnDef<ViolationLettersAndNoticesColumn>[] = [
   {
     accessorKey: "violationType",
     header: "Violation Type",
-    cell: ({ row }) => <span>{row.original.violationType.title}</span>,
+    cell: ({ row }) => <span>{row.original?.violationType?.title}</span>,
   },
   {
     accessorKey: "viewViolationLetterNotice",
     header: "",
     cell: ({ row }) => (
       <a
-        href={
-          row.original.type === "violationLetter"
-            ? `/admin/violations/letters-and-notices/letter?letterId=${row.original.id}&violationId=${row.original.violation.id}&violationTypeName=${row.original.violationType.name}`
-            : `/admin/violations/letters-and-notices/notice?noticeId=${row.original.id}&violationId=${row.original.violation.id}&violationTypeName=${row.original.violationType.name}`
-        }
+        href={`/admin/violations/letters-and-notices/letter?letterId=${row.original.id}&violationId=${row.original.violation.id}&violationTypeId=${row.original.violationType.id}`}
         className="hover:underline hover:text-blue-500"
       >
         View Details
