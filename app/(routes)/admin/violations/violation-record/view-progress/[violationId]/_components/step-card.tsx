@@ -369,7 +369,7 @@ export default function StepCard({
                             active={<StepNumber />}
                           />
                         </StepIndicator>
-                        <Box fontFamily="font.body" w="10vw">
+                        <Box fontFamily="font.body" w="15vw">
                           <StepTitle>
                             <ViewProgressReport
                               activity={activity}

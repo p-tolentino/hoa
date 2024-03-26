@@ -37,7 +37,7 @@ export default function ViewReviewResults ({
   reportDetails: any
 }) {
   return (
-    <Box>
+    <Stack spacing={5}>
       <Flex gap={10}>
         <Box>
           <Flex justifyContent='space-between'>
@@ -156,7 +156,7 @@ export default function ViewReviewResults ({
         </Box>
       </Flex>
 
-      <Box id='keyActivities' mt={5}>
+      <Box id='keyActivities'>
         <Box>
           <Text fontWeight='semibold' fontFamily='font.heading' lineHeight={1}>
             Key Activities
@@ -196,6 +196,6 @@ export default function ViewReviewResults ({
           ))}
         </Stepper>
       </Box>
-    </Box>
+    </Stack>
   )
 }
