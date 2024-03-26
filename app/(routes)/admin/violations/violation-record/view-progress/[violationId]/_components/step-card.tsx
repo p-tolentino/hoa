@@ -32,6 +32,7 @@ import { report } from "process";
 import { format } from "date-fns";
 import {
   PersonalInfo,
+  UserRole,
   ViolationOfficerActivity,
   ViolationProgress,
 } from "@prisma/client";
@@ -274,12 +275,13 @@ export default function StepCard({
                   overflowY="auto"
                   flex={3}
                 >
-                  {reportDetails.violation.officerAssigned === user?.id && (
-                    <WriteReviewResults
-                      violation={reportDetails.violation}
-                      committee={reportDetails.committee}
-                    />
-                  )}
+                  {reportDetails.violation.officerAssigned === user?.id ||
+                    (user?.role === UserRole.SUPERUSER && (
+                      <WriteReviewResults
+                        violation={reportDetails.violation}
+                        committee={reportDetails.committee}
+                      />
+                    ))}
                   <Center color="gray" h="50%" fontFamily="font.body">
                     No results to show.
                   </Center>
@@ -316,9 +318,10 @@ export default function StepCard({
                   overflowY="auto"
                   flex={3}
                 >
-                  {reportDetails.violation.officerAssigned === user?.id && (
-                    <WriteViolationLetter reportDetails={reportDetails} />
-                  )}
+                  {reportDetails.violation.officerAssigned === user?.id ||
+                    (user?.role === UserRole.SUPERUSER && (
+                      <WriteViolationLetter reportDetails={reportDetails} />
+                    ))}
                   <Center color="gray" h="50%" fontFamily="font.body">
                     No results to show.
                   </Center>
@@ -347,7 +350,8 @@ export default function StepCard({
                 <Stepper
                   index={activeStep}
                   orientation={
-                    reportDetails.violation.officerAssigned === user?.id
+                    reportDetails.violation.officerAssigned === user?.id ||
+                    user?.role === UserRole.SUPERUSER
                       ? "vertical"
                       : "horizontal"
                   }
@@ -401,11 +405,12 @@ export default function StepCard({
                 </Stepper>
               </Box>
               {/* Progress Report Form */}
-              {reportDetails.violation.officerAssigned === user?.id && (
-                <ProgressReportForm
-                  keyActivities={reportDetails.officerActivities}
-                />
-              )}
+              {reportDetails.violation.officerAssigned === user?.id ||
+                (user?.role === UserRole.SUPERUSER && (
+                  <ProgressReportForm
+                    keyActivities={reportDetails.officerActivities}
+                  />
+                ))}
             </Flex>
           )}
 
@@ -523,7 +528,10 @@ export default function StepCard({
                   overflowY="auto"
                   flex={3}
                 >
-                  <WriteFinalAssessment reportDetails={reportDetails} />
+                  {reportDetails.violation.officerAssigned === user?.id ||
+                    (user?.role === UserRole.SUPERUSER && (
+                      <WriteFinalAssessment reportDetails={reportDetails} />
+                    ))}
                   <Center color="gray" h="50%" fontFamily="font.body">
                     No results to show.
                   </Center>
