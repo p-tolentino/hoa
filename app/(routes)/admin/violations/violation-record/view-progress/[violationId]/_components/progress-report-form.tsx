@@ -40,7 +40,6 @@ export default function ProgressReportForm({
       activity: forActivity,
       title: progressTitle,
       description: progressDescription,
-      dateSubmitted: new Date(),
     };
 
     await createViolationProgressReport(formData)

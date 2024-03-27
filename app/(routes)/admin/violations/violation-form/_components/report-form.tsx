@@ -12,6 +12,7 @@ import {
   HStack,
   Select,
   Flex,
+  Text,
 } from "@chakra-ui/react";
 import { startTransition, useEffect, useState } from "react";
 import { Separator } from "@/components/ui/separator";
@@ -26,6 +27,7 @@ import { PersonalInfo, ViolationType } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import BackButton from "@/components/system/BackButton";
+import { UploadDropzone } from "@/lib/utils";
 
 const ViolationFormSchema = z.object({
   violationDate: z.string(),
@@ -53,10 +55,6 @@ export const ReportForm: React.FC<ReportFormProps> = ({
   const [personsInvolved, setPersonsInvolved] = useState([""]);
   const [filesUploaded, setFilesUploaded] = useState([""]);
 
-  const addPersonInput = () => {
-    setPersonsInvolved([...personsInvolved, ""]);
-  };
-
   const removePersonInput = (index: number) => {
     const updatedPersonsInvolved = [...personsInvolved];
     updatedPersonsInvolved.splice(index, 1);
@@ -69,20 +67,14 @@ export const ReportForm: React.FC<ReportFormProps> = ({
     setPersonsInvolved(updatedPersonsInvolved);
   };
 
-  const addFileUpload = () => {
-    setFilesUploaded([...filesUploaded, ""]);
-  };
-
   const removeFileUpload = (index: number) => {
     const updatedFilesUploaded = [...filesUploaded];
     updatedFilesUploaded.splice(index, 1);
     setFilesUploaded(updatedFilesUploaded);
   };
 
-  const handleFileUploadChange = (index: number, value: string) => {
-    const updatedFilesUploaded = [...filesUploaded];
-    updatedFilesUploaded[index] = value;
-    setFilesUploaded(updatedFilesUploaded);
+  const handleFileUploadChange = (url: string) => {
+    setFilesUploaded([...filesUploaded, url]);
   };
 
   const form = useForm<ViolationFormValues>({
@@ -102,6 +94,7 @@ export const ReportForm: React.FC<ReportFormProps> = ({
         personsInvolved: personsInvolved.filter(
           (item, index) => personsInvolved.indexOf(item) === index
         ),
+        documents: filesUploaded,
       };
 
       createViolation(formData)
@@ -212,27 +205,18 @@ export const ReportForm: React.FC<ReportFormProps> = ({
                   <FormLabel fontSize="md" fontFamily="font.body">
                     Upload your supporting documents:
                   </FormLabel>
-                  <Button
-                    size="xs"
-                    mt="-1"
-                    leftIcon={<AddIcon />}
-                    onClick={addFileUpload}
-                  >
-                    Add File
-                  </Button>
                 </HStack>
                 {filesUploaded.map((file, index) => (
-                  <Box key={index} display="flex" alignItems="center">
-                    <Input
-                      type="file"
-                      size="sm"
-                      fontFamily="font.body"
-                      mb={2}
-                      value={file}
-                      onChange={(e) =>
-                        handleFileUploadChange(index, e.target.value)
-                      }
-                    />
+                  <Box
+                    key={index}
+                    display="flex"
+                    alignItems="center"
+                    className="mb-2"
+                  >
+                    <a href={file} target="_blank">
+                      {file}
+                    </a>{" "}
+                    {/* Render file URL as a link */}
                     {filesUploaded.length > 1 && index !== 0 && (
                       <Button
                         size="xs"
@@ -245,6 +229,19 @@ export const ReportForm: React.FC<ReportFormProps> = ({
                     )}
                   </Box>
                 ))}
+                <UploadDropzone
+                  appearance={{
+                    button:
+                      "ut-uploading:cursor-not-allowed rounded-r-none bg-[#e6c45e] text-black bg-none after:bg-[#dbac1d]",
+                    label: { color: "#ffaa00" },
+                    uploadIcon: { color: "#355E3B" },
+                  }}
+                  endpoint="mixedUploader" // Adjust this endpoint as needed
+                  onClientUploadComplete={(res) =>
+                    handleFileUploadChange(res[0].url)
+                  }
+                  onUploadError={(error) => console.log(error)}
+                />
                 <FormHelperText fontSize="xs" mt="-1" pt={2}>
                   This will allow us to gain more information about the
                   violation that would help us in decision making.
@@ -255,16 +252,8 @@ export const ReportForm: React.FC<ReportFormProps> = ({
               <FormControl isRequired>
                 <HStack justifyContent="space-between">
                   <FormLabel fontSize="md" fontFamily="font.body">
-                    Person/s Involved
+                    Person Involved
                   </FormLabel>
-                  <Button
-                    size="xs"
-                    mt="-1"
-                    leftIcon={<AddIcon />}
-                    onClick={addPersonInput}
-                  >
-                    Add Person
-                  </Button>
                 </HStack>
 
                 {personsInvolved.map((person, index) => (

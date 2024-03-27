@@ -47,6 +47,16 @@ export default function WriteFinalAssessment({
   };
 
   const onSubmit = async () => {
+    const offenseCount =
+      reportDetails.violationRecord[reportDetails.personsInvolved[0].userId];
+
+    const feeToIncur =
+      offenseCount === 0
+        ? reportDetails.violationType.firstOffenseFee
+        : offenseCount === 1
+        ? reportDetails.violationType.secondOffenseFee
+        : reportDetails.violationType.thirdOffenseFee;
+
     if (selectedOption === "CONCLUDED") {
       reportDetails.personsInvolved.map(async (person: PersonalInfo) => {
         // Send Notice
@@ -83,7 +93,7 @@ export default function WriteFinalAssessment({
         const feeData = {
           soaId: "Sample SOA ID", //!! EDIT BASED ON CURRENT MONTH SOA
           purpose: "Violation Fines",
-          amount: reportDetails.violationType.firstOffenseFee, //!! EDIT BASED ON VIOLATION RECORD
+          amount: feeToIncur,
           addressId: reportDetails.userInfos?.find(
             (info: PersonalInfo) => info.userId === person.userId
           )?.address,
@@ -120,6 +130,9 @@ export default function WriteFinalAssessment({
         selectedOption === "APPEALED"
           ? "Appealed"
           : "Penalty Fee Charged to SOA"
+      }`,
+      feeToIncur: `${
+        selectedOption === "APPEALED" ? "N/A" : feeToIncur.toString()
       }`,
       finalReviewDate: new Date(),
     };

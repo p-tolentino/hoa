@@ -133,9 +133,9 @@ export const ProgressDetails: React.FC<ViewProgressProps> = ({
             <TabsTrigger
               key={step.value}
               value={step.value}
-              disabled={index > reportDetails.violation.step} // to make uncompleted steps unclickable
+              disabled={index >= reportDetails.violation.step} // to make uncompleted steps unclickable
               className={cn(
-                index > reportDetails.violation.step && "cursor-not-allowed"
+                index >= reportDetails.violation.step && "cursor-not-allowed"
               )}
             >
               Step {index + 1}

@@ -28,7 +28,6 @@ import {
   Divider,
   Link,
 } from "@chakra-ui/react";
-import { report } from "process";
 import { format } from "date-fns";
 import {
   PersonalInfo,
@@ -231,6 +230,35 @@ export default function StepCard({
                     </Tbody>
                   </Table>
                 </TableContainer>
+                {reportDetails.violation.documents && (
+                  <Box>
+                    <Box>
+                      <Text
+                        fontWeight="semibold"
+                        fontFamily="font.heading"
+                        lineHeight={1}
+                      >
+                        Supporting Documents:
+                      </Text>
+                    </Box>
+                    <UnorderedList
+                      mb="1rem"
+                      ml={7}
+                      mt={3}
+                      fontFamily="font.body"
+                    >
+                      {reportDetails.violation.documents.map(
+                        (document: string, index: number) => (
+                          <ListItem key={index}>
+                            <a href={document} target="_blank">
+                              {document}
+                            </a>
+                          </ListItem>
+                        )
+                      )}
+                    </UnorderedList>
+                  </Box>
+                )}
               </Flex>
               <Text
                 fontSize="xs"
@@ -351,7 +379,8 @@ export default function StepCard({
                   index={activeStep}
                   orientation={
                     reportDetails.violation.officerAssigned === user?.id ||
-                    user?.role === UserRole.SUPERUSER
+                    (user?.role === UserRole.SUPERUSER &&
+                      reportDetails.violation.status !== "Closed")
                       ? "vertical"
                       : "horizontal"
                   }
@@ -406,11 +435,16 @@ export default function StepCard({
               </Box>
               {/* Progress Report Form */}
               {reportDetails.violation.officerAssigned === user?.id ||
-                (user?.role === UserRole.SUPERUSER && (
-                  <ProgressReportForm
-                    keyActivities={reportDetails.officerActivities}
-                  />
-                ))}
+                reportDetails.officerActivities.every(
+                  (activity: ViolationOfficerActivity) =>
+                    activity.isDone === true
+                ) ||
+                (user?.role === UserRole.SUPERUSER &&
+                  reportDetails.violation.status !== "Closed" && (
+                    <ProgressReportForm
+                      keyActivities={reportDetails.officerActivities}
+                    />
+                  ))}
             </Flex>
           )}
 
@@ -507,10 +541,7 @@ export default function StepCard({
                                 Penalty Fee
                               </Th>
                               <Td border="3px double black">
-                                {reportDetails.violation.reasonToClose ===
-                                "Appealed"
-                                  ? "N/A"
-                                  : `₱ ${reportDetails.violationType.firstOffenseFee}`}
+                                ₱ {reportDetails.violation.feeToIncur}
                               </Td>
                             </Tr>
                           </Tbody>

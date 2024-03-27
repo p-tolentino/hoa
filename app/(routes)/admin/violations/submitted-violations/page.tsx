@@ -30,8 +30,12 @@ export default async function SubmittedViolations() {
     return null;
   }
 
-  const formattedViolations: SubmittedViolationsColumn[] = violations.map(
-    (item) => {
+  const filteredViolations = await violations.filter(
+    (violation) => violation.submittedBy === user.id
+  );
+
+  const formattedViolations: SubmittedViolationsColumn[] =
+    filteredViolations.map((item) => {
       const officer = users.find(
         (info) => info.userId === item.officerAssigned
       );
@@ -86,8 +90,7 @@ export default async function SubmittedViolations() {
         letterSent: item.letterSent || false,
         reasonToClose: item.reasonToClose || "",
       };
-    }
-  );
+    });
 
   return (
     <div>

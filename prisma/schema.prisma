@@ -273,7 +273,7 @@ model Violation {
   createdAt       DateTime     @default(now())
   submittedBy     String
   number          Int          @default(autoincrement())
-  progress        String       @default("Step 2: Review by Environment & Security Committee")
+  progress        String       @default("Step 2 & 3: Review by Committe & Assignment")
   step            Int          @default(2)
   committeeReview String?
   commReviewDate  DateTime?
@@ -281,6 +281,7 @@ model Violation {
   finalReview     String?
   finalReviewDate DateTime?
   reasonToClose   String?
+  feeToIncur      String?
   updatedAt       DateTime     @default(now()) @updatedAt
 }
 
