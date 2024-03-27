@@ -17,7 +17,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { ReportStatus, ViolationOfficerActivity } from "@prisma/client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   createViolationProgressReport,
   updateViolation,
@@ -78,10 +78,6 @@ export default function ProgressReportForm({
         router.refresh();
       });
   };
-
-  useEffect(() => {
-    console.log(forActivity);
-  }, [forActivity]);
 
   return (
     <form>

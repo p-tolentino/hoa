@@ -75,3 +75,27 @@ export const createViolationNotice = async (values: any) => {
 
   return { success: "Notice sent successfully", data: { res } };
 };
+
+export const createDisputeLetter = async (values: any) => {
+  const user = await currentUser();
+
+  // No Current User
+  if (!user) {
+    return { error: "Unauthorized" };
+  }
+
+  // Validation if user is in database (not leftover session)
+  const dbUser = await getUserById(user.id);
+
+  if (!dbUser) {
+    return { error: "Unauthorized" };
+  }
+
+  const res = await db.letter.create({
+    data: {
+      ...values,
+    },
+  });
+
+  return { success: "Letter sent successfully", res };
+};

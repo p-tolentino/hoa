@@ -1,11 +1,11 @@
 import { format } from "date-fns";
 import { ListOfDisputesColumn } from "./_components/columns";
 import { getAllDisputeTypes } from "@/server/data/dispute-type";
-import { getAllUsers } from "@/server/data/user";
 import { currentUser } from "@/lib/auth";
 import { getAllDisputes } from "@/server/data/dispute";
 import { getAllViolationTypes } from "@/server/data/violation-type";
 import { ListOfDisputesClient } from "./_components/client";
+import { getAllInfo } from "@/server/data/user-info";
 
 export default async function Disputes() {
   const user = await currentUser();
@@ -13,7 +13,7 @@ export default async function Disputes() {
     return null;
   }
 
-  const users = await getAllUsers();
+  const users = await getAllInfo();
 
   if (!users) {
     return null;
@@ -31,24 +31,28 @@ export default async function Disputes() {
     return null;
   }
 
-  const violationTypes = await getAllViolationTypes();
-
-  if (!violationTypes) {
-    return null;
-  }
-
   const formattedDisputes: ListOfDisputesColumn[] = disputes.map((item) => {
-    const officer = users.find((user) => user.id === item.officerAssigned);
-    const submittedBy = users.find((user) => user.id === item.submittedBy);
+    const officer = users.find((user) => user.userId === item.officerAssigned);
+    const submittedBy = users.find((user) => user.userId === item.submittedBy);
     const dispute = disputeTypes.find((type) => type.id === item.type);
-    // const violationType = violationTypes.find(
-    //   (type) => type.name === item.violationInvolved
-    // );
+
+    const status = {
+      FOR_REVIEW: "For Review",
+      FOR_ASSIGNMENT: "For Officer Assignment",
+      PENDING_LETTER_TO_BE_SENT: "Pending Letter To Be Sent",
+      NEGOTIATING: "Negotiating (Letter Sent)",
+      FOR_FINAL_REVIEW: "For Final Review",
+      CLOSED: "Closed",
+    };
+
+    const personComplained = users.find(
+      (info) => info.userId === item.personComplained
+    );
 
     return {
       id: item.id || "",
       number: item.number || 0,
-      status: item.status || "",
+      status: status[item.status] || "",
       type: dispute?.title || "",
       createdAt: item.createdAt
         ? format(
@@ -62,25 +66,22 @@ export default async function Disputes() {
             "MMMM dd, yyyy"
           )
         : "",
-      personsInvolved: item.personComplained || "",
-      officerAssigned: officer
-        ? `${officer.info?.firstName} ${officer.info?.lastName}`
-        : "",
+      personComplained: personComplained,
+      officerAssigned: officer,
       description: item.description || "",
-      submittedBy: submittedBy
-        ? `${submittedBy.info?.firstName} ${submittedBy.info?.lastName}`
-        : "",
-      step: item.step || 1,
+      submittedBy: submittedBy,
+      step: item.step || 0,
       progress: item.progress || "Step 0",
-      letterSent: item.letterSent,
-      updatedAt: item.updatedAt
-      ? format(
-          new Date(item.updatedAt)?.toISOString().split("T")[0],
-          "MMMM dd, yyyy"
-        )
-      : "",
+      documents: item.documents || [],
+      priority: item.priority || "",
+      letterSent: item.letterSent || false,
       reasonToClose: item.reasonToClose || "",
-      //violationInvolved: item.violationInvolved ? violationType : null,
+      updatedAt: item.updatedAt
+        ? format(
+            new Date(item.updatedAt)?.toISOString(),
+            "MMMM dd, yyyy h:mm:ss a"
+          )
+        : "",
     };
   });
 

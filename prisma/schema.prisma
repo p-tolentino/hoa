@@ -282,15 +282,15 @@ model Violation {
   finalReviewDate DateTime?
   reasonToClose   String?
   feeToIncur      String?
-  updatedAt       DateTime     @default(now()) @updatedAt
+  updatedAt       DateTime     @updatedAt
 }
 
 model ViolationOfficerActivity {
-  id            String   @id @unique @default(cuid())
+  id            String      @id @unique @default(cuid())
   violationId   String
   title         String
   deadline      DateTime
-  isDone        Boolean @default(false)
+  isDone        Boolean     @default(false)
   dateCompleted DateTime?
 }
 
@@ -351,9 +351,9 @@ model Dispute {
   type             String
   description      String
   personComplained String
-  document         String?
+  documents        String[]
   status           ReportStatus @default(FOR_REVIEW)
-  priority         Priority
+  priority         Priority?
   officerAssigned  String?
   createdAt        DateTime     @default(now())
   submittedBy      String
@@ -361,18 +361,23 @@ model Dispute {
   progress         String       @default("Step 2: Review by Grievance & Adjudication Committee")
   step             Int          @default(2)
   committeeReview  String?
-  letterSent       Boolean      @default(false)
+  commReviewDate   DateTime?
+  letterSent       Boolean       @default(false)
   finalReview      String?
+  finalReviewDate  DateTime?
   reasonToClose    String?
-  updatedAt        DateTime     @default(now()) @updatedAt
+  violationId      String?
+  feeToIncur       String?
+  updatedAt        DateTime      @updatedAt
 }
 
 model DisputeOfficerActivity {
-  id        String   @id @unique @default(cuid())
-  disputeId String
-  title     String
-  deadline  DateTime
-  isDone    Boolean
+  id            String      @id @unique @default(cuid())
+  disputeId     String
+  title         String
+  deadline      DateTime
+  isDone        Boolean     @default(false)
+  dateCompleted DateTime?
 }
 
 model DisputeProgress {

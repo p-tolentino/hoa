@@ -1,13 +1,13 @@
 import React from "react";
 import { DisputeLettersAndNoticesClient } from "./_components/client";
 import { currentUser } from "@/lib/auth";
-import { getAllLettersAndNotices } from "@/server/data/letter-notice";
+import { getLetterByUserId } from "@/server/data/letter-notice";
 import { getAllDisputeTypes } from "@/server/data/dispute-type";
 import { getAllDisputes } from "@/server/data/dispute";
-import { getAllViolations } from "@/server/data/violation";
 import { getAllViolationTypes } from "@/server/data/violation-type";
 import { format } from "date-fns";
 import { DisputeLettersAndNoticesColumn } from "./_components/columns";
+import { LetterNoticeType } from "@prisma/client";
 
 export default async function DisputeLettersAndNotices() {
   const user = await currentUser();
@@ -16,16 +16,14 @@ export default async function DisputeLettersAndNotices() {
     return null;
   }
 
-  const lettersNotices = await getAllLettersAndNotices();
+  const letters = await getLetterByUserId(user.id);
 
-  if (!lettersNotices) {
+  if (!letters) {
     return null;
   }
 
-  const orderedLettersNotices = lettersNotices
-    .filter(
-      (item) => item.type === "disputeLetter" || item.type === "disputeNotice"
-    )
+  const orderedLettersNotices = letters
+    .filter((item) => item.type === LetterNoticeType.DISPUTE)
     .sort((a: any, b: any) => b.createdAt - a.createdAt);
 
   const violationTypes = await getAllViolationTypes();
@@ -50,18 +48,19 @@ export default async function DisputeLettersAndNotices() {
     orderedLettersNotices.map((item) => {
       const dispute = disputes.find((dispute) => dispute.id === item.idToLink);
       const disputeType = disputeTypes.find(
-        (type) => type.name === dispute?.type
-      );
-      const violationType = violationTypes.find(
-        (type) => type.name === dispute?.violationInvolved
+        (type) => type.id === dispute?.type
       );
 
       return {
         id: item.id || "",
         type: item.type || "",
         recipient: item.recipient || "",
-        meetDate: item.meetDate ? item.meetDate : "",
-        meetTime: item.meetTime ? item.meetTime : "",
+        meetDate: item.meetDate
+          ? format(
+              new Date(item.meetDate)?.toISOString().split("T")[0],
+              "MMMM dd, yyyy"
+            )
+          : "",
         venue: item.venue ? item.venue : "",
         sender: item.sender || "",
         createdAt: item.createdAt
@@ -72,7 +71,6 @@ export default async function DisputeLettersAndNotices() {
           : "",
         dispute: dispute!!,
         disputeType: disputeType!!,
-        violationType: violationType!!,
       };
     });
 

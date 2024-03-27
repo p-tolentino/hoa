@@ -30,6 +30,31 @@ export const createDispute = async (values: any) => {
   return { success: "Submitted report successfully", dispute: { ...result } };
 };
 
+export const updateDispute = async (id: string, values: any) => {
+  const user = await currentUser();
+
+  // No Current User
+  if (!user) {
+    return { error: "Unauthorized" };
+  }
+
+  // Validation if user is in database (not leftover session)
+  const dbUser = await getUserById(user.id);
+
+  if (!dbUser) {
+    return { error: "Unauthorized" };
+  }
+
+  await db.dispute.update({
+    where: { id },
+    data: {
+      ...values,
+    },
+  });
+
+  return { success: "Dispute case updated successfully" };
+};
+
 export const updateOfficerAssigned = async (
   id: string,
   officerAssigned: string
@@ -169,5 +194,85 @@ export const updateResolved = async (id: string) => {
 
   return {
     success: "Report marked resolved (closed).",
+  };
+};
+
+export const createOfficerTasks = async (values: any) => {
+  const user = await currentUser();
+
+  // No Current User
+  if (!user) {
+    return { error: "Unauthorized" };
+  }
+
+  // Validation if user is in database (not leftover session)
+  const dbUser = await getUserById(user.id);
+
+  if (!dbUser) {
+    return { error: "Unauthorized" };
+  }
+
+  await db.disputeOfficerActivity.createMany({
+    data: {
+      ...values,
+    },
+  });
+
+  return {
+    success: "Tasks successfully created.",
+  };
+};
+
+export const createDisputeProgressReport = async (values: any) => {
+  const user = await currentUser();
+
+  // No Current User
+  if (!user) {
+    return { error: "Unauthorized" };
+  }
+
+  // Validation if user is in database (not leftover session)
+  const dbUser = await getUserById(user.id);
+
+  if (!dbUser) {
+    return { error: "Unauthorized" };
+  }
+
+  await db.disputeProgress.createMany({
+    data: {
+      ...values,
+    },
+  });
+
+  return {
+    success: "Progress report for dispute successfully created.",
+  };
+};
+
+export const updateDisputeOfficerTask = async (id: string, isDone: boolean) => {
+  const user = await currentUser();
+
+  // No Current User
+  if (!user) {
+    return { error: "Unauthorized" };
+  }
+
+  // Validation if user is in database (not leftover session)
+  const dbUser = await getUserById(user.id);
+
+  if (!dbUser) {
+    return { error: "Unauthorized" };
+  }
+
+  await db.disputeOfficerActivity.update({
+    where: { id },
+    data: {
+      isDone,
+      dateCompleted: new Date(),
+    },
+  });
+
+  return {
+    success: "Officer activity marked done.",
   };
 };

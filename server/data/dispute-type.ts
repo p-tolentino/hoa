@@ -12,6 +12,20 @@ export const getAllDisputeTypes = async () => {
   }
 };
 
+export const getDisputeTypeById = async (id: string) => {
+  try {
+    const dispute = await db.disputeType.findFirst({
+      where: {
+        id,
+      },
+    });
+
+    return dispute;
+  } catch {
+    return null;
+  }
+};
+
 export const getDisputeTypeByTitle = async (title: string) => {
   try {
     const dispute = await db.disputeType.findFirst({

@@ -99,8 +99,12 @@ export const ReportForm: React.FC<ReportFormProps> = ({
 
       createViolation(formData)
         .then((data) => {
-          console.log(data.success);
-          router.push(`/admin/violations/submitted-violations`);
+          if (data.success) {
+            console.log(data.success);
+            router.push(
+              `/admin/violations/submitted-violations/view-progress/${data.violation?.id}`
+            );
+          }
         })
         .catch((error) => {
           console.log(error);

@@ -80,20 +80,6 @@ export const ProgressDetails: React.FC<ProgressDetailsProps> = ({
     },
   ];
 
-  const tempDispute = {
-    step: 6,
-    number: 1,
-    status: "Closed",
-    submittedBy: "Submitter",
-    personComplained: "Complainee",
-    officerAssigned: "Officer",
-    disputeType: "Parking",
-    createdAt: "Date created",
-    disputeDate: "Dispute Date",
-    disputeDescription: "Dispute Description",
-    reasonToClose: "Resolved",
-  };
-
   return (
     <div>
       <Flex justifyContent="space-between">
@@ -119,11 +105,10 @@ export const ProgressDetails: React.FC<ProgressDetailsProps> = ({
                 : reportDetails.dispute.status === "Negotiating (Letter Sent)"
                 ? "bg-blue-900"
                 : reportDetails.dispute.status === "Closed" &&
-                  reportDetails.dispute.reasonToClose ===
-                    "Penalty Fee Charged to SOA"
+                  reportDetails.dispute.reasonToClose === "Unresolved"
                 ? ""
                 : reportDetails.dispute.status === "Closed" &&
-                  reportDetails.dispute.reasonToClose === "Appealed"
+                  reportDetails.dispute.reasonToClose === "Resolved"
                 ? "bg-green-700"
                 : ""
             )}
@@ -145,7 +130,7 @@ export const ProgressDetails: React.FC<ProgressDetailsProps> = ({
             <TabsTrigger
               key={step.value}
               value={step.value}
-              disabled={index >= tempDispute.step} // to make uncompleted steps unclickable
+              disabled={index >= reportDetails.dispute.step} // to make uncompleted steps unclickable
             >
               Step {index + 1}
             </TabsTrigger>
@@ -157,7 +142,6 @@ export const ProgressDetails: React.FC<ProgressDetailsProps> = ({
               key={step.value}
               stepIndex={index}
               processSteps={processSteps}
-              tempDispute={tempDispute}
               reportDetails={reportDetails}
             />
           </TabsContent>

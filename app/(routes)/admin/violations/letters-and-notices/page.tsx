@@ -1,5 +1,5 @@
 import { ViolationLettersAndNoticesClient } from "./_components/client";
-import { getAllLetters, getLetterByUserId } from "@/server/data/letter-notice";
+import { getLetterByUserId } from "@/server/data/letter-notice";
 import { ViolationLettersAndNoticesColumn } from "./_components/columns";
 import { getAllViolations } from "@/server/data/violation";
 import { getAllViolationTypes } from "@/server/data/violation-type";

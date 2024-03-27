@@ -24,7 +24,6 @@ import {
 } from "@chakra-ui/react";
 import { LetterNoticeType, PersonalInfo, ReportStatus } from "@prisma/client";
 import { useRouter } from "next/navigation";
-import { report } from "process";
 import { useState } from "react";
 
 export default function WriteViolationLetter({

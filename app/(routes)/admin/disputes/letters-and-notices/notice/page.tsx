@@ -15,37 +15,37 @@ import Link from "next/link";
 import { format, addDays, subDays } from "date-fns";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
-import { getNoticeById } from "@/server/data/letter-notice";
+import { getLetterById, getNoticeById } from "@/server/data/letter-notice";
 import {
   Dispute,
   DisputeType,
+  Letter,
   Notice,
   PersonalInfo,
   Violation,
   ViolationType,
 } from "@prisma/client";
 import { getAllInfo, getInfoById } from "@/server/data/user-info";
-import { getViolationTypeByName } from "@/server/data/violation-type";
 import { getViolationById } from "@/server/data/violation";
 import { getDisputeById } from "@/server/data/dispute";
-import { getDisputeTypeByName } from "@/server/data/dispute-type";
 import BackButton from "@/components/system/BackButton";
+import { getDisputeTypeById } from "@/server/data/dispute-type";
 
 export default function DisputeMeetingNotice() {
   const meetingDetails = {
-    date: format(addDays(new Date(2023, 2, 1), 10), "MMMM dd, yyyy"),
+    date: format(addDays(new Date(), 10), "MMMM dd, yyyy"),
     time: "3:00PM",
     venue: "HOA Admin Office",
   };
 
   const searchParams = useSearchParams();
-  const [notice, setNotice] = useState<Notice | null>();
+  const [letter, setLetter] = useState<Letter | null>();
   const [recipient, setRecipient] = useState<PersonalInfo | null>();
   const [sender, setSender] = useState<PersonalInfo | null>();
   const [dispute, setDispute] = useState<Dispute | null>();
   const [disputeType, setDisputeType] = useState<DisputeType | null>();
   const [violationType, setViolationType] = useState<ViolationType | null>();
-  const [usersInvolved, setUsersInvolved] = useState<PersonalInfo[] | null>();
+  const [userInvolved, setUserInvolved] = useState<PersonalInfo | null>();
 
   const [isPending, startTransition] = useTransition();
 
@@ -64,13 +64,13 @@ export default function DisputeMeetingNotice() {
   useEffect(() => {
     startTransition(() => {
       const fetchData = async () => {
-        const noticeId = searchParams.get("noticeId");
+        const letterId = searchParams.get("letterId");
         const disputeId = searchParams.get("disputeId");
 
-        if (noticeId) {
-          await getNoticeById(noticeId).then((data) => {
+        if (letterId) {
+          await getLetterById(letterId).then((data) => {
             if (data) {
-              setNotice(data);
+              setLetter(data);
               getInfoById(data.recipient).then((data) => {
                 setRecipient(data);
               });
@@ -86,27 +86,17 @@ export default function DisputeMeetingNotice() {
           await getDisputeById(disputeId).then((data) => {
             if (data) {
               setDispute(data);
-              getDisputeTypeByName(data.type).then((data) => {
+              getDisputeTypeById(data.type).then((data) => {
                 setDisputeType(data);
               });
 
               getAllInfo().then((res) => {
                 if (res) {
-                  setUsersInvolved(
-                    res.filter((info) =>
-                      data?.personsInvolved.some(
-                        (person) => person === info.userId
-                      )
-                    )
+                  setUserInvolved(
+                    res.find((info) => data?.personComplained === info.userId)
                   );
                 }
               });
-
-              if (data.violationInvolved) {
-                getViolationTypeByName(data.violationInvolved).then((data) => {
-                  setViolationType(data);
-                });
-              }
             }
           });
         }
@@ -149,9 +139,9 @@ export default function DisputeMeetingNotice() {
                 </Text>
                 {/* Date Received */}
                 <Text fontWeight="bold">
-                  {notice?.createdAt
+                  {letter?.createdAt
                     ? format(
-                        new Date(notice?.createdAt)
+                        new Date(letter?.createdAt)
                           ?.toISOString()
                           .split("T")[0],
                         "MMMM dd, yyyy"
@@ -196,20 +186,17 @@ export default function DisputeMeetingNotice() {
                     {/* Involved Person/s */}
                     <ListItem>
                       <>
-                        Person/s Involved:{" "}
-                        <UnorderedList ml={7}>
-                          {usersInvolved &&
-                            usersInvolved.map((person) => (
-                              <ListItem key={person.id} fontWeight="semibold">
-                                {person.firstName} {person.lastName}
-                              </ListItem>
-                            ))}
-                        </UnorderedList>
+                        Person Complained:{" "}
+                        {userInvolved && (
+                          <span className="font-semibold">
+                            {userInvolved.firstName} {userInvolved.lastName}
+                          </span>
+                        )}
                       </>
                     </ListItem>
                   </UnorderedList>
                   {/* Violation */}
-                  <UnorderedList>
+                  {/* <UnorderedList>
                     <ListItem>
                       <>
                         Violation:{" "}
@@ -233,7 +220,7 @@ export default function DisputeMeetingNotice() {
                         )}
                       </>
                     </ListItem>
-                  </UnorderedList>
+                  </UnorderedList> */}
                 </Flex>
               </Box>
 
@@ -242,13 +229,18 @@ export default function DisputeMeetingNotice() {
                 <Text textAlign="justify">
                   The meeting has been scheduled for {/* Meeting Time */}
                   <span className="font-bold text-red-500">
-                    {notice &&
-                      format(new Date(`${notice?.meetDate}`), "MMMM dd, yyyy")}
-                    , {formatTime(notice?.meetTime)}
+                    {letter &&
+                      // format(new Date(`${letter?.meetDate}`), "MMMM dd, yyyy")
+                      meetingDetails.date}
+                    ,{" "}
+                    {
+                      meetingDetails.time
+                      // formatTime(notice?.meetTime)
+                    }
                   </span>{" "}
                   at the {/* Meeting Venue */}
                   <span className="font-bold text-red-500">
-                    {notice?.venue}
+                    {/* {notice?.venue} */ meetingDetails.venue}
                     {". "}
                   </span>{" "}
                   Please inform us if you are available on the said date{". "}

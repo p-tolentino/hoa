@@ -9,16 +9,16 @@ import {
   Textarea,
   Box,
   Stack,
-  HStack,
   Select,
+  HStack,
   Flex,
   RadioGroup,
   Radio,
 } from "@chakra-ui/react";
-import { startTransition, useEffect, useState } from "react";
+import { startTransition, useState } from "react";
 import { Separator } from "@/components/ui/separator";
 import { Heading } from "@/components/ui/heading";
-import { AddIcon } from "@chakra-ui/icons";
+
 import { Form, FormField } from "@/components/ui/form";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
@@ -27,27 +27,26 @@ import { DisputeType, PersonalInfo, ViolationType } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { createDispute } from "@/server/actions/dispute";
-import { createNotification } from "@/server/actions/notification";
 import BackButton from "@/components/system/BackButton";
+import { UploadDropzone } from "@/lib/utils";
 
 const DisputeFormSchema = z.object({
   disputeDate: z.string(),
   type: z.string(),
   description: z.string(),
-  violationInvolved: z.string(),
+  personComplained: z.string(),
 });
 
 type DisputeFormValues = z.infer<typeof DisputeFormSchema>;
 
 interface ReportFormProps {
   disputeTypes: DisputeType[];
-  violationTypes: ViolationType[];
   users: PersonalInfo[];
 }
 
 export const ReportForm: React.FC<ReportFormProps> = ({
   disputeTypes,
-  violationTypes,
+
   users,
 }) => {
   const currentUser = useCurrentUser();
@@ -56,29 +55,7 @@ export const ReportForm: React.FC<ReportFormProps> = ({
   const description =
     "Fill out the Dispute Form to formally request for a dispute resolution from the Homeowners' Association.";
 
-  const [isViolationInvolved, setIsViolationInvolved] = useState(false);
-  const [personsInvolved, setPersonsInvolved] = useState([""]);
   const [filesUploaded, setFilesUploaded] = useState([""]);
-
-  const addPersonInput = () => {
-    setPersonsInvolved([...personsInvolved, ""]);
-  };
-
-  const removePersonInput = (index: number) => {
-    const updatedPersonsInvolved = [...personsInvolved];
-    updatedPersonsInvolved.splice(index, 1);
-    setPersonsInvolved(updatedPersonsInvolved);
-  };
-
-  const handlePersonInputChange = (index: number, value: string) => {
-    const updatedPersonsInvolved = [...personsInvolved];
-    updatedPersonsInvolved[index] = value;
-    setPersonsInvolved(updatedPersonsInvolved);
-  };
-
-  const addFileUpload = () => {
-    setFilesUploaded([...filesUploaded, ""]);
-  };
 
   const removeFileUpload = (index: number) => {
     const updatedFilesUploaded = [...filesUploaded];
@@ -86,10 +63,8 @@ export const ReportForm: React.FC<ReportFormProps> = ({
     setFilesUploaded(updatedFilesUploaded);
   };
 
-  const handleFileUploadChange = (index: number, value: string) => {
-    const updatedFilesUploaded = [...filesUploaded];
-    updatedFilesUploaded[index] = value;
-    setFilesUploaded(updatedFilesUploaded);
+  const handleFileUploadChange = (url: string) => {
+    setFilesUploaded([...filesUploaded, url]);
   };
 
   const form = useForm<DisputeFormValues>({
@@ -98,7 +73,7 @@ export const ReportForm: React.FC<ReportFormProps> = ({
       disputeDate: "",
       type: "",
       description: "",
-      violationInvolved: "",
+      personComplained: "",
     },
   });
 
@@ -107,18 +82,15 @@ export const ReportForm: React.FC<ReportFormProps> = ({
       const formData = {
         ...values,
         disputeDate: new Date(values.disputeDate),
-        violationInvolved:
-          isViolationInvolved === true ? form.watch("violationInvolved") : null,
-        personsInvolved: personsInvolved.filter(
-          (item, index) => personsInvolved.indexOf(item) === index
-        ),
       };
 
       createDispute(formData)
         .then((data) => {
           if (data.success) {
             console.log(data.success);
-            router.push(`/admin/disputes/submitted-disputes`);
+            router.push(
+              `/admin/disputes/submitted-disputes/view-progress/${data.dispute.id}`
+            );
           }
         })
         .catch((error) => {
@@ -191,7 +163,7 @@ export const ReportForm: React.FC<ReportFormProps> = ({
                         Select a dispute type
                       </option>
                       {disputeTypes.map((dispute) => (
-                        <option key={dispute.id} value={dispute.name}>
+                        <option key={dispute.id} value={dispute.id}>
                           {dispute.title}
                         </option>
                       ))}
@@ -200,8 +172,8 @@ export const ReportForm: React.FC<ReportFormProps> = ({
                   </FormControl>
                 )}
               />
-
-              {/* Is Violation Involved? */}
+              {/* 
+              
               <FormControl isRequired>
                 <Stack direction="row">
                   <FormLabel fontSize="md" fontFamily="font.body">
@@ -225,7 +197,7 @@ export const ReportForm: React.FC<ReportFormProps> = ({
                 </Stack>
               </FormControl>
 
-              {/* Violation IS involved */}
+              
               {isViolationInvolved && (
                 <FormField
                   control={form.control}
@@ -253,7 +225,7 @@ export const ReportForm: React.FC<ReportFormProps> = ({
                   )}
                 />
               )}
-
+*/}
               {/* Dispute Description */}
               <FormField
                 control={form.control}
@@ -281,27 +253,18 @@ export const ReportForm: React.FC<ReportFormProps> = ({
                   <FormLabel fontSize="md" fontFamily="font.body">
                     Upload your supporting documents:
                   </FormLabel>
-                  <Button
-                    size="xs"
-                    mt="-1"
-                    leftIcon={<AddIcon />}
-                    onClick={addFileUpload}
-                  >
-                    Add File
-                  </Button>
                 </HStack>
                 {filesUploaded.map((file, index) => (
-                  <Box key={index} display="flex" alignItems="center">
-                    <Input
-                      type="file"
-                      size="sm"
-                      fontFamily="font.body"
-                      mb={2}
-                      value={file}
-                      onChange={(e) =>
-                        handleFileUploadChange(index, e.target.value)
-                      }
-                    />
+                  <Box
+                    key={index}
+                    display="flex"
+                    alignItems="center"
+                    className="mb-2"
+                  >
+                    <a href={file} target="_blank">
+                      {file}
+                    </a>{" "}
+                    {/* Render file URL as a link */}
                     {filesUploaded.length > 1 && index !== 0 && (
                       <Button
                         size="xs"
@@ -314,6 +277,19 @@ export const ReportForm: React.FC<ReportFormProps> = ({
                     )}
                   </Box>
                 ))}
+                <UploadDropzone
+                  appearance={{
+                    button:
+                      "ut-uploading:cursor-not-allowed rounded-r-none bg-[#e6c45e] text-black bg-none after:bg-[#dbac1d]",
+                    label: { color: "#ffaa00" },
+                    uploadIcon: { color: "#355E3B" },
+                  }}
+                  endpoint="mixedUploader" // Adjust this endpoint as needed
+                  onClientUploadComplete={(res) =>
+                    handleFileUploadChange(res[0].url)
+                  }
+                  onUploadError={(error) => console.log(error)}
+                />
                 <FormHelperText fontSize="xs" mt="-1" pt={2}>
                   This will allow us to gain more information about the dispute
                   that would help us in decision making.
@@ -321,65 +297,48 @@ export const ReportForm: React.FC<ReportFormProps> = ({
               </FormControl>
 
               {/* Person/s Involved */}
-              <FormControl isRequired>
-                <HStack justifyContent="space-between">
-                  <FormLabel fontSize="md" fontFamily="font.body">
-                    Person/s Involved
-                  </FormLabel>
-                  <Button
-                    size="xs"
-                    mt="-1"
-                    leftIcon={<AddIcon />}
-                    onClick={addPersonInput}
-                  >
-                    Add Person
-                  </Button>
-                </HStack>
-                {personsInvolved.map((person, index) => (
-                  <Box key={index} display="flex" alignItems="center">
-                    <Select
-                      key={index}
-                      size="sm"
-                      fontFamily="font.body"
-                      mb={2}
-                      w="full"
-                      onChange={(e) =>
-                        handlePersonInputChange(index, e.target.value)
-                      }
-                      value={person}
-                    >
-                      <option value="" disabled>
-                        Select from users...
-                      </option>
-                      {users.map((user) => {
-                        if (user.userId !== currentUser?.id) {
-                          return (
-                            <option key={user.userId} value={user.userId}>
-                              {user.firstName} {user.lastName}
-                            </option>
-                          );
-                        }
-                      })}
-                    </Select>
+              <FormField
+                control={form.control}
+                name="personComplained"
+                render={({ field }) => (
+                  <FormControl isRequired>
+                    <HStack justifyContent="space-between">
+                      <FormLabel fontSize="md" fontFamily="font.body">
+                        Person being Complained
+                      </FormLabel>
+                    </HStack>
 
-                    {personsInvolved.length > 1 && index !== 0 && (
-                      <Button
-                        size="xs"
-                        colorScheme="red"
-                        ml={2}
-                        onClick={() => removePersonInput(index)}
+                    <Box display="flex" alignItems="center">
+                      <Select
+                        size="sm"
+                        fontFamily="font.body"
+                        mb={2}
+                        w="full"
+                        onChange={field.onChange}
+                        value={field.value}
                       >
-                        Remove
-                      </Button>
-                    )}
-                  </Box>
-                ))}
+                        <option value="" disabled>
+                          Select from users...
+                        </option>
+                        {users.map((user) => {
+                          if (user.userId !== currentUser?.id) {
+                            return (
+                              <option key={user.userId} value={user.userId}>
+                                {user.firstName} {user.lastName}
+                              </option>
+                            );
+                          }
+                        })}
+                      </Select>
+                    </Box>
 
-                <FormHelperText fontSize="xs" mt="-1" pt={2}>
-                  This will allow us to contact the individuals involved in the
-                  dispute.
-                </FormHelperText>
-              </FormControl>
+                    <FormHelperText fontSize="xs" mt="-1" pt={2}>
+                      This will allow us to contact the individuals involved in
+                      the dispute.
+                    </FormHelperText>
+                  </FormControl>
+                )}
+              />
               {/* Submit Button */}
               <Box textAlign="center">
                 <FormControl>

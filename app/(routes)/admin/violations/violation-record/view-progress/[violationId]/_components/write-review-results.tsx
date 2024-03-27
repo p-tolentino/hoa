@@ -44,7 +44,7 @@ import {
 } from "@chakra-ui/react";
 import { PersonalInfo, ReportStatus, Violation } from "@prisma/client";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export default function WriteReviewResults({
   violation,

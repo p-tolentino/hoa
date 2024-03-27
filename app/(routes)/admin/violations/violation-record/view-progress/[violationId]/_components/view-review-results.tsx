@@ -129,7 +129,7 @@ export default function ViewReviewResults({
                         : "Unassigned"}
                     </Td>
                   </Tr>
-                  {/* {reportDetails.officerAssigned && (
+                  {/* {reportDetails.violation.priority && (
                     <Tr whiteSpace="normal">
                       <Th border="3px double black" w="110px">
                         Case Priority

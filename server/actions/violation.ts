@@ -20,14 +20,14 @@ export const createViolation = async (values: any) => {
     return { error: "Unauthorized" };
   }
 
-  await db.violation.create({
+  const result = await db.violation.create({
     data: {
       ...values,
       submittedBy: dbUser.id,
     },
   });
 
-  return { success: "Submitted report successfully" };
+  return { success: "Submitted report successfully", violation: { ...result } };
 };
 
 export const updateViolation = async (id: string, values: any) => {

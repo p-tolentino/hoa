@@ -1,6 +1,10 @@
 import { db } from "@/lib/db";
 import { getAllInfo } from "@/server/data/user-info";
 import ViewProgress from "./_components/view-progress";
+import {
+  getAllProgressReports,
+  getDisputeOfficerActivitiesById,
+} from "@/server/data/dispute";
 
 export const DisputeProgressPage = async ({
   params,
@@ -23,15 +27,11 @@ export const DisputeProgressPage = async ({
     },
   });
 
-  let officerAssigned;
-
-  if (dispute?.officerAssigned) {
-    officerAssigned = await db.personalInfo.findFirst({
-      where: {
-        userId: dispute?.officerAssigned,
-      },
-    });
-  }
+  const officerAssigned = await db.personalInfo.findFirst({
+    where: {
+      userId: dispute?.officerAssigned || "",
+    },
+  });
 
   const submittedBy = await db.personalInfo.findFirst({
     where: {
@@ -45,27 +45,39 @@ export const DisputeProgressPage = async ({
     return null;
   }
 
-  const updatedPersons = infos.filter((info) =>
-    dispute.personComplained === info.userId
+  const updatedPerson = infos.find(
+    (info) => dispute.personComplained === info.userId
   );
 
-  // let violationType;
+  const committeeMembers = infos.filter(
+    (info) => info.committee === "Grievance & Adjudication Committee"
+  );
 
-  // if (dispute.violationInvolved) {
-  //   violationType = await db.violationType.findFirst({
-  //     where: {
-  //       name: dispute?.violationInvolved,
-  //     },
-  //   });
-  // }
+  const officerActivities = await getDisputeOfficerActivitiesById(dispute?.id);
+
+  const progressReports = await getAllProgressReports();
+
+  const status = {
+    FOR_REVIEW: "For Review",
+    FOR_ASSIGNMENT: "For Officer Assignment",
+    PENDING_LETTER_TO_BE_SENT: "Pending Letter To Be Sent",
+    NEGOTIATING: "Negotiating (Letter Sent)",
+    FOR_FINAL_REVIEW: "For Final Review",
+    CLOSED: "Closed",
+  };
 
   const reportDetails = {
-    dispute: dispute,
+    dispute: { ...dispute, status: status[dispute.status] },
     disputeType: disputeType,
-    //violationType: violationType || null,
     officerAssigned: officerAssigned ? officerAssigned : null,
     submittedBy: submittedBy,
-    personsInvolved: updatedPersons,
+    personComplained: updatedPerson,
+    committee: committeeMembers,
+    officerActivities: officerActivities?.sort(
+      (a, b) => new Date(a.deadline).getDate() - new Date(b.deadline).getDate()
+    ),
+    progressReports: progressReports,
+    userInfos: infos,
   };
 
   return (

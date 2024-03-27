@@ -6,7 +6,6 @@ import { ArrowUpDown } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { PersonalInfo } from "@prisma/client";
-import { format } from "date-fns";
 
 export type SubmittedViolationsColumn = {
   id: string;

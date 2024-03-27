@@ -15,7 +15,6 @@ export type DisputeLettersAndNoticesColumn = {
   createdAt: string;
   dispute: Dispute;
   disputeType: DisputeType;
-  violationType: ViolationType;
 };
 
 export const columns: ColumnDef<DisputeLettersAndNoticesColumn>[] = [
@@ -42,11 +41,7 @@ export const columns: ColumnDef<DisputeLettersAndNoticesColumn>[] = [
     header: "View Dispute Letter/Notice",
     cell: ({ row }) => (
       <a
-        href={
-          row.original.type === "disputeLetter"
-            ? `/admin/disputes/letters-and-notices/letter?noticeId=${row.original.id}&disputeId=${row.original.dispute.id}`
-            : `/admin/disputes/letters-and-notices/notice?noticeId=${row.original.id}&disputeId=${row.original.dispute.id}`
-        }
+        href={`/admin/disputes/letters-and-notices/notice?letterId=${row.original.id}&disputeId=${row.original.dispute.id}`}
         className="hover:underline hover:text-blue-500"
       >
         View Details
