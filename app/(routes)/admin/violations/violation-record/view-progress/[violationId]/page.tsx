@@ -3,9 +3,12 @@ import ProgressDetails from "./_components/progress-details";
 import { getAllInfo } from "@/server/data/user-info";
 import {
   getAllProgressReports,
-  getProgressReportsByActivityId,
   getViolationOfficerActivitiesById,
 } from "@/server/data/violation";
+
+type ViolationRecords = {
+  [userId: string]: number;
+};
 
 export const ViolationProgressPage = async ({
   params,
@@ -60,6 +63,35 @@ export const ViolationProgressPage = async ({
 
   const progressReports = await getAllProgressReports();
 
+  const allViolations = await db.violation.findMany();
+
+  const violationRecords: ViolationRecords = {};
+
+  allViolations.forEach((violationItem) => {
+    const includesPersonInvolved = violationItem.personsInvolved.some(
+      (person) => violation.personsInvolved.includes(person)
+    );
+
+    const penaltyFeeCharged =
+      violationItem.reasonToClose === "Penalty Fee Charged to SOA";
+
+    const isSameType = violationItem.type === violation.type;
+
+    violationItem.personsInvolved.forEach((person) => {
+      if (!violation.personsInvolved.includes(person)) {
+        return;
+      }
+
+      if (!violationRecords[person]) {
+        violationRecords[person] = 0;
+      }
+
+      if (includesPersonInvolved && penaltyFeeCharged && isSameType) {
+        violationRecords[person]++;
+      }
+    });
+  });
+
   const status = {
     FOR_REVIEW: "For Review",
     FOR_ASSIGNMENT: "For Officer Assignment",
@@ -77,10 +109,14 @@ export const ViolationProgressPage = async ({
     personsInvolved: updatedPersons,
     committee: committeeMembers,
     officerActivities: officerActivities?.sort(
-      (a, b) => new Date(b.deadline).getDate() - new Date(a.deadline).getDate()
+      (a, b) => new Date(a.deadline).getDate() - new Date(b.deadline).getDate()
     ),
     progressReports: progressReports,
+    userInfos: infos,
+    violationRecord: violationRecords,
   };
+
+  console.log(violationRecords);
 
   return (
     <div>

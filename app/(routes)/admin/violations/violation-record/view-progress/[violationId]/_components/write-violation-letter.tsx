@@ -10,6 +10,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { createViolationLetter } from "@/server/actions/letter-notice";
+import { createNotification } from "@/server/actions/notification";
 import { updateLetterSent, updateViolation } from "@/server/actions/violation";
 import {
   Box,
@@ -59,8 +60,23 @@ export default function WriteViolationLetter({
       await createViolationLetter(formData).then((data) => {
         console.log(data);
 
+        const notifLetterData = {
+          type: "violationLetter",
+          recipient: person.userId,
+          title: "Urgent: A violation report has been filed against you.",
+          description: "Click here to view letter",
+          linkToView: `/admin/violations/letters-and-notices/letter?letterId=${data.data?.res.id}&violationId=${reportDetails.violation.id}&violationTypeId=${reportDetails.violationType.id}`,
+        };
+
+        createNotification(notifLetterData).then((data) => {
+          if (data.success) {
+            console.log(data.success);
+          }
+        });
+
         updateLetterSent(reportDetails.violation.id, true).then((data) => {
           console.log(data.success);
+
           const update = {
             step: 5,
             progress: "Step 5: Negotiations to Appeal Violation Case",

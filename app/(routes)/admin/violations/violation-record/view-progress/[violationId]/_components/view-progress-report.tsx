@@ -81,7 +81,7 @@ export default function ViewProgressReport({
         <Link color="blue.500">{activity.title}</Link>
       </DialogTrigger>
       <DialogContent>
-        {progressReports ? (
+        {progressReports.length ? (
           <>
             <DialogHeader>
               <Badge
@@ -169,7 +169,7 @@ export default function ViewProgressReport({
             py="2rem"
             mb="2rem"
           >
-            No reports to show.
+            No reports to show yet.
           </Center>
         )}
       </DialogContent>

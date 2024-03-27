@@ -26,23 +26,13 @@ import {
 import { Priority, ViolationOfficerActivity } from "@prisma/client";
 import { format } from "date-fns";
 
-type KeyActivities = {
-  title: string;
-  dueDate: string;
-  datePerformed: string;
-}[];
-
 export default function ViewReviewResults({
-  keyActivities,
-  activeStep,
   reportDetails,
 }: {
-  keyActivities: KeyActivities;
-  activeStep: number;
   reportDetails: any;
 }) {
   return (
-    <Box>
+    <Stack spacing={5}>
       <Flex gap={10}>
         <Box>
           <Flex justifyContent="space-between">
@@ -66,14 +56,14 @@ export default function ViewReviewResults({
                   : ""}
               </Text>
             </Box>
-            <Link
-              href="#keyActivities"
-              fontSize="sm"
-              fontFamily="font.body"
-              color="blue.500"
+            {/* <Link
+              href='#keyActivities'
+              fontSize='sm'
+              fontFamily='font.body'
+              color='blue.500'
             >
               View Key Activities
-            </Link>
+            </Link> */}
           </Flex>
           <Box
             h="18vh"
@@ -167,16 +157,13 @@ export default function ViewReviewResults({
             </Text>
           </Stack>
         </Box>
-        <Box id="keyActivities">
-          <Box>
-            <Text
-              fontWeight="semibold"
-              fontFamily="font.heading"
-              lineHeight={1}
-            >
-              Key Activities for Officer Assigned
-            </Text>
-            {/* <Text fontFamily="font.body" fontSize="sm" color="grey">
+      </Flex>
+      <Box id="keyActivities">
+        <Box>
+          <Text fontWeight="semibold" fontFamily="font.heading" lineHeight={1}>
+            Key Activities for Officer Assigned
+          </Text>
+          {/* <Text fontFamily="font.body" fontSize="sm" color="grey">
               Date created:{" "}
               {reportDetails.violation.commReviewDate
                 ? format(
@@ -187,29 +174,29 @@ export default function ViewReviewResults({
                   )
                 : ""}
             </Text> */}
-          </Box>
-          <UnorderedList mb="1rem" ml={7} mt={3}>
-            {reportDetails.officerActivities.map(
-              (activity: ViolationOfficerActivity) => (
-                <ListItem key={activity.id}>
-                  {activity.title}
-                  <span className="ml-2 text-sm text-gray-500">
-                    {" (due: "}
-                    {activity.deadline
-                      ? format(
-                          new Date(activity.deadline)
-                            ?.toISOString()
-                            .split("T")[0],
-                          "MMMM dd, yyyy"
-                        )
-                      : ""}
-                    {")"}
-                  </span>
-                </ListItem>
-              )
-            )}
-          </UnorderedList>
-          {/* <Stepper
+        </Box>
+        <UnorderedList mb="1rem" ml={7} mt={3} fontFamily="font.body">
+          {reportDetails.officerActivities.map(
+            (activity: ViolationOfficerActivity) => (
+              <ListItem key={activity.id}>
+                {activity.title}
+                <span className="ml-2 text-sm text-gray-500">
+                  {" (Deadline: "}
+                  {activity.deadline
+                    ? format(
+                        new Date(activity.deadline)
+                          ?.toISOString()
+                          .split("T")[0],
+                        "MMMM dd, yyyy"
+                      )
+                    : ""}
+                  {")"}
+                </span>
+              </ListItem>
+            )
+          )}
+        </UnorderedList>
+        {/* <Stepper
           index={activeStep}
           orientation="vertical"
           w="max-content"
@@ -239,8 +226,7 @@ export default function ViewReviewResults({
             </Step>
           ))}
         </Stepper> */}
-        </Box>
-      </Flex>
-    </Box>
+      </Box>
+    </Stack>
   );
 }

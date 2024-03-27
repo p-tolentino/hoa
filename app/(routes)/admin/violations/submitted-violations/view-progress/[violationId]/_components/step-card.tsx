@@ -56,32 +56,9 @@ export default function StepCard({
   processSteps,
   reportDetails,
 }: StepCardProps) {
-  const keyActivities = [
-    {
-      title: "activityTitle1",
-      dueDate: "activityDueDate1",
-      datePerformed: "activityDatePerformed1",
-    },
-    {
-      title: "activityTitle2",
-      dueDate: "activityDueDate2",
-      datePerformed: "activityDatePerformed2",
-    },
-    {
-      title: "activityTitle3",
-      dueDate: "activityDueDate3",
-      datePerformed: "activityDatePerformed3",
-    },
-    {
-      title: "activityTitle4",
-      dueDate: "activityDueDate4",
-      datePerformed: "activityDatePerformed4",
-    },
-  ];
-
   const { activeStep } = useSteps({
     index: 0,
-    count: keyActivities.length,
+    count: reportDetails.officerActivities.length,
   });
 
   return (
@@ -301,11 +278,7 @@ export default function StepCard({
 
           {/* Step 3 Content */}
           {stepIndex === 2 && (
-            <ViewReviewResults
-              keyActivities={keyActivities}
-              activeStep={activeStep}
-              reportDetails={reportDetails}
-            />
+            <ViewReviewResults reportDetails={reportDetails} />
           )}
 
           {/* Step 4 Content */}
@@ -355,10 +328,10 @@ export default function StepCard({
                 </Box>
                 <Stepper
                   index={activeStep}
-                  w="max-content"
+                  w="70vw"
                   h="max-content"
                   p="1rem"
-                  gap="4"
+                  gap="3"
                   colorScheme="green"
                   size="md"
                   overflowY="auto"
@@ -373,7 +346,7 @@ export default function StepCard({
                             active={<StepNumber />}
                           />
                         </StepIndicator>
-                        <Box fontFamily="font.body" w="10vw">
+                        <Box fontFamily="font.body" w="max-content">
                           <StepTitle>
                             <ViewProgressReport
                               activity={activity}

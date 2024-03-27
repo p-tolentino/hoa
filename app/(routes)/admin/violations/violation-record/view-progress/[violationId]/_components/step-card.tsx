@@ -28,10 +28,10 @@ import {
   Divider,
   Link,
 } from "@chakra-ui/react";
-import { report } from "process";
 import { format } from "date-fns";
 import {
   PersonalInfo,
+  UserRole,
   ViolationOfficerActivity,
   ViolationProgress,
 } from "@prisma/client";
@@ -41,6 +41,7 @@ import ProgressReportForm from "./progress-report-form";
 import ViewReviewResults from "./view-review-results";
 import WriteFinalAssessment from "./write-final-assessment";
 import WriteViolationLetter from "./write-violation-letter";
+import { useCurrentUser } from "@/hooks/use-current-user";
 
 interface ProcessStep {
   value: string;
@@ -60,32 +61,10 @@ export default function StepCard({
   processSteps,
   reportDetails,
 }: StepCardProps) {
-  const keyActivities = [
-    {
-      title: "activityTitle1",
-      dueDate: "activityDueDate1",
-      datePerformed: "activityDatePerformed1",
-    },
-    {
-      title: "activityTitle2",
-      dueDate: "activityDueDate2",
-      datePerformed: "activityDatePerformed2",
-    },
-    {
-      title: "activityTitle3",
-      dueDate: "activityDueDate3",
-      datePerformed: "activityDatePerformed3",
-    },
-    {
-      title: "activityTitle4",
-      dueDate: "activityDueDate4",
-      datePerformed: "activityDatePerformed4",
-    },
-  ];
-
+  const user = useCurrentUser();
   const { activeStep } = useSteps({
     index: 0,
-    count: keyActivities.length,
+    count: reportDetails.officerActivities.length,
   });
 
   return (
@@ -251,6 +230,35 @@ export default function StepCard({
                     </Tbody>
                   </Table>
                 </TableContainer>
+                {reportDetails.violation.documents && (
+                  <Box>
+                    <Box>
+                      <Text
+                        fontWeight="semibold"
+                        fontFamily="font.heading"
+                        lineHeight={1}
+                      >
+                        Supporting Documents:
+                      </Text>
+                    </Box>
+                    <UnorderedList
+                      mb="1rem"
+                      ml={7}
+                      mt={3}
+                      fontFamily="font.body"
+                    >
+                      {reportDetails.violation.documents.map(
+                        (document: string, index: number) => (
+                          <ListItem key={index}>
+                            <a href={document} target="_blank">
+                              {document}
+                            </a>
+                          </ListItem>
+                        )
+                      )}
+                    </UnorderedList>
+                  </Box>
+                )}
               </Flex>
               <Text
                 fontSize="xs"
@@ -295,10 +303,13 @@ export default function StepCard({
                   overflowY="auto"
                   flex={3}
                 >
-                  <WriteReviewResults
-                    violation={reportDetails.violation}
-                    committee={reportDetails.committee}
-                  />
+                  {reportDetails.violation.officerAssigned === user?.id ||
+                    (user?.role === UserRole.SUPERUSER && (
+                      <WriteReviewResults
+                        violation={reportDetails.violation}
+                        committee={reportDetails.committee}
+                      />
+                    ))}
                   <Center color="gray" h="50%" fontFamily="font.body">
                     No results to show.
                   </Center>
@@ -310,7 +321,6 @@ export default function StepCard({
           {/* Step 3 Content */}
           {stepIndex === 2 && (
             <ViewReviewResults
-              keyActivities={keyActivities}
               activeStep={activeStep}
               reportDetails={reportDetails}
             />
@@ -336,7 +346,10 @@ export default function StepCard({
                   overflowY="auto"
                   flex={3}
                 >
-                  <WriteViolationLetter reportDetails={reportDetails} />
+                  {reportDetails.violation.officerAssigned === user?.id ||
+                    (user?.role === UserRole.SUPERUSER && (
+                      <WriteViolationLetter reportDetails={reportDetails} />
+                    ))}
                   <Center color="gray" h="50%" fontFamily="font.body">
                     No results to show.
                   </Center>
@@ -364,7 +377,13 @@ export default function StepCard({
                 </Box>
                 <Stepper
                   index={activeStep}
-                  orientation="vertical"
+                  orientation={
+                    reportDetails.violation.officerAssigned === user?.id ||
+                    (user?.role === UserRole.SUPERUSER &&
+                      reportDetails.violation.status !== "Closed")
+                      ? "vertical"
+                      : "horizontal"
+                  }
                   w="max-content"
                   h="max-content"
                   p="1rem"
@@ -383,7 +402,7 @@ export default function StepCard({
                             active={<StepNumber />}
                           />
                         </StepIndicator>
-                        <Box fontFamily="font.body" w="10vw">
+                        <Box fontFamily="font.body" w="15vw">
                           <StepTitle>
                             <ViewProgressReport
                               activity={activity}
@@ -415,9 +434,17 @@ export default function StepCard({
                 </Stepper>
               </Box>
               {/* Progress Report Form */}
-              <ProgressReportForm
-                keyActivities={reportDetails.officerActivities}
-              />
+              {reportDetails.violation.officerAssigned === user?.id ||
+                reportDetails.officerActivities.every(
+                  (activity: ViolationOfficerActivity) =>
+                    activity.isDone === true
+                ) ||
+                (user?.role === UserRole.SUPERUSER &&
+                  reportDetails.violation.status !== "Closed" && (
+                    <ProgressReportForm
+                      keyActivities={reportDetails.officerActivities}
+                    />
+                  ))}
             </Flex>
           )}
 
@@ -514,10 +541,7 @@ export default function StepCard({
                                 Penalty Fee
                               </Th>
                               <Td border="3px double black">
-                                {reportDetails.violation.reasonToClose ===
-                                "Appealed"
-                                  ? "N/A"
-                                  : `₱ ${reportDetails.violationType.firstOffenseFee}`}
+                                ₱ {reportDetails.violation.feeToIncur}
                               </Td>
                             </Tr>
                           </Tbody>
@@ -535,7 +559,10 @@ export default function StepCard({
                   overflowY="auto"
                   flex={3}
                 >
-                  <WriteFinalAssessment violation={reportDetails.violation} />
+                  {reportDetails.violation.officerAssigned === user?.id ||
+                    (user?.role === UserRole.SUPERUSER && (
+                      <WriteFinalAssessment reportDetails={reportDetails} />
+                    ))}
                   <Center color="gray" h="50%" fontFamily="font.body">
                     No results to show.
                   </Center>

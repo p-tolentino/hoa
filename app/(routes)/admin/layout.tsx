@@ -1,24 +1,24 @@
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { FormError } from "@/components/form-error";
-import { Box, Flex } from "@chakra-ui/react";
-import { Sidebar } from "@/components/system/Sidebar";
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { FormError } from '@/components/form-error'
+import { Box, Flex } from '@chakra-ui/react'
+import { Sidebar } from '@/components/system/Sidebar'
 
-import { UserRole } from "@prisma/client";
-import { currentRole, currentUser } from "@/lib/auth";
-import Link from "next/link";
+import { UserRole } from '@prisma/client'
+import { currentRole, currentUser } from '@/lib/auth'
+import Link from 'next/link'
 
-import { FaUserShield as Admin } from "react-icons/fa";
-import { getNotificationsByUserId } from "@/server/data/notification";
+import { FaUserShield as Admin } from 'react-icons/fa'
+import { getNotificationsByUserId } from '@/server/data/notification'
 
 const AdminLayout = async ({ children }: { children: React.ReactNode }) => {
-  const user = await currentUser();
+  const user = await currentUser()
 
   if (!user) {
-    return null;
+    return null
   }
 
-  const role = await currentRole();
+  const role = await currentRole()
 
   // TODO: REVERT AFTER ALL DONE
   // return role === UserRole.USER ? (
@@ -44,22 +44,24 @@ const AdminLayout = async ({ children }: { children: React.ReactNode }) => {
   //   </div>
   // ) :
 
-  const notifications = await getNotificationsByUserId(user?.id);
-
+  const notifications = await getNotificationsByUserId(user?.id)
 
   return (
     <Flex>
       <Sidebar
-        notifications={ notifications ?
-          notifications?.filter(notif => notif.isArchived === false).sort((a: any, b: any) => b.createdAt - a.createdAt) :
-          null
+        notifications={
+          notifications
+            ? notifications
+                ?.filter(notif => notif.isArchived === false)
+                .sort((a: any, b: any) => b.createdAt - a.createdAt)
+            : null
         }
       />
-      <Box className="p-10" w="100%">
+      <Box className='p-10' w='100%' overflowY='auto'>
         {children}
       </Box>
     </Flex>
-  );
-};
+  )
+}
 
-export default AdminLayout;
+export default AdminLayout

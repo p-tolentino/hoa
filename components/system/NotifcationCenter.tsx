@@ -138,27 +138,13 @@ export default function NotificationCenter({
             <ScrollArea className="h-[300px]">
               <Stack spacing="3" alignItems="center" pb="15px">
                 {notifications.map((notification, index) => {
-                  let href = "/";
-
-                  if (notification.type === "violation") {
-                    href = `/admin/violations/letters-and-notices`;
-                  }
-
-                  if (notification.type === "dispute") {
-                    href = `/admin/disputes/letters-and-notices`;
-                  }
-
-                  if (notification.type === "finance") {
-                    href = `/admin/finance/statement-of-account`;
-                  }
-
                   return (
                     <Card
                       key={index}
                       variant="elevated"
                       _hover={{ transform: "scale(1.02)" }}
                       as={Link}
-                      href={href}
+                      href={notification.linkToView}
                       onClick={() => {
                         handlePopoverClose(index);
                       }}

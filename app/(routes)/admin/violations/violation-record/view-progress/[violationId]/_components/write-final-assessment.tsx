@@ -9,6 +9,9 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { createViolationNotice } from "@/server/actions/letter-notice";
+import { createNotification } from "@/server/actions/notification";
+import { newUserTransaction } from "@/server/actions/user-transactions";
 import { updateViolation } from "@/server/actions/violation";
 import {
   Box,
@@ -19,15 +22,19 @@ import {
   Text,
   Textarea,
 } from "@chakra-ui/react";
-import { ReportStatus, Violation } from "@prisma/client";
-import { Router } from "lucide-react";
+import {
+  LetterNoticeType,
+  PersonalInfo,
+  ReportStatus,
+  Violation,
+} from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function WriteFinalAssessment({
-  violation,
+  reportDetails,
 }: {
-  violation: Violation;
+  reportDetails: any;
 }) {
   const [isOpen, setIsOpen] = useState(false); // Dialog open state
   const [selectedOption, setSelectedOption] = useState("");
@@ -40,6 +47,82 @@ export default function WriteFinalAssessment({
   };
 
   const onSubmit = async () => {
+    const offenseCount =
+      reportDetails.violationRecord[reportDetails.personsInvolved[0].userId];
+
+    const feeToIncur =
+      offenseCount === 0
+        ? reportDetails.violationType.firstOffenseFee
+        : offenseCount === 1
+        ? reportDetails.violationType.secondOffenseFee
+        : reportDetails.violationType.thirdOffenseFee;
+
+    if (selectedOption === "CONCLUDED") {
+      reportDetails.personsInvolved.map(async (person: PersonalInfo) => {
+        // Send Notice
+        const noticeData = {
+          type: LetterNoticeType.VIOLATION,
+          title: "title",
+          description: "body",
+          sender: reportDetails.violation.officerAssigned,
+          idToLink: reportDetails.violation.id,
+          recipient: person.userId,
+        };
+
+        await createViolationNotice(noticeData).then(async (res) => {
+          if (res.success) {
+            console.log(res.success);
+            const notifNoticeData = {
+              type: "violation",
+              recipient: person.userId,
+              title: "Violation Notice",
+              description:
+                "Click here to view violation details and how to proceed with settling penalty fees.",
+              linkToView: `/admin/violations/letters-and-notices/notice?noticeId=${res.data.res.id}&violationId=${noticeData.idToLink}&violationTypeId=${reportDetails.violationType.id}`,
+            };
+
+            await createNotification(notifNoticeData).then((data) => {
+              if (data.success) {
+                console.log(data.success);
+              }
+            });
+          }
+        });
+
+        // Bill to Address of Person Involved + Notification
+        const feeData = {
+          soaId: "Sample SOA ID", //!! EDIT BASED ON CURRENT MONTH SOA
+          purpose: "Violation Fines",
+          amount: feeToIncur,
+          addressId: reportDetails.userInfos?.find(
+            (info: PersonalInfo) => info.userId === person.userId
+          )?.address,
+          description: reportDetails.violationType.title,
+        };
+
+        await newUserTransaction(feeData).then((data) => {
+          if (data.success) {
+            console.log(data.success);
+          }
+        });
+
+        // Send Notifications
+        const notifPaymentData = {
+          type: "finance",
+          recipient: person.userId,
+          title: "Urgent: Payment Required (Violation Fee)",
+          description: "Click here to proceed to payment",
+          linkToView: `/admin/finance/statement-of-account`,
+        };
+
+        await createNotification(notifPaymentData).then((data) => {
+          if (data.success) {
+            console.log(data.success);
+          }
+        });
+      });
+    }
+
     const formData = {
       finalReview: finalReview,
       status: ReportStatus.CLOSED,
@@ -48,15 +131,18 @@ export default function WriteFinalAssessment({
           ? "Appealed"
           : "Penalty Fee Charged to SOA"
       }`,
+      feeToIncur: `${
+        selectedOption === "APPEALED" ? "N/A" : feeToIncur.toString()
+      }`,
       finalReviewDate: new Date(),
     };
 
-    await updateViolation(violation.id, formData).then((data) => {
+    await updateViolation(reportDetails.violation.id, formData).then((data) => {
       console.log(data.success);
       setIsOpen(false);
       router.refresh();
       router.push(
-        `/admin/violations/violation-record/view-progress/${violation.id}`
+        `/admin/violations/violation-record/view-progress/${reportDetails.violation.id}`
       );
     });
   };

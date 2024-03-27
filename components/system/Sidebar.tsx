@@ -1,27 +1,27 @@
-"use client";
+'use client'
 
-import { cn } from "@/lib/utils";
+import { cn } from '@/lib/utils'
 
 import {
   FiBriefcase,
   FiCalendar,
   FiUserCheck,
   FiUsers,
-  FiMenu,
-} from "react-icons/fi";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { TbCurrencyPeso } from "react-icons/tb";
-import { PiBinocularsBold } from "react-icons/pi";
-import { TfiDashboard as Dashboard } from "react-icons/tfi";
-import { FaUser as User } from "react-icons/fa";
-import { RxGear as Gear, RxExit as Exit } from "react-icons/rx";
-import { LuContact2 as Contact } from "react-icons/lu";
-import { BsNewspaper } from "react-icons/bs";
-import { useCurrentUser } from "@/hooks/use-current-user";
-import { LogoutButton } from "../auth/logout-button";
-import { Notification, UserRole } from "@prisma/client";
-import { useState, useEffect } from "react";
+  FiMenu
+} from 'react-icons/fi'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import { TbCurrencyPeso } from 'react-icons/tb'
+import { PiBinocularsBold } from 'react-icons/pi'
+import { TfiDashboard as Dashboard } from 'react-icons/tfi'
+import { FaUser as User } from 'react-icons/fa'
+import { RxGear as Gear, RxExit as Exit } from 'react-icons/rx'
+import { LuContact2 as Contact } from 'react-icons/lu'
+import { BsNewspaper } from 'react-icons/bs'
+import { useCurrentUser } from '@/hooks/use-current-user'
+import { LogoutButton } from '../auth/logout-button'
+import { Notification, UserRole } from '@prisma/client'
+import { useState, useEffect } from 'react'
 import {
   Flex,
   Text,
@@ -33,193 +33,193 @@ import {
   Menu,
   MenuButton,
   Box,
-  Stack,
-} from "@chakra-ui/react";
-import { UserButton } from "../auth/user-button";
-import NotificationCenter from "./NotifcationCenter";
+  Stack
+} from '@chakra-ui/react'
+import { UserButton } from '../auth/user-button'
+import NotificationCenter from './NotifcationCenter'
 
-export function Sidebar({
-  notifications,
+export function Sidebar ({
+  notifications
 }: {
-  notifications: Notification[] | null;
+  notifications: Notification[] | null
 }) {
-  const user = useCurrentUser();
-  const pathname = usePathname();
-  const role = user?.role !== UserRole.USER ? "admin" : "user";
+  const user = useCurrentUser()
+  const pathname = usePathname()
+  const role = user?.role !== UserRole.USER ? 'admin' : 'user'
 
   const sidebarRoutes = [
     {
-      label: "Dashboard",
+      label: 'Dashboard',
       href: `/${role}/dashboard`,
       icon: Dashboard,
-      active: pathname === `/${role}/dashboard`,
+      active: pathname === `/${role}/dashboard`
     },
     {
-      label: "Membership",
+      label: 'Membership',
       href: `/${role}/membership`,
       icon: FiUserCheck,
-      active: pathname.startsWith(`/${role}/membership`),
+      active: pathname.startsWith(`/${role}/membership`)
     },
     {
-      label: "Finance Management",
+      label: 'Finance Management',
       href: `/${role}/finance`,
       icon: TbCurrencyPeso,
-      active: pathname.startsWith(`/${role}/finance`),
+      active: pathname.startsWith(`/${role}/finance`)
     },
     {
-      label: "Community Engagement",
+      label: 'Community Engagement',
       href: `/${role}/community`,
       icon: FiUsers,
-      active: pathname.startsWith(`/${role}/community`),
+      active: pathname.startsWith(`/${role}/community`)
     },
     {
-      label: "Dispute Resolution",
+      label: 'Dispute Resolution',
       href: `/${role}/disputes`,
       icon: FiBriefcase,
-      active: pathname.startsWith(`/${role}/disputes`),
+      active: pathname.startsWith(`/${role}/disputes`)
     },
     {
-      label: "Violation Enforcement",
+      label: 'Violation Enforcement',
       href: `/${role}/violations`,
       icon: PiBinocularsBold,
-      active: pathname.startsWith(`/${role}/violations`),
+      active: pathname.startsWith(`/${role}/violations`)
     },
     {
-      label: "Facility Reservation",
+      label: 'Facility Reservation',
       href: `/${role}/facility`,
       icon: FiCalendar,
-      active: pathname.startsWith(`/${role}/facility`),
+      active: pathname.startsWith(`/${role}/facility`)
     },
     {
-      label: "Election Management",
+      label: 'Election Management',
       href: `/${role}/election`,
       icon: BsNewspaper,
-      active: pathname.startsWith(`/${role}/election`),
-    },
-  ];
+      active: pathname.startsWith(`/${role}/election`)
+    }
+  ]
 
   const profileRoutes = [
     {
-      label: "My Profile",
+      label: 'My Profile',
       href: `/${role}/profile`,
       icon: User,
-      active: pathname === `/${role}/profile`,
+      active: pathname === `/${role}/profile`
     },
     {
-      label: "Settings",
+      label: 'Settings',
       href: `/${role}/settings`,
       icon: Gear,
-      active: pathname === `/${role}/settings`,
-    },
-  ];
+      active: pathname === `/${role}/settings`
+    }
+  ]
 
   // For responsiveness when window is resized
-  const [sidebarSize, changeSidebarSize] = useState("large");
+  const [sidebarSize, changeSidebarSize] = useState('large')
 
   useEffect(() => {
     const handleResize = () => {
-      const isSmallScreen = window.innerWidth <= 768; // You can adjust the breakpoint (768) as needed
-      changeSidebarSize(isSmallScreen ? "small" : "large");
-    };
+      const isSmallScreen = window.outerWidth <= 768 // You can adjust the breakpoint (768) as needed
+      changeSidebarSize(isSmallScreen ? 'small' : 'large')
+    }
     // Initial check on mount
-    handleResize();
+    handleResize()
     // Event listener for window resize
-    window.addEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize)
     // Cleanup the event listener on component unmount
     return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [])
 
   return (
     <Flex
-      pos="sticky"
+      pos='sticky'
       top={0}
-      h="100vh"
-      minW={sidebarSize === "small" ? "75px" : "280px"}
-      flexDir="column"
-      justifyContent="space-between"
-      bgColor={"brand.500"}
-      color={"white"}
+      h='100vh'
+      minW={sidebarSize === 'small' ? 'min-content' : 'max-content'}
+      flexDir='column'
+      justifyContent='space-between'
+      bgColor={'brand.500'}
+      color={'white'}
       zIndex={3}
     >
       <Flex
-        p={sidebarSize === "small" ? "17%" : "5%"}
-        flexDir="column"
-        w="100%"
-        alignItems={sidebarSize === "small" ? "center" : "flex-start"}
-        as="nav"
+        p={sidebarSize === 'small' ? '17%' : '5%'}
+        flexDir='column'
+        w='100%'
+        alignItems={sidebarSize === 'small' ? 'center' : 'flex-start'}
+        as='nav'
       >
-        {sidebarSize === "small" ? (
-          <Stack mr="3px">
+        {sidebarSize === 'small' ? (
+          <Stack mr='3px'>
             <IconButton
-              background="none"
-              color={"white"}
-              _hover={{ background: "none" }}
+              background='none'
+              color={'white'}
+              _hover={{ background: 'none' }}
               icon={<FiMenu />}
               onClick={() => {
-                if (sidebarSize === "small") changeSidebarSize("large");
-                else changeSidebarSize("small");
+                if (sidebarSize === 'small') changeSidebarSize('large')
+                else changeSidebarSize('small')
               }}
-              aria-label={""}
-              alignSelf={"flex-start"}
+              aria-label={''}
+              alignSelf={'flex-start'}
             />
             <NotificationCenter initialData={notifications || []} />
             <Divider />
           </Stack>
         ) : (
-          <Flex justify="space-between" w="100%">
+          <Flex justify='space-between' w='100%'>
             <IconButton
-              background="none"
-              color={"white"}
-              _hover={{ background: "none" }}
+              background='none'
+              color={'white'}
+              _hover={{ background: 'none' }}
               icon={<FiMenu />}
               onClick={() => {
-                if (sidebarSize === "small") changeSidebarSize("large");
-                else changeSidebarSize("small");
+                if (sidebarSize === 'small') changeSidebarSize('large')
+                else changeSidebarSize('small')
               }}
-              aria-label={""}
-              alignSelf={"flex-start"}
+              aria-label={''}
+              alignSelf={'flex-start'}
             />
             <NotificationCenter initialData={notifications || []} />
           </Flex>
         )}
 
-        {sidebarRoutes.map((route) => {
-          if (route.label === "Dashboard" && role === "user") {
-            return null;
+        {sidebarRoutes.map(route => {
+          if (route.label === 'Dashboard' && role === 'user') {
+            return null
           }
           return (
             <Box
               key={route.label}
-              mt={"1.4rem"}
-              w="100%"
-              alignItems={sidebarSize === "small" ? "center" : "left"}
-              fontSize={"sm"}
-              fontFamily={"font.body"}
+              mt={'1.4rem'}
+              w='100%'
+              alignItems={sidebarSize === 'small' ? 'center' : 'left'}
+              fontSize={'sm'}
+              fontFamily={'font.body'}
             >
-              <Menu placement="right" key={route.label}>
+              <Menu placement='right' key={route.label}>
                 <Link
                   href={route.href}
                   className={cn(
-                    "p-3 rounded-lg no-underline hover:bg-[#688f6e] hover:text-white transition",
-                    route.active ? "bg-[#F0CB5B]" : "bg-transparent"
+                    'p-3 rounded-lg no-underline hover:bg-[#688f6e] hover:text-white transition',
+                    route.active ? 'bg-[#F0CB5B]' : 'bg-transparent'
                   )}
                 >
-                  <MenuButton w="100%">
+                  <MenuButton w='100%'>
                     <Flex>
                       <Icon
                         as={route.icon}
-                        fontSize="xl"
-                        color={route.active ? "black" : "white"}
-                        className="w-5 h-5"
+                        fontSize='xl'
+                        color={route.active ? 'black' : 'white'}
+                        className='w-5 h-5'
                       />
                       <Text
-                        textAlign={"left"}
+                        textAlign={'left'}
                         ml={5}
-                        display={sidebarSize === "small" ? "none" : "flex"}
-                        color={route.active ? "black" : "white"}
-                        fontWeight={route.active ? "bold" : "normal"}
+                        display={sidebarSize === 'small' ? 'none' : 'flex'}
+                        color={route.active ? 'black' : 'white'}
+                        fontWeight={route.active ? 'bold' : 'normal'}
                       >
                         {route.label}
                       </Text>
@@ -228,42 +228,42 @@ export function Sidebar({
                 </Link>
               </Menu>
             </Box>
-          );
+          )
         })}
       </Flex>
 
       <Flex
-        p="1rem"
-        flexDir="column"
-        w="100%"
-        alignItems={sidebarSize === "small" ? "center" : "flex-start"}
+        p='1rem'
+        flexDir='column'
+        w='100%'
+        alignItems={sidebarSize === 'small' ? 'center' : 'flex-start'}
         mb={4}
       >
         <Divider
-          display={sidebarSize === "small" ? "none" : "flex"}
-          mt={"1rem"}
+          display={sidebarSize === 'small' ? 'none' : 'flex'}
+          mt={'1rem'}
         />
         <Flex
           mt={4}
-          align="center"
-          display={sidebarSize === "small" ? "none" : "flex"}
+          align='center'
+          display={sidebarSize === 'small' ? 'none' : 'flex'}
         >
           <Avatar
-            size="sm"
-            src={user?.image || ""}
-            bg="yellow.500"
-            icon={<User className="w-4 h-4" />}
+            size='sm'
+            src={user?.image || ''}
+            bg='yellow.500'
+            icon={<User className='w-4 h-4' />}
           />
-          <Flex flexDir="column" ml={4}>
+          <Flex flexDir='column' ml={4}>
             <Heading
-              as="h3"
-              size="sm"
-              fontFamily="font.heading"
-              className="capitalize"
+              as='h3'
+              size='sm'
+              fontFamily='font.heading'
+              className='capitalize'
             >
-              {`${user?.info?.firstName || "-"} ${user?.info?.lastName || ""}`}
+              {`${user?.info?.firstName || '-'} ${user?.info?.lastName || ''}`}
             </Heading>
-            <Text color="brand.300" fontFamily="font.body">
+            <Text color='brand.300' fontFamily='font.body'>
               {user?.info?.position}
             </Text>
           </Flex>
@@ -271,47 +271,47 @@ export function Sidebar({
 
         <Flex
           mt={3}
-          fontSize={"sm"}
-          display={sidebarSize === "small" ? "none" : "flex"}
+          fontSize={'sm'}
+          display={sidebarSize === 'small' ? 'none' : 'flex'}
         >
-          <Text as={Link} href={`/user/profile`} fontFamily="font.body">
+          <Text as={Link} href={`/user/profile`} fontFamily='font.body'>
             My Profile
           </Text>
         </Flex>
         <Flex
           mt={2}
-          fontSize={"sm"}
-          display={sidebarSize === "small" ? "none" : "flex"}
+          fontSize={'sm'}
+          display={sidebarSize === 'small' ? 'none' : 'flex'}
         >
-          <Text as={Link} href={`/${role}/settings`} fontFamily="font.body">
+          <Text as={Link} href={`/${role}/settings`} fontFamily='font.body'>
             Settings
           </Text>
         </Flex>
         <Flex
           mt={2}
-          fontSize={"sm"}
-          display={sidebarSize === "small" ? "none" : "flex"}
+          fontSize={'sm'}
+          display={sidebarSize === 'small' ? 'none' : 'flex'}
         >
           <LogoutButton>
-            <Text fontFamily="font.body">Logout</Text>
+            <Text fontFamily='font.body'>Logout</Text>
           </LogoutButton>
         </Flex>
       </Flex>
 
       <Flex
-        p="1rem"
-        flexDir="column"
-        w="100%"
-        alignItems={sidebarSize === "small" ? "center" : "flex-start"}
+        p='1rem'
+        flexDir='column'
+        w='100%'
+        alignItems={sidebarSize === 'small' ? 'center' : 'flex-start'}
         mb={4}
         mt={4}
-        align="center"
-        display={sidebarSize === "small" ? "flex" : "none"}
+        align='center'
+        display={sidebarSize === 'small' ? 'flex' : 'none'}
       >
         <UserButton />
       </Flex>
     </Flex>
-  );
+  )
 }
 
 /* V2 */

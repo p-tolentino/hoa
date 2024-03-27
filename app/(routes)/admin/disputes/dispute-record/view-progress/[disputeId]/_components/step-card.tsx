@@ -347,7 +347,7 @@ export default function StepCard ({
                   index={activeStep}
                   orientation='vertical'
                   w='max-content'
-                  h='50vh'
+                  h='35vh'
                   p='1rem'
                   gap='0'
                   colorScheme='green'
@@ -363,7 +363,7 @@ export default function StepCard ({
                           active={<StepNumber />}
                         />
                       </StepIndicator>
-                      <Box fontFamily='font.body' w='10vw'>
+                      <Box fontFamily='font.body' w='15vw'>
                         <StepTitle>
                           <ViewProgressReport activityTitle={activity.title} />
                         </StepTitle>
