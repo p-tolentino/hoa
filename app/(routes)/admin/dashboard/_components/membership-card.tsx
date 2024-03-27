@@ -20,8 +20,8 @@ export default function MembershipCard({ count }: dashboardPoll) {
         bg="white"
       >
         <Box>
-          <Text color="gray.500" textTransform="uppercase" fontSize="xs">
-            Total Homeowners Registered
+          <Text color="gray.500" textTransform="uppercase" fontSize="2xs">
+            Total Registered Homeowners
           </Text>
           <Text fontSize="2xl" fontWeight="bold">
             {count}

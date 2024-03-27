@@ -286,11 +286,11 @@ model Violation {
 }
 
 model ViolationOfficerActivity {
-  id            String      @id @unique @default(cuid())
+  id            String       @id @unique @default(cuid())
   violationId   String
   title         String
   deadline      DateTime
-  isDone        Boolean     @default(false)
+  isDone        Boolean   @default(false)
   dateCompleted DateTime?
 }
 
@@ -358,7 +358,7 @@ model Dispute {
   createdAt        DateTime     @default(now())
   submittedBy      String
   number           Int          @default(autoincrement())
-  progress         String       @default("Step 2: Review by Grievance & Adjudication Committee")
+  progress         String       @default("Step 2 & 3: Review by Committe & Assignment")
   step             Int          @default(2)
   committeeReview  String?
   commReviewDate   DateTime?
@@ -366,7 +366,7 @@ model Dispute {
   finalReview      String?
   finalReviewDate  DateTime?
   reasonToClose    String?
-  violationId      String?
+  violationType    String?
   feeToIncur       String?
   updatedAt        DateTime      @updatedAt
 }
@@ -394,8 +394,8 @@ enum ReportStatus {
   FOR_ASSIGNMENT            @map("For Officer Assignment")
   PENDING_LETTER_TO_BE_SENT @map("Pending Letter To Be Sent")
   NEGOTIATING               @map("Negotiating")
-  FOR_FINAL_REVIEW          @map("For Final Review")
   CLOSED                    @map("Closed")
+  FOR_FINAL_REVIEW          @map("For Final Review")
 }
 
 enum Priority {
