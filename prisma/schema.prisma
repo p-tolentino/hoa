@@ -276,21 +276,21 @@ model Violation {
   progress        String       @default("Step 2: Review by Environment & Security Committee")
   step            Int          @default(2)
   committeeReview String?
-  commReviewDate  DateTime?
   letterSent      Boolean      @default(false)
   finalReview     String?
-  finalReviewDate DateTime?
   reasonToClose   String?
   updatedAt       DateTime     @default(now()) @updatedAt
+  commReviewDate  DateTime?
+  finalReviewDate DateTime?
 }
 
 model ViolationOfficerActivity {
-  id            String   @id @unique @default(cuid())
+  id            String    @id @unique @default(cuid())
   violationId   String
   title         String
   deadline      DateTime
-  isDone        Boolean @default(false)
   dateCompleted DateTime?
+  isDone        Boolean   @default(false)
 }
 
 model ViolationProgress {
@@ -388,8 +388,8 @@ enum ReportStatus {
   FOR_ASSIGNMENT            @map("For Officer Assignment")
   PENDING_LETTER_TO_BE_SENT @map("Pending Letter To Be Sent")
   NEGOTIATING               @map("Negotiating")
-  FOR_FINAL_REVIEW          @map("For Final Review")
   CLOSED                    @map("Closed")
+  FOR_FINAL_REVIEW          @map("For Final Review")
 }
 
 enum Priority {
