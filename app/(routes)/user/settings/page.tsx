@@ -58,23 +58,33 @@ const Settings = async () => {
         <CardContent>
           {/* Email notifications */}
           <FormControl>
-            <Text mb="1rem">Receive notifications via email:</Text>
+            <Text mb="1rem" fontSize="sm" fontWeight="semibold">
+              Receive notifications via email:
+            </Text>
             <Box ml="1rem">
               <Flex gap={10}>
-                <Text>Form Submission Confirmation</Text>
+                <Text fontSize="sm">Form Submission Confirmation</Text>
                 <RadioGroup defaultValue="on" colorScheme="yellow">
                   <Stack direction={"row"} spacing={5}>
-                    <Radio value="on">On</Radio>
-                    <Radio value="off">Off</Radio>
+                    <Radio value="on" size="sm">
+                      On
+                    </Radio>
+                    <Radio value="off" size="sm">
+                      Off
+                    </Radio>
                   </Stack>
                 </RadioGroup>
               </Flex>
               <Flex gap={10}>
-                <Text>Payment Alerts and Reminders</Text>
+                <Text fontSize="sm">Payment Alerts and Reminders</Text>
                 <RadioGroup defaultValue="on" colorScheme="yellow">
                   <Stack direction={"row"} spacing={5}>
-                    <Radio value="on">On</Radio>
-                    <Radio value="off">Off</Radio>
+                    <Radio value="on" size="sm">
+                      On
+                    </Radio>
+                    <Radio value="off" size="sm">
+                      Off
+                    </Radio>
                   </Stack>
                 </RadioGroup>
               </Flex>

@@ -18,7 +18,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { useForm } from "react-hook-form";
-import { Button } from "@/components/ui/button";
+import { Button } from "@chakra-ui/react";
 import { Vehicle } from "@prisma/client";
 import { ExtendedUser } from "@/next-auth";
 import { addVehicle } from "@/server/actions/user-info";
@@ -92,7 +92,9 @@ const AddVehicle: React.FC<AddVehicleProps> = ({ initialData, vehicles }) => {
                     </FormItem>
                     <Button
                       disabled={isPending}
-                      className="mt-16 text-black bg-yellow-400 hover:bg-yellow-500 focus:bg-yellow-600"
+                      colorScheme="yellow"
+                      size="sm"
+                      mt={16}
                       type="submit"
                     >
                       + Add

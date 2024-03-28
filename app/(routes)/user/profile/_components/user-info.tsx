@@ -14,6 +14,7 @@ import {
   Text,
   Tr,
   Spinner,
+  Button,
 } from "@chakra-ui/react";
 
 import { Heading as HeadingShad } from "@/components/ui/heading";
@@ -21,7 +22,6 @@ import { Heading as HeadingShad } from "@/components/ui/heading";
 import { PersonalInfo, Property, Status, Vehicle } from "@prisma/client";
 import { LuFileEdit as Edit, LuCar as Car } from "react-icons/lu";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { useSession } from "next-auth/react";
@@ -110,7 +110,7 @@ const UserInfo: React.FC<UserInfoProps> = ({
           </Box>
         </Flex>
         <Link href="/user/settings">
-          <Button className="text-black bg-yellow-400 end hover:bg-yellow-500">
+          <Button colorScheme="yellow" size="sm">
             <Edit className="w-4 h-4 mr-2" />
             Edit Profile
           </Button>

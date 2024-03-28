@@ -11,7 +11,7 @@ import {
 import { Label } from "@/components/ui/label";
 
 import Upload from "./image-upload";
-import { Button } from "@/components/ui/button";
+import { Button } from "@chakra-ui/react";
 import { ViewDocument } from "./view-document";
 import { useState } from "react";
 
@@ -48,7 +48,8 @@ const UploadCard: React.FC<UploadCardProps> = ({
 
           <div className="flex justify-center mt-5">
             <Button
-              className="text-black bg-yellow-400 hover:bg-yellow-500"
+              size="sm"
+              colorScheme="yellow"
               disabled={!idUrl}
               onClick={() => setOpen(true)}
             >

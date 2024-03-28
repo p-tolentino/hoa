@@ -5,9 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTransition } from "react";
 
-import { Heading } from "@/components/ui/heading";
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
+import { Button } from "@chakra-ui/react";
 import {
   Form,
   FormControl,
@@ -106,7 +104,9 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({
                     Complete Name
                   </FormLabel>
 
-                  <FormDescription>Given Name</FormDescription>
+                  <FormDescription className="text-black font-semibold">
+                    Given Name
+                  </FormDescription>
                   <FormControl>
                     <Input
                       disabled={isPending}
@@ -126,7 +126,9 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({
                   <FormLabel className="text-xl font-semibold opacity-0">
                     Complete Name
                   </FormLabel>
-                  <FormDescription>Middle Name</FormDescription>
+                  <FormDescription className="text-black font-semibold">
+                    Middle Name
+                  </FormDescription>
                   <FormControl>
                     <Input
                       disabled={isPending}
@@ -147,7 +149,9 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({
                   <FormLabel className="text-xl font-semibold opacity-0">
                     Complete Name:
                   </FormLabel>
-                  <FormDescription>Last Name</FormDescription>
+                  <FormDescription className="text-black font-semibold">
+                    Last Name
+                  </FormDescription>
                   <FormControl>
                     <Input
                       disabled={isPending}
@@ -167,7 +171,9 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({
               name="birthDay"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Date of Birth</FormLabel>
+                  <FormLabel className="text-black font-semibold">
+                    Date of Birth
+                  </FormLabel>
                   <FormControl>
                     <Input type="date" disabled={isPending} {...field} />
                   </FormControl>
@@ -180,7 +186,9 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({
               name="phoneNumber"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Contact Number</FormLabel>
+                  <FormLabel className="text-black font-semibold">
+                    Contact Number
+                  </FormLabel>
                   <FormControl>
                     <Input
                       disabled={isPending}
@@ -197,7 +205,9 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({
               name="type"
               render={({ field }) => (
                 <FormItem className="space-y-3 ">
-                  <FormLabel>Resident Type</FormLabel>
+                  <FormLabel className="text-black font-semibold">
+                    Resident Type
+                  </FormLabel>
                   <FormControl>
                     <RadioGroup
                       onValueChange={field.onChange}
@@ -230,7 +240,9 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({
               name="address"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Home Address</FormLabel>
+                  <FormLabel className="text-black font-semibold">
+                    Home Address
+                  </FormLabel>
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={field.value}
@@ -264,7 +276,9 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({
               name="relation"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Relation</FormLabel>
+                  <FormLabel className="text-black font-semibold">
+                    Relation
+                  </FormLabel>
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={field.value}
@@ -298,7 +312,9 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({
               name="bio"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Biography</FormLabel>
+                  <FormLabel className="text-black font-semibold">
+                    Biography
+                  </FormLabel>
                   <FormControl>
                     <Textarea
                       placeholder="Tell us a little bit about yourself"
@@ -312,7 +328,8 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({
           </div>
           <Button
             disabled={isPending}
-            className="text-black bg-yellow-400 end hover:bg-yellow-500 focus:bg-yellow-600"
+            colorScheme="yellow"
+            size="sm"
             type="submit"
           >
             Save changes
