@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { Heading } from "@/components/ui/heading";
 import { Separator } from "@/components/ui/separator";
@@ -28,7 +28,7 @@ import {
   FormHelperText,
 } from "@chakra-ui/react";
 
-import { FiUpload } from 'react-icons/fi'; // FiUpload is an upload icon from Feather Icons within React Icons
+import { FiUpload } from "react-icons/fi"; // FiUpload is an upload icon from Feather Icons within React Icons
 
 import {
   Form,
@@ -67,18 +67,18 @@ function CreateHoa() {
     resolver: zodResolver(newHoaSchema),
     defaultValues: {
       name: "" || undefined,
-      contactNumber: ""|| undefined,
-      funds: ""|| undefined,
+      contactNumber: "" || undefined,
+      funds: "" || undefined,
     },
   });
 
   const [hoaInfo, setHoaInfo] = useState<Hoa | null>(null);
 
-useEffect(() => {
-  const fetchHoaInfo = async () => {
-    const info = await getHoaInfo();
-    setHoaInfo(info);
- if (info) {
+  useEffect(() => {
+    const fetchHoaInfo = async () => {
+      const info = await getHoaInfo();
+      setHoaInfo(info);
+      if (info) {
         // Update form values with fetched data
         form.reset({
           name: info.name,
@@ -88,16 +88,14 @@ useEffect(() => {
         });
       }
     };
-  fetchHoaInfo();
-},[form])
-
-
+    fetchHoaInfo();
+  }, [form]);
 
   const onSubmit = async (values: HoaFormValues) => {
     try {
       await createHoa(values);
       // Manually convert contactNumber to a number
-      console.log("the submitted values are", values)
+      console.log("the submitted values are", values);
       const updatedValues = {
         ...values,
         contactNumber: values.contactNumber.toString(), // Ensure the number is converted back to a string if necessary
@@ -110,7 +108,7 @@ useEffect(() => {
       //   // contactNumber: Number(values.contactNumber),
       //   // funds: Number(values.funds),
       // });
-  
+
       router.refresh(); // Refresh the page or navigate as needed
       toast({
         title: "HOA Updated",
@@ -148,88 +146,88 @@ useEffect(() => {
       <Separator className="mt-4 mb-6" />
 
       <Stack spacing={8}>
-      <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
-        <HStack gap={5}>
-        <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                <FormControl isRequired>
-                    <FormLabel fontSize="sm" fontWeight="semibold">
-                    Name of the Homeowners Association:
-                    </FormLabel>
-                <Input
-                  w="60%"
-                  size="sm"
-                  type="string"
-                  {...field}
-                  fontFamily="font.body"
-                  placeholder="Homeowners Association Name"
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)}>
+            <Stack spacing={5}>
+              <HStack gap={5}>
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormControl isRequired>
+                      <FormLabel fontSize="sm" fontWeight="semibold">
+                        Name of the Homeowners Association:
+                      </FormLabel>
+                      <Input
+                        w="60%"
+                        size="sm"
+                        type="string"
+                        {...field}
+                        fontFamily="font.body"
+                        placeholder="Homeowners Association Name"
+                      />
+                    </FormControl>
+                  )}
                 />
-                </FormControl>
-                )}
-                />
-        </HStack>
+              </HStack>
 
-        <HStack gap={5}>
-                  <FormField
-                control={form.control}
-                name="contactNumber"
-                render={({ field }) => (
-                <FormControl isRequired>
-                    <FormLabel fontSize="sm" fontWeight="semibold">
-                    Contact Number of the Homeowners Association:
-                    </FormLabel>
-                <Input
-                  w="60%"
-                  size="sm"
-                  type="number"
-                  {...field}
-                  fontFamily="font.body"
-                  placeholder="Homeowners Association Contact Number"
+              <HStack gap={5}>
+                <FormField
+                  control={form.control}
+                  name="contactNumber"
+                  render={({ field }) => (
+                    <FormControl isRequired>
+                      <FormLabel fontSize="sm" fontWeight="semibold">
+                        Contact Number of the Homeowners Association:
+                      </FormLabel>
+                      <Input
+                        w="60%"
+                        size="sm"
+                        type="number"
+                        {...field}
+                        fontFamily="font.body"
+                        placeholder="Homeowners Association Contact Number"
+                      />
+                    </FormControl>
+                  )}
                 />
-                </FormControl>
-                )}
+              </HStack>
+
+              <HStack gap={5}>
+                <FormField
+                  control={form.control}
+                  name="funds"
+                  render={({ field }) => (
+                    <FormControl isRequired>
+                      <FormLabel fontSize="sm" fontWeight="semibold">
+                        Funds of the Homeowners Association:
+                      </FormLabel>
+                      <Input
+                        w="60%"
+                        size="sm"
+                        type="number"
+                        {...field}
+                        fontFamily="font.body"
+                        placeholder="Current Funds"
+                      />
+                    </FormControl>
+                  )}
                 />
-        </HStack>
+              </HStack>
 
+              <Text fontSize="sm" fontFamily="font.body" mt={-5}>
+                The homeowners association funds will be reflected in the
+                finance management feature, specifically in the income and
+                expense management page.
+              </Text>
 
-          <HStack gap={5}>
-          <FormField
-                control={form.control}
-                name="funds"
-                render={({ field }) => (
-                <FormControl isRequired>
-                    <FormLabel fontSize="sm" fontWeight="semibold">
-                    Funds of the Homeowners Association:
-                    </FormLabel>
-                <Input
-                  w="60%"
-                  size="sm"
-                  type="number"
-                  {...field}
-                  fontFamily="font.body"
-                  placeholder="Current Funds"
-                />
-                </FormControl>
-                )}
-                />
-          </HStack>
-
-          <Text fontSize="sm" fontFamily="font.body">
-            The homeowners association funds will be reflected in the finance
-            management feature, specifically in the income and expense
-            management page.
-          </Text>
-
-        <Box mt={5} textAlign="center">
-          <Button size="sm" type="submit" colorScheme="yellow">
-            Save Changes
-          </Button>
-        </Box>
-        
-        </form>
+              <Box>
+                <Button size="xs" type="submit" colorScheme="yellow">
+                  Save Changes
+                </Button>
+              </Box>
+            </Stack>
+          </form>
         </Form>
 
         <Stack spacing={1}>
@@ -239,17 +237,17 @@ useEffect(() => {
             </Text>
             <Dialog>
               <DialogTrigger asChild>
-              <Button
-  size="md" // Medium size for better visibility
-  colorScheme="green" // A vibrant color scheme for attraction
-  leftIcon={<FiUpload />} // Assuming you have an UploadIcon component
-  fontWeight="bold" // Bold font weight for emphasis
-  boxShadow="sm" // A subtle shadow to make it pop a bit
-  _hover={{ boxShadow: "md" }} // Slightly larger shadow on hover for interactivity
-  _active={{ boxShadow: "lg" }} // Larger shadow on active for a pressing effect
->
-  Upload Bylaws
-</Button>
+                <Button
+                  size="xs" // Medium size for better visibility
+                  colorScheme="green" // A vibrant color scheme for attraction
+                  leftIcon={<FiUpload />} // Assuming you have an UploadIcon component
+                  fontWeight="bold" // Bold font weight for emphasis
+                  boxShadow="sm" // A subtle shadow to make it pop a bit
+                  _hover={{ boxShadow: "md" }} // Slightly larger shadow on hover for interactivity
+                  _active={{ boxShadow: "lg" }} // Larger shadow on active for a pressing effect
+                >
+                  Upload Bylaws
+                </Button>
               </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
@@ -262,7 +260,7 @@ useEffect(() => {
                   </DialogDescription>
                 </DialogHeader>
                 {/* File input */}
-                <PdfUpload/>
+                <PdfUpload />
               </DialogContent>
             </Dialog>
           </HStack>
@@ -275,5 +273,5 @@ useEffect(() => {
       </Stack>
     </div>
   );
-};
+}
 export default CreateHoa;
