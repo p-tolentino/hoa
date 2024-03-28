@@ -79,7 +79,7 @@ export default function StepCard ({
               >
                 Submitted Violation Reports
               </Link>{' '}
-              in the Violation Enforcement module.
+              in the Violation Monitoring module.
               <br />
               *The upcoming review process and potential follow-up actions can
               also be accessed by clicking on the Enforcement Progress link in
@@ -118,7 +118,7 @@ export default function StepCard ({
               >
                 Submitted Violation Reports
               </Link>{' '}
-              in the Violation Enforcement module.
+              in the Violation Monitoring module.
               <br />
               *The procedure on how to{' '}
               <Link
@@ -129,7 +129,7 @@ export default function StepCard ({
                 appeal to the violation
               </Link>{' '}
               can be found in the Violation Process Guide in the Violation
-              Enforcement module.
+              Monitoring module.
             </Text>
           )}
           {stepIndex === 5 && (
@@ -145,8 +145,8 @@ export default function StepCard ({
               >
                 pay the penalty fee
               </Link>{' '}
-              can be accessed via the Violation Process Guide in the Violation
-              Enforcement module.
+              can be accessed via the Violation Monitoring Process Guide in the
+              Violation Monitoring module.
             </Text>
           )}
         </Box>

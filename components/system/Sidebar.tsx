@@ -79,7 +79,7 @@ export function Sidebar ({
       active: pathname.startsWith(`/${role}/disputes`)
     },
     {
-      label: 'Violation Enforcement',
+      label: 'Violation Monitoring',
       href: `/${role}/violations`,
       icon: PiBinocularsBold,
       active: pathname.startsWith(`/${role}/violations`)
@@ -136,7 +136,7 @@ export function Sidebar ({
       pos='sticky'
       top={0}
       h='100vh'
-      minW={sidebarSize === 'small' ? 'min-content' : 'max-content'}
+      minW={sidebarSize === 'small' ? 'min-content' : '250px'}
       flexDir='column'
       justifyContent='space-between'
       bgColor={'brand.500'}

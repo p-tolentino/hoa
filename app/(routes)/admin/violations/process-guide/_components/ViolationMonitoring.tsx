@@ -10,7 +10,7 @@ export default function ViolationEnforcement ({ hoa }: { hoa: Hoa }) {
       value: 'step1',
       title: ' Violation Form Submission',
       description:
-        'Homeowners submit violation reports through the Violation Enforcement module in the MIS.',
+        'Homeowners submit violation reports through the Violation Monitoring module in the MIS.',
       details: [
         'Homeowners provide details about the type of violation, date, and a detailed description of the violation.',
         'Supporting evidence such as photos or documents may be attached to the violation report.'
@@ -75,7 +75,7 @@ export default function ViolationEnforcement ({ hoa }: { hoa: Hoa }) {
       <Box mb='1.5rem'>
         {/* Section Title */}
         <Text fontSize='xl' fontFamily='font.heading' fontWeight='bold'>
-          Violation Enforcement
+          Violation Monitoring
         </Text>
         {/* Section Description */}
         <Text fontSize='sm' fontFamily='font.body' color='grey'>

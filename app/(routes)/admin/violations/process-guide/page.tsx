@@ -1,7 +1,7 @@
 import { Box, Flex, Stack } from '@chakra-ui/react'
 import { Heading } from '@/components/ui/heading'
 import { Separator } from '@/components/ui/separator'
-import ViolationEnforcement from './_components/ViolationEnforcement'
+import ViolationMonitoring from './_components/ViolationMonitoring'
 import AppealViolations from './_components/AppealViolations'
 import PayPenaltyFee from './_components/PayPenaltyFee'
 import { getHoaInfo } from '@/server/data/hoa-info'
@@ -18,7 +18,7 @@ export default async function ViolationProcess () {
     <div>
       <Flex justifyContent='space-between'>
         <Heading
-          title='Violation Enforcement Process Guide'
+          title='Violation Monitoring Process Guide'
           description='Read more about the violation enforcement process. '
         />
         <BackButton />
@@ -26,9 +26,9 @@ export default async function ViolationProcess () {
       <Separator className='mt-4 mb-6' />
 
       <Stack spacing='50px'>
-        {/* Violation Enforcement */}
-        <Box id='violationEnforcement'>
-          <ViolationEnforcement hoa={hoa} />
+        {/* Violation Monitoring */}
+        <Box id='violationMonitoring'>
+          <ViolationMonitoring hoa={hoa} />
         </Box>
         {/* Appeal Violations */}
         <Box id='appealViolations'>

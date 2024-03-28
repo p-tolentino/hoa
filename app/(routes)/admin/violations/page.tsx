@@ -27,9 +27,9 @@ export default function ViolationEnforcementMenu () {
       category_users: 'ALL Homeowners',
       category_buttons: [
         {
-          text: 'Violation Enforcement Process Guide',
+          text: 'Violation Monitoring Process Guide',
           href: '/admin/violations/process-guide',
-          description: 'Read more about the violation enforcement process.'
+          description: 'Read more about the violation monitoring process.'
         },
         {
           text: "List of Homeowners' Association Violations",
@@ -71,8 +71,8 @@ export default function ViolationEnforcementMenu () {
   return (
     <>
       <Heading
-        title='Violation Enforcement'
-        description='Navigate through the Violation Enforcement module'
+        title='Violation Monitoring'
+        description='Navigate through the Violation Monitoring module'
       />
       <Separator className='mt-4 mb-6' />
       <SimpleGrid spacing={10} columns={{ md: 1, lg: 3 }}>
