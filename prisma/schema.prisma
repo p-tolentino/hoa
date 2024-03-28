@@ -276,22 +276,22 @@ model Violation {
   progress        String       @default("Step 2 & 3: Review by Committe & Assignment")
   step            Int          @default(2)
   committeeReview String?
-  commReviewDate  DateTime?
   letterSent      Boolean      @default(false)
   finalReview     String?
-  finalReviewDate DateTime?
   reasonToClose   String?
-  feeToIncur      String?
   updatedAt       DateTime     @updatedAt
+  commReviewDate  DateTime?
+  finalReviewDate DateTime?
+  feeToIncur      String?
 }
 
 model ViolationOfficerActivity {
-  id            String       @id @unique @default(cuid())
+  id            String    @id @unique @default(cuid())
   violationId   String
   title         String
   deadline      DateTime
-  isDone        Boolean   @default(false)
   dateCompleted DateTime?
+  isDone        Boolean   @default(false)
 }
 
 model ViolationProgress {
@@ -351,32 +351,32 @@ model Dispute {
   type             String
   description      String
   personComplained String
-  documents        String[]
   status           ReportStatus @default(FOR_REVIEW)
   priority         Priority?
   officerAssigned  String?
   createdAt        DateTime     @default(now())
   submittedBy      String
   number           Int          @default(autoincrement())
-  progress         String       @default("Step 2 & 3: Review by Committe & Assignment")
+  progress         String       @default("Step 2: Review by Grievance & Adjudication Committee")
   step             Int          @default(2)
   committeeReview  String?
-  commReviewDate   DateTime?
-  letterSent       Boolean       @default(false)
+  letterSent       Boolean      @default(false)
   finalReview      String?
-  finalReviewDate  DateTime?
   reasonToClose    String?
-  violationType    String?
+  updatedAt        DateTime     @updatedAt
+  commReviewDate   DateTime?
+  documents        String[]
   feeToIncur       String?
-  updatedAt        DateTime      @updatedAt
+  finalReviewDate  DateTime?
+  violationId      String?
 }
 
 model DisputeOfficerActivity {
-  id            String      @id @unique @default(cuid())
+  id            String    @id @unique @default(cuid())
   disputeId     String
   title         String
   deadline      DateTime
-  isDone        Boolean     @default(false)
+  isDone        Boolean   @default(false)
   dateCompleted DateTime?
 }
 
